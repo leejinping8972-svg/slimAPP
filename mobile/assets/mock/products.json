@@ -1,0 +1,72 @@
+[
+  {
+    "id": "solar_protein",
+    "name": "Solar Protein™",
+    "series": "Daily",
+    "shortDescription": "Your daily vitality ritual — science-based meal replacement.",
+    "priceDisplay": "$49.99",
+    "colorHex": "#D8A955",
+    "tag": "Slim Journey",
+    "isNew": false,
+    "ingredients": "Plant protein blend, vitamins, minerals, fiber.",
+    "usage": "Replace one meal daily. Mix with water or plant milk.",
+    "warnings": "Not for pregnancy or breastfeeding. Consult a professional if you have chronic conditions.",
+    "benefits": "Supports daily nutrition rhythm and gentle weight management."
+  },
+  {
+    "id": "youth_solar",
+    "name": "Youth Solar™",
+    "series": "Youth",
+    "shortDescription": "Young-state vitality for your next chapter.",
+    "priceDisplay": "$54.99",
+    "colorHex": "#6E7D5B",
+    "tag": "Journey Extension",
+    "isNew": true,
+    "ingredients": "Collagen peptides, antioxidants, plant nutrients.",
+    "usage": "One serving daily with breakfast.",
+    "warnings": "Contains soy. Not for children under 18.",
+    "benefits": "Supports youthful energy and skin vitality."
+  },
+  {
+    "id": "sun_femme",
+    "name": "Sun Femme™",
+    "series": "Femme",
+    "shortDescription": "Feminine balance for your wellness journey.",
+    "priceDisplay": "$52.99",
+    "colorHex": "#D99A8E",
+    "tag": "Femme Balance",
+    "isNew": false,
+    "ingredients": "Adaptogens, minerals, botanical extracts.",
+    "usage": "Evening ritual, one serving daily.",
+    "warnings": "Not during pregnancy. Consult if on hormone therapy.",
+    "benefits": "Supports hormonal balance and evening calm."
+  },
+  {
+    "id": "recovery_night",
+    "name": "Recovery Night™",
+    "series": "Recovery",
+    "shortDescription": "Restorative support for deeper sleep.",
+    "priceDisplay": "$48.99",
+    "colorHex": "#A593B5",
+    "tag": "Sleep",
+    "isNew": false,
+    "ingredients": "Magnesium, L-theanine, chamomile extract.",
+    "usage": "30 minutes before bedtime.",
+    "warnings": "May cause drowsiness. Do not drive after use.",
+    "benefits": "Supports restful sleep and overnight recovery."
+  },
+  {
+    "id": "active_boost",
+    "name": "Active Boost™",
+    "series": "Active",
+    "shortDescription": "Energy support for your active days.",
+    "priceDisplay": "$46.99",
+    "colorHex": "#9DB3B3",
+    "tag": "Energy",
+    "isNew": true,
+    "ingredients": "Electrolytes, B-vitamins, green tea extract.",
+    "usage": "Before or after light activity.",
+    "warnings": "Contains caffeine. Limit if sensitive.",
+    "benefits": "Supports hydration and gentle energy."
+  }
+]

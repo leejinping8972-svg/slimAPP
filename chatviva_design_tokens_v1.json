@@ -1,0 +1,111 @@
+{
+  "name": "chatviva-luckdate-design-tokens",
+  "version": "1.0",
+  "color": {
+    "brand": {
+      "moonBeige": "#D8C888",
+      "vitalitySage": "#A7B09A",
+      "solarSand": "#D8BE8A",
+      "chocolateBrown": "#5C4635",
+      "cloudIvory": "#F7F5F1",
+      "deepSage": "#5E6B45",
+      "sunGold": "#F4B84A"
+    },
+    "background": {
+      "app": "#F7F5F1",
+      "card": "#FFFDF8",
+      "completed": "#EDF1E7"
+    },
+    "text": {
+      "primary": "#2F2A24",
+      "secondary": "#6B5A49",
+      "inverse": "#FFFDF8"
+    },
+    "border": {
+      "soft": "#E7DED2"
+    },
+    "state": {
+      "success": "#6D7A52",
+      "warning": "#D9A23E",
+      "errorSoft": "#B8756B"
+    },
+    "productLine": {
+      "youth": "#6E7D5B",
+      "femme": "#D99A8E",
+      "recovery": "#A593B5",
+      "active": "#9DB3B3",
+      "daily": "#D8A955"
+    }
+  },
+  "radius": {
+    "sm": 8,
+    "md": 12,
+    "lg": 18,
+    "xl": 24,
+    "pill": 999
+  },
+  "spacing": {
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "base": 16,
+    "lg": 20,
+    "xl": 24,
+    "xxl": 32
+  },
+  "typography": {
+    "display": {
+      "fontSize": 32,
+      "lineHeight": 40,
+      "fontWeight": 600
+    },
+    "h1": {
+      "fontSize": 28,
+      "lineHeight": 34,
+      "fontWeight": 600
+    },
+    "h2": {
+      "fontSize": 24,
+      "lineHeight": 30,
+      "fontWeight": 600
+    },
+    "title": {
+      "fontSize": 18,
+      "lineHeight": 24,
+      "fontWeight": 600
+    },
+    "body": {
+      "fontSize": 16,
+      "lineHeight": 24,
+      "fontWeight": 400
+    },
+    "bodySmall": {
+      "fontSize": 14,
+      "lineHeight": 20,
+      "fontWeight": 400
+    },
+    "caption": {
+      "fontSize": 12,
+      "lineHeight": 16,
+      "fontWeight": 400
+    },
+    "tabLabel": {
+      "fontSize": 11,
+      "lineHeight": 14,
+      "fontWeight": 500
+    }
+  },
+  "motion": {
+    "fast": 160,
+    "base": 240,
+    "slow": 360,
+    "aura": 420
+  },
+  "shadow": {
+    "soft": {
+      "offsetY": 8,
+      "blur": 24,
+      "opacity": 0.08
+    }
+  }
+}

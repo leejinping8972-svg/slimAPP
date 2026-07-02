@@ -1,0 +1,140 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import '../models/models.dart';
+import '../services/vitality_scorer.dart';
+
+class MockDataRepository {
+  JourneyState _buildJourney({
+    required int day,
+    required int completionPercent,
+    required String phase,
+    required String themeEn,
+    required String encouragement,
+    required TodayRecord todayRecord,
+    required double consistency7d,
+    required List<int> unlockedMilestones,
+    required String sunnyCard,
+  }) {
+    final scores = VitalityScorer.calculate(
+      record: todayRecord,
+      hydrationTargetMl: 2000,
+      consistency7d: consistency7d,
+    );
+    final trend = List<double>.generate(30, (i) {
+      if (i < day) return 55 + (i * 1.2) + (i % 3 == 0 ? 5 : 0);
+      return 0;
+    });
+    final dayStatuses = List<String>.generate(30, (i) {
+      if (i < day - 1) return 'completed';
+      if (i == day - 1) return 'today';
+      return 'open';
+    });
+    return JourneyState(
+      day: day,
+      totalDays: 30,
+      completionPercent: completionPercent,
+      phase: phase,
+      themeEn: themeEn,
+      themeZh: '',
+      encouragement: encouragement,
+      vitalityTrend: trend,
+      dayStatuses: dayStatuses,
+      unlockedMilestones: unlockedMilestones,
+      todayRecord: todayRecord,
+      vitalityScores: scores,
+      sunnyCardMessage: sunnyCard,
+    );
+  }
+
+  JourneyState journeyForDay(DemoDay demoDay) {
+    switch (demoDay) {
+      case DemoDay.day1:
+        return _buildJourney(
+          day: 1,
+          completionPercent: 3,
+          phase: 'Launch',
+          themeEn: 'Action',
+          encouragement: 'Start today — perfection is not the goal.',
+          todayRecord: const TodayRecord(consistency7d: 0),
+          consistency7d: 0,
+          unlockedMilestones: [],
+          sunnyCard: 'Welcome to Day 1. One gentle step is enough.',
+        );
+      case DemoDay.day12:
+        return _buildJourney(
+          day: 12,
+          completionPercent: 40,
+          phase: 'Adaptation',
+          themeEn: 'Keep Going',
+          encouragement: 'You do not need to push hard — just continue.',
+          todayRecord: const TodayRecord(
+            productTaken: ProductTakenStatus.taken,
+            hydrationMl: 1500,
+            weightRecorded: true,
+            weightValueKg: 66.5,
+            moodTag: 'okay',
+            sleepHours: 7,
+            sleepQuality: 'good',
+            consistency7d: 0.71,
+          ),
+          consistency7d: 0.71,
+          unlockedMilestones: [7],
+          sunnyCard: 'Day 12 is open. A small glass of water can help your rhythm.',
+        );
+      case DemoDay.day30:
+        return _buildJourney(
+          day: 30,
+          completionPercent: 100,
+          phase: 'Completion',
+          themeEn: 'Graduation',
+          encouragement: 'You grew toward the light for 30 days.',
+          todayRecord: const TodayRecord(
+            productTaken: ProductTakenStatus.taken,
+            hydrationMl: 2000,
+            weightRecorded: true,
+            weightValueKg: 64.2,
+            moodTag: 'good',
+            sleepHours: 7.5,
+            sleepQuality: 'good',
+            consistency7d: 0.87,
+          ),
+          consistency7d: 0.87,
+          unlockedMilestones: [7, 14, 21, 28, 30],
+          sunnyCard: 'Day 30 — you made it. Ready for your next journey?',
+        );
+    }
+  }
+
+  Future<List<Product>> loadProducts() async {
+    final raw = await rootBundle.loadString('assets/mock/products.json');
+    final list = jsonDecode(raw) as List<dynamic>;
+    return list.map((e) => Product.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<List<Milestone>> loadMilestones({required List<int> unlocked}) async {
+    final raw = await rootBundle.loadString('assets/mock/milestones.json');
+    final list = jsonDecode(raw) as List<dynamic>;
+    return list.map((e) {
+      final m = Milestone.fromJson(e as Map<String, dynamic>);
+      return Milestone(
+        day: m.day,
+        title: m.title,
+        description: m.description,
+        unlocked: unlocked.contains(m.day),
+      );
+    }).toList();
+  }
+
+  List<ChatMessage> initialChatMessages(int day) {
+    return [
+      ChatMessage(
+        id: 'welcome',
+        isUser: false,
+        text: day == 1
+            ? 'Hi Freya, I am Sunny — your growth companion for the next 30 days. How are you feeling today?'
+            : 'Good to see you on Day $day, Freya. How is your rhythm today?',
+        timestamp: DateTime.now(),
+      ),
+    ];
+  }
+}

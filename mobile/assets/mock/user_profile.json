@@ -1,0 +1,16 @@
+{
+  "nickname": "Freya",
+  "ageRange": "35-50",
+  "heightCm": 165,
+  "currentWeightKg": 68,
+  "targetWeightKg": 62,
+  "weightUnit": "kg",
+  "heightUnit": "cm",
+  "language": "en-US",
+  "region": "US",
+  "reminderTime": "08:00",
+  "mealSlot": "breakfast",
+  "hydrationTargetMl": 2000,
+  "membershipPlan": "Solar Protein 30-Day",
+  "membershipExpires": "2026-09-18"
+}

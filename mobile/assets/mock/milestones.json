@@ -1,0 +1,7 @@
+[
+  { "day": 7, "title": "Week One Done!", "description": "You completed your first week. A beautiful beginning.", "unlocked": true },
+  { "day": 14, "title": "Two Weeks Strong", "description": "Your rhythm is becoming natural.", "unlocked": true },
+  { "day": 21, "title": "Three Weeks of Light", "description": "Consistency is your quiet strength.", "unlocked": false },
+  { "day": 28, "title": "Almost There", "description": "Your journey is nearly complete.", "unlocked": false },
+  { "day": 30, "title": "Graduation", "description": "30 days of growing toward the light.", "unlocked": false }
+]

@@ -1,0 +1,307 @@
+enum RiskLevel { p0, p1, p2 }
+
+enum ProductTakenStatus { notRecorded, taken, partial, skippedWithReason }
+
+enum DemoDay { day1, day12, day30 }
+
+class UserProfile {
+  const UserProfile({
+    this.nickname = 'Freya',
+    this.ageRange = '35-50',
+    this.heightCm = 165,
+    this.currentWeightKg = 68,
+    this.targetWeightKg = 62,
+    this.weightUnit = 'lb',
+    this.heightUnit = 'ft/in',
+    this.language = 'en-US',
+    this.region = 'US',
+    this.reminderTime = '08:00',
+    this.mealSlot = 'breakfast',
+    this.hydrationTargetMl = 2000,
+    this.riskLevel = RiskLevel.p2,
+    this.onboardingComplete = false,
+    this.isLoggedIn = false,
+    this.activationCode = '',
+    this.membershipPlan = 'Solar Protein 30-Day',
+    this.membershipExpires = '2026-09-18',
+  });
+
+  final String nickname;
+  final String ageRange;
+  final double heightCm;
+  final double currentWeightKg;
+  final double targetWeightKg;
+  final String weightUnit;
+  final String heightUnit;
+  final String language;
+  final String region;
+  final String reminderTime;
+  final String mealSlot;
+  final int hydrationTargetMl;
+  final RiskLevel riskLevel;
+  final bool onboardingComplete;
+  final bool isLoggedIn;
+  final String activationCode;
+  final String membershipPlan;
+  final String membershipExpires;
+
+  UserProfile copyWith({
+    String? nickname,
+    String? ageRange,
+    double? heightCm,
+    double? currentWeightKg,
+    double? targetWeightKg,
+    String? weightUnit,
+    String? heightUnit,
+    String? language,
+    String? region,
+    String? reminderTime,
+    String? mealSlot,
+    int? hydrationTargetMl,
+    RiskLevel? riskLevel,
+    bool? onboardingComplete,
+    bool? isLoggedIn,
+    String? activationCode,
+    String? membershipPlan,
+    String? membershipExpires,
+  }) {
+    return UserProfile(
+      nickname: nickname ?? this.nickname,
+      ageRange: ageRange ?? this.ageRange,
+      heightCm: heightCm ?? this.heightCm,
+      currentWeightKg: currentWeightKg ?? this.currentWeightKg,
+      targetWeightKg: targetWeightKg ?? this.targetWeightKg,
+      weightUnit: weightUnit ?? this.weightUnit,
+      heightUnit: heightUnit ?? this.heightUnit,
+      language: language ?? this.language,
+      region: region ?? this.region,
+      reminderTime: reminderTime ?? this.reminderTime,
+      mealSlot: mealSlot ?? this.mealSlot,
+      hydrationTargetMl: hydrationTargetMl ?? this.hydrationTargetMl,
+      riskLevel: riskLevel ?? this.riskLevel,
+      onboardingComplete: onboardingComplete ?? this.onboardingComplete,
+      isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      activationCode: activationCode ?? this.activationCode,
+      membershipPlan: membershipPlan ?? this.membershipPlan,
+      membershipExpires: membershipExpires ?? this.membershipExpires,
+    );
+  }
+}
+
+class TodayRecord {
+  const TodayRecord({
+    this.productTaken = ProductTakenStatus.notRecorded,
+    this.hydrationMl = 0,
+    this.weightRecorded = false,
+    this.weightValueKg = 0,
+    this.moodTag = '',
+    this.energyTag = '',
+    this.sleepHours = 0,
+    this.sleepQuality = '',
+    this.ritualCompletionRate = 0,
+    this.consistency7d = 0,
+  });
+
+  final ProductTakenStatus productTaken;
+  final int hydrationMl;
+  final bool weightRecorded;
+  final double weightValueKg;
+  final String moodTag;
+  final String energyTag;
+  final double sleepHours;
+  final String sleepQuality;
+  final double ritualCompletionRate;
+  final double consistency7d;
+
+  TodayRecord copyWith({
+    ProductTakenStatus? productTaken,
+    int? hydrationMl,
+    bool? weightRecorded,
+    double? weightValueKg,
+    String? moodTag,
+    String? energyTag,
+    double? sleepHours,
+    String? sleepQuality,
+    double? ritualCompletionRate,
+    double? consistency7d,
+  }) {
+    return TodayRecord(
+      productTaken: productTaken ?? this.productTaken,
+      hydrationMl: hydrationMl ?? this.hydrationMl,
+      weightRecorded: weightRecorded ?? this.weightRecorded,
+      weightValueKg: weightValueKg ?? this.weightValueKg,
+      moodTag: moodTag ?? this.moodTag,
+      energyTag: energyTag ?? this.energyTag,
+      sleepHours: sleepHours ?? this.sleepHours,
+      sleepQuality: sleepQuality ?? this.sleepQuality,
+      ritualCompletionRate: ritualCompletionRate ?? this.ritualCompletionRate,
+      consistency7d: consistency7d ?? this.consistency7d,
+    );
+  }
+}
+
+class VitalityScores {
+  const VitalityScores({
+    this.dailyVitality = 0,
+    this.ritualCompletion = 0,
+    this.hydrationScore = 0,
+    this.productRitualScore = 0,
+    this.weightCheckScore = 0,
+    this.moodCheckScore = 0,
+    this.sleepScore = 0,
+    this.consistencyScore = 0,
+  });
+
+  final int dailyVitality;
+  final int ritualCompletion;
+  final int hydrationScore;
+  final int productRitualScore;
+  final int weightCheckScore;
+  final int moodCheckScore;
+  final int sleepScore;
+  final int consistencyScore;
+}
+
+class JourneyState {
+  const JourneyState({
+    required this.day,
+    required this.totalDays,
+    required this.completionPercent,
+    required this.phase,
+    required this.themeEn,
+    required this.themeZh,
+    required this.encouragement,
+    required this.vitalityTrend,
+    required this.dayStatuses,
+    required this.unlockedMilestones,
+    required this.todayRecord,
+    required this.vitalityScores,
+    this.sunnyCardMessage = '',
+  });
+
+  final int day;
+  final int totalDays;
+  final int completionPercent;
+  final String phase;
+  final String themeEn;
+  final String themeZh;
+  final String encouragement;
+  final List<double> vitalityTrend;
+  final List<String> dayStatuses;
+  final List<int> unlockedMilestones;
+  final TodayRecord todayRecord;
+  final VitalityScores vitalityScores;
+  final String sunnyCardMessage;
+}
+
+class ChatMessage {
+  const ChatMessage({
+    required this.id,
+    required this.isUser,
+    required this.text,
+    this.timestamp,
+    this.isStreaming = false,
+  });
+
+  final String id;
+  final bool isUser;
+  final String text;
+  final DateTime? timestamp;
+  final bool isStreaming;
+
+  ChatMessage copyWith({String? text, bool? isStreaming}) {
+    return ChatMessage(
+      id: id,
+      isUser: isUser,
+      text: text ?? this.text,
+      timestamp: timestamp,
+      isStreaming: isStreaming ?? this.isStreaming,
+    );
+  }
+}
+
+class Product {
+  const Product({
+    required this.id,
+    required this.name,
+    required this.series,
+    required this.shortDescription,
+    required this.priceDisplay,
+    required this.colorHex,
+    this.tag = '',
+    this.ingredients = '',
+    this.usage = '',
+    this.warnings = '',
+    this.benefits = '',
+    this.isNew = false,
+  });
+
+  final String id;
+  final String name;
+  final String series;
+  final String shortDescription;
+  final String priceDisplay;
+  final String colorHex;
+  final String tag;
+  final String ingredients;
+  final String usage;
+  final String warnings;
+  final String benefits;
+  final bool isNew;
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      series: json['series'] as String,
+      shortDescription: json['shortDescription'] as String,
+      priceDisplay: json['priceDisplay'] as String,
+      colorHex: json['colorHex'] as String? ?? '#5E6B45',
+      tag: json['tag'] as String? ?? '',
+      ingredients: json['ingredients'] as String? ?? '',
+      usage: json['usage'] as String? ?? '',
+      warnings: json['warnings'] as String? ?? '',
+      benefits: json['benefits'] as String? ?? '',
+      isNew: json['isNew'] as bool? ?? false,
+    );
+  }
+}
+
+class Milestone {
+  const Milestone({
+    required this.day,
+    required this.title,
+    required this.description,
+    required this.unlocked,
+  });
+
+  final int day;
+  final String title;
+  final String description;
+  final bool unlocked;
+
+  factory Milestone.fromJson(Map<String, dynamic> json) {
+    return Milestone(
+      day: json['day'] as int,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      unlocked: json['unlocked'] as bool? ?? false,
+    );
+  }
+}
+
+class SunnyIntentResult {
+  const SunnyIntentResult({
+    required this.reply,
+    required this.intents,
+    this.riskLevel = RiskLevel.p2,
+    this.disableActions = false,
+    this.todayUpdates,
+  });
+
+  final String reply;
+  final List<String> intents;
+  final RiskLevel riskLevel;
+  final bool disableActions;
+  final TodayRecord? todayUpdates;
+}

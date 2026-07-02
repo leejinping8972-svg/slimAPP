@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="ChatViva Slim — Luckdate AI Vitality Companion Demo">
+  <meta name="theme-color" content="#5E6B45">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ChatViva Slim">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>ChatViva Slim</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #F7F5F1;
+      overscroll-behavior: none;
+    }
+    #loading {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #5C4635;
+      background: #F7F5F1;
+      cursor: pointer;
+    }
+    #loading .sunflower {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+    #loading h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #2F2A24;
+    }
+    #loading p {
+      margin: 0;
+      font-size: 14px;
+      color: #6B5A49;
+    }
+    #loading .hint {
+      margin-top: 32px;
+      font-size: 12px;
+      color: #A7B09A;
+    }
+    @media (min-width: 500px) {
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #E7DED2;
+      }
+      flt-glass-pane, flutter-view, #flutter_target {
+        max-width: 430px;
+        margin: 0 auto;
+        box-shadow: 0 12px 48px rgba(92, 70, 53, 0.12);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <svg class="sunflower" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(60,52)">
+        <g fill="#F4C542">
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(0)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(26)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(52)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(78)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(104)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(130)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(156)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(182)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(208)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(234)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(260)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(286)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(312)"/>
+          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(338)"/>
+        </g>
+        <circle cx="0" cy="0" r="22" fill="#FFFFFF"/>
+        <path d="M-10,-2 Q-7,-8 -4,-2" stroke="#5C4635" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M4,-2 Q7,-8 10,-2" stroke="#5C4635" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </g>
+      <line x1="60" y1="74" x2="60" y2="118" stroke="#6E7D5B" stroke-width="4" stroke-linecap="round"/>
+      <path d="M52,88 Q38,82 34,92" fill="#8FA06E"/>
+      <path d="M68,96 Q82,90 86,100" fill="#8FA06E"/>
+    </svg>
+    <h1>ChatViva Slim</h1>
+    <p>Grow Toward the Light</p>
+    <p class="hint">Loading...</p>
+  </div>
+  <script>
+    function hideLoading() {
+      var el = document.getElementById('loading');
+      if (el) el.remove();
+    }
+    window.addEventListener('flutter-first-frame', hideLoading);
+    document.getElementById('loading').addEventListener('click', hideLoading);
+    setTimeout(hideLoading, 10000);
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
