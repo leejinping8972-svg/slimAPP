@@ -2,7 +2,27 @@ enum RiskLevel { p0, p1, p2 }
 
 enum ProductTakenStatus { notRecorded, taken, partial, skippedWithReason }
 
-enum DemoDay { day1, day12, day30 }
+enum DemoDay { day1, day12, day28 }
+
+enum UserPlanType { mealReplacement, nonMealReplacement, noProduct }
+
+enum OrderLinkStatus { notStarted, linked, failed, skipped }
+
+class UserCoupon {
+  const UserCoupon({
+    required this.amount,
+    required this.currency,
+    required this.scope,
+    required this.expiresAt,
+    this.status = 'unused',
+  });
+
+  final double amount;
+  final String currency;
+  final String scope;
+  final DateTime expiresAt;
+  final String status;
+}
 
 class UserProfile {
   const UserProfile({
@@ -21,8 +41,16 @@ class UserProfile {
     this.riskLevel = RiskLevel.p2,
     this.onboardingComplete = false,
     this.isLoggedIn = false,
+    this.isNewRegistration = false,
+    this.couponRewardSeen = false,
+    this.linkedOrderNo = '',
+    this.linkedProductName = '',
+    this.orderLinkStatus = OrderLinkStatus.notStarted,
+    this.userPlanType = UserPlanType.noProduct,
+    this.hidePurchaseGuideCard = false,
+    this.welcomeCoupon,
     this.activationCode = '',
-    this.membershipPlan = 'Solar Protein 30-Day',
+    this.membershipPlan = 'Solar Protein 28-Day',
     this.membershipExpires = '2026-09-18',
   });
 
@@ -41,6 +69,14 @@ class UserProfile {
   final RiskLevel riskLevel;
   final bool onboardingComplete;
   final bool isLoggedIn;
+  final bool isNewRegistration;
+  final bool couponRewardSeen;
+  final String linkedOrderNo;
+  final String linkedProductName;
+  final OrderLinkStatus orderLinkStatus;
+  final UserPlanType userPlanType;
+  final bool hidePurchaseGuideCard;
+  final UserCoupon? welcomeCoupon;
   final String activationCode;
   final String membershipPlan;
   final String membershipExpires;
@@ -61,6 +97,14 @@ class UserProfile {
     RiskLevel? riskLevel,
     bool? onboardingComplete,
     bool? isLoggedIn,
+    bool? isNewRegistration,
+    bool? couponRewardSeen,
+    String? linkedOrderNo,
+    String? linkedProductName,
+    OrderLinkStatus? orderLinkStatus,
+    UserPlanType? userPlanType,
+    bool? hidePurchaseGuideCard,
+    UserCoupon? welcomeCoupon,
     String? activationCode,
     String? membershipPlan,
     String? membershipExpires,
@@ -81,6 +125,14 @@ class UserProfile {
       riskLevel: riskLevel ?? this.riskLevel,
       onboardingComplete: onboardingComplete ?? this.onboardingComplete,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      isNewRegistration: isNewRegistration ?? this.isNewRegistration,
+      couponRewardSeen: couponRewardSeen ?? this.couponRewardSeen,
+      linkedOrderNo: linkedOrderNo ?? this.linkedOrderNo,
+      linkedProductName: linkedProductName ?? this.linkedProductName,
+      orderLinkStatus: orderLinkStatus ?? this.orderLinkStatus,
+      userPlanType: userPlanType ?? this.userPlanType,
+      hidePurchaseGuideCard: hidePurchaseGuideCard ?? this.hidePurchaseGuideCard,
+      welcomeCoupon: welcomeCoupon ?? this.welcomeCoupon,
       activationCode: activationCode ?? this.activationCode,
       membershipPlan: membershipPlan ?? this.membershipPlan,
       membershipExpires: membershipExpires ?? this.membershipExpires,

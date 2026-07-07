@@ -50,47 +50,7 @@ class TodayPage extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            Text('Today\'s Ritual', style: LuckdateTextStyles.h2),
-            const SizedBox(height: LuckdateSpacing.md),
-            RitualCard(
-              title: 'Solar Protein™',
-              subtitle: record.productTaken == ProductTakenStatus.taken ? 'Completed' : 'Tap to log',
-              icon: Icons.local_drink_outlined,
-              completed: record.productTaken == ProductTakenStatus.taken,
-              onTap: () => _completeProduct(ref, record),
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            RitualCard(
-              title: 'Hydration',
-              subtitle: '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
-              icon: Icons.water_drop_outlined,
-              completed: record.hydrationMl > 0,
-              onTap: () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl),
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            RitualCard(
-              title: 'Weight',
-              subtitle: record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
-              icon: Icons.monitor_weight_outlined,
-              completed: record.weightRecorded,
-              onTap: () => _showWeightSheet(context, ref, record),
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            RitualCard(
-              title: 'How do you feel?',
-              subtitle: record.moodTag.isEmpty ? 'Choose mood' : record.moodTag,
-              icon: Icons.sentiment_satisfied_alt_outlined,
-              completed: record.moodTag.isNotEmpty,
-              onTap: () => _showMoodSheet(context, ref, record),
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            RitualCard(
-              title: 'Sleep',
-              subtitle: record.sleepHours > 0 ? '${record.sleepHours}h · ${record.sleepQuality}' : 'Log sleep',
-              icon: Icons.bedtime_outlined,
-              completed: record.sleepHours > 0,
-              onTap: () => _showSleepSheet(context, ref, record),
-            ),
+            ..._buildHomeBody(context, ref, profile, journey, record, scores),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
               onTap: () => context.go('/chat'),
@@ -111,36 +71,176 @@ class TodayPage extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: LuckdateSpacing.xl),
-            Text('Vitality Today', style: LuckdateTextStyles.h2),
-            const SizedBox(height: LuckdateSpacing.md),
-            Row(
-              children: [
-                Expanded(
-                  child: VitalityMetricCard(
-                    label: 'Vitality Score',
-                    value: '${scores.dailyVitality}',
-                    subtitle: VitalityScorer.vitalityLabel(scores.dailyVitality),
+            if (profile.userPlanType == UserPlanType.mealReplacement) ...[
+              const SizedBox(height: LuckdateSpacing.xl),
+              Text('Vitality Today', style: LuckdateTextStyles.h2),
+              const SizedBox(height: LuckdateSpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: VitalityMetricCard(
+                      label: 'Vitality Score',
+                      value: '${scores.dailyVitality}',
+                      subtitle: VitalityScorer.vitalityLabel(scores.dailyVitality),
+                    ),
                   ),
-                ),
-                const SizedBox(width: LuckdateSpacing.sm),
-                Expanded(
-                  child: VitalityMetricCard(
-                    label: 'Ritual',
-                    value: '${scores.ritualCompletion}%',
-                    subtitle: 'Completion',
+                  const SizedBox(width: LuckdateSpacing.sm),
+                  Expanded(
+                    child: VitalityMetricCard(
+                      label: 'Ritual',
+                      value: '${scores.ritualCompletion}%',
+                      subtitle: 'Completion',
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            VitalityMetricCard(
-              label: 'Consistency',
-              value: '${scores.consistencyScore}%',
-              subtitle: 'Last 7 days rhythm',
-            ),
+                ],
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              VitalityMetricCard(
+                label: 'Consistency',
+                value: '${scores.consistencyScore}%',
+                subtitle: 'Last 5 days rhythm',
+              ),
+            ],
           ],
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildHomeBody(
+    BuildContext context,
+    WidgetRef ref,
+    UserProfile profile,
+    JourneyState journey,
+    TodayRecord record,
+    VitalityScores scores,
+  ) {
+    switch (profile.userPlanType) {
+      case UserPlanType.noProduct:
+        return [
+          if (!profile.hidePurchaseGuideCard) ...[
+            _purchaseGuideCard(context, ref),
+            const SizedBox(height: LuckdateSpacing.lg),
+          ],
+          Text('Quick Log', style: LuckdateTextStyles.h2),
+          const SizedBox(height: LuckdateSpacing.md),
+          RitualCard(
+            title: 'Weight',
+            subtitle: record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
+            icon: Icons.monitor_weight_outlined,
+            completed: record.weightRecorded,
+            onTap: () => _showWeightSheet(context, ref, record),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          RitualCard(
+            title: 'Hydration',
+            subtitle: '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
+            icon: Icons.water_drop_outlined,
+            completed: record.hydrationMl > 0,
+            onTap: () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl),
+          ),
+        ];
+      case UserPlanType.nonMealReplacement:
+        return [
+          Text('Today\'s Reminder', style: LuckdateTextStyles.h2),
+          const SizedBox(height: LuckdateSpacing.md),
+          RitualCard(
+            title: profile.linkedProductName.isEmpty ? 'Your product' : profile.linkedProductName,
+            subtitle: record.productTaken == ProductTakenStatus.taken ? 'Taken today' : 'Remember to take your product',
+            icon: Icons.medication_outlined,
+            completed: record.productTaken == ProductTakenStatus.taken,
+            onTap: () => _completeProduct(ref, record),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          RitualCard(
+            title: 'Hydration',
+            subtitle: '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
+            icon: Icons.water_drop_outlined,
+            completed: record.hydrationMl > 0,
+            onTap: () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          RitualCard(
+            title: 'Weight',
+            subtitle: record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
+            icon: Icons.monitor_weight_outlined,
+            completed: record.weightRecorded,
+            onTap: () => _showWeightSheet(context, ref, record),
+          ),
+        ];
+      case UserPlanType.mealReplacement:
+        return [
+          Text('Today\'s Ritual', style: LuckdateTextStyles.h2),
+          const SizedBox(height: LuckdateSpacing.md),
+          Text('28-Day Slim Journey · Day ${journey.day}', style: LuckdateTextStyles.caption),
+          const SizedBox(height: LuckdateSpacing.md),
+          RitualCard(
+            title: 'Solar Protein™',
+            subtitle: record.productTaken == ProductTakenStatus.taken ? 'Completed' : 'Tap to log',
+            icon: Icons.local_drink_outlined,
+            completed: record.productTaken == ProductTakenStatus.taken,
+            onTap: () => _completeProduct(ref, record),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          RitualCard(
+            title: 'Hydration',
+            subtitle: '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
+            icon: Icons.water_drop_outlined,
+            completed: record.hydrationMl > 0,
+            onTap: () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          RitualCard(
+            title: 'Weight',
+            subtitle: record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
+            icon: Icons.monitor_weight_outlined,
+            completed: record.weightRecorded,
+            onTap: () => _showWeightSheet(context, ref, record),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          RitualCard(
+            title: 'Sleep',
+            subtitle: record.sleepHours > 0 ? '${record.sleepHours}h' : 'How long did you sleep?',
+            icon: Icons.bedtime_outlined,
+            completed: record.sleepHours > 0,
+            onTap: () => _showSleepSheet(context, ref, record),
+          ),
+        ];
+    }
+  }
+
+  Widget _purchaseGuideCard(BuildContext context, WidgetRef ref) {
+    return LdCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Unlock your full health plan', style: LuckdateTextStyles.title),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Text(
+            'Buy Solar Protein or another meal replacement to start your 28-day journey.',
+            style: LuckdateTextStyles.bodySmall,
+          ),
+          const SizedBox(height: LuckdateSpacing.lg),
+          LdPrimaryButton(
+            label: 'View products',
+            onPressed: () => context.go('/collection'),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Row(
+            children: [
+              Expanded(
+                child: LdSecondaryButton(
+                  label: 'Browse first',
+                  onPressed: () => context.go('/collection'),
+                ),
+              ),
+              TextButton(
+                onPressed: () => ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
+                child: const Text('Dismiss for 24h'),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

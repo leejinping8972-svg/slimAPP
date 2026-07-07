@@ -4,6 +4,8 @@ import '../models/models.dart';
 import '../services/vitality_scorer.dart';
 
 class MockDataRepository {
+  static const journeyDays = 28;
+
   JourneyState _buildJourney({
     required int day,
     required int completionPercent,
@@ -20,18 +22,18 @@ class MockDataRepository {
       hydrationTargetMl: 2000,
       consistency7d: consistency7d,
     );
-    final trend = List<double>.generate(30, (i) {
+    final trend = List<double>.generate(journeyDays, (i) {
       if (i < day) return 55 + (i * 1.2) + (i % 3 == 0 ? 5 : 0);
       return 0;
     });
-    final dayStatuses = List<String>.generate(30, (i) {
+    final dayStatuses = List<String>.generate(journeyDays, (i) {
       if (i < day - 1) return 'completed';
       if (i == day - 1) return 'today';
       return 'open';
     });
     return JourneyState(
       day: day,
-      totalDays: 30,
+      totalDays: journeyDays,
       completionPercent: completionPercent,
       phase: phase,
       themeEn: themeEn,
@@ -51,7 +53,7 @@ class MockDataRepository {
       case DemoDay.day1:
         return _buildJourney(
           day: 1,
-          completionPercent: 3,
+          completionPercent: 4,
           phase: 'Launch',
           themeEn: 'Action',
           encouragement: 'Start today — perfection is not the goal.',
@@ -63,7 +65,7 @@ class MockDataRepository {
       case DemoDay.day12:
         return _buildJourney(
           day: 12,
-          completionPercent: 40,
+          completionPercent: 43,
           phase: 'Adaptation',
           themeEn: 'Keep Going',
           encouragement: 'You do not need to push hard — just continue.',
@@ -81,13 +83,13 @@ class MockDataRepository {
           unlockedMilestones: [7],
           sunnyCard: 'Day 12 is open. A small glass of water can help your rhythm.',
         );
-      case DemoDay.day30:
+      case DemoDay.day28:
         return _buildJourney(
-          day: 30,
+          day: 28,
           completionPercent: 100,
           phase: 'Completion',
           themeEn: 'Graduation',
-          encouragement: 'You grew toward the light for 30 days.',
+          encouragement: 'You grew toward the light for 28 days.',
           todayRecord: const TodayRecord(
             productTaken: ProductTakenStatus.taken,
             hydrationMl: 2000,
@@ -99,8 +101,8 @@ class MockDataRepository {
             consistency7d: 0.87,
           ),
           consistency7d: 0.87,
-          unlockedMilestones: [7, 14, 21, 28, 30],
-          sunnyCard: 'Day 30 — you made it. Ready for your next journey?',
+          unlockedMilestones: [7, 14, 21, 28],
+          sunnyCard: 'Day 28 — you made it. Ready for your next journey?',
         );
     }
   }
@@ -125,14 +127,21 @@ class MockDataRepository {
     }).toList();
   }
 
-  List<ChatMessage> initialChatMessages(int day) {
+  List<ChatMessage> initialChatMessages(int day, {UserPlanType planType = UserPlanType.mealReplacement}) {
+    final greeting = switch (planType) {
+      UserPlanType.mealReplacement => day == 1
+          ? 'Hi Freya, I am Sunny — your growth companion for the next 28 days. How are you feeling today?'
+          : 'Good to see you on Day $day, Freya. How is your rhythm today?',
+      UserPlanType.nonMealReplacement =>
+          'Hi Freya, I will remind you to use your product each day and help you track how you feel.',
+      UserPlanType.noProduct =>
+          'Hi Freya, you do not have a plan yet, but you can keep logging and chatting with me about your goals.',
+    };
     return [
       ChatMessage(
         id: 'welcome',
         isUser: false,
-        text: day == 1
-            ? 'Hi Freya, I am Sunny — your growth companion for the next 30 days. How are you feeling today?'
-            : 'Good to see you on Day $day, Freya. How is your rhythm today?',
+        text: greeting,
         timestamp: DateTime.now(),
       ),
     ];

@@ -44,7 +44,10 @@ void main() {
 
   testWidgets('Onboarding back returns to login from first step', (tester) async {
     final router = await pumpApp(tester);
-    router.go('/onboarding');
+    router.go('/login');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
     expect(find.text('Hi, I am Sunny'), findsOneWidget);

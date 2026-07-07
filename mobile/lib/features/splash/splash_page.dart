@@ -28,7 +28,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   void _goNext() {
     if (!mounted || _navigated) return;
     _navigated = true;
-    GoRouter.of(context).go('/activation');
+    GoRouter.of(context).go('/login');
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class JourneyPage extends ConsumerWidget {
@@ -12,6 +13,33 @@ class JourneyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(appStateProvider);
+    final profile = state.profile;
+    if (profile.userPlanType != UserPlanType.mealReplacement) {
+      return LdScaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(LuckdateSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Journey', style: LuckdateTextStyles.h1),
+              const SizedBox(height: LuckdateSpacing.md),
+              Text(
+                profile.userPlanType == UserPlanType.noProduct
+                    ? 'You do not have a 28-day plan yet. Explore products in Collection or keep logging on Home.'
+                    : 'Your product reminder plan is active. A full 28-day Slim Journey is available with meal replacement products.',
+                style: LuckdateTextStyles.body,
+              ),
+              const SizedBox(height: LuckdateSpacing.xl),
+              LdPrimaryButton(
+                label: 'Browse products',
+                onPressed: () => context.go('/collection'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final journey = state.journey;
     final scores = journey.vitalityScores;
     final milestonesAsync = ref.watch(milestonesProvider);
@@ -21,7 +49,7 @@ class JourneyPage extends ConsumerWidget {
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           children: [
-            Text('30-Day Journey', style: LuckdateTextStyles.h1),
+            Text('28-Day Journey', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.xl),
             Center(
               child: LdProgressRing(
@@ -52,7 +80,7 @@ class JourneyPage extends ConsumerWidget {
             _phaseCard('Launch', 'Days 1-7', journey.day <= 7),
             _phaseCard('Adaptation', 'Days 8-14', journey.day > 7 && journey.day <= 14),
             _phaseCard('Stability', 'Days 15-21', journey.day > 14 && journey.day <= 21),
-            _phaseCard('Completion', 'Days 22-30', journey.day > 21),
+            _phaseCard('Completion', 'Days 22-28', journey.day > 21),
             const SizedBox(height: LuckdateSpacing.xl),
             Align(alignment: Alignment.centerLeft, child: Text('Day Map', style: LuckdateTextStyles.h2)),
             const SizedBox(height: LuckdateSpacing.md),
@@ -124,10 +152,10 @@ class JourneyPage extends ConsumerWidget {
               loading: () => const StatePlaceholder(type: 'loading'),
               error: (_, __) => const StatePlaceholder(type: 'error'),
             ),
-            if (journey.day >= 30) ...[
+            if (journey.day >= 28) ...[
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
-                label: 'View Day 30 Report',
+                label: 'View Day 28 Report',
                 onPressed: () => context.push('/journey/report'),
               ),
             ],
@@ -168,9 +196,9 @@ class JourneyPage extends ConsumerWidget {
     return Wrap(
       spacing: 6,
       runSpacing: 6,
-      children: List.generate(30, (i) {
+      children: List.generate(28, (i) {
         final status = journey.dayStatuses[i];
-        final isMilestone = [6, 13, 20, 27, 29].contains(i);
+        final isMilestone = [0, 13, 20, 27].contains(i);
         Color color;
         if (status == 'completed') {
           color = LuckdateColors.deepSage;
@@ -203,13 +231,13 @@ class JourneyPage extends ConsumerWidget {
   }
 }
 
-class Day30ReportPage extends ConsumerWidget {
-  const Day30ReportPage({super.key});
+class Day28ReportPage extends ConsumerWidget {
+  const Day28ReportPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return LdScaffold(
-      title: 'Day 30 Report',
+      title: 'Day 28 Report',
       showBack: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -221,9 +249,9 @@ class Day30ReportPage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             VitalityMetricCard(label: 'Completion', value: '87%', subtitle: 'Ritual completion rate'),
             const SizedBox(height: LuckdateSpacing.sm),
-            VitalityMetricCard(label: 'Days active', value: '26', subtitle: 'Days with records'),
+            VitalityMetricCard(label: 'Days active', value: '24', subtitle: 'Days with records'),
             const SizedBox(height: LuckdateSpacing.sm),
-            VitalityMetricCard(label: 'Vitality change', value: '+18%', subtitle: 'From Day 1 to Day 30'),
+            VitalityMetricCard(label: 'Vitality change', value: '+18%', subtitle: 'From Day 1 to Day 28'),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
               child: Column(
@@ -231,7 +259,7 @@ class Day30ReportPage extends ConsumerWidget {
                   const LdSunnyAvatar(size: 56),
                   const SizedBox(height: LuckdateSpacing.md),
                   Text(
-                    'Freya, 30 days of gentle steps. You did not chase perfection — you built a rhythm. Ready for your next journey?',
+                    'Freya, 28 days of gentle steps. You did not chase perfection — you built a rhythm. Ready for your next journey?',
                     style: LuckdateTextStyles.body,
                     textAlign: TextAlign.center,
                   ),

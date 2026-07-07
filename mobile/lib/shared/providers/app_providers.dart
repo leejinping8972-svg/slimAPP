@@ -1,12 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/models.dart';
 import '../repositories/mock_data_repository.dart';
+import '../services/mock_order_service.dart';
 import '../services/sunny_intent_router.dart';
 import '../services/vitality_scorer.dart';
 
 final mockRepoProvider = Provider<MockDataRepository>((ref) => MockDataRepository());
 
 final sunnyRouterProvider = Provider<SunnyIntentRouter>((ref) => SunnyIntentRouter());
+
+final mockOrderServiceProvider = Provider<MockOrderService>((ref) => MockOrderService());
 
 class AppState {
   const AppState({
@@ -45,7 +48,7 @@ class AppState {
 }
 
 class AppStateNotifier extends StateNotifier<AppState> {
-  AppStateNotifier(this._repo, this._router)
+  AppStateNotifier(this._repo, this._router, this._orderService)
       : super(
           AppState(
             profile: const UserProfile(),
@@ -59,22 +62,85 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   final MockDataRepository _repo;
   final SunnyIntentRouter _router;
+  final MockOrderService _orderService;
+
+  UserCoupon _issueWelcomeCoupon() {
+    return UserCoupon(
+      amount: 5,
+      currency: 'USD',
+      scope: 'global',
+      expiresAt: DateTime.now().add(const Duration(days: 30)),
+    );
+  }
+
+  void loginExistingUser() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        isLoggedIn: true,
+        isNewRegistration: false,
+      ),
+    );
+  }
+
+  void completeRegistration() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        isLoggedIn: true,
+        isNewRegistration: true,
+        couponRewardSeen: false,
+        orderLinkStatus: OrderLinkStatus.notStarted,
+        userPlanType: UserPlanType.noProduct,
+        welcomeCoupon: _issueWelcomeCoupon(),
+      ),
+    );
+  }
+
+  void acknowledgeCouponReward() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(couponRewardSeen: true),
+    );
+  }
+
+  OrderLinkResult linkOrder({
+    required String orderNo,
+    required String phoneLast4,
+  }) {
+    final result = _orderService.linkOrder(orderNo: orderNo, phoneLast4: phoneLast4);
+    final planType = _orderService.planTypeFor(result);
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        linkedOrderNo: result.success ? orderNo.trim() : '',
+        linkedProductName: result.productName,
+        orderLinkStatus: result.success ? OrderLinkStatus.linked : OrderLinkStatus.failed,
+        userPlanType: planType,
+        membershipPlan: result.success ? result.productName : state.profile.membershipPlan,
+      ),
+    );
+    return result;
+  }
+
+  void skipOrderLink() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        orderLinkStatus: OrderLinkStatus.skipped,
+        userPlanType: UserPlanType.noProduct,
+      ),
+    );
+  }
 
   void setLoggedIn() {
-    state = state.copyWith(
-      profile: state.profile.copyWith(isLoggedIn: true),
-    );
+    loginExistingUser();
   }
 
   void clearLoginSession() {
     state = state.copyWith(
-      profile: state.profile.copyWith(isLoggedIn: false),
+      profile: const UserProfile(),
     );
   }
 
-  void setActivationCode(String code) {
+  void hidePurchaseGuideCard() {
     state = state.copyWith(
-      profile: state.profile.copyWith(activationCode: code),
+      profile: state.profile.copyWith(hidePurchaseGuideCard: true),
     );
   }
 
@@ -83,12 +149,36 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   void completeOnboarding(UserProfile profile) {
-    final journey = _repo.journeyForDay(DemoDay.day1);
+    final journey = profile.userPlanType == UserPlanType.mealReplacement
+        ? _repo.journeyForDay(DemoDay.day1)
+        : _buildBasicJourney(profile);
     state = state.copyWith(
-      profile: profile.copyWith(onboardingComplete: true, isLoggedIn: true),
+      profile: profile.copyWith(onboardingComplete: true, isLoggedIn: true, isNewRegistration: false),
       demoDay: DemoDay.day1,
       journey: journey,
-      chatMessages: _repo.initialChatMessages(1),
+      chatMessages: _repo.initialChatMessages(1, planType: profile.userPlanType),
+    );
+  }
+
+  JourneyState _buildBasicJourney(UserProfile profile) {
+    return JourneyState(
+      day: 1,
+      totalDays: 28,
+      completionPercent: 0,
+      phase: profile.userPlanType == UserPlanType.nonMealReplacement ? 'Product Care' : 'Basic Mode',
+      themeEn: profile.userPlanType == UserPlanType.nonMealReplacement ? 'Daily Reminder' : 'Track & Chat',
+      themeZh: '',
+      encouragement: profile.userPlanType == UserPlanType.nonMealReplacement
+          ? 'We will remind you to use your product each day.'
+          : 'Track your habits and chat with Sunny while you explore products.',
+      vitalityTrend: const [],
+      dayStatuses: const [],
+      unlockedMilestones: const [],
+      todayRecord: const TodayRecord(),
+      vitalityScores: const VitalityScores(),
+      sunnyCardMessage: profile.userPlanType == UserPlanType.noProduct
+          ? 'You do not have a plan yet, but you can keep logging and chatting with me.'
+          : 'Remember to take your product today.',
     );
   }
 
@@ -200,6 +290,7 @@ final appStateProvider =
   return AppStateNotifier(
     ref.watch(mockRepoProvider),
     ref.watch(sunnyRouterProvider),
+    ref.watch(mockOrderServiceProvider),
   );
 });
 

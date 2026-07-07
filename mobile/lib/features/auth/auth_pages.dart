@@ -139,8 +139,7 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
             LdPrimaryButton(
               label: 'Activate & Continue',
               onPressed: () {
-                ref.read(appStateProvider.notifier).setActivationCode(_codeController.text);
-                context.go('/login');
+                context.go('/link-order');
               },
             ),
           ],
@@ -154,12 +153,17 @@ class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   void _signIn(GoRouter router, WidgetRef ref) {
-    ref.read(appStateProvider.notifier).setLoggedIn();
-    router.go('/onboarding');
+    ref.read(appStateProvider.notifier).loginExistingUser();
+    final profile = ref.read(appStateProvider).profile;
+    if (profile.onboardingComplete) {
+      router.go('/today');
+    } else {
+      router.go('/onboarding');
+    }
   }
 
   void _signUp(GoRouter router) {
-    router.go('/onboarding');
+    router.go('/register');
   }
 
   @override

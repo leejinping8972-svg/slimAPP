@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'theme/luckdate_theme.dart';
+import '../../features/auth/auth_flow_pages.dart';
 import '../../features/auth/auth_pages.dart';
 import '../../features/chat/chat_page.dart';
 import '../../features/collection/collection_page.dart';
@@ -10,6 +11,7 @@ import '../../features/onboarding/onboarding_page.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../../features/today/today_page.dart';
+import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -30,34 +32,50 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final path = state.matchedLocation;
       final profile = ref.read(appStateProvider).profile;
-      if (path.startsWith('/region')) return '/activation';
+      if (path.startsWith('/region') || path.startsWith('/activation')) return '/login';
 
-      final isAuthFlow = path == '/' ||
-          path.startsWith('/activation') ||
-          path.startsWith('/login') ||
-          path.startsWith('/onboarding');
+      final isPublicAuth = path == '/' ||
+          path == '/login' ||
+          path == '/register' ||
+          path == '/register-success' ||
+          path == '/link-order';
 
-      if (!profile.isLoggedIn && !isAuthFlow) return '/';
-      if (profile.isLoggedIn && !profile.onboardingComplete && path == '/login') {
-        return '/onboarding';
-      }
-      if (profile.isLoggedIn && !profile.onboardingComplete && path != '/onboarding' && !isAuthFlow) {
-        return '/onboarding';
-      }
-      if (profile.onboardingComplete && isAuthFlow && path != '/') {
-        if (path == '/login' || path == '/onboarding') return '/today';
+      if (!profile.isLoggedIn && !isPublicAuth) return '/login';
+
+      if (profile.isLoggedIn) {
+        if (profile.isNewRegistration && !profile.couponRewardSeen && path != '/register-success') {
+          return '/register-success';
+        }
+        if (profile.isNewRegistration &&
+            profile.couponRewardSeen &&
+            profile.orderLinkStatus == OrderLinkStatus.notStarted &&
+            path != '/link-order' &&
+            path != '/onboarding') {
+          return '/link-order';
+        }
+        if (!profile.onboardingComplete &&
+            path != '/onboarding' &&
+            path != '/register-success' &&
+            path != '/link-order') {
+          return '/onboarding';
+        }
+        if (profile.onboardingComplete && (path == '/login' || path == '/register' || path == '/onboarding')) {
+          return '/today';
+        }
       }
       return null;
     },
     routes: [
       GoRoute(path: '/', builder: (_, __) => const SplashPage()),
-      GoRoute(path: '/activation', builder: (_, __) => const ActivationPage()),
       GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
+      GoRoute(path: '/register', builder: (_, __) => const RegisterPage()),
+      GoRoute(path: '/register-success', builder: (_, __) => const RegisterSuccessPage()),
+      GoRoute(path: '/link-order', builder: (_, __) => const OrderLinkPage()),
       GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingPage()),
       GoRoute(
         path: '/journey/report',
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (_, __) => const Day30ReportPage(),
+        builder: (_, __) => const Day28ReportPage(),
       ),
       GoRoute(
         path: '/collection/product/:id',

@@ -31,7 +31,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   double _height = 165;
   bool _targetWeightManual = false;
 
-  static const _totalSteps = 7;
+  List<String> _steps(UserPlanType planType) {
+    switch (planType) {
+      case UserPlanType.mealReplacement:
+        return ['welcome', 'privacy', 'profile', 'risk', 'reminder', 'ready'];
+      case UserPlanType.nonMealReplacement:
+        return ['welcome', 'privacy', 'profile', 'risk', 'reminder', 'ready'];
+      case UserPlanType.noProduct:
+        return ['welcome', 'privacy', 'profile', 'meal', 'risk', 'reminder', 'ready'];
+    }
+  }
+
+  bool get _showTargetWeight {
+    final plan = ref.read(appStateProvider).profile.userPlanType;
+    return plan != UserPlanType.nonMealReplacement;
+  }
 
   @override
   void initState() {
@@ -68,7 +82,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _next() {
-    if (_step < _totalSteps - 1) {
+    final steps = _steps(ref.read(appStateProvider).profile.userPlanType);
+    if (_step < steps.length - 1) {
       setState(() => _step++);
     } else {
       final risk = _evaluateRisk();
@@ -187,6 +202,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final planType = ref.watch(appStateProvider).profile.userPlanType;
+    final steps = _steps(planType);
     return LdScaffold(
       body: Padding(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -201,17 +218,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             LinearProgressIndicator(
-              value: (_step + 1) / _totalSteps,
+              value: (_step + 1) / steps.length,
               backgroundColor: LuckdateColors.lineSoft,
               color: LuckdateColors.deepSage,
               borderRadius: BorderRadius.circular(LuckdateRadius.pill),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            Expanded(child: _buildStep()),
+            Expanded(child: _buildStep(steps[_step], planType)),
             const SizedBox(height: LuckdateSpacing.base),
             LdPrimaryButton(
-              label: _step == _totalSteps - 1 ? 'Start My Journey' : 'Continue',
-              onPressed: _canContinue() ? _next : null,
+              label: _step == steps.length - 1 ? 'Start My Journey' : 'Continue',
+              onPressed: _canContinue(steps[_step]) ? _next : null,
             ),
           ],
         ),
@@ -219,10 +236,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  bool _canContinue() {
-    if (_step == 1 && !_privacyAccepted) return false;
-    if (_step == 3 && _mealSlots.isEmpty) return false;
-    if (_step == 4 && !_riskStepComplete()) return false;
+  bool _canContinue(String stepKey) {
+    if (stepKey == 'privacy' && !_privacyAccepted) return false;
+    if (stepKey == 'meal' && _mealSlots.isEmpty) return false;
+    if (stepKey == 'risk' && !_riskStepComplete()) return false;
     return true;
   }
 
@@ -234,28 +251,28 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         _emotionalRisk;
   }
 
-  Widget _buildStep() {
-    switch (_step) {
-      case 0:
-        return _welcomeStep();
-      case 1:
-        return _privacyStep();
-      case 2:
+  Widget _buildStep(String stepKey, UserPlanType planType) {
+    switch (stepKey) {
+      case 'welcome':
+        return _welcomeStep(planType);
+      case 'privacy':
+        return _privacyStep(planType);
+      case 'profile':
         return _profileStep();
-      case 3:
+      case 'meal':
         return _mealStep();
-      case 4:
+      case 'risk':
         return _riskStep();
-      case 5:
-        return _reminderStep();
-      case 6:
-        return _journeyReadyStep();
+      case 'reminder':
+        return _reminderStep(planType);
+      case 'ready':
+        return _journeyReadyStep(planType);
       default:
         return const SizedBox();
     }
   }
 
-  Widget _welcomeStep() {
+  Widget _welcomeStep(UserPlanType planType) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +284,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           Text('Hi, I am Sunny', style: LuckdateTextStyles.h1),
           const SizedBox(height: LuckdateSpacing.md),
           Text(
-            'I will walk with you through 30 days — not to push you, but to help you grow toward the light, one gentle step at a time.',
+            planType == UserPlanType.mealReplacement
+                ? 'I will walk with you through 28 days — not to push you, but to help you grow toward the light, one gentle step at a time.'
+                : planType == UserPlanType.nonMealReplacement
+                    ? 'I will remind you to use your product and help you track how you feel each day.'
+                    : 'You can keep logging and chatting with me while we find the right plan for you.',
             style: LuckdateTextStyles.body,
           ),
         ],
@@ -275,14 +296,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  Widget _privacyStep() {
+  Widget _privacyStep(UserPlanType planType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Your privacy matters', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
         Text(
-          'We use your profile, daily records, and product usage to personalize your 30-day plan. ChatViva Slim provides lifestyle companionship — not medical diagnosis.',
+          planType == UserPlanType.mealReplacement
+              ? 'We use your profile, daily records, and product usage to personalize your 28-day plan. ChatViva Slim provides lifestyle companionship — not medical diagnosis.'
+              : 'We use your profile and daily records to personalize reminders and support. ChatViva Slim provides lifestyle companionship — not medical diagnosis.',
           style: LuckdateTextStyles.bodySmall,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
@@ -350,39 +373,41 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             activeColor: LuckdateColors.deepSage,
             onChanged: _onCurrentWeightChanged,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Target weight (kg): ${_targetWeight.toStringAsFixed(1)}',
-                      style: LuckdateTextStyles.bodySmall,
-                    ),
-                    Text(
-                      'Suggested ${_recommendedLabel(recommended, recommendedBmi)}',
-                      style: LuckdateTextStyles.caption.copyWith(color: LuckdateColors.deepSage),
-                    ),
-                  ],
+          if (_showTargetWeight) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Target weight (kg): ${_targetWeight.toStringAsFixed(1)}',
+                        style: LuckdateTextStyles.bodySmall,
+                      ),
+                      Text(
+                        'Suggested ${_recommendedLabel(recommended, recommendedBmi)}',
+                        style: LuckdateTextStyles.caption.copyWith(color: LuckdateColors.deepSage),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              if (_targetWeightManual)
-                TextButton(
-                  onPressed: _resetTargetToRecommended,
-                  child: const Text('Reset'),
-                ),
-            ],
-          ),
-          Slider(
-            value: _targetWeight.clamp(40, _currentWeight),
-            min: 40,
-            max: _currentWeight,
-            divisions: ((_currentWeight - 40) * 2).round().clamp(1, 160),
-            activeColor: LuckdateColors.deepSage,
-            onChanged: _onTargetWeightChanged,
-          ),
+                if (_targetWeightManual)
+                  TextButton(
+                    onPressed: _resetTargetToRecommended,
+                    child: const Text('Reset'),
+                  ),
+              ],
+            ),
+            Slider(
+              value: _targetWeight.clamp(40, _currentWeight),
+              min: 40,
+              max: _currentWeight,
+              divisions: ((_currentWeight - 40) * 2).round().clamp(1, 160),
+              activeColor: LuckdateColors.deepSage,
+              onChanged: _onTargetWeightChanged,
+            ),
+          ],
         ],
       ),
     );
@@ -512,12 +537,20 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  Widget _reminderStep() {
+  Widget _reminderStep(UserPlanType planType) {
+    final copy = switch (planType) {
+      UserPlanType.mealReplacement =>
+        'We will remind you to use your meal replacement and log your daily rhythm.',
+      UserPlanType.nonMealReplacement => 'We will remind you to take your product and log how you feel.',
+      UserPlanType.noProduct => 'We will remind you to log your food, weight, and daily state.',
+    };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Daily reminder', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
+        Text(copy, style: LuckdateTextStyles.bodySmall),
+        const SizedBox(height: LuckdateSpacing.sm),
         Text('When should Sunny gently remind you?', style: LuckdateTextStyles.bodySmall),
         const SizedBox(height: LuckdateSpacing.lg),
         ...['07:00', '08:00', '09:00', '12:00', '18:00'].map((t) {
@@ -534,31 +567,44 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  Widget _journeyReadyStep() {
+  Widget _journeyReadyStep(UserPlanType planType) {
     final risk = _evaluateRisk();
+    final linkedProduct = ref.read(appStateProvider).profile.linkedProductName;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const LdSunnyAvatar(size: 72),
         const SizedBox(height: LuckdateSpacing.xl),
-        Text('Your journey is ready', style: LuckdateTextStyles.h1),
+        Text(planType == UserPlanType.noProduct ? 'You are all set' : 'Your journey is ready', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.md),
-        Text('Slim Journey · 30 Days', style: LuckdateTextStyles.title),
+        Text(
+          planType == UserPlanType.mealReplacement
+              ? 'Slim Journey · 28 Days'
+              : planType == UserPlanType.nonMealReplacement
+                  ? 'Product Reminder Plan'
+                  : 'Basic tracking mode',
+          style: LuckdateTextStyles.title,
+        ),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          risk == RiskLevel.p1
-              ? 'We will keep your plan gentle and steady. Please confirm any health concerns with a professional.'
-              : 'Day 1 starts with one small step — not perfection.',
+          planType == UserPlanType.mealReplacement
+              ? (risk == RiskLevel.p1
+                  ? 'We will keep your plan gentle and steady. Please confirm any health concerns with a professional.'
+                  : 'Day 1 starts with one small step — not perfection.')
+              : planType == UserPlanType.nonMealReplacement
+                  ? 'We will remind you to use your product each day. You can still log weight and chat with Sunny.'
+                  : 'You can log, chat, and explore products. Link an order anytime from Profile.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
         LdCard(
           child: Column(
             children: [
-              _summaryRow('Meal slot', _mealSlots.join(', ')),
-              _summaryRow('Target weight', '${_targetWeight.toStringAsFixed(1)} kg'),
+              if (linkedProduct.isNotEmpty) _summaryRow('Product', linkedProduct),
+              if (planType != UserPlanType.noProduct) _summaryRow('Meal slot', _mealSlots.join(', ')),
+              if (_showTargetWeight) _summaryRow('Target weight', '${_targetWeight.toStringAsFixed(1)} kg'),
               _summaryRow('Reminder', _reminderTime),
-              _summaryRow('Hydration goal', '2000 ml'),
+              if (planType == UserPlanType.mealReplacement) _summaryRow('Hydration goal', '2000 ml'),
             ],
           ),
         ),
