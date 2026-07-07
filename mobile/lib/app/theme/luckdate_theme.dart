@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class LuckdateColors {
-  static const moonBeige = Color(0xFFD8C888);
-  static const vitalitySage = Color(0xFFA7B09A);
-  static const solarSand = Color(0xFFD8BE8A);
+  static const moonBeige = Color(0xFFF7E2D4);
+  static const vitalitySage = Color(0xFFA8C686);
+  static const solarSand = Color(0xFFF5C542);
   static const chocolateBrown = Color(0xFF5C4635);
-  static const cloudIvory = Color(0xFFF7F5F1);
-  static const deepSage = Color(0xFF5E6B45);
-  static const sunGold = Color(0xFFF4B84A);
-  static const ivoryWhite = Color(0xFFFFFDF8);
-  static const sageSoft = Color(0xFFEDF1E7);
+  static const cloudIvory = Color(0xFFFFFDF7);
+  static const deepSage = Color(0xFFA8C686);
+  static const sunGold = Color(0xFFF5C542);
+  static const ivoryWhite = Color(0xFFFFFDF7);
+  static const sageSoft = Color(0xFFF6F9F2);
   static const lineSoft = Color(0xFFE7DED2);
-  static const textPrimary = Color(0xFF2F2A24);
+  static const textPrimary = Color(0xFF233142);
   static const textSecondary = Color(0xFF6B5A49);
   static const errorSoft = Color(0xFFB8756B);
   static const warning = Color(0xFFD9A23E);
@@ -95,6 +95,7 @@ class LuckdateTextStyles {
 ThemeData buildLuckdateTheme() {
   return ThemeData(
     useMaterial3: true,
+    fontFamily: 'Montserrat',
     scaffoldBackgroundColor: LuckdateColors.cloudIvory,
     colorScheme: ColorScheme.light(
       primary: LuckdateColors.deepSage,
