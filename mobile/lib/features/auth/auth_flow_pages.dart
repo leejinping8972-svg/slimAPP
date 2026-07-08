@@ -42,7 +42,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             const SizedBox(height: LuckdateSpacing.xl),
             Text('Create your account', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
-            Text('Feel Alive, Meet Luckdate.', style: LuckdateTextStyles.bodySmall),
+            Text(
+              'Feel Alive, Meet Luckdate.',
+              style: LuckdateTextStyles.bodySmall,
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             TextField(
               controller: _emailController,
@@ -78,7 +81,7 @@ class RegisterSuccessPage extends ConsumerWidget {
           children: [
             const SunnySunflower(size: 96, showStem: true, useImage: true),
             const SizedBox(height: LuckdateSpacing.xl),
-            Text('Welcome to ChatViva Slim', style: LuckdateTextStyles.h1),
+            Text('Welcome to luckdate', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text('We prepared a gift for you.', style: LuckdateTextStyles.body),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -86,9 +89,15 @@ class RegisterSuccessPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('\$${coupon?.amount.toStringAsFixed(0) ?? '5'}', style: LuckdateTextStyles.display),
+                  Text(
+                    '\$${coupon?.amount.toStringAsFixed(0) ?? '5'}',
+                    style: LuckdateTextStyles.display,
+                  ),
                   const SizedBox(height: LuckdateSpacing.sm),
-                  Text('Storewide coupon (some items excluded)', style: LuckdateTextStyles.bodySmall),
+                  Text(
+                    'Storewide coupon (some items excluded)',
+                    style: LuckdateTextStyles.bodySmall,
+                  ),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text('Valid for 30 days', style: LuckdateTextStyles.caption),
                 ],
@@ -128,7 +137,9 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
   }
 
   void _link() {
-    final result = ref.read(appStateProvider.notifier).linkOrder(
+    final result = ref
+        .read(appStateProvider.notifier)
+        .linkOrder(
           orderNo: _orderController.text,
           phoneLast4: _phoneController.text,
         );
@@ -146,7 +157,10 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
         title: const Text('Order not found'),
         content: Text(message),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Try again')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Try again'),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
@@ -185,7 +199,9 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               controller: _phoneController,
               keyboardType: TextInputType.number,
               maxLength: 4,
-              decoration: const InputDecoration(labelText: 'Last 4 digits of phone'),
+              decoration: const InputDecoration(
+                labelText: 'Last 4 digits of phone',
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.base),
             LdCard(
@@ -194,8 +210,14 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                 children: [
                   Text('Demo orders', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
-                  Text('Meal replacement: ORD-2026-MEAL + 1234', style: LuckdateTextStyles.caption),
-                  Text('Non-meal product: ORD-2026-VITA + 5678', style: LuckdateTextStyles.caption),
+                  Text(
+                    'Meal replacement: ORD-2026-MEAL + 1234',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                  Text(
+                    'Non-meal product: ORD-2026-VITA + 5678',
+                    style: LuckdateTextStyles.caption,
+                  ),
                 ],
               ),
             ),

@@ -21,18 +21,25 @@ class JourneyPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Journey', style: LuckdateTextStyles.h1),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('Journey', style: LuckdateTextStyles.h1),
+                  ),
+                  _ProfileEntryAvatar(nickname: profile.nickname),
+                ],
+              ),
               const SizedBox(height: LuckdateSpacing.md),
               Text(
                 profile.userPlanType == UserPlanType.noProduct
-                    ? 'You do not have a 28-day plan yet. Explore products in Collection or keep logging on Home.'
+                    ? 'You do not have a 28-day plan yet. Explore products in Product Center or keep logging on Ritual.'
                     : 'Your product reminder plan is active. A full 28-day Slim Journey is available with meal replacement products.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
                 label: 'Browse products',
-                onPressed: () => context.go('/collection'),
+                onPressed: () => context.push('/collection'),
               ),
             ],
           ),
@@ -49,7 +56,14 @@ class JourneyPage extends ConsumerWidget {
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           children: [
-            Text('28-Day Journey', style: LuckdateTextStyles.h1),
+            Row(
+              children: [
+                Expanded(
+                  child: Text('28-Day Journey', style: LuckdateTextStyles.h1),
+                ),
+                _ProfileEntryAvatar(nickname: profile.nickname),
+              ],
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             Center(
               child: LdProgressRing(
@@ -60,47 +74,110 @@ class JourneyPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(journey.themeEn, style: LuckdateTextStyles.title),
-            Text(journey.encouragement, style: LuckdateTextStyles.bodySmall, textAlign: TextAlign.center),
+            Text(
+              journey.encouragement,
+              style: LuckdateTextStyles.bodySmall,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             Row(
               children: [
-                Expanded(child: VitalityMetricCard(label: 'Days', value: '${journey.day}', subtitle: 'Current')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Days',
+                    value: '${journey.day}',
+                    subtitle: 'Current',
+                  ),
+                ),
                 const SizedBox(width: 8),
-                Expanded(child: VitalityMetricCard(label: 'Vitality', value: '${scores.dailyVitality}', subtitle: 'Today')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Vitality',
+                    value: '${scores.dailyVitality}',
+                    subtitle: 'Today',
+                  ),
+                ),
                 const SizedBox(width: 8),
-                Expanded(child: VitalityMetricCard(label: 'Ritual', value: '${scores.ritualCompletion}%', subtitle: 'Done')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Ritual',
+                    value: '${scores.ritualCompletion}%',
+                    subtitle: 'Done',
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Phase: ${journey.phase}', style: LuckdateTextStyles.h2),
+              child: Text(
+                'Phase: ${journey.phase}',
+                style: LuckdateTextStyles.h2,
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.md),
             _phaseCard('Launch', 'Days 1-7', journey.day <= 7),
-            _phaseCard('Adaptation', 'Days 8-14', journey.day > 7 && journey.day <= 14),
-            _phaseCard('Stability', 'Days 15-21', journey.day > 14 && journey.day <= 21),
+            _phaseCard(
+              'Adaptation',
+              'Days 8-14',
+              journey.day > 7 && journey.day <= 14,
+            ),
+            _phaseCard(
+              'Stability',
+              'Days 15-21',
+              journey.day > 14 && journey.day <= 21,
+            ),
             _phaseCard('Completion', 'Days 22-28', journey.day > 21),
             const SizedBox(height: LuckdateSpacing.xl),
-            Align(alignment: Alignment.centerLeft, child: Text('Day Map', style: LuckdateTextStyles.h2)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Day Map', style: LuckdateTextStyles.h2),
+            ),
             const SizedBox(height: LuckdateSpacing.md),
             _dayMap(journey),
             const SizedBox(height: LuckdateSpacing.xl),
-            Align(alignment: Alignment.centerLeft, child: Text('Vitality Dashboard', style: LuckdateTextStyles.h2)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Vitality Dashboard', style: LuckdateTextStyles.h2),
+            ),
             const SizedBox(height: LuckdateSpacing.md),
             Row(
               children: [
-                Expanded(child: VitalityMetricCard(label: 'Hydration', value: '${scores.hydrationScore}%', subtitle: 'Progress')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Hydration',
+                    value: '${scores.hydrationScore}%',
+                    subtitle: 'Progress',
+                  ),
+                ),
                 const SizedBox(width: 8),
-                Expanded(child: VitalityMetricCard(label: 'Sleep', value: '${scores.sleepScore}', subtitle: 'Recovery')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Sleep',
+                    value: '${scores.sleepScore}',
+                    subtitle: 'Recovery',
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             Row(
               children: [
-                Expanded(child: VitalityMetricCard(label: 'Mood', value: '${scores.moodCheckScore}', subtitle: 'Feedback')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Mood',
+                    value: '${scores.moodCheckScore}',
+                    subtitle: 'Feedback',
+                  ),
+                ),
                 const SizedBox(width: 8),
-                Expanded(child: VitalityMetricCard(label: 'Consistency', value: '${scores.consistencyScore}%', subtitle: '7-day')),
+                Expanded(
+                  child: VitalityMetricCard(
+                    label: 'Consistency',
+                    value: '${scores.consistencyScore}%',
+                    subtitle: '7-day',
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -125,7 +202,9 @@ class JourneyPage extends ConsumerWidget {
                       dotData: const FlDotData(show: false),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: LuckdateColors.vitalitySage.withValues(alpha: 0.2),
+                        color: LuckdateColors.vitalitySage.withValues(
+                          alpha: 0.2,
+                        ),
                       ),
                     ),
                   ],
@@ -133,7 +212,10 @@ class JourneyPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            Align(alignment: Alignment.centerLeft, child: Text('Milestones', style: LuckdateTextStyles.h2)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Milestones', style: LuckdateTextStyles.h2),
+            ),
             const SizedBox(height: LuckdateSpacing.md),
             milestonesAsync.when(
               data: (list) => Column(
@@ -159,6 +241,36 @@ class JourneyPage extends ConsumerWidget {
                 onPressed: () => context.push('/journey/report'),
               ),
             ],
+            const SizedBox(height: LuckdateSpacing.lg),
+            LdCard(
+              onTap: () => context.push('/collection'),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.local_mall_outlined,
+                    color: LuckdateColors.deepSage,
+                    size: 28,
+                  ),
+                  const SizedBox(width: LuckdateSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('商品推荐', style: LuckdateTextStyles.title),
+                        Text(
+                          '根据你的节奏推荐营养产品，继续提升状态。',
+                          style: LuckdateTextStyles.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right,
+                    color: LuckdateColors.textSecondary,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -174,7 +286,9 @@ class JourneyPage extends ConsumerWidget {
           children: [
             Icon(
               active ? Icons.wb_sunny_rounded : Icons.wb_sunny_outlined,
-              color: active ? LuckdateColors.sunGold : LuckdateColors.textSecondary,
+              color: active
+                  ? LuckdateColors.sunGold
+                  : LuckdateColors.textSecondary,
             ),
             const SizedBox(width: LuckdateSpacing.md),
             Expanded(
@@ -215,12 +329,20 @@ class JourneyPage extends ConsumerWidget {
             shape: BoxShape.circle,
           ),
           child: isMilestone
-              ? Icon(Icons.star, size: 14, color: status == 'open' ? LuckdateColors.textSecondary : LuckdateColors.ivoryWhite)
+              ? Icon(
+                  Icons.star,
+                  size: 14,
+                  color: status == 'open'
+                      ? LuckdateColors.textSecondary
+                      : LuckdateColors.ivoryWhite,
+                )
               : Center(
                   child: Text(
                     '${i + 1}',
                     style: LuckdateTextStyles.caption.copyWith(
-                      color: status == 'open' ? LuckdateColors.textSecondary : LuckdateColors.ivoryWhite,
+                      color: status == 'open'
+                          ? LuckdateColors.textSecondary
+                          : LuckdateColors.ivoryWhite,
                       fontSize: 9,
                     ),
                   ),
@@ -243,15 +365,35 @@ class Day28ReportPage extends ConsumerWidget {
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           children: [
-            const Icon(Icons.emoji_events_rounded, size: 64, color: LuckdateColors.sunGold),
+            const Icon(
+              Icons.emoji_events_rounded,
+              size: 64,
+              color: LuckdateColors.sunGold,
+            ),
             const SizedBox(height: LuckdateSpacing.base),
-            Text('You grew toward the light', style: LuckdateTextStyles.display, textAlign: TextAlign.center),
+            Text(
+              'You grew toward the light',
+              style: LuckdateTextStyles.display,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
-            VitalityMetricCard(label: 'Completion', value: '87%', subtitle: 'Ritual completion rate'),
+            VitalityMetricCard(
+              label: 'Completion',
+              value: '87%',
+              subtitle: 'Ritual completion rate',
+            ),
             const SizedBox(height: LuckdateSpacing.sm),
-            VitalityMetricCard(label: 'Days active', value: '24', subtitle: 'Days with records'),
+            VitalityMetricCard(
+              label: 'Days active',
+              value: '24',
+              subtitle: 'Days with records',
+            ),
             const SizedBox(height: LuckdateSpacing.sm),
-            VitalityMetricCard(label: 'Vitality change', value: '+18%', subtitle: 'From Day 1 to Day 28'),
+            VitalityMetricCard(
+              label: 'Vitality change',
+              value: '+18%',
+              subtitle: 'From Day 1 to Day 28',
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
               child: Column(
@@ -269,9 +411,30 @@ class Day28ReportPage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             LdPrimaryButton(
               label: 'Explore Next Journey',
-              onPressed: () => context.go('/collection'),
+              onPressed: () => context.push('/collection'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileEntryAvatar extends StatelessWidget {
+  const _ProfileEntryAvatar({required this.nickname});
+
+  final String nickname;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.push('/profile'),
+      child: CircleAvatar(
+        radius: 18,
+        backgroundColor: LuckdateColors.solarSand.withValues(alpha: 0.45),
+        child: Text(
+          nickname.isNotEmpty ? nickname[0].toUpperCase() : 'L',
+          style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w700),
         ),
       ),
     );

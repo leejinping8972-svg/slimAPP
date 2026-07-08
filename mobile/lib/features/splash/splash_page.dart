@@ -11,15 +11,18 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   bool _navigated = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200))
-      ..repeat(reverse: true);
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future<void>.delayed(const Duration(milliseconds: 1500), _goNext);
     });
@@ -56,7 +59,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       padding: const EdgeInsets.all(LuckdateSpacing.lg),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: LuckdateColors.solarSand.withValues(alpha: 0.18 + _controller.value * 0.1),
+                        color: LuckdateColors.solarSand.withValues(
+                          alpha: 0.18 + _controller.value * 0.1,
+                        ),
                       ),
                       child: const SunnySunflower(size: 110, showStem: true),
                     ),
@@ -64,13 +69,22 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                 },
               ),
               const SizedBox(height: LuckdateSpacing.xl),
-              Text('ChatViva Slim', style: LuckdateTextStyles.display),
+              Text('luckdate', style: LuckdateTextStyles.display),
               const SizedBox(height: LuckdateSpacing.sm),
-              Text('Grow Toward the Light', style: LuckdateTextStyles.bodySmall),
+              Text(
+                'Grow Toward the Light',
+                style: LuckdateTextStyles.bodySmall,
+              ),
               const SizedBox(height: LuckdateSpacing.sm),
-              Text('luckdate', style: LuckdateTextStyles.caption.copyWith(letterSpacing: 2)),
+              Text(
+                'luckdate',
+                style: LuckdateTextStyles.caption.copyWith(letterSpacing: 2),
+              ),
               const SizedBox(height: LuckdateSpacing.xxl),
-              Text('Tap anywhere to continue', style: LuckdateTextStyles.caption),
+              Text(
+                'Tap anywhere to continue',
+                style: LuckdateTextStyles.caption,
+              ),
             ],
           ),
         ),

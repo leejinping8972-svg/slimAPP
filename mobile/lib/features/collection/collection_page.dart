@@ -32,16 +32,22 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Collection', style: LuckdateTextStyles.h1),
+                Text('Product Center', style: LuckdateTextStyles.h1),
                 const SizedBox(height: LuckdateSpacing.sm),
-                Text('The House of Vitality — curated for your next chapter.', style: LuckdateTextStyles.bodySmall),
+                Text(
+                  'The House of Vitality — curated for your next chapter.',
+                  style: LuckdateTextStyles.bodySmall,
+                ),
                 if (showExtension) ...[
                   const SizedBox(height: LuckdateSpacing.xl),
                   LdCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Your Next Journey', style: LuckdateTextStyles.title),
+                        Text(
+                          'Your Next Journey',
+                          style: LuckdateTextStyles.title,
+                        ),
                         const SizedBox(height: LuckdateSpacing.sm),
                         Text(
                           'Ready for more energy, feminine balance, or deeper sleep? Choose your direction.',
@@ -50,9 +56,18 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                         const SizedBox(height: LuckdateSpacing.md),
                         Wrap(
                           spacing: 8,
-                          children: ['More Energy', 'Femme Balance', 'Better Sleep'].map((d) {
-                            return LdChoiceChip(label: d, selected: false, onTap: () {});
-                          }).toList(),
+                          children:
+                              [
+                                'More Energy',
+                                'Femme Balance',
+                                'Better Sleep',
+                              ].map((d) {
+                                return LdChoiceChip(
+                                  label: d,
+                                  selected: false,
+                                  onTap: () {},
+                                );
+                              }).toList(),
                         ),
                       ],
                     ),
@@ -62,17 +77,25 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: ['All', 'Daily', 'Youth', 'Femme', 'Recovery', 'Active'].map((s) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: LdChoiceChip(
-                          label: s,
-                          selected: _filter == s,
-                          color: _seriesColor(s),
-                          onTap: () => setState(() => _filter = s),
-                        ),
-                      );
-                    }).toList(),
+                    children:
+                        [
+                          'All',
+                          'Daily',
+                          'Youth',
+                          'Femme',
+                          'Recovery',
+                          'Active',
+                        ].map((s) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: LdChoiceChip(
+                              label: s,
+                              selected: _filter == s,
+                              color: _seriesColor(s),
+                              onTap: () => setState(() => _filter = s),
+                            ),
+                          );
+                        }).toList(),
                   ),
                 ),
                 const SizedBox(height: LuckdateSpacing.lg),
@@ -90,7 +113,8 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                     final product = filtered[index];
                     return ProductCard(
                       product: product,
-                      onTap: () => context.push('/collection/product/${product.id}'),
+                      onTap: () =>
+                          context.push('/collection/product/${product.id}'),
                     );
                   },
                 ),
@@ -132,7 +156,9 @@ class ProductDetailPage extends ConsumerWidget {
             (p) => p.id == productId,
             orElse: () => products.first,
           );
-          final color = Color(int.parse(product.colorHex.replaceFirst('#', '0xFF')));
+          final color = Color(
+            int.parse(product.colorHex.replaceFirst('#', '0xFF')),
+          );
           return SingleChildScrollView(
             padding: const EdgeInsets.all(LuckdateSpacing.lg),
             child: Column(
@@ -164,7 +190,9 @@ class ProductDetailPage extends ConsumerWidget {
                   label: 'Continue Your Journey',
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Order flow — demo placeholder')),
+                      const SnackBar(
+                        content: Text('Order flow — demo placeholder'),
+                      ),
                     );
                   },
                 ),

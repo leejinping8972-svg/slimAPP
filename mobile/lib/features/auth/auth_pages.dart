@@ -18,7 +18,7 @@ class RegionPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Welcome to ChatViva Slim', style: LuckdateTextStyles.h1),
+            Text('Welcome to luckdate', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
               'Choose your region and language. Spanish (Mexico) coming soon.',
@@ -35,11 +35,17 @@ class RegionPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('English (US)', style: LuckdateTextStyles.title),
-                        Text('Default units: lb, ft/in, fl oz', style: LuckdateTextStyles.caption),
+                        Text(
+                          'Default units: lb, ft/in, fl oz',
+                          style: LuckdateTextStyles.caption,
+                        ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.check_circle, color: LuckdateColors.deepSage),
+                  const Icon(
+                    Icons.check_circle,
+                    color: LuckdateColors.deepSage,
+                  ),
                 ],
               ),
             ),
@@ -47,13 +53,21 @@ class RegionPage extends ConsumerWidget {
             LdCard(
               child: Row(
                 children: [
-                  Icon(Icons.language, color: LuckdateColors.textSecondary.withValues(alpha: 0.5)),
+                  Icon(
+                    Icons.language,
+                    color: LuckdateColors.textSecondary.withValues(alpha: 0.5),
+                  ),
                   const SizedBox(width: LuckdateSpacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Español (México)', style: LuckdateTextStyles.title.copyWith(color: LuckdateColors.textSecondary)),
+                        Text(
+                          'Español (México)',
+                          style: LuckdateTextStyles.title.copyWith(
+                            color: LuckdateColors.textSecondary,
+                          ),
+                        ),
                         Text('Coming soon', style: LuckdateTextStyles.caption),
                       ],
                     ),
@@ -65,8 +79,13 @@ class RegionPage extends ConsumerWidget {
             LdPrimaryButton(
               label: 'Continue',
               onPressed: () {
-                ref.read(appStateProvider.notifier).updateProfile(
-                      ref.read(appStateProvider).profile.copyWith(region: 'US', language: 'en-US'),
+                ref
+                    .read(appStateProvider.notifier)
+                    .updateProfile(
+                      ref
+                          .read(appStateProvider)
+                          .profile
+                          .copyWith(region: 'US', language: 'en-US'),
                     );
                 context.go('/activation');
               },
@@ -121,14 +140,23 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
             LdCard(
               child: Row(
                 children: [
-                  const Icon(Icons.card_giftcard, color: LuckdateColors.sunGold),
+                  const Icon(
+                    Icons.card_giftcard,
+                    color: LuckdateColors.sunGold,
+                  ),
                   const SizedBox(width: LuckdateSpacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Solar Protein 30-Day', style: LuckdateTextStyles.title),
-                        Text('Membership + Sunny companion', style: LuckdateTextStyles.caption),
+                        Text(
+                          'Solar Protein 30-Day',
+                          style: LuckdateTextStyles.title,
+                        ),
+                        Text(
+                          'Membership + Sunny companion',
+                          style: LuckdateTextStyles.caption,
+                        ),
                       ],
                     ),
                   ),
@@ -185,8 +213,12 @@ class LoginPage extends ConsumerWidget {
                       Transform.translate(
                         offset: const Offset(0, -32),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
-                          child: _LoginFormCard(onSignIn: () => _signIn(router, ref)),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: LuckdateSpacing.lg,
+                          ),
+                          child: _LoginFormCard(
+                            onSignIn: () => _signIn(router, ref),
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -200,7 +232,10 @@ class LoginPage extends ConsumerWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Create account? ', style: LuckdateTextStyles.bodySmall),
+                            Text(
+                              'Create account? ',
+                              style: LuckdateTextStyles.bodySmall,
+                            ),
                             GestureDetector(
                               onTap: () => _signUp(router),
                               child: Text(
@@ -289,7 +324,9 @@ class _LoginHeroHeader extends StatelessWidget {
                           Text(
                             'Sign in to meet Sunny\nand start your journey.',
                             style: LuckdateTextStyles.body.copyWith(
-                              color: LuckdateColors.ivoryWhite.withValues(alpha: 0.88),
+                              color: LuckdateColors.ivoryWhite.withValues(
+                                alpha: 0.88,
+                              ),
                               height: 1.5,
                             ),
                           ),
@@ -332,7 +369,9 @@ class _BrandLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = inverse ? LuckdateColors.ivoryWhite : LuckdateColors.chocolateBrown;
+    final primary = inverse
+        ? LuckdateColors.ivoryWhite
+        : LuckdateColors.chocolateBrown;
     final secondary = inverse
         ? LuckdateColors.ivoryWhite.withValues(alpha: 0.75)
         : LuckdateColors.textSecondary;
@@ -350,7 +389,7 @@ class _BrandLogo extends StatelessWidget {
           ),
         ),
         Text(
-          'ChatViva Slim',
+          'luckdate',
           style: LuckdateTextStyles.title.copyWith(
             color: primary,
             fontSize: 16,
@@ -382,7 +421,9 @@ class _LoginFormCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: LuckdateColors.ivoryWhite,
           borderRadius: BorderRadius.circular(LuckdateRadius.xl),
-          border: Border.all(color: LuckdateColors.lineSoft.withValues(alpha: 0.6)),
+          border: Border.all(
+            color: LuckdateColors.lineSoft.withValues(alpha: 0.6),
+          ),
           boxShadow: const [
             BoxShadow(
               color: Color(0x14000000),
@@ -398,7 +439,11 @@ class _LoginFormCard extends StatelessWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             const _UnderlineField(label: 'Email', hint: 'you@email.com'),
             const SizedBox(height: LuckdateSpacing.lg),
-            const _UnderlineField(label: 'Password', hint: '••••••••', obscure: true),
+            const _UnderlineField(
+              label: 'Password',
+              hint: '••••••••',
+              obscure: true,
+            ),
             const SizedBox(height: LuckdateSpacing.xxl),
             LdPrimaryButton(label: 'Sign in', onPressed: onSignIn),
           ],
@@ -440,9 +485,14 @@ class _UnderlineField extends StatelessWidget {
               borderSide: BorderSide(color: LuckdateColors.lineSoft),
             ),
             focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: LuckdateColors.deepSage, width: 1.5),
+              borderSide: BorderSide(
+                color: LuckdateColors.deepSage,
+                width: 1.5,
+              ),
             ),
-            contentPadding: const EdgeInsets.symmetric(vertical: LuckdateSpacing.sm),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: LuckdateSpacing.sm,
+            ),
           ),
         ),
       ],

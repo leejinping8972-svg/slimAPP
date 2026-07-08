@@ -47,23 +47,50 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-          onPressed: () => context.go('/today'),
-        ),
-        title: const Text('Chat with Sunny'),
+        title: const Text('Chatviva'),
+        centerTitle: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: LuckdateSpacing.md),
+            child: GestureDetector(
+              onTap: () => context.push('/profile'),
+              child: CircleAvatar(
+                radius: 16,
+                backgroundColor: LuckdateColors.solarSand.withValues(
+                  alpha: 0.45,
+                ),
+                child: Text(
+                  state.profile.nickname.isNotEmpty
+                      ? state.profile.nickname[0].toUpperCase()
+                      : 'L',
+                  style: LuckdateTextStyles.caption.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(LuckdateSpacing.lg, 0, LuckdateSpacing.lg, LuckdateSpacing.sm),
+            padding: const EdgeInsets.fromLTRB(
+              LuckdateSpacing.lg,
+              0,
+              LuckdateSpacing.lg,
+              LuckdateSpacing.sm,
+            ),
             child: _TodayMiniCard(record: record),
           ),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg, vertical: LuckdateSpacing.sm),
+            padding: const EdgeInsets.symmetric(
+              horizontal: LuckdateSpacing.lg,
+              vertical: LuckdateSpacing.sm,
+            ),
             color: LuckdateColors.sageSoft,
             child: Text(
               'Sunny provides lifestyle companionship — not medical advice.',
@@ -75,11 +102,15 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               controller: _scrollController,
               padding: const EdgeInsets.all(LuckdateSpacing.lg),
               itemCount: messages.length,
-              separatorBuilder: (_, __) => const SizedBox(height: LuckdateSpacing.md),
+              separatorBuilder: (_, __) =>
+                  const SizedBox(height: LuckdateSpacing.md),
               itemBuilder: (context, index) {
                 final msg = messages[index];
                 if (msg.isUser) return UserBubble(text: msg.text);
-                return SunnyBubble(text: msg.text, isStreaming: msg.isStreaming);
+                return SunnyBubble(
+                  text: msg.text,
+                  isStreaming: msg.isStreaming,
+                );
               },
             ),
           ),
@@ -103,7 +134,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               decoration: InputDecoration(
                 hintText: 'Ask Sunny anything...',
                 suffixIcon: IconButton(
-                  icon: const Icon(Icons.send_rounded, color: LuckdateColors.deepSage),
+                  icon: const Icon(
+                    Icons.send_rounded,
+                    color: LuckdateColors.deepSage,
+                  ),
                   onPressed: _send,
                 ),
               ),
@@ -121,7 +155,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       child: LdChoiceChip(
         label: label,
         selected: false,
-        onTap: () => ref.read(appStateProvider.notifier).sendQuickAction(action),
+        onTap: () =>
+            ref.read(appStateProvider.notifier).sendQuickAction(action),
       ),
     );
   }
@@ -142,7 +177,10 @@ class _TodayMiniCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LdCard(
-      padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.base, vertical: LuckdateSpacing.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: LuckdateSpacing.base,
+        vertical: LuckdateSpacing.sm,
+      ),
       child: Row(
         children: [
           const LdSunnyAvatar(size: 28),

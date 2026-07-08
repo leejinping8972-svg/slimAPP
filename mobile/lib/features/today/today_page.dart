@@ -13,12 +13,14 @@ class TodayPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(appStateProvider);
-    if (state.showLoading) return const LdScaffold(body: StatePlaceholder(type: 'loading'));
+    if (state.showLoading)
+      return const LdScaffold(body: StatePlaceholder(type: 'loading'));
     if (state.showError) {
       return LdScaffold(
         body: StatePlaceholder(
           type: 'error',
-          onRetry: () => ref.read(appStateProvider.notifier).toggleErrorDemo(false),
+          onRetry: () =>
+              ref.read(appStateProvider.notifier).toggleErrorDemo(false),
         ),
       );
     }
@@ -42,13 +44,33 @@ class TodayPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(_greeting(), style: LuckdateTextStyles.h1),
-                      Text('${profile.nickname} ☀️', style: LuckdateTextStyles.title),
+                      Text(
+                        '${profile.nickname} ☀️',
+                        style: LuckdateTextStyles.title,
+                      ),
                       if (profile.userPlanType == UserPlanType.mealReplacement)
-                        Text('Day ${journey.day} · Grow Toward the Light', style: LuckdateTextStyles.caption),
+                        Text(
+                          'Day ${journey.day} · Grow Toward the Light',
+                          style: LuckdateTextStyles.caption,
+                        ),
                     ],
                   ),
                 ),
-                const Icon(Icons.wb_sunny_rounded, color: LuckdateColors.sunGold, size: 36),
+                GestureDetector(
+                  onTap: () => context.push('/profile'),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: LuckdateColors.solarSand.withValues(
+                      alpha: 0.45,
+                    ),
+                    child: Text(
+                      profile.nickname.isNotEmpty
+                          ? profile.nickname[0].toUpperCase()
+                          : 'L',
+                      style: LuckdateTextStyles.title,
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -59,20 +81,29 @@ class TodayPage extends ConsumerWidget {
             ),
             if (journey.weightTrend.isNotEmpty) ...[
               const SizedBox(height: LuckdateSpacing.lg),
-              WeightTrendCard(weights: journey.weightTrend, targetKg: profile.targetWeightKg),
+              WeightTrendCard(
+                weights: journey.weightTrend,
+                targetKg: profile.targetWeightKg,
+              ),
             ],
             const SizedBox(height: LuckdateSpacing.xl),
-            if (!profile.hidePurchaseGuideCard && profile.userPlanType == UserPlanType.noProduct) ...[
+            if (!profile.hidePurchaseGuideCard &&
+                profile.userPlanType == UserPlanType.noProduct) ...[
               _purchaseGuideCard(context, ref),
               const SizedBox(height: LuckdateSpacing.lg),
             ],
             Text(
-              profile.userPlanType == UserPlanType.mealReplacement ? 'Today\'s Ritual' : 'Quick Log',
+              profile.userPlanType == UserPlanType.mealReplacement
+                  ? 'Today\'s Ritual'
+                  : 'Quick Log',
               style: LuckdateTextStyles.h2,
             ),
             if (profile.userPlanType == UserPlanType.mealReplacement) ...[
               const SizedBox(height: LuckdateSpacing.sm),
-              Text('28-Day Slim Journey · Day ${journey.day}', style: LuckdateTextStyles.caption),
+              Text(
+                '28-Day Slim Journey · Day ${journey.day}',
+                style: LuckdateTextStyles.caption,
+              ),
             ],
             const SizedBox(height: LuckdateSpacing.md),
             ..._orderedRituals(rituals),
@@ -88,14 +119,23 @@ class TodayPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Sunny says', style: LuckdateTextStyles.caption),
-                        Text(journey.sunnyCardMessage, style: LuckdateTextStyles.body),
+                        Text(
+                          journey.sunnyCardMessage,
+                          style: LuckdateTextStyles.body,
+                        ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios, size: 16, color: LuckdateColors.textSecondary),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: LuckdateColors.textSecondary,
+                  ),
                 ],
               ),
             ),
+            const SizedBox(height: LuckdateSpacing.lg),
+            _nutritionBanner(context),
           ],
         ),
       ),
@@ -110,37 +150,120 @@ class TodayPage extends ConsumerWidget {
     TodayRecord record,
   ) {
     final items = <_RitualItem>[];
-    void add(String title, String subtitle, IconData icon, bool completed, VoidCallback onTap) {
-      items.add(_RitualItem(title: title, subtitle: subtitle, icon: icon, completed: completed, onTap: onTap));
+    void add(
+      String title,
+      String subtitle,
+      IconData icon,
+      bool completed,
+      VoidCallback onTap,
+    ) {
+      items.add(
+        _RitualItem(
+          title: title,
+          subtitle: subtitle,
+          icon: icon,
+          completed: completed,
+          onTap: onTap,
+        ),
+      );
     }
 
     switch (profile.userPlanType) {
       case UserPlanType.noProduct:
-        add('Weight', record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
-            Icons.monitor_weight_outlined, record.weightRecorded, () => _showWeightSheet(context, ref, record, profile));
-        add('Hydration', '${record.hydrationMl} / ${profile.hydrationTargetMl} ml', Icons.water_drop_outlined,
-            record.hydrationMl > 0, () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl));
+        add(
+          'Weight',
+          record.weightRecorded
+              ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+              : 'Log today',
+          Icons.monitor_weight_outlined,
+          record.weightRecorded,
+          () => _showWeightSheet(context, ref, record, profile),
+        );
+        add(
+          'Hydration',
+          '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
+          Icons.water_drop_outlined,
+          record.hydrationMl > 0,
+          () => _showHydrationSheet(
+            context,
+            ref,
+            record,
+            profile.hydrationTargetMl,
+          ),
+        );
       case UserPlanType.nonMealReplacement:
         add(
-          profile.linkedProductName.isEmpty ? 'Your product' : profile.linkedProductName,
-          record.productTaken == ProductTakenStatus.taken ? 'Taken today' : 'Remember to take your product',
+          profile.linkedProductName.isEmpty
+              ? 'Your product'
+              : profile.linkedProductName,
+          record.productTaken == ProductTakenStatus.taken
+              ? 'Taken today'
+              : 'Remember to take your product',
           Icons.medication_outlined,
           record.productTaken == ProductTakenStatus.taken,
           () => _completeProduct(ref, record),
         );
-        add('Hydration', '${record.hydrationMl} / ${profile.hydrationTargetMl} ml', Icons.water_drop_outlined,
-            record.hydrationMl > 0, () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl));
-        add('Weight', record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
-            Icons.monitor_weight_outlined, record.weightRecorded, () => _showWeightSheet(context, ref, record, profile));
+        add(
+          'Hydration',
+          '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
+          Icons.water_drop_outlined,
+          record.hydrationMl > 0,
+          () => _showHydrationSheet(
+            context,
+            ref,
+            record,
+            profile.hydrationTargetMl,
+          ),
+        );
+        add(
+          'Weight',
+          record.weightRecorded
+              ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+              : 'Log today',
+          Icons.monitor_weight_outlined,
+          record.weightRecorded,
+          () => _showWeightSheet(context, ref, record, profile),
+        );
       case UserPlanType.mealReplacement:
-        add('Solar Protein™', record.productTaken == ProductTakenStatus.taken ? 'Completed' : 'Tap to log',
-            Icons.local_drink_outlined, record.productTaken == ProductTakenStatus.taken, () => _completeProduct(ref, record));
-        add('Hydration', '${record.hydrationMl} / ${profile.hydrationTargetMl} ml', Icons.water_drop_outlined,
-            record.hydrationMl > 0, () => _showHydrationSheet(context, ref, record, profile.hydrationTargetMl));
-        add('Weight', record.weightRecorded ? '${record.weightValueKg.toStringAsFixed(1)} kg logged' : 'Log today',
-            Icons.monitor_weight_outlined, record.weightRecorded, () => _showWeightSheet(context, ref, record, profile));
-        add('Sleep', record.sleepHours > 0 ? '${record.sleepHours.toStringAsFixed(1)}h logged' : 'How long did you sleep?',
-            Icons.bedtime_outlined, record.sleepHours > 0, () => _showSleepSheet(context, ref, record));
+        add(
+          'Solar Protein™',
+          record.productTaken == ProductTakenStatus.taken
+              ? 'Completed'
+              : 'Tap to log',
+          Icons.local_drink_outlined,
+          record.productTaken == ProductTakenStatus.taken,
+          () => _completeProduct(ref, record),
+        );
+        add(
+          'Hydration',
+          '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
+          Icons.water_drop_outlined,
+          record.hydrationMl > 0,
+          () => _showHydrationSheet(
+            context,
+            ref,
+            record,
+            profile.hydrationTargetMl,
+          ),
+        );
+        add(
+          'Weight',
+          record.weightRecorded
+              ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+              : 'Log today',
+          Icons.monitor_weight_outlined,
+          record.weightRecorded,
+          () => _showWeightSheet(context, ref, record, profile),
+        );
+        add(
+          'Sleep',
+          record.sleepHours > 0
+              ? '${record.sleepHours.toStringAsFixed(1)}h logged'
+              : 'How long did you sleep?',
+          Icons.bedtime_outlined,
+          record.sleepHours > 0,
+          () => _showSleepSheet(context, ref, record),
+        );
     }
     return items;
   }
@@ -176,17 +299,59 @@ class TodayPage extends ConsumerWidget {
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.lg),
-          LdPrimaryButton(label: 'View products', onPressed: () => context.go('/collection')),
+          LdPrimaryButton(
+            label: 'View products',
+            onPressed: () => context.push('/collection'),
+          ),
           const SizedBox(height: LuckdateSpacing.sm),
           Row(
             children: [
-              Expanded(child: LdSecondaryButton(label: 'Browse first', onPressed: () => context.go('/collection'))),
+              Expanded(
+                child: LdSecondaryButton(
+                  label: 'Browse first',
+                  onPressed: () => context.push('/collection'),
+                ),
+              ),
               TextButton(
-                onPressed: () => ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
+                onPressed: () =>
+                    ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
                 child: const Text('Dismiss for 24h'),
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _nutritionBanner(BuildContext context) {
+    return LdCard(
+      onTap: () => context.push('/collection'),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: LuckdateColors.sunGold.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.spa_outlined,
+              color: LuckdateColors.chocolateBrown,
+            ),
+          ),
+          const SizedBox(width: LuckdateSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('补充其他营养', style: LuckdateTextStyles.title),
+                Text('查看更多营养产品，搭配你的日常节奏。', style: LuckdateTextStyles.bodySmall),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right, color: LuckdateColors.textSecondary),
         ],
       ),
     );
@@ -200,36 +365,62 @@ class TodayPage extends ConsumerWidget {
   }
 
   void _completeProduct(WidgetRef ref, TodayRecord record) {
-    ref.read(appStateProvider.notifier).updateTodayRecord(record.copyWith(productTaken: ProductTakenStatus.taken));
+    ref
+        .read(appStateProvider.notifier)
+        .updateTodayRecord(
+          record.copyWith(productTaken: ProductTakenStatus.taken),
+        );
   }
 
-  void _showHydrationSheet(BuildContext context, WidgetRef ref, TodayRecord record, int target) {
+  void _showHydrationSheet(
+    BuildContext context,
+    WidgetRef ref,
+    TodayRecord record,
+    int target,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: LuckdateColors.ivoryWhite,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
-      builder: (ctx) => _HydrationSheet(record: record, target: target, ref: ref),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) =>
+          _HydrationSheet(record: record, target: target, ref: ref),
     );
   }
 
-  void _showWeightSheet(BuildContext context, WidgetRef ref, TodayRecord record, UserProfile profile) {
+  void _showWeightSheet(
+    BuildContext context,
+    WidgetRef ref,
+    TodayRecord record,
+    UserProfile profile,
+  ) {
     final baseline = record.weightValueKg > 0
         ? record.weightValueKg
         : (profile.currentWeightKg > 0 ? profile.currentWeightKg : 68.0);
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: LuckdateColors.ivoryWhite,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
-      builder: (ctx) => _WeightSheet(baseline: baseline, record: record, ref: ref),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) =>
+          _WeightSheet(baseline: baseline, record: record, ref: ref),
     );
   }
 
-  void _showSleepSheet(BuildContext context, WidgetRef ref, TodayRecord record) {
+  void _showSleepSheet(
+    BuildContext context,
+    WidgetRef ref,
+    TodayRecord record,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: LuckdateColors.ivoryWhite,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
       builder: (ctx) => _SleepSheet(record: record, ref: ref),
     );
   }
@@ -252,7 +443,11 @@ class _RitualItem {
 }
 
 class _HydrationSheet extends StatefulWidget {
-  const _HydrationSheet({required this.record, required this.target, required this.ref});
+  const _HydrationSheet({
+    required this.record,
+    required this.target,
+    required this.ref,
+  });
 
   final TodayRecord record;
   final int target;
@@ -262,7 +457,8 @@ class _HydrationSheet extends StatefulWidget {
   State<_HydrationSheet> createState() => _HydrationSheetState();
 }
 
-class _HydrationSheetState extends State<_HydrationSheet> with SingleTickerProviderStateMixin {
+class _HydrationSheetState extends State<_HydrationSheet>
+    with SingleTickerProviderStateMixin {
   late int _ml;
   late final AnimationController _pulse;
 
@@ -270,8 +466,12 @@ class _HydrationSheetState extends State<_HydrationSheet> with SingleTickerProvi
   void initState() {
     super.initState();
     _ml = widget.record.hydrationMl;
-    _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 420), lowerBound: 0.92, upperBound: 1.08)
-      ..value = 1;
+    _pulse = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 420),
+      lowerBound: 0.92,
+      upperBound: 1.08,
+    )..value = 1;
   }
 
   @override
@@ -283,9 +483,13 @@ class _HydrationSheetState extends State<_HydrationSheet> with SingleTickerProvi
   void _addWater(int amount) {
     setState(() => _ml += amount);
     _pulse.forward(from: 0.92).then((_) => _pulse.reverse());
-    widget.ref.read(appStateProvider.notifier).updateTodayRecord(widget.record.copyWith(hydrationMl: _ml));
+    widget.ref
+        .read(appStateProvider.notifier)
+        .updateTodayRecord(widget.record.copyWith(hydrationMl: _ml));
     if (_ml >= widget.target) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Daily hydration goal reached ✓')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Daily hydration goal reached ✓')),
+      );
     }
   }
 
@@ -300,10 +504,17 @@ class _HydrationSheetState extends State<_HydrationSheet> with SingleTickerProvi
           const SizedBox(height: LuckdateSpacing.base),
           ScaleTransition(
             scale: _pulse,
-            child: Icon(Icons.water_drop_rounded, size: 56, color: LuckdateColors.deepSage.withValues(alpha: 0.85)),
+            child: Icon(
+              Icons.water_drop_rounded,
+              size: 56,
+              color: LuckdateColors.deepSage.withValues(alpha: 0.85),
+            ),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
-          Text('$_ml / ${widget.target} ml', style: LuckdateTextStyles.display.copyWith(fontSize: 36)),
+          Text(
+            '$_ml / ${widget.target} ml',
+            style: LuckdateTextStyles.display.copyWith(fontSize: 36),
+          ),
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(label: '+ 250 ml', onPressed: () => _addWater(250)),
           const SizedBox(height: LuckdateSpacing.sm),
@@ -318,7 +529,11 @@ class _HydrationSheetState extends State<_HydrationSheet> with SingleTickerProvi
 }
 
 class _WeightSheet extends StatefulWidget {
-  const _WeightSheet({required this.baseline, required this.record, required this.ref});
+  const _WeightSheet({
+    required this.baseline,
+    required this.record,
+    required this.ref,
+  });
 
   final double baseline;
   final TodayRecord record;
@@ -349,7 +564,10 @@ class _WeightSheetState extends State<_WeightSheet> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('Weight', style: LuckdateTextStyles.h2),
-          Text('Default range ±3 kg. Drag to the edge to expand.', style: LuckdateTextStyles.bodySmall),
+          Text(
+            'Default range ±3 kg. Drag to the edge to expand.',
+            style: LuckdateTextStyles.bodySmall,
+          ),
           Slider(
             value: _weight.clamp(_min, _max),
             min: _min,
@@ -364,13 +582,21 @@ class _WeightSheetState extends State<_WeightSheet> {
               });
             },
           ),
-          Text('${_weight.toStringAsFixed(1)} kg', style: LuckdateTextStyles.h1),
+          Text(
+            '${_weight.toStringAsFixed(1)} kg',
+            style: LuckdateTextStyles.h1,
+          ),
           const SizedBox(height: LuckdateSpacing.base),
           LdPrimaryButton(
             label: 'Log weight',
             onPressed: () {
-              widget.ref.read(appStateProvider.notifier).updateTodayRecord(
-                    widget.record.copyWith(weightRecorded: true, weightValueKg: _weight),
+              widget.ref
+                  .read(appStateProvider.notifier)
+                  .updateTodayRecord(
+                    widget.record.copyWith(
+                      weightRecorded: true,
+                      weightValueKg: _weight,
+                    ),
                   );
               Navigator.pop(context);
             },
@@ -409,7 +635,10 @@ class _SleepSheetState extends State<_SleepSheet> {
         children: [
           Text('How long did you sleep?', style: LuckdateTextStyles.h2),
           const SizedBox(height: LuckdateSpacing.md),
-          Text('${_hours.toStringAsFixed(1)} hours', style: LuckdateTextStyles.display.copyWith(fontSize: 32)),
+          Text(
+            '${_hours.toStringAsFixed(1)} hours',
+            style: LuckdateTextStyles.display.copyWith(fontSize: 32),
+          ),
           Slider(
             value: _hours,
             min: 4,
@@ -421,8 +650,13 @@ class _SleepSheetState extends State<_SleepSheet> {
           LdPrimaryButton(
             label: 'Save',
             onPressed: () {
-              widget.ref.read(appStateProvider.notifier).updateTodayRecord(
-                    widget.record.copyWith(sleepHours: _hours, sleepQuality: 'logged'),
+              widget.ref
+                  .read(appStateProvider.notifier)
+                  .updateTodayRecord(
+                    widget.record.copyWith(
+                      sleepHours: _hours,
+                      sleepQuality: 'logged',
+                    ),
                   );
               Navigator.pop(context);
             },

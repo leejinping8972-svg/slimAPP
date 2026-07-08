@@ -39,7 +39,15 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       case UserPlanType.nonMealReplacement:
         return ['welcome', 'privacy', 'profile', 'risk', 'reminder', 'ready'];
       case UserPlanType.noProduct:
-        return ['welcome', 'privacy', 'profile', 'meal', 'risk', 'reminder', 'ready'];
+        return [
+          'welcome',
+          'privacy',
+          'profile',
+          'meal',
+          'risk',
+          'reminder',
+          'ready',
+        ];
     }
   }
 
@@ -66,7 +74,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   RiskLevel _evaluateRisk() {
     if (_noneOfAbove) return RiskLevel.p2;
-    if (_ageRange == 'Under 18' || _pregnant || _eatingDisorder || _emotionalRisk) {
+    if (_ageRange == 'Under 18' ||
+        _pregnant ||
+        _eatingDisorder ||
+        _emotionalRisk) {
       return RiskLevel.p0;
     }
     if (_chronicCondition || _ageRange == '65+') return RiskLevel.p1;
@@ -92,7 +103,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         _showP0Dialog();
         return;
       }
-      final profile = ref.read(appStateProvider).profile.copyWith(
+      final profile = ref
+          .read(appStateProvider)
+          .profile
+          .copyWith(
             nickname: 'Freya',
             ageRange: _ageRange,
             heightCm: _height,
@@ -119,7 +133,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           'Based on your answers, a standard Slim Journey may not be right for you right now. Please consult a healthcare professional before starting any nutrition plan.',
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Go back')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Go back'),
+          ),
         ],
       ),
     );
@@ -215,7 +232,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-              icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: LuckdateColors.chocolateBrown),
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 20,
+                color: LuckdateColors.chocolateBrown,
+              ),
               onPressed: _back,
             ),
             const SizedBox(height: LuckdateSpacing.sm),
@@ -229,7 +250,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             Expanded(child: _buildStep(steps[_step], planType)),
             const SizedBox(height: LuckdateSpacing.base),
             LdPrimaryButton(
-              label: _step == steps.length - 1 ? 'Start My Journey' : 'Continue',
+              label: _step == steps.length - 1
+                  ? 'Start My Journey'
+                  : 'Continue',
               onPressed: _canContinue(steps[_step]) ? _next : null,
             ),
           ],
@@ -289,8 +312,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             planType == UserPlanType.mealReplacement
                 ? 'I will walk with you through 28 days — not to push you, but to help you grow toward the light, one gentle step at a time.'
                 : planType == UserPlanType.nonMealReplacement
-                    ? 'I will remind you to use your product and help you track how you feel each day.'
-                    : 'You can keep logging and chatting with me while we find the right plan for you.',
+                ? 'I will remind you to use your product and help you track how you feel each day.'
+                : 'You can keep logging and chatting with me while we find the right plan for you.',
             style: LuckdateTextStyles.body,
           ),
         ],
@@ -306,8 +329,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         const SizedBox(height: LuckdateSpacing.md),
         Text(
           planType == UserPlanType.mealReplacement
-              ? 'We use your profile, daily records, and product usage to personalize your 28-day plan. ChatViva Slim provides lifestyle companionship — not medical diagnosis.'
-              : 'We use your profile and daily records to personalize reminders and support. ChatViva Slim provides lifestyle companionship — not medical diagnosis.',
+              ? 'We use your profile, daily records, and product usage to personalize your 28-day plan. luckdate provides lifestyle companionship — not medical diagnosis.'
+              : 'We use your profile and daily records to personalize reminders and support. luckdate provides lifestyle companionship — not medical diagnosis.',
           style: LuckdateTextStyles.bodySmall,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
@@ -316,12 +339,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           child: Row(
             children: [
               Icon(
-                _privacyAccepted ? Icons.check_box : Icons.check_box_outline_blank,
+                _privacyAccepted
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank,
                 color: LuckdateColors.deepSage,
               ),
               const SizedBox(width: LuckdateSpacing.md),
               const Expanded(
-                child: Text('I agree to the Privacy Policy, Terms, and Health Disclaimer'),
+                child: Text(
+                  'I agree to the Privacy Policy, Terms, and Health Disclaimer',
+                ),
               ),
             ],
           ),
@@ -354,7 +381,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             }).toList(),
           ),
           const SizedBox(height: LuckdateSpacing.lg),
-          Text('Height (cm): ${_height.toStringAsFixed(0)}', style: LuckdateTextStyles.bodySmall),
+          Text(
+            'Height (cm): ${_height.toStringAsFixed(0)}',
+            style: LuckdateTextStyles.bodySmall,
+          ),
           Slider(
             value: _height,
             min: 140,
@@ -389,7 +419,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       ),
                       Text(
                         'Suggested ${_recommendedLabel(recommended, recommendedBmi)}',
-                        style: LuckdateTextStyles.caption.copyWith(color: LuckdateColors.deepSage),
+                        style: LuckdateTextStyles.caption.copyWith(
+                          color: LuckdateColors.deepSage,
+                        ),
                       ),
                     ],
                   ),
@@ -432,7 +464,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ),
           const SizedBox(height: LuckdateSpacing.lg),
           ...['breakfast', 'lunch', 'dinner', 'not sure'].map((slot) {
-            final label = slot == 'not sure' ? 'Not sure' : slot[0].toUpperCase() + slot.substring(1);
+            final label = slot == 'not sure'
+                ? 'Not sure'
+                : slot[0].toUpperCase() + slot.substring(1);
             final selected = _mealSlots.contains(slot);
             return Padding(
               padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
@@ -441,7 +475,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 child: Row(
                   children: [
                     Icon(
-                      selected ? Icons.check_box : Icons.check_box_outline_blank,
+                      selected
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
                       color: LuckdateColors.deepSage,
                     ),
                     const SizedBox(width: LuckdateSpacing.md),
@@ -476,7 +512,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           _riskTile(
             'Diabetes, heart, kidney, or other chronic condition',
             _chronicCondition,
-            (v) => _toggleRiskFlag((b) => _chronicCondition = b, _chronicCondition),
+            (v) => _toggleRiskFlag(
+              (b) => _chronicCondition = b,
+              _chronicCondition,
+            ),
           ),
           _riskTile(
             'Extreme dieting, fasting, or purging recently',
@@ -541,10 +580,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   Future<void> _pickReminderTime({required bool second}) async {
     final parts = (second ? _reminderTime2 : _reminderTime).split(':');
-    final initial = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+    final initial = TimeOfDay(
+      hour: int.parse(parts[0]),
+      minute: int.parse(parts[1]),
+    );
     final picked = await showTimePicker(context: context, initialTime: initial);
     if (picked == null) return;
-    final formatted = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+    final formatted =
+        '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
     setState(() {
       if (second) {
         _reminderTime2 = formatted;
@@ -558,8 +601,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final copy = switch (planType) {
       UserPlanType.mealReplacement =>
         'We will remind you to use your meal replacement and log your daily rhythm.',
-      UserPlanType.nonMealReplacement => 'We will remind you to take your product and log how you feel.',
-      UserPlanType.noProduct => 'We will remind you to log your food, weight, and daily state.',
+      UserPlanType.nonMealReplacement =>
+        'We will remind you to take your product and log how you feel.',
+      UserPlanType.noProduct =>
+        'We will remind you to log your food, weight, and daily state.',
     };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -573,8 +618,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(planType == UserPlanType.mealReplacement ? 'Morning reminder' : 'Daily reminder',
-                  style: LuckdateTextStyles.body),
+              Text(
+                planType == UserPlanType.mealReplacement
+                    ? 'Morning reminder'
+                    : 'Daily reminder',
+                style: LuckdateTextStyles.body,
+              ),
               Text(_reminderTime, style: LuckdateTextStyles.title),
             ],
           ),
@@ -604,36 +653,53 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       children: [
         const LdSunnyAvatar(size: 72),
         const SizedBox(height: LuckdateSpacing.xl),
-        Text(planType == UserPlanType.noProduct ? 'You are all set' : 'Your journey is ready', style: LuckdateTextStyles.h1),
+        Text(
+          planType == UserPlanType.noProduct
+              ? 'You are all set'
+              : 'Your journey is ready',
+          style: LuckdateTextStyles.h1,
+        ),
         const SizedBox(height: LuckdateSpacing.md),
         Text(
           planType == UserPlanType.mealReplacement
               ? 'Slim Journey · 28 Days'
               : planType == UserPlanType.nonMealReplacement
-                  ? 'Product Reminder Plan'
-                  : 'Basic tracking mode',
+              ? 'Product Reminder Plan'
+              : 'Basic tracking mode',
           style: LuckdateTextStyles.title,
         ),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
           planType == UserPlanType.mealReplacement
               ? (risk == RiskLevel.p1
-                  ? 'We will keep your plan gentle and steady. Please confirm any health concerns with a professional.'
-                  : 'Day 1 starts with one small step — not perfection.')
+                    ? 'We will keep your plan gentle and steady. Please confirm any health concerns with a professional.'
+                    : 'Day 1 starts with one small step — not perfection.')
               : planType == UserPlanType.nonMealReplacement
-                  ? 'We will remind you to use your product each day. You can still log weight and chat with Sunny.'
-                  : 'You can log, chat, and explore products. Link an order anytime from Profile.',
+              ? 'We will remind you to use your product each day. You can still log weight and chat with Sunny.'
+              : 'You can log, chat, and explore products. Link an order anytime from Profile.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
         LdCard(
           child: Column(
             children: [
-              if (linkedProduct.isNotEmpty) _summaryRow('Product', linkedProduct),
-              if (planType != UserPlanType.noProduct) _summaryRow('Meal slot', _mealSlots.join(', ')),
-              if (_showTargetWeight) _summaryRow('Target weight', '${_targetWeight.toStringAsFixed(1)} kg'),
-              _summaryRow('Reminder', planType == UserPlanType.mealReplacement ? '$_reminderTime · $_reminderTime2' : _reminderTime),
-              if (planType == UserPlanType.mealReplacement) _summaryRow('Hydration goal', '2000 ml'),
+              if (linkedProduct.isNotEmpty)
+                _summaryRow('Product', linkedProduct),
+              if (planType != UserPlanType.noProduct)
+                _summaryRow('Meal slot', _mealSlots.join(', ')),
+              if (_showTargetWeight)
+                _summaryRow(
+                  'Target weight',
+                  '${_targetWeight.toStringAsFixed(1)} kg',
+                ),
+              _summaryRow(
+                'Reminder',
+                planType == UserPlanType.mealReplacement
+                    ? '$_reminderTime · $_reminderTime2'
+                    : _reminderTime,
+              ),
+              if (planType == UserPlanType.mealReplacement)
+                _summaryRow('Hydration goal', '2000 ml'),
             ],
           ),
         ),
@@ -652,7 +718,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             child: Text(
               value,
               textAlign: TextAlign.end,
-              style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              style: LuckdateTextStyles.body.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
