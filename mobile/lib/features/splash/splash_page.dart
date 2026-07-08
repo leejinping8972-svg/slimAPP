@@ -20,10 +20,10 @@ class _SplashPageState extends State<SplashPage>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200),
+      duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future<void>.delayed(const Duration(milliseconds: 1500), _goNext);
+      Future<void>.delayed(const Duration(milliseconds: 1800), _goNext);
     });
   }
 
@@ -42,81 +42,140 @@ class _SplashPageState extends State<SplashPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0E0E0E),
+      backgroundColor: LuckdateColors.cloudIvory,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: _goNext,
         child: Container(
-          decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment(0, -0.15),
-              radius: 1.1,
-              colors: [Color(0xFF1A1A1A), Color(0xFF0C0C0C)],
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                LuckdateColors.ivoryWhite,
+                LuckdateColors.cloudIvory,
+                LuckdateColors.solarSand.withValues(alpha: 0.12),
+              ],
             ),
           ),
-          child: Center(
+          child: SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Spacer(flex: 2),
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
                     return Transform.scale(
-                      scale: 1.0 + _controller.value * 0.03,
-                      child: Container(
-                        padding: const EdgeInsets.all(LuckdateSpacing.lg),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: LuckdateColors.sunGold.withValues(
-                              alpha: 0.35,
-                            ),
-                            width: 1,
-                          ),
-                          color: Colors.white.withValues(alpha: 0.03),
-                          boxShadow: [
-                            BoxShadow(
-                              color: LuckdateColors.sunGold.withValues(
-                                alpha: 0.2,
-                              ),
-                              blurRadius: 30,
-                              spreadRadius: 4,
-                            ),
-                          ],
-                        ),
-                        child: const SunnySunflower(size: 118, showStem: false),
-                      ),
+                      scale: 1.0 + _controller.value * 0.02,
+                      child: child,
                     );
                   },
+                  child: _SymbolHero(size: 140),
                 ),
-                const SizedBox(height: LuckdateSpacing.xl),
+                const SizedBox(height: LuckdateSpacing.xxl),
                 Text(
                   'luckdate',
-                  style: LuckdateTextStyles.display.copyWith(
-                    color: LuckdateColors.ivoryWhite,
-                    letterSpacing: 3,
-                    fontWeight: FontWeight.w400,
+                  style: TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 6,
+                    color: LuckdateColors.chocolateBrown,
                   ),
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(
-                  'Grow Toward the Light',
-                  style: LuckdateTextStyles.bodySmall.copyWith(
-                    color: LuckdateColors.sunGold.withValues(alpha: 0.9),
-                    letterSpacing: 0.8,
+                  'The House of Vitality',
+                  style: LuckdateTextStyles.caption.copyWith(
+                    letterSpacing: 1.5,
+                    color: LuckdateColors.textSecondary,
                   ),
                 ),
-                const SizedBox(height: LuckdateSpacing.xxl),
+                const SizedBox(height: LuckdateSpacing.lg),
+                Container(
+                  width: 48,
+                  height: 1,
+                  color: LuckdateColors.sunGold.withValues(alpha: 0.6),
+                ),
+                const SizedBox(height: LuckdateSpacing.lg),
+                Text(
+                  'Grow Toward the Light',
+                  style: LuckdateTextStyles.bodySmall.copyWith(
+                    color: LuckdateColors.chocolateBrown.withValues(
+                      alpha: 0.75,
+                    ),
+                    letterSpacing: 0.6,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const Spacer(flex: 2),
                 Text(
                   'Loading...',
                   style: LuckdateTextStyles.caption.copyWith(
-                    color: LuckdateColors.ivoryWhite.withValues(alpha: 0.5),
+                    color: LuckdateColors.textSecondary.withValues(alpha: 0.5),
                   ),
                 ),
+                const SizedBox(height: LuckdateSpacing.xxl),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Shared super-symbol presentation for splash & auth hero areas.
+class SymbolHero extends StatelessWidget {
+  const SymbolHero({super.key, this.size = 120, this.showRing = true});
+
+  final double size;
+  final bool showRing;
+
+  @override
+  Widget build(BuildContext context) =>
+      _SymbolHero(size: size, showRing: showRing);
+}
+
+class _SymbolHero extends StatelessWidget {
+  const _SymbolHero({required this.size, this.showRing = true});
+
+  final double size;
+  final bool showRing;
+
+  @override
+  Widget build(BuildContext context) {
+    final ringSize = size + 40;
+    return SizedBox(
+      width: ringSize,
+      height: ringSize,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (showRing) ...[
+            Container(
+              width: ringSize,
+              height: ringSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: LuckdateColors.sunGold.withValues(alpha: 0.25),
+                  width: 1,
+                ),
+              ),
+            ),
+            Container(
+              width: ringSize - 16,
+              height: ringSize - 16,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: LuckdateColors.sunGold.withValues(alpha: 0.06),
+              ),
+            ),
+          ],
+          SunnySunflower(size: size, showStem: false),
+        ],
       ),
     );
   }
