@@ -6,17 +6,17 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="description" content="ChatViva Slim — Luckdate AI Vitality Companion Demo">
+  <meta name="description" content="luckdate — The House of Vitality">
   <meta name="theme-color" content="#5E6B45">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="ChatViva Slim">
+  <meta name="apple-mobile-web-app-title" content="luckdate">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>ChatViva Slim</title>
+  <title>luckdate</title>
   <link rel="manifest" href="manifest.json">
 
   <style>
@@ -24,7 +24,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #F7F5F1;
+      background: #FFFDF7;
       overscroll-behavior: none;
     }
     #loading {
@@ -37,14 +37,34 @@
       justify-content: center;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: #5C4635;
-      background: #F7F5F1;
+      background: linear-gradient(180deg, #FFFDF7 0%, #FBF7EE 60%, #F3E8CF 100%);
       cursor: pointer;
     }
-    #loading .sunflower {
-      width: 120px;
-      height: 120px;
-      margin-bottom: 20px;
-      animation: pulse 1.2s ease-in-out infinite;
+    #loading .symbol-wrap {
+      width: 168px;
+      height: 168px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 197, 66, 0.32);
+      background: rgba(245, 197, 66, 0.08);
+      box-shadow: 0 10px 36px rgba(92, 70, 53, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    #loading .symbol-wrap::before {
+      content: '';
+      position: absolute;
+      width: 184px;
+      height: 184px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 197, 66, 0.2);
+    }
+    #loading .symbol {
+      width: 132px;
+      height: 132px;
+      object-fit: contain;
     }
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 0.9; }
@@ -52,19 +72,32 @@
     }
     #loading h1 {
       margin: 0 0 8px;
-      font-size: 24px;
-      font-weight: 600;
-      color: #2F2A24;
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: 6px;
+      color: #5C4635;
     }
     #loading p {
       margin: 0;
       font-size: 14px;
       color: #6B5A49;
     }
+    #loading .sub {
+      margin-top: 8px;
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      color: #8A7966;
+    }
+    #loading .line {
+      width: 52px;
+      height: 1px;
+      background: rgba(245, 197, 66, 0.65);
+      margin: 14px 0;
+    }
     #loading .hint {
       margin-top: 32px;
       font-size: 12px;
-      color: #A7B09A;
+      color: rgba(107, 90, 73, 0.45);
     }
     @media (min-width: 500px) {
       body {
@@ -85,33 +118,12 @@
 </head>
 <body>
   <div id="loading">
-    <svg class="sunflower" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(60,52)">
-        <g fill="#F4C542">
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(0)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(26)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(52)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(78)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(104)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(130)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(156)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(182)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(208)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(234)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(260)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(286)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(312)"/>
-          <ellipse cx="0" cy="-28" rx="10" ry="22" transform="rotate(338)"/>
-        </g>
-        <circle cx="0" cy="0" r="22" fill="#FFFFFF"/>
-        <path d="M-10,-2 Q-7,-8 -4,-2" stroke="#5C4635" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M4,-2 Q7,-8 10,-2" stroke="#5C4635" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      </g>
-      <line x1="60" y1="74" x2="60" y2="118" stroke="#6E7D5B" stroke-width="4" stroke-linecap="round"/>
-      <path d="M52,88 Q38,82 34,92" fill="#8FA06E"/>
-      <path d="M68,96 Q82,90 86,100" fill="#8FA06E"/>
-    </svg>
-    <h1>ChatViva Slim</h1>
+    <div class="symbol-wrap">
+      <img class="symbol" src="assets/assets/images/super_symbol.png" alt="luckdate symbol">
+    </div>
+    <h1>luckdate</h1>
+    <p class="sub">The House of Vitality</p>
+    <div class="line"></div>
     <p>Grow Toward the Light</p>
     <p class="hint">Loading...</p>
   </div>
