@@ -21,6 +21,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   String _ageRange = '35-50';
   final Set<String> _mealSlots = {'breakfast'};
   String _reminderTime = '08:00';
+  String _reminderTime2 = '20:00';
   bool _pregnant = false;
   bool _chronicCondition = false;
   bool _eatingDisorder = false;
@@ -99,6 +100,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             targetWeightKg: _targetWeight,
             mealSlot: _mealSlots.join(', '),
             reminderTime: _reminderTime,
+            reminderTime2: _reminderTime2,
             riskLevel: risk,
             onboardingComplete: true,
             isLoggedIn: true,
@@ -537,6 +539,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
+  Future<void> _pickReminderTime({required bool second}) async {
+    final parts = (second ? _reminderTime2 : _reminderTime).split(':');
+    final initial = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+    final picked = await showTimePicker(context: context, initialTime: initial);
+    if (picked == null) return;
+    final formatted = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+    setState(() {
+      if (second) {
+        _reminderTime2 = formatted;
+      } else {
+        _reminderTime = formatted;
+      }
+    });
+  }
+
   Widget _reminderStep(UserPlanType planType) {
     final copy = switch (planType) {
       UserPlanType.mealReplacement =>
@@ -550,19 +567,31 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         Text('Daily reminder', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
         Text(copy, style: LuckdateTextStyles.bodySmall),
-        const SizedBox(height: LuckdateSpacing.sm),
-        Text('When should Sunny gently remind you?', style: LuckdateTextStyles.bodySmall),
         const SizedBox(height: LuckdateSpacing.lg),
-        ...['07:00', '08:00', '09:00', '12:00', '18:00'].map((t) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
-            child: LdSecondaryButton(
-              label: t,
-              selected: _reminderTime == t,
-              onPressed: () => setState(() => _reminderTime = t),
+        LdCard(
+          onTap: () => _pickReminderTime(second: false),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(planType == UserPlanType.mealReplacement ? 'Morning reminder' : 'Daily reminder',
+                  style: LuckdateTextStyles.body),
+              Text(_reminderTime, style: LuckdateTextStyles.title),
+            ],
+          ),
+        ),
+        if (planType == UserPlanType.mealReplacement) ...[
+          const SizedBox(height: LuckdateSpacing.sm),
+          LdCard(
+            onTap: () => _pickReminderTime(second: true),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Evening reminder', style: LuckdateTextStyles.body),
+                Text(_reminderTime2, style: LuckdateTextStyles.title),
+              ],
             ),
-          );
-        }),
+          ),
+        ],
       ],
     );
   }
@@ -603,7 +632,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               if (linkedProduct.isNotEmpty) _summaryRow('Product', linkedProduct),
               if (planType != UserPlanType.noProduct) _summaryRow('Meal slot', _mealSlots.join(', ')),
               if (_showTargetWeight) _summaryRow('Target weight', '${_targetWeight.toStringAsFixed(1)} kg'),
-              _summaryRow('Reminder', _reminderTime),
+              _summaryRow('Reminder', planType == UserPlanType.mealReplacement ? '$_reminderTime · $_reminderTime2' : _reminderTime),
               if (planType == UserPlanType.mealReplacement) _summaryRow('Hydration goal', '2000 ml'),
             ],
           ),

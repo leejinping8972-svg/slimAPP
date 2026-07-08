@@ -172,6 +172,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
           ? 'We will remind you to use your product each day.'
           : 'Track your habits and chat with Sunny while you explore products.',
       vitalityTrend: const [],
+      weightTrend: const [],
+      consistency5d: const [false, false, false, false, false],
       dayStatuses: const [],
       unlockedMilestones: const [],
       todayRecord: const TodayRecord(),
@@ -207,6 +209,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
         themeZh: state.journey.themeZh,
         encouragement: state.journey.encouragement,
         vitalityTrend: state.journey.vitalityTrend,
+        weightTrend: state.journey.weightTrend,
+        consistency5d: state.journey.consistency5d,
         dayStatuses: state.journey.dayStatuses,
         unlockedMilestones: state.journey.unlockedMilestones,
         todayRecord: record,

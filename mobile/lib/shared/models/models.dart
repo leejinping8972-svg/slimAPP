@@ -36,6 +36,7 @@ class UserProfile {
     this.language = 'en-US',
     this.region = 'US',
     this.reminderTime = '08:00',
+    this.reminderTime2 = '20:00',
     this.mealSlot = 'breakfast',
     this.hydrationTargetMl = 2000,
     this.riskLevel = RiskLevel.p2,
@@ -64,6 +65,7 @@ class UserProfile {
   final String language;
   final String region;
   final String reminderTime;
+  final String reminderTime2;
   final String mealSlot;
   final int hydrationTargetMl;
   final RiskLevel riskLevel;
@@ -92,6 +94,7 @@ class UserProfile {
     String? language,
     String? region,
     String? reminderTime,
+    String? reminderTime2,
     String? mealSlot,
     int? hydrationTargetMl,
     RiskLevel? riskLevel,
@@ -120,6 +123,7 @@ class UserProfile {
       language: language ?? this.language,
       region: region ?? this.region,
       reminderTime: reminderTime ?? this.reminderTime,
+      reminderTime2: reminderTime2 ?? this.reminderTime2,
       mealSlot: mealSlot ?? this.mealSlot,
       hydrationTargetMl: hydrationTargetMl ?? this.hydrationTargetMl,
       riskLevel: riskLevel ?? this.riskLevel,
@@ -224,6 +228,8 @@ class JourneyState {
     required this.themeZh,
     required this.encouragement,
     required this.vitalityTrend,
+    required this.weightTrend,
+    required this.consistency5d,
     required this.dayStatuses,
     required this.unlockedMilestones,
     required this.todayRecord,
@@ -239,6 +245,8 @@ class JourneyState {
   final String themeZh;
   final String encouragement;
   final List<double> vitalityTrend;
+  final List<double> weightTrend;
+  final List<bool> consistency5d;
   final List<String> dayStatuses;
   final List<int> unlockedMilestones;
   final TodayRecord todayRecord;

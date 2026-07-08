@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
@@ -36,14 +38,29 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final messages = ref.watch(appStateProvider).chatMessages;
+    final state = ref.watch(appStateProvider);
+    final messages = state.chatMessages;
+    final record = state.journey.todayRecord;
 
     ref.listen(appStateProvider, (_, __) => _scrollToBottom());
 
-    return LdScaffold(
-      title: 'Chat with Sunny',
+    return Scaffold(
+      backgroundColor: LuckdateColors.cloudIvory,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+          onPressed: () => context.go('/today'),
+        ),
+        title: const Text('Chat with Sunny'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(LuckdateSpacing.lg, 0, LuckdateSpacing.lg, LuckdateSpacing.sm),
+            child: _TodayMiniCard(record: record),
+          ),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg, vertical: LuckdateSpacing.sm),
@@ -74,7 +91,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 children: [
                   _quickBtn('Water', 'water'),
                   _quickBtn('Meal', 'meal'),
-                  _quickBtn('Mood', 'mood'),
                   _quickBtn('Adjust', 'adjust'),
                 ],
               ),
@@ -82,22 +98,16 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(LuckdateSpacing.lg),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Ask Sunny anything...',
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.send_rounded, color: LuckdateColors.deepSage),
-                        onPressed: _send,
-                      ),
-                    ),
-                    onSubmitted: (_) => _send(),
-                  ),
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: 'Ask Sunny anything...',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.send_rounded, color: LuckdateColors.deepSage),
+                  onPressed: _send,
                 ),
-              ],
+              ),
+              onSubmitted: (_) => _send(),
             ),
           ),
         ],
@@ -121,5 +131,34 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     if (text.isEmpty) return;
     _controller.clear();
     ref.read(appStateProvider.notifier).sendChatMessage(text);
+  }
+}
+
+class _TodayMiniCard extends StatelessWidget {
+  const _TodayMiniCard({required this.record});
+
+  final TodayRecord record;
+
+  @override
+  Widget build(BuildContext context) {
+    return LdCard(
+      padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.base, vertical: LuckdateSpacing.sm),
+      child: Row(
+        children: [
+          const LdSunnyAvatar(size: 28),
+          const SizedBox(width: LuckdateSpacing.sm),
+          Expanded(
+            child: Text(
+              'Today: ${record.hydrationMl} ml water'
+              '${record.weightRecorded ? ' · ${record.weightValueKg.toStringAsFixed(1)} kg' : ''}'
+              '${record.productTaken == ProductTakenStatus.taken ? ' · product logged' : ''}',
+              style: LuckdateTextStyles.caption,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

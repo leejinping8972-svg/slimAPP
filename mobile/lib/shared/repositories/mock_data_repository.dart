@@ -31,6 +31,18 @@ class MockDataRepository {
       if (i == day - 1) return 'today';
       return 'open';
     });
+    final weightTrend = List<double>.generate(day, (i) {
+      final start = todayRecord.weightValueKg > 0 ? todayRecord.weightValueKg + 3.5 : 68.0;
+      final end = todayRecord.weightValueKg > 0 ? todayRecord.weightValueKg : 68.0;
+      if (day <= 1) return end;
+      return start - (start - end) * (i / (day - 1));
+    });
+    final consistency5d = List<bool>.generate(5, (i) {
+      final dayIndex = day - 5 + i;
+      if (dayIndex < 0) return false;
+      final status = dayStatuses[dayIndex];
+      return status == 'completed' || status == 'today';
+    });
     return JourneyState(
       day: day,
       totalDays: journeyDays,
@@ -40,6 +52,8 @@ class MockDataRepository {
       themeZh: '',
       encouragement: encouragement,
       vitalityTrend: trend,
+      weightTrend: weightTrend,
+      consistency5d: consistency5d,
       dayStatuses: dayStatuses,
       unlockedMilestones: unlockedMilestones,
       todayRecord: todayRecord,
