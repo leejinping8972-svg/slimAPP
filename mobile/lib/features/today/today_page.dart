@@ -346,8 +346,11 @@ class TodayPage extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('补充其他营养', style: LuckdateTextStyles.title),
-                Text('查看更多营养产品，搭配你的日常节奏。', style: LuckdateTextStyles.bodySmall),
+                Text('Additional Nutrition', style: LuckdateTextStyles.title),
+                Text(
+                  'Browse more nutrition products to complement your daily rhythm.',
+                  style: LuckdateTextStyles.bodySmall,
+                ),
               ],
             ),
           ),
@@ -380,6 +383,7 @@ class TodayPage extends ConsumerWidget {
   ) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: LuckdateColors.ivoryWhite,
       shape: const RoundedRectangleBorder(
@@ -401,6 +405,8 @@ class TodayPage extends ConsumerWidget {
         : (profile.currentWeightKg > 0 ? profile.currentWeightKg : 68.0);
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
       backgroundColor: LuckdateColors.ivoryWhite,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -417,6 +423,8 @@ class TodayPage extends ConsumerWidget {
   ) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
       backgroundColor: LuckdateColors.ivoryWhite,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),

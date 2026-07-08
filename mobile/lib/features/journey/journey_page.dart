@@ -256,9 +256,12 @@ class JourneyPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('商品推荐', style: LuckdateTextStyles.title),
                         Text(
-                          '根据你的节奏推荐营养产品，继续提升状态。',
+                          'Product Recommendations',
+                          style: LuckdateTextStyles.title,
+                        ),
+                        Text(
+                          'Nutrition picks tailored to your rhythm—keep building momentum.',
                           style: LuckdateTextStyles.bodySmall,
                         ),
                       ],

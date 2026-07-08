@@ -5,12 +5,12 @@ class LuckdateColors {
   static const vitalitySage = Color(0xFFA8C686);
   static const solarSand = Color(0xFFF5C542);
   static const chocolateBrown = Color(0xFF5C4635);
-  static const cloudIvory = Color(0xFFFFFDF7);
+  static const cloudIvory = Color(0xFFF5F0E6);
   static const deepSage = Color(0xFFA8C686);
   static const sunGold = Color(0xFFF5C542);
-  static const ivoryWhite = Color(0xFFFFFDF7);
-  static const sageSoft = Color(0xFFF6F9F2);
-  static const lineSoft = Color(0xFFE7DED2);
+  static const ivoryWhite = Color(0xFFFFFFFF);
+  static const sageSoft = Color(0xFFEEF4E8);
+  static const lineSoft = Color(0xFFDCCFBF);
   static const textPrimary = Color(0xFF233142);
   static const textSecondary = Color(0xFF6B5A49);
   static const errorSoft = Color(0xFFB8756B);

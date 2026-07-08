@@ -125,13 +125,13 @@ class ProfilePage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '补充其他营养',
+                          'Additional Nutrition',
                           style: LuckdateTextStyles.body.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          '进入商品中心，查看全部营养方案。',
+                          'Enter Product Center to view all nutrition plans.',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],

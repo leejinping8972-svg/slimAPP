@@ -76,6 +76,7 @@ class LdCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: completed ? LuckdateColors.sageSoft : LuckdateColors.ivoryWhite,
+      elevation: 0,
       borderRadius: BorderRadius.circular(LuckdateRadius.xl),
       child: InkWell(
         onTap: onTap,
@@ -88,13 +89,13 @@ class LdCard extends StatelessWidget {
               color: completed
                   ? LuckdateColors.vitalitySage
                   : LuckdateColors.lineSoft,
-              width: 0.5,
+              width: 1,
             ),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x14000000),
-                offset: Offset(0, 8),
-                blurRadius: 24,
+                color: Color(0x1A000000),
+                offset: Offset(0, 6),
+                blurRadius: 16,
               ),
             ],
           ),
