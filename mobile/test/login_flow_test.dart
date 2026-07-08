@@ -39,7 +39,7 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hi, I am Sunny'), findsOneWidget);
+    expect(find.text('Hi, I am Viva'), findsOneWidget);
   });
 
   testWidgets('Onboarding back returns to login from first step', (tester) async {
@@ -50,7 +50,7 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hi, I am Sunny'), findsOneWidget);
+    expect(find.text('Hi, I am Viva'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.arrow_back_ios_new).first);
     await tester.pumpAndSettle();

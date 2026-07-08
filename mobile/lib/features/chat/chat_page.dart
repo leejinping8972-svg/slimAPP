@@ -47,6 +47,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+          onPressed: () => context.go('/today'),
+        ),
         title: const Text('Chatviva'),
         centerTitle: false,
         backgroundColor: Colors.transparent,
@@ -93,7 +97,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
             color: LuckdateColors.sageSoft,
             child: Text(
-              'Sunny provides lifestyle companionship — not medical advice.',
+              'Viva provides lifestyle companionship — not medical advice.',
               style: LuckdateTextStyles.caption,
             ),
           ),
@@ -132,7 +136,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             child: TextField(
               controller: _controller,
               decoration: InputDecoration(
-                hintText: 'Ask Sunny anything...',
+                hintText: 'Ask Viva anything...',
                 suffixIcon: IconButton(
                   icon: const Icon(
                     Icons.send_rounded,

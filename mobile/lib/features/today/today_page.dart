@@ -118,7 +118,7 @@ class TodayPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Sunny says', style: LuckdateTextStyles.caption),
+                        Text('Viva says', style: LuckdateTextStyles.caption),
                         Text(
                           journey.sunnyCardMessage,
                           style: LuckdateTextStyles.body,

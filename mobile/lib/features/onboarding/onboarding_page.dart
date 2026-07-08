@@ -22,11 +22,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final Set<String> _mealSlots = {'breakfast'};
   String _reminderTime = '08:00';
   String _reminderTime2 = '20:00';
-  bool _pregnant = false;
-  bool _chronicCondition = false;
-  bool _eatingDisorder = false;
-  bool _emotionalRisk = false;
-  bool _noneOfAbove = false;
   double _currentWeight = 68;
   double _targetWeight = 62;
   double _height = 165;
@@ -35,19 +30,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   List<String> _steps(UserPlanType planType) {
     switch (planType) {
       case UserPlanType.mealReplacement:
-        return ['welcome', 'privacy', 'profile', 'risk', 'reminder', 'ready'];
+        return ['welcome', 'privacy', 'profile', 'reminder', 'ready'];
       case UserPlanType.nonMealReplacement:
-        return ['welcome', 'privacy', 'profile', 'risk', 'reminder', 'ready'];
+        return ['welcome', 'privacy', 'profile', 'reminder', 'ready'];
       case UserPlanType.noProduct:
-        return [
-          'welcome',
-          'privacy',
-          'profile',
-          'meal',
-          'risk',
-          'reminder',
-          'ready',
-        ];
+        return ['welcome', 'privacy', 'profile', 'meal', 'reminder', 'ready'];
     }
   }
 
@@ -73,14 +60,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   double get _currentBmi => BmiHelper.bmi(_currentWeight, _height);
 
   RiskLevel _evaluateRisk() {
-    if (_noneOfAbove) return RiskLevel.p2;
-    if (_ageRange == 'Under 18' ||
-        _pregnant ||
-        _eatingDisorder ||
-        _emotionalRisk) {
-      return RiskLevel.p0;
-    }
-    if (_chronicCondition || _ageRange == '65+') return RiskLevel.p1;
+    if (_ageRange == 'Under 18') return RiskLevel.p0;
+    if (_ageRange == '65+') return RiskLevel.p1;
     return RiskLevel.p2;
   }
 
@@ -200,25 +181,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     });
   }
 
-  void _toggleNoneOfAbove() {
-    setState(() {
-      _noneOfAbove = !_noneOfAbove;
-      if (_noneOfAbove) {
-        _pregnant = false;
-        _chronicCondition = false;
-        _eatingDisorder = false;
-        _emotionalRisk = false;
-      }
-    });
-  }
-
-  void _toggleRiskFlag(void Function(bool) setter, bool current) {
-    setState(() {
-      _noneOfAbove = false;
-      setter(!current);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final planType = ref.watch(appStateProvider).profile.userPlanType;
@@ -264,16 +226,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   bool _canContinue(String stepKey) {
     if (stepKey == 'privacy' && !_privacyAccepted) return false;
     if (stepKey == 'meal' && _mealSlots.isEmpty) return false;
-    if (stepKey == 'risk' && !_riskStepComplete()) return false;
     return true;
-  }
-
-  bool _riskStepComplete() {
-    return _noneOfAbove ||
-        _pregnant ||
-        _chronicCondition ||
-        _eatingDisorder ||
-        _emotionalRisk;
   }
 
   Widget _buildStep(String stepKey, UserPlanType planType) {
@@ -286,8 +239,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         return _profileStep();
       case 'meal':
         return _mealStep();
-      case 'risk':
-        return _riskStep();
       case 'reminder':
         return _reminderStep(planType);
       case 'ready':
@@ -306,7 +257,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             child: SunnySunflower(size: 160, showStem: true, useImage: true),
           ),
           const SizedBox(height: LuckdateSpacing.xl),
-          Text('Hi, I am Sunny', style: LuckdateTextStyles.h1),
+          Text('Hi, I am Viva', style: LuckdateTextStyles.h1),
           const SizedBox(height: LuckdateSpacing.md),
           Text(
             planType == UserPlanType.mealReplacement
@@ -492,92 +443,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  Widget _riskStep() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('A few safety questions', style: LuckdateTextStyles.h2),
-          const SizedBox(height: LuckdateSpacing.sm),
-          Text(
-            'Select all that apply, or choose "None of the above" if none fit.',
-            style: LuckdateTextStyles.bodySmall,
-          ),
-          const SizedBox(height: LuckdateSpacing.lg),
-          _riskTile(
-            'Pregnant, planning pregnancy, or breastfeeding',
-            _pregnant,
-            (v) => _toggleRiskFlag((b) => _pregnant = b, _pregnant),
-          ),
-          _riskTile(
-            'Diabetes, heart, kidney, or other chronic condition',
-            _chronicCondition,
-            (v) => _toggleRiskFlag(
-              (b) => _chronicCondition = b,
-              _chronicCondition,
-            ),
-          ),
-          _riskTile(
-            'Extreme dieting, fasting, or purging recently',
-            _eatingDisorder,
-            (v) => _toggleRiskFlag((b) => _eatingDisorder = b, _eatingDisorder),
-          ),
-          _riskTile(
-            'Strong distress about weight or food',
-            _emotionalRisk,
-            (v) => _toggleRiskFlag((b) => _emotionalRisk = b, _emotionalRisk),
-            subtitle:
-                'Feeling intense anxiety, obsession, or emotional pain about your weight or eating habits.',
-          ),
-          _riskTile(
-            'None of the above',
-            _noneOfAbove,
-            (_) => _toggleNoneOfAbove(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _riskTile(
-    String label,
-    bool value,
-    ValueChanged<bool> onChanged, {
-    String? subtitle,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
-      child: LdCard(
-        onTap: () => onChanged(!value),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Icon(
-                value ? Icons.check_box : Icons.check_box_outline_blank,
-                color: LuckdateColors.deepSage,
-              ),
-            ),
-            const SizedBox(width: LuckdateSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(label, style: LuckdateTextStyles.bodySmall),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 4),
-                    Text(subtitle, style: LuckdateTextStyles.caption),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<void> _pickReminderTime({required bool second}) async {
     final parts = (second ? _reminderTime2 : _reminderTime).split(':');
     final initial = TimeOfDay(
@@ -675,7 +540,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     ? 'We will keep your plan gentle and steady. Please confirm any health concerns with a professional.'
                     : 'Day 1 starts with one small step — not perfection.')
               : planType == UserPlanType.nonMealReplacement
-              ? 'We will remind you to use your product each day. You can still log weight and chat with Sunny.'
+              ? 'We will remind you to use your product each day. You can still log weight and chat with Viva.'
               : 'You can log, chat, and explore products. Link an order anytime from Profile.',
           style: LuckdateTextStyles.body,
         ),

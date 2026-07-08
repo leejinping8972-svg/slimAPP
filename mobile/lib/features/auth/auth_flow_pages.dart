@@ -167,6 +167,8 @@ class RegisterSuccessPage extends ConsumerWidget {
     final coupon = ref.watch(appStateProvider).profile.welcomeCoupon;
 
     return LdScaffold(
+      showBack: true,
+      onBack: () => context.go('/login'),
       body: Padding(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(

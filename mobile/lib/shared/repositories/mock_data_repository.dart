@@ -32,14 +32,19 @@ class MockDataRepository {
       return 'open';
     });
     final weightTrend = List<double>.generate(day, (i) {
-      final start = todayRecord.weightValueKg > 0 ? todayRecord.weightValueKg + 3.5 : 68.0;
-      final end = todayRecord.weightValueKg > 0 ? todayRecord.weightValueKg : 68.0;
+      final start = todayRecord.weightValueKg > 0
+          ? todayRecord.weightValueKg + 3.5
+          : 68.0;
+      final end = todayRecord.weightValueKg > 0
+          ? todayRecord.weightValueKg
+          : 68.0;
       if (day <= 1) return end;
       return start - (start - end) * (i / (day - 1));
     });
-    final consistency5d = List<bool>.generate(5, (i) {
-      final dayIndex = day - 5 + i;
+    final consistency5d = List<bool>.generate(7, (i) {
+      final dayIndex = day - 7 + i;
       if (dayIndex < 0) return false;
+      if (dayIndex >= dayStatuses.length) return false;
       final status = dayStatuses[dayIndex];
       return status == 'completed' || status == 'today';
     });
@@ -95,7 +100,8 @@ class MockDataRepository {
           ),
           consistency7d: 0.71,
           unlockedMilestones: [7],
-          sunnyCard: 'Day 12 is open. A small glass of water can help your rhythm.',
+          sunnyCard:
+              'Day 12 is open. A small glass of water can help your rhythm.',
         );
       case DemoDay.day28:
         return _buildJourney(
@@ -124,7 +130,9 @@ class MockDataRepository {
   Future<List<Product>> loadProducts() async {
     final raw = await rootBundle.loadString('assets/mock/products.json');
     final list = jsonDecode(raw) as List<dynamic>;
-    return list.map((e) => Product.fromJson(e as Map<String, dynamic>)).toList();
+    return list
+        .map((e) => Product.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Milestone>> loadMilestones({required List<int> unlocked}) async {
@@ -141,15 +149,19 @@ class MockDataRepository {
     }).toList();
   }
 
-  List<ChatMessage> initialChatMessages(int day, {UserPlanType planType = UserPlanType.mealReplacement}) {
+  List<ChatMessage> initialChatMessages(
+    int day, {
+    UserPlanType planType = UserPlanType.mealReplacement,
+  }) {
     final greeting = switch (planType) {
-      UserPlanType.mealReplacement => day == 1
-          ? 'Hi Freya, I am Sunny — your growth companion for the next 28 days. How are you feeling today?'
-          : 'Good to see you on Day $day, Freya. How is your rhythm today?',
+      UserPlanType.mealReplacement =>
+        day == 1
+            ? 'Hi Freya, I am Viva — your growth companion for the next 28 days. How are you feeling today?'
+            : 'Good to see you on Day $day, Freya. How is your rhythm today?',
       UserPlanType.nonMealReplacement =>
-          'Hi Freya, I will remind you to use your product each day and help you track how you feel.',
+        'Hi Freya, I will remind you to use your product each day and help you track how you feel.',
       UserPlanType.noProduct =>
-          'Hi Freya, you do not have a plan yet, but you can keep logging and chatting with me about your goals.',
+        'Hi Freya, you do not have a plan yet, but you can keep logging and chatting with me about your goals.',
     };
     return [
       ChatMessage(

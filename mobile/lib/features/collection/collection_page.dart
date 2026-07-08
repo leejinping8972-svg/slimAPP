@@ -22,6 +22,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
     final showExtension = journey.day >= 28;
 
     return LdScaffold(
+      showBack: true,
       body: productsAsync.when(
         data: (products) {
           final filtered = _filter == 'All'

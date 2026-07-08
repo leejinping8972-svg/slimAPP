@@ -154,7 +154,7 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
                           style: LuckdateTextStyles.title,
                         ),
                         Text(
-                          'Membership + Sunny companion',
+                          'Membership + Viva companion',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],

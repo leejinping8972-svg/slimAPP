@@ -16,6 +16,7 @@ class ProfilePage extends ConsumerWidget {
     final journey = state.journey;
 
     return LdScaffold(
+      showBack: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(

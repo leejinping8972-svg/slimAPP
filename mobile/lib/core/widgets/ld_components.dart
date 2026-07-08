@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
 import 'sunny_sunflower.dart';
@@ -12,6 +13,7 @@ class LdScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.floatingActionButton,
     this.showBack = false,
+    this.onBack,
   });
 
   final Widget body;
@@ -20,19 +22,31 @@ class LdScaffold extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final bool showBack;
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
+    final hasAppBar =
+        title != null || showBack || (actions != null && actions!.isNotEmpty);
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
-      appBar: title != null
+      appBar: hasAppBar
           ? AppBar(
-              title: Text(title!),
+              title: title != null ? Text(title!) : const SizedBox.shrink(),
               actions: actions,
+              automaticallyImplyLeading: false,
               leading: showBack
                   ? IconButton(
                       icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-                      onPressed: () => Navigator.of(context).maybePop(),
+                      onPressed:
+                          onBack ??
+                          () {
+                            if (context.canPop()) {
+                              context.pop();
+                            } else {
+                              context.go('/today');
+                            }
+                          },
                     )
                   : null,
             )
@@ -71,7 +85,9 @@ class LdCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(LuckdateRadius.xl),
             border: Border.all(
-              color: completed ? LuckdateColors.vitalitySage : LuckdateColors.lineSoft,
+              color: completed
+                  ? LuckdateColors.vitalitySage
+                  : LuckdateColors.lineSoft,
               width: 0.5,
             ),
             boxShadow: const [
@@ -120,9 +136,17 @@ class LdPrimaryButton extends StatelessWidget {
           ? const SizedBox(
               width: 22,
               height: 22,
-              child: CircularProgressIndicator(strokeWidth: 2, color: LuckdateColors.ivoryWhite),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: LuckdateColors.ivoryWhite,
+              ),
             )
-          : Text(label, style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600)),
+          : Text(
+              label,
+              style: LuckdateTextStyles.body.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
     );
     return expanded ? SizedBox(width: double.infinity, child: btn) : btn;
   }
@@ -145,7 +169,9 @@ class LdSecondaryButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        backgroundColor: selected ? LuckdateColors.sageSoft : LuckdateColors.ivoryWhite,
+        backgroundColor: selected
+            ? LuckdateColors.sageSoft
+            : LuckdateColors.ivoryWhite,
         foregroundColor: LuckdateColors.chocolateBrown,
         side: BorderSide(
           color: selected ? LuckdateColors.deepSage : LuckdateColors.lineSoft,
@@ -186,13 +212,17 @@ class LdChoiceChip extends StatelessWidget {
               : LuckdateColors.ivoryWhite,
           borderRadius: BorderRadius.circular(LuckdateRadius.pill),
           border: Border.all(
-            color: selected ? (color ?? LuckdateColors.deepSage) : LuckdateColors.lineSoft,
+            color: selected
+                ? (color ?? LuckdateColors.deepSage)
+                : LuckdateColors.lineSoft,
           ),
         ),
         child: Text(
           label,
           style: LuckdateTextStyles.bodySmall.copyWith(
-            color: selected ? LuckdateColors.deepSage : LuckdateColors.textSecondary,
+            color: selected
+                ? LuckdateColors.deepSage
+                : LuckdateColors.textSecondary,
             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
           ),
         ),
@@ -261,7 +291,9 @@ class UserBubble extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.78),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.sizeOf(context).width * 0.78,
+        ),
         padding: const EdgeInsets.all(LuckdateSpacing.md),
         decoration: BoxDecoration(
           color: LuckdateColors.deepSage,
@@ -271,7 +303,12 @@ class UserBubble extends StatelessWidget {
             bottomRight: Radius.circular(LuckdateRadius.lg),
           ),
         ),
-        child: Text(text, style: LuckdateTextStyles.body.copyWith(color: LuckdateColors.ivoryWhite)),
+        child: Text(
+          text,
+          style: LuckdateTextStyles.body.copyWith(
+            color: LuckdateColors.ivoryWhite,
+          ),
+        ),
       ),
     );
   }
@@ -313,7 +350,11 @@ class LdProgressRing extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.wb_sunny_rounded, color: LuckdateColors.sunGold, size: 28),
+              Icon(
+                Icons.wb_sunny_rounded,
+                color: LuckdateColors.sunGold,
+                size: 28,
+              ),
               const SizedBox(height: 4),
               Text(centerLabel, style: LuckdateTextStyles.h2),
               Text(subLabel, style: LuckdateTextStyles.caption),
@@ -400,7 +441,9 @@ class RitualCard extends StatelessWidget {
           ),
           Icon(
             completed ? Icons.check_circle_rounded : Icons.circle_outlined,
-            color: completed ? LuckdateColors.deepSage : LuckdateColors.lineSoft,
+            color: completed
+                ? LuckdateColors.deepSage
+                : LuckdateColors.lineSoft,
           ),
         ],
       ),
@@ -409,11 +452,7 @@ class RitualCard extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key,
-    required this.product,
-    required this.onTap,
-  });
+  const ProductCard({super.key, required this.product, required this.onTap});
 
   final Product product;
   final VoidCallback onTap;
@@ -431,7 +470,9 @@ class ProductCard extends StatelessWidget {
             height: 140,
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(LuckdateRadius.xl)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(LuckdateRadius.xl),
+              ),
             ),
             child: Center(
               child: Icon(Icons.spa_outlined, size: 48, color: color),
@@ -444,7 +485,10 @@ class ProductCard extends StatelessWidget {
               children: [
                 if (product.isNew)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     margin: const EdgeInsets.only(bottom: 6),
                     decoration: BoxDecoration(
                       color: LuckdateColors.sunGold.withValues(alpha: 0.3),
@@ -454,9 +498,18 @@ class ProductCard extends StatelessWidget {
                   ),
                 Text(product.name, style: LuckdateTextStyles.title),
                 const SizedBox(height: 4),
-                Text(product.shortDescription, style: LuckdateTextStyles.bodySmall, maxLines: 2),
+                Text(
+                  product.shortDescription,
+                  style: LuckdateTextStyles.bodySmall,
+                  maxLines: 2,
+                ),
                 const SizedBox(height: 8),
-                Text(product.priceDisplay, style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600)),
+                Text(
+                  product.priceDisplay,
+                  style: LuckdateTextStyles.body.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ),
@@ -490,12 +543,16 @@ class BadgeCard extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: unlocked ? LuckdateColors.sunGold.withValues(alpha: 0.3) : LuckdateColors.lineSoft,
+              color: unlocked
+                  ? LuckdateColors.sunGold.withValues(alpha: 0.3)
+                  : LuckdateColors.lineSoft,
               shape: BoxShape.circle,
             ),
             child: Icon(
               unlocked ? Icons.star_rounded : Icons.star_border_rounded,
-              color: unlocked ? LuckdateColors.sunGold : LuckdateColors.textSecondary,
+              color: unlocked
+                  ? LuckdateColors.sunGold
+                  : LuckdateColors.textSecondary,
             ),
           ),
           const SizedBox(width: LuckdateSpacing.md),
@@ -516,11 +573,7 @@ class BadgeCard extends StatelessWidget {
 }
 
 class StatePlaceholder extends StatelessWidget {
-  const StatePlaceholder({
-    super.key,
-    required this.type,
-    this.onRetry,
-  });
+  const StatePlaceholder({super.key, required this.type, this.onRetry});
 
   final String type;
   final VoidCallback? onRetry;
@@ -528,10 +581,26 @@ class StatePlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (icon, title, message) = switch (type) {
-      'loading' => (Icons.hourglass_top_rounded, 'Loading', 'Preparing your journey...'),
-      'empty' => (Icons.inbox_outlined, 'Nothing here yet', 'Your records will appear as you grow.'),
-      'error' => (Icons.cloud_off_outlined, 'Something went quiet', 'A small pause — tap to try again.'),
-      'network' => (Icons.wifi_off_rounded, 'Weak connection', 'We saved your last state. Retry when ready.'),
+      'loading' => (
+        Icons.hourglass_top_rounded,
+        'Loading',
+        'Preparing your journey...',
+      ),
+      'empty' => (
+        Icons.inbox_outlined,
+        'Nothing here yet',
+        'Your records will appear as you grow.',
+      ),
+      'error' => (
+        Icons.cloud_off_outlined,
+        'Something went quiet',
+        'A small pause — tap to try again.',
+      ),
+      'network' => (
+        Icons.wifi_off_rounded,
+        'Weak connection',
+        'We saved your last state. Retry when ready.',
+      ),
       _ => (Icons.info_outline, 'Notice', ''),
     };
     return Center(
@@ -544,10 +613,18 @@ class StatePlaceholder extends StatelessWidget {
             const SizedBox(height: LuckdateSpacing.base),
             Text(title, style: LuckdateTextStyles.title),
             const SizedBox(height: LuckdateSpacing.sm),
-            Text(message, style: LuckdateTextStyles.bodySmall, textAlign: TextAlign.center),
+            Text(
+              message,
+              style: LuckdateTextStyles.bodySmall,
+              textAlign: TextAlign.center,
+            ),
             if (onRetry != null) ...[
               const SizedBox(height: LuckdateSpacing.base),
-              LdPrimaryButton(label: 'Try again', onPressed: onRetry, expanded: false),
+              LdPrimaryButton(
+                label: 'Try again',
+                onPressed: onRetry,
+                expanded: false,
+              ),
             ],
           ],
         ),

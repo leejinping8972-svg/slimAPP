@@ -5,11 +5,17 @@ import '../services/mock_order_service.dart';
 import '../services/sunny_intent_router.dart';
 import '../services/vitality_scorer.dart';
 
-final mockRepoProvider = Provider<MockDataRepository>((ref) => MockDataRepository());
+final mockRepoProvider = Provider<MockDataRepository>(
+  (ref) => MockDataRepository(),
+);
 
-final sunnyRouterProvider = Provider<SunnyIntentRouter>((ref) => SunnyIntentRouter());
+final sunnyRouterProvider = Provider<SunnyIntentRouter>(
+  (ref) => SunnyIntentRouter(),
+);
 
-final mockOrderServiceProvider = Provider<MockOrderService>((ref) => MockOrderService());
+final mockOrderServiceProvider = Provider<MockOrderService>(
+  (ref) => MockOrderService(),
+);
 
 class AppState {
   const AppState({
@@ -49,16 +55,16 @@ class AppState {
 
 class AppStateNotifier extends StateNotifier<AppState> {
   AppStateNotifier(this._repo, this._router, this._orderService)
-      : super(
-          AppState(
-            profile: const UserProfile(),
-            demoDay: DemoDay.day12,
-            journey: MockDataRepository().journeyForDay(DemoDay.day12),
-            chatMessages: MockDataRepository().initialChatMessages(12),
-            showLoading: false,
-            showError: false,
-          ),
-        );
+    : super(
+        AppState(
+          profile: const UserProfile(),
+          demoDay: DemoDay.day12,
+          journey: MockDataRepository().journeyForDay(DemoDay.day12),
+          chatMessages: MockDataRepository().initialChatMessages(12),
+          showLoading: false,
+          showError: false,
+        ),
+      );
 
   final MockDataRepository _repo;
   final SunnyIntentRouter _router;
@@ -105,15 +111,22 @@ class AppStateNotifier extends StateNotifier<AppState> {
     required String orderNo,
     required String phoneLast4,
   }) {
-    final result = _orderService.linkOrder(orderNo: orderNo, phoneLast4: phoneLast4);
+    final result = _orderService.linkOrder(
+      orderNo: orderNo,
+      phoneLast4: phoneLast4,
+    );
     final planType = _orderService.planTypeFor(result);
     state = state.copyWith(
       profile: state.profile.copyWith(
         linkedOrderNo: result.success ? orderNo.trim() : '',
         linkedProductName: result.productName,
-        orderLinkStatus: result.success ? OrderLinkStatus.linked : OrderLinkStatus.failed,
+        orderLinkStatus: result.success
+            ? OrderLinkStatus.linked
+            : OrderLinkStatus.failed,
         userPlanType: planType,
-        membershipPlan: result.success ? result.productName : state.profile.membershipPlan,
+        membershipPlan: result.success
+            ? result.productName
+            : state.profile.membershipPlan,
       ),
     );
     return result;
@@ -133,9 +146,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   void clearLoginSession() {
-    state = state.copyWith(
-      profile: const UserProfile(),
-    );
+    state = state.copyWith(profile: const UserProfile());
   }
 
   void hidePurchaseGuideCard() {
@@ -153,10 +164,17 @@ class AppStateNotifier extends StateNotifier<AppState> {
         ? _repo.journeyForDay(DemoDay.day1)
         : _buildBasicJourney(profile);
     state = state.copyWith(
-      profile: profile.copyWith(onboardingComplete: true, isLoggedIn: true, isNewRegistration: false),
+      profile: profile.copyWith(
+        onboardingComplete: true,
+        isLoggedIn: true,
+        isNewRegistration: false,
+      ),
       demoDay: DemoDay.day1,
       journey: journey,
-      chatMessages: _repo.initialChatMessages(1, planType: profile.userPlanType),
+      chatMessages: _repo.initialChatMessages(
+        1,
+        planType: profile.userPlanType,
+      ),
     );
   }
 
@@ -165,15 +183,19 @@ class AppStateNotifier extends StateNotifier<AppState> {
       day: 1,
       totalDays: 28,
       completionPercent: 0,
-      phase: profile.userPlanType == UserPlanType.nonMealReplacement ? 'Product Care' : 'Basic Mode',
-      themeEn: profile.userPlanType == UserPlanType.nonMealReplacement ? 'Daily Reminder' : 'Track & Chat',
+      phase: profile.userPlanType == UserPlanType.nonMealReplacement
+          ? 'Product Care'
+          : 'Basic Mode',
+      themeEn: profile.userPlanType == UserPlanType.nonMealReplacement
+          ? 'Daily Reminder'
+          : 'Track & Chat',
       themeZh: '',
       encouragement: profile.userPlanType == UserPlanType.nonMealReplacement
           ? 'We will remind you to use your product each day.'
-          : 'Track your habits and chat with Sunny while you explore products.',
+          : 'Track your habits and chat with Viva while you explore products.',
       vitalityTrend: const [],
       weightTrend: const [],
-      consistency5d: const [false, false, false, false, false],
+      consistency5d: const [false, false, false, false, false, false, false],
       dayStatuses: const [],
       unlockedMilestones: const [],
       todayRecord: const TodayRecord(),
@@ -272,7 +294,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
       current += fullText[i];
       final updated = state.chatMessages.map((m) {
         if (m.id == id) {
-          return m.copyWith(text: current, isStreaming: i < fullText.length - 1);
+          return m.copyWith(
+            text: current,
+            isStreaming: i < fullText.length - 1,
+          );
         }
         return m;
       }).toList();
@@ -289,8 +314,9 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 }
 
-final appStateProvider =
-    StateNotifierProvider<AppStateNotifier, AppState>((ref) {
+final appStateProvider = StateNotifierProvider<AppStateNotifier, AppState>((
+  ref,
+) {
   return AppStateNotifier(
     ref.watch(mockRepoProvider),
     ref.watch(sunnyRouterProvider),

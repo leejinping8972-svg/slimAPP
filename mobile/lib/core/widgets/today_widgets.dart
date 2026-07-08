@@ -19,6 +19,7 @@ class TopMetricsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: _MetricRing(
@@ -43,9 +44,9 @@ class TopMetricsRow extends StatelessWidget {
             children: [
               Text('Consistency', style: LuckdateTextStyles.caption),
               const SizedBox(height: LuckdateSpacing.sm),
-              Consistency5DayStrip(values: consistency5d),
+              Consistency7DayStrip(values: consistency5d),
               const SizedBox(height: 6),
-              Text('Last 5 days', style: LuckdateTextStyles.caption),
+              Text('Last 7 days', style: LuckdateTextStyles.caption),
             ],
           ),
         ),
@@ -83,41 +84,90 @@ class _MetricRing extends StatelessWidget {
                 backgroundColor: LuckdateColors.lineSoft,
                 color: LuckdateColors.sunGold,
               ),
-              Text(value, style: LuckdateTextStyles.title.copyWith(fontSize: 16)),
+              Text(
+                value,
+                style: LuckdateTextStyles.title.copyWith(fontSize: 16),
+              ),
             ],
           ),
         ),
         const SizedBox(height: 6),
         Text(label, style: LuckdateTextStyles.caption),
-        Text(subtitle, style: LuckdateTextStyles.caption, textAlign: TextAlign.center),
+        Text(
+          subtitle,
+          style: LuckdateTextStyles.caption,
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
 }
 
+class Consistency7DayStrip extends StatelessWidget {
+  const Consistency7DayStrip({super.key, required this.values});
+
+  final List<bool> values;
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final items = List<bool>.from(values);
+    while (items.length < 7) {
+      items.insert(0, false);
+    }
+    final week = items.length > 7 ? items.sublist(items.length - 7) : items;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(7, (i) {
+        final day = now.subtract(Duration(days: 6 - i));
+        final completed = week[i];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: Column(
+            children: [
+              Text(
+                '${day.day}',
+                style: LuckdateTextStyles.caption.copyWith(
+                  fontSize: 10,
+                  color: LuckdateColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: completed
+                      ? LuckdateColors.deepSage
+                      : LuckdateColors.lineSoft.withValues(alpha: 0.5),
+                  border: Border.all(
+                    color: completed
+                        ? LuckdateColors.deepSage
+                        : LuckdateColors.lineSoft,
+                  ),
+                ),
+                child: completed
+                    ? const Icon(Icons.check, size: 11, color: Colors.white)
+                    : null,
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
+
+/// Kept for older call sites.
 class Consistency5DayStrip extends StatelessWidget {
   const Consistency5DayStrip({super.key, required this.values});
 
   final List<bool> values;
 
   @override
-  Widget build(BuildContext context) {
-    final items = values.length >= 5 ? values.sublist(values.length - 5) : values;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (i) {
-        final checked = i < items.length && items[i];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
-          child: Icon(
-            checked ? Icons.check_circle : Icons.cancel_outlined,
-            size: 18,
-            color: checked ? LuckdateColors.deepSage : LuckdateColors.lineSoft,
-          ),
-        );
-      }),
-    );
-  }
+  Widget build(BuildContext context) => Consistency7DayStrip(values: values);
 }
 
 class WeightTrendCard extends StatelessWidget {
@@ -157,7 +207,10 @@ class WeightTrendCard extends StatelessWidget {
                   show: true,
                   drawVerticalLine: false,
                   horizontalInterval: 1,
-                  getDrawingHorizontalLine: (_) => const FlLine(color: LuckdateColors.lineSoft, strokeWidth: 1),
+                  getDrawingHorizontalLine: (_) => const FlLine(
+                    color: LuckdateColors.lineSoft,
+                    strokeWidth: 1,
+                  ),
                 ),
                 titlesData: FlTitlesData(
                   leftTitles: AxisTitles(
@@ -181,13 +234,21 @@ class WeightTrendCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                 ),
                 borderData: FlBorderData(show: false),
                 lineBarsData: [
                   LineChartBarData(
-                    spots: weights.asMap().entries.map((e) => FlSpot(e.key.toDouble(), e.value)).toList(),
+                    spots: weights
+                        .asMap()
+                        .entries
+                        .map((e) => FlSpot(e.key.toDouble(), e.value))
+                        .toList(),
                     isCurved: true,
                     color: LuckdateColors.deepSage,
                     barWidth: 3,
