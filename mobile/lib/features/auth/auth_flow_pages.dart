@@ -31,36 +31,120 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LdScaffold(
-      showBack: true,
-      body: Padding(
-        padding: const EdgeInsets.all(LuckdateSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SunnySunflower(size: 88, showStem: true, useImage: true),
-            const SizedBox(height: LuckdateSpacing.xl),
-            Text('Create your account', style: LuckdateTextStyles.h1),
-            const SizedBox(height: LuckdateSpacing.sm),
-            Text(
-              'Feel Alive, Meet Luckdate.',
-              style: LuckdateTextStyles.bodySmall,
-            ),
-            const SizedBox(height: LuckdateSpacing.xl),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: LuckdateSpacing.base),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
-            ),
-            const Spacer(),
-            LdPrimaryButton(label: 'Create account', onPressed: _submit),
-          ],
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(LuckdateSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).maybePop(),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: LuckdateColors.ivoryWhite,
+                  ),
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.md),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(LuckdateSpacing.lg),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.04),
+                    border: Border.all(
+                      color: LuckdateColors.sunGold.withValues(alpha: 0.25),
+                    ),
+                  ),
+                  child: const SunnySunflower(size: 96, showStem: false),
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.xl),
+              Text(
+                'Create your account',
+                textAlign: TextAlign.center,
+                style: LuckdateTextStyles.h1.copyWith(
+                  color: LuckdateColors.ivoryWhite,
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              Text(
+                'Begin your premium ritual with luckdate.',
+                textAlign: TextAlign.center,
+                style: LuckdateTextStyles.bodySmall.copyWith(
+                  color: LuckdateColors.ivoryWhite.withValues(alpha: 0.7),
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.xl),
+              LdCard(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1A1A),
+                    borderRadius: BorderRadius.circular(LuckdateRadius.xl),
+                    border: Border.all(
+                      color: LuckdateColors.sunGold.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(LuckdateSpacing.xl),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _emailController,
+                        style: const TextStyle(
+                          color: LuckdateColors.ivoryWhite,
+                        ),
+                        decoration: _registerInputDecoration(
+                          'Email',
+                          'you@email.com',
+                        ),
+                      ),
+                      const SizedBox(height: LuckdateSpacing.base),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        style: const TextStyle(
+                          color: LuckdateColors.ivoryWhite,
+                        ),
+                        decoration: _registerInputDecoration(
+                          'Password',
+                          '••••••••',
+                        ),
+                      ),
+                      const SizedBox(height: LuckdateSpacing.xl),
+                      LdPrimaryButton(
+                        label: 'Create account',
+                        onPressed: _submit,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  InputDecoration _registerInputDecoration(String label, String hint) {
+    return InputDecoration(
+      labelText: label,
+      hintText: hint,
+      hintStyle: TextStyle(
+        color: LuckdateColors.ivoryWhite.withValues(alpha: 0.35),
+      ),
+      labelStyle: TextStyle(
+        color: LuckdateColors.ivoryWhite.withValues(alpha: 0.75),
+      ),
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Color(0x55F5C542)),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: LuckdateColors.sunGold, width: 1.5),
       ),
     );
   }

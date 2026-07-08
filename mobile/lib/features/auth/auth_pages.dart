@@ -198,7 +198,7 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = GoRouter.of(context);
     return Scaffold(
-      backgroundColor: LuckdateColors.cloudIvory,
+      backgroundColor: const Color(0xFF121212),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -234,14 +234,18 @@ class LoginPage extends ConsumerWidget {
                           children: [
                             Text(
                               'Create account? ',
-                              style: LuckdateTextStyles.bodySmall,
+                              style: LuckdateTextStyles.bodySmall.copyWith(
+                                color: LuckdateColors.ivoryWhite.withValues(
+                                  alpha: 0.7,
+                                ),
+                              ),
                             ),
                             GestureDetector(
                               onTap: () => _signUp(router),
                               child: Text(
                                 'Sign up',
                                 style: LuckdateTextStyles.bodySmall.copyWith(
-                                  color: LuckdateColors.deepSage,
+                                  color: LuckdateColors.sunGold,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -268,19 +272,25 @@ class _LoginHeroHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xFF4A5638),
-            LuckdateColors.deepSage,
-            Color(0xFF6E7D52),
+            const Color(0xFF121212),
+            const Color(0xFF1A1A1A),
+            const Color(0xFF111111),
           ],
         ),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
+        ),
+        border: Border(
+          bottom: BorderSide(
+            color: LuckdateColors.sunGold.withValues(alpha: 0.25),
+            width: 1,
+          ),
         ),
       ),
       child: Stack(
@@ -288,10 +298,21 @@ class _LoginHeroHeader extends StatelessWidget {
           Positioned(
             right: -30,
             top: 20,
-            child: Icon(
-              Icons.wb_sunny_outlined,
-              size: 180,
-              color: Colors.white.withValues(alpha: 0.06),
+            child: Container(
+              width: 180,
+              height: 180,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.03),
+                border: Border.all(
+                  color: LuckdateColors.sunGold.withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(24),
+                child: SunnySunflower(size: 120, showStem: false),
+              ),
             ),
           ),
           Padding(
@@ -322,7 +343,7 @@ class _LoginHeroHeader extends StatelessWidget {
                           ),
                           const SizedBox(height: LuckdateSpacing.sm),
                           Text(
-                            'Sign in to meet Sunny\nand start your journey.',
+                            'A refined wellness ritual\nstarts with one tap.',
                             style: LuckdateTextStyles.body.copyWith(
                               color: LuckdateColors.ivoryWhite.withValues(
                                 alpha: 0.88,
@@ -334,7 +355,7 @@ class _LoginHeroHeader extends StatelessWidget {
                           Text(
                             'Grow Toward the Light',
                             style: LuckdateTextStyles.caption.copyWith(
-                              color: LuckdateColors.solarSand,
+                              color: LuckdateColors.sunGold,
                               letterSpacing: 1.2,
                               fontWeight: FontWeight.w500,
                             ),
@@ -346,10 +367,13 @@ class _LoginHeroHeader extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.12),
+                        color: Colors.white.withValues(alpha: 0.05),
                         shape: BoxShape.circle,
+                        border: Border.all(
+                          color: LuckdateColors.sunGold.withValues(alpha: 0.25),
+                        ),
                       ),
-                      child: const SunnySunflower(size: 88, showStem: true),
+                      child: const SunnySunflower(size: 88, showStem: false),
                     ),
                   ],
                 ),
@@ -419,14 +443,14 @@ class _LoginFormCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(LuckdateSpacing.xl),
         decoration: BoxDecoration(
-          color: LuckdateColors.ivoryWhite,
+          color: const Color(0xFF1A1A1A),
           borderRadius: BorderRadius.circular(LuckdateRadius.xl),
           border: Border.all(
-            color: LuckdateColors.lineSoft.withValues(alpha: 0.6),
+            color: LuckdateColors.sunGold.withValues(alpha: 0.22),
           ),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Color(0x14000000),
+              color: Color(0x26000000),
               offset: Offset(0, 12),
               blurRadius: 32,
             ),
@@ -435,7 +459,12 @@ class _LoginFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Sign In', style: LuckdateTextStyles.h2),
+            Text(
+              'Sign In',
+              style: LuckdateTextStyles.h2.copyWith(
+                color: LuckdateColors.ivoryWhite,
+              ),
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             const _UnderlineField(label: 'Email', hint: 'you@email.com'),
             const SizedBox(height: LuckdateSpacing.lg),
@@ -469,26 +498,31 @@ class _UnderlineField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: LuckdateTextStyles.caption),
+        Text(
+          label,
+          style: LuckdateTextStyles.caption.copyWith(
+            color: LuckdateColors.ivoryWhite.withValues(alpha: 0.75),
+          ),
+        ),
         TextField(
           obscureText: obscure,
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: LuckdateTextStyles.bodySmall.copyWith(
-              color: LuckdateColors.textSecondary.withValues(alpha: 0.5),
+              color: LuckdateColors.ivoryWhite.withValues(alpha: 0.35),
+            ),
+            labelStyle: LuckdateTextStyles.caption.copyWith(
+              color: LuckdateColors.ivoryWhite.withValues(alpha: 0.8),
             ),
             filled: false,
             border: const UnderlineInputBorder(
-              borderSide: BorderSide(color: LuckdateColors.lineSoft),
+              borderSide: BorderSide(color: Color(0x55F5C542)),
             ),
             enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: LuckdateColors.lineSoft),
+              borderSide: BorderSide(color: Color(0x55F5C542)),
             ),
             focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: LuckdateColors.deepSage,
-                width: 1.5,
-              ),
+              borderSide: BorderSide(color: LuckdateColors.sunGold, width: 1.5),
             ),
             contentPadding: const EdgeInsets.symmetric(
               vertical: LuckdateSpacing.sm,

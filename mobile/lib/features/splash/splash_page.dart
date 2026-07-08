@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
-import '../../core/widgets/ld_components.dart';
 import '../../core/widgets/sunny_sunflower.dart';
 
 class SplashPage extends StatefulWidget {
@@ -42,50 +41,80 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
-    return LdScaffold(
+    return Scaffold(
+      backgroundColor: const Color(0xFF0E0E0E),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: _goNext,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: 1.0 + _controller.value * 0.04,
-                    child: Container(
-                      padding: const EdgeInsets.all(LuckdateSpacing.lg),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: LuckdateColors.solarSand.withValues(
-                          alpha: 0.18 + _controller.value * 0.1,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment(0, -0.15),
+              radius: 1.1,
+              colors: [Color(0xFF1A1A1A), Color(0xFF0C0C0C)],
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: 1.0 + _controller.value * 0.03,
+                      child: Container(
+                        padding: const EdgeInsets.all(LuckdateSpacing.lg),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: LuckdateColors.sunGold.withValues(
+                              alpha: 0.35,
+                            ),
+                            width: 1,
+                          ),
+                          color: Colors.white.withValues(alpha: 0.03),
+                          boxShadow: [
+                            BoxShadow(
+                              color: LuckdateColors.sunGold.withValues(
+                                alpha: 0.2,
+                              ),
+                              blurRadius: 30,
+                              spreadRadius: 4,
+                            ),
+                          ],
                         ),
+                        child: const SunnySunflower(size: 118, showStem: false),
                       ),
-                      child: const SunnySunflower(size: 110, showStem: true),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: LuckdateSpacing.xl),
-              Text('luckdate', style: LuckdateTextStyles.display),
-              const SizedBox(height: LuckdateSpacing.sm),
-              Text(
-                'Grow Toward the Light',
-                style: LuckdateTextStyles.bodySmall,
-              ),
-              const SizedBox(height: LuckdateSpacing.sm),
-              Text(
-                'luckdate',
-                style: LuckdateTextStyles.caption.copyWith(letterSpacing: 2),
-              ),
-              const SizedBox(height: LuckdateSpacing.xxl),
-              Text(
-                'Tap anywhere to continue',
-                style: LuckdateTextStyles.caption,
-              ),
-            ],
+                    );
+                  },
+                ),
+                const SizedBox(height: LuckdateSpacing.xl),
+                Text(
+                  'luckdate',
+                  style: LuckdateTextStyles.display.copyWith(
+                    color: LuckdateColors.ivoryWhite,
+                    letterSpacing: 3,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(height: LuckdateSpacing.sm),
+                Text(
+                  'Grow Toward the Light',
+                  style: LuckdateTextStyles.bodySmall.copyWith(
+                    color: LuckdateColors.sunGold.withValues(alpha: 0.9),
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                const SizedBox(height: LuckdateSpacing.xxl),
+                Text(
+                  'Loading...',
+                  style: LuckdateTextStyles.caption.copyWith(
+                    color: LuckdateColors.ivoryWhite.withValues(alpha: 0.5),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
