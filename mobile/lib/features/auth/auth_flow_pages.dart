@@ -200,7 +200,7 @@ class RegisterSuccessPage extends ConsumerWidget {
             ),
             const Spacer(),
             LdPrimaryButton(
-              label: 'Continue your journey',
+              label: 'Continue to link order',
               onPressed: () {
                 ref.read(appStateProvider.notifier).acknowledgeCouponReward();
                 context.go('/link-order');
@@ -301,9 +301,12 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
 
   @override
   Widget build(BuildContext context) {
+    final coupon = ref.watch(appStateProvider).profile.welcomeCoupon;
+
     return LdScaffold(
       showBack: true,
-      body: Padding(
+      onBack: () => context.go('/login'),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,6 +317,37 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               'Link your order to unlock the right plan. You can skip and explore first.',
               style: LuckdateTextStyles.bodySmall,
             ),
+            if (coupon != null) ...[
+              const SizedBox(height: LuckdateSpacing.lg),
+              LdCard(
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.local_offer_outlined,
+                      color: LuckdateColors.deepSage,
+                    ),
+                    const SizedBox(width: LuckdateSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '\$${coupon.amount.toStringAsFixed(0)} welcome coupon',
+                            style: LuckdateTextStyles.body.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Valid for 30 days · storewide',
+                            style: LuckdateTextStyles.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: LuckdateSpacing.xl),
             TextField(
               controller: _orderController,
@@ -354,13 +388,14 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                 ],
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: LuckdateSpacing.xxl),
             LdPrimaryButton(label: 'Link order', onPressed: _link),
             const SizedBox(height: LuckdateSpacing.sm),
             LdSecondaryButton(
               label: 'Skip for now',
               onPressed: _skip,
             ),
+            const SizedBox(height: LuckdateSpacing.lg),
           ],
         ),
       ),

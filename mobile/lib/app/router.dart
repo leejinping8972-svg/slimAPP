@@ -58,6 +58,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return '/link-order';
         }
         if (!profile.onboardingComplete &&
+            profile.orderLinkStatus != OrderLinkStatus.notStarted &&
             path != '/onboarding' &&
             path != '/register-success' &&
             path != '/link-order') {
