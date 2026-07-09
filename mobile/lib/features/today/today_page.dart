@@ -124,7 +124,23 @@ class _TodayPageState extends ConsumerState<TodayPage> {
             TopMetricsRow(
               vitality: scores.dailyVitality,
               ritualPercent: scores.ritualCompletion,
+            ),
+            const SizedBox(height: LuckdateSpacing.lg),
+            ConsistencyCalendarCard(
               consistency5d: journey.consistency5d,
+              consistencyScore: scores.consistencyScore,
+              journeyDay: journey.day,
+              planType: profile.userPlanType,
+              todayRecord: record,
+              weightTrend: journey.weightTrend,
+              onDayTap: (index, date, dayRecord) => _showDayCheckInSheet(
+                context,
+                date: date,
+                journeyDay: journey.day - (4 - index),
+                record: dayRecord,
+                planType: profile.userPlanType,
+                isToday: index == 4,
+              ),
             ),
             if (journey.weightTrend.isNotEmpty) ...[
               const SizedBox(height: LuckdateSpacing.lg),
@@ -479,6 +495,32 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       builder: (ctx) => _SleepSheet(record: record, ref: ref),
+    );
+  }
+
+  void _showDayCheckInSheet(
+    BuildContext context, {
+    required DateTime date,
+    required int journeyDay,
+    required TodayRecord record,
+    required UserPlanType planType,
+    required bool isToday,
+  }) {
+    showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: LuckdateColors.ivoryWhite,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) => DayCheckInSheet(
+        date: date,
+        journeyDay: journeyDay > 0 ? journeyDay : null,
+        record: record,
+        planType: planType,
+        isToday: isToday,
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../app/theme/luckdate_theme.dart';
+import '../../shared/models/models.dart';
 import '../../shared/services/vitality_scorer.dart';
 import 'ld_components.dart';
 
@@ -9,12 +10,10 @@ class TopMetricsRow extends StatelessWidget {
     super.key,
     required this.vitality,
     required this.ritualPercent,
-    required this.consistency5d,
   });
 
   final int vitality;
   final int ritualPercent;
-  final List<bool> consistency5d;
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +35,6 @@ class TopMetricsRow extends StatelessWidget {
             value: '$ritualPercent%',
             subtitle: 'Today',
             progress: ritualPercent / 100,
-          ),
-        ),
-        const SizedBox(width: LuckdateSpacing.sm),
-        Expanded(
-          child: Column(
-            children: [
-              Text('Consistency', style: LuckdateTextStyles.caption),
-              const SizedBox(height: LuckdateSpacing.sm),
-              Consistency5DayStrip(values: consistency5d),
-              const SizedBox(height: 6),
-              Text('Last 5 days', style: LuckdateTextStyles.caption),
-            ],
           ),
         ),
       ],
@@ -161,9 +148,16 @@ class Consistency7DayStrip extends StatelessWidget {
 }
 
 class Consistency5DayStrip extends StatelessWidget {
-  const Consistency5DayStrip({super.key, required this.values});
+  const Consistency5DayStrip({
+    super.key,
+    required this.values,
+    this.onDayTap,
+    this.highlightToday = true,
+  });
 
   final List<bool> values;
+  final void Function(int index, DateTime date)? onDayTap;
+  final bool highlightToday;
 
   @override
   Widget build(BuildContext context) {
@@ -173,46 +167,375 @@ class Consistency5DayStrip extends StatelessWidget {
       items.insert(0, false);
     }
     final week = items.length > 5 ? items.sublist(items.length - 5) : items;
+    const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(5, (i) {
         final day = now.subtract(Duration(days: 4 - i));
         final completed = week[i];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
-          child: Column(
-            children: [
-              Text(
-                '${day.day}',
-                style: LuckdateTextStyles.caption.copyWith(
-                  fontSize: 10,
-                  color: LuckdateColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: completed
-                      ? LuckdateColors.deepSage
-                      : LuckdateColors.lineSoft.withValues(alpha: 0.5),
-                  border: Border.all(
-                    color: completed
-                        ? LuckdateColors.deepSage
-                        : LuckdateColors.lineSoft,
+        final isToday = i == 4;
+        final weekday = weekdays[day.weekday - 1];
+
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(left: i == 0 ? 0 : 4),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onDayTap == null ? null : () => onDayTap!(i, day),
+                borderRadius: BorderRadius.circular(LuckdateRadius.md),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Column(
+                    children: [
+                      Text(
+                        weekday,
+                        style: LuckdateTextStyles.caption.copyWith(
+                          fontSize: 10,
+                          color: LuckdateColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${day.day}',
+                        style: LuckdateTextStyles.caption.copyWith(
+                          fontSize: 12,
+                          fontWeight: isToday && highlightToday
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                          color: isToday && highlightToday
+                              ? LuckdateColors.chocolateBrown
+                              : LuckdateColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: completed
+                              ? LuckdateColors.deepSage
+                              : LuckdateColors.lineSoft.withValues(alpha: 0.45),
+                          border: Border.all(
+                            color: isToday && highlightToday
+                                ? LuckdateColors.sunGold
+                                : completed
+                                ? LuckdateColors.deepSage
+                                : LuckdateColors.lineSoft,
+                            width: isToday && highlightToday ? 2 : 1,
+                          ),
+                        ),
+                        child: completed
+                            ? const Icon(Icons.check, size: 14, color: Colors.white)
+                            : null,
+                      ),
+                    ],
                   ),
                 ),
-                child: completed
-                    ? const Icon(Icons.check, size: 12, color: Colors.white)
-                    : null,
               ),
-            ],
+            ),
           ),
         );
       }),
+    );
+  }
+}
+
+class ConsistencyCalendarCard extends StatelessWidget {
+  const ConsistencyCalendarCard({
+    super.key,
+    required this.consistency5d,
+    required this.consistencyScore,
+    required this.journeyDay,
+    required this.planType,
+    required this.todayRecord,
+    required this.weightTrend,
+    required this.onDayTap,
+  });
+
+  final List<bool> consistency5d;
+  final int consistencyScore;
+  final int journeyDay;
+  final UserPlanType planType;
+  final TodayRecord todayRecord;
+  final List<double> weightTrend;
+  final void Function(int index, DateTime date, TodayRecord record) onDayTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return LdCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text('Consistency', style: LuckdateTextStyles.title),
+              ),
+              Text(
+                '$consistencyScore%',
+                style: LuckdateTextStyles.title.copyWith(
+                  color: LuckdateColors.deepSage,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Last 5 days · Tap a day for check-in details',
+            style: LuckdateTextStyles.caption,
+          ),
+          const SizedBox(height: LuckdateSpacing.md),
+          Consistency5DayStrip(
+            values: consistency5d,
+            onDayTap: (index, date) {
+              final record = resolveDayCheckInRecord(
+                index: index,
+                journeyDay: journeyDay,
+                todayRecord: todayRecord,
+                weightTrend: weightTrend,
+              );
+              onDayTap(index, date, record);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+TodayRecord resolveDayCheckInRecord({
+  required int index,
+  required int journeyDay,
+  required TodayRecord todayRecord,
+  required List<double> weightTrend,
+}) {
+  final targetJourneyDay = journeyDay - (4 - index);
+  if (targetJourneyDay < 1 || targetJourneyDay > journeyDay) {
+    return const TodayRecord();
+  }
+  if (targetJourneyDay == journeyDay) {
+    return todayRecord;
+  }
+
+  final weight = weightTrend.length >= targetJourneyDay
+      ? weightTrend[targetJourneyDay - 1]
+      : 0.0;
+  final moods = ['okay', 'good', 'great'];
+  return TodayRecord(
+    productTaken: ProductTakenStatus.taken,
+    hydrationMl: 1200 + (targetJourneyDay * 137) % 800,
+    weightRecorded: weight > 0,
+    weightValueKg: weight > 0 ? weight : 68 - targetJourneyDay * 0.12,
+    sleepHours: 6.5 + (targetJourneyDay % 3) * 0.5,
+    sleepQuality: 'good',
+    moodTag: moods[targetJourneyDay % moods.length],
+  );
+}
+
+bool dayCheckInHasData(TodayRecord record, UserPlanType planType) {
+  if (record.productTaken == ProductTakenStatus.taken) return true;
+  if (record.hydrationMl > 0) return true;
+  if (record.weightRecorded) return true;
+  if (record.sleepHours > 0) return true;
+  if (record.moodTag.isNotEmpty) return true;
+  if (planType == UserPlanType.nonMealReplacement &&
+      record.productTaken != ProductTakenStatus.notRecorded) {
+    return true;
+  }
+  return false;
+}
+
+class DayCheckInSheet extends StatelessWidget {
+  const DayCheckInSheet({
+    super.key,
+    required this.date,
+    required this.journeyDay,
+    required this.record,
+    required this.planType,
+    required this.isToday,
+  });
+
+  final DateTime date;
+  final int? journeyDay;
+  final TodayRecord record;
+  final UserPlanType planType;
+  final bool isToday;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasData = dayCheckInHasData(record, planType);
+    final monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final dateLabel =
+        '${monthNames[date.month - 1]} ${date.day}, ${date.year}';
+    final ritualPercent = VitalityScorer.ritualCompletion(record, planType);
+
+    return LdBottomSheetBody(
+      children: [
+        Text(
+          isToday ? 'Today\'s check-in' : 'Check-in record',
+          style: LuckdateTextStyles.h2,
+        ),
+        const SizedBox(height: LuckdateSpacing.xs),
+        Text(dateLabel, style: LuckdateTextStyles.bodySmall),
+        if (journeyDay != null && journeyDay! > 0) ...[
+          const SizedBox(height: 4),
+          Text(
+            'Journey Day $journeyDay',
+            style: LuckdateTextStyles.caption.copyWith(
+              color: LuckdateColors.deepSage,
+            ),
+          ),
+        ],
+        const SizedBox(height: LuckdateSpacing.lg),
+        if (!hasData)
+          const StatePlaceholder(
+            type: 'empty',
+            title: 'No check-in yet',
+            message: 'No ritual logs were recorded for this day.',
+          )
+        else ...[
+          _CheckInRow(
+            icon: Icons.local_drink_outlined,
+            label: planType == UserPlanType.mealReplacement
+                ? 'Solar Protein'
+                : 'Product',
+            value: record.productTaken == ProductTakenStatus.taken
+                ? 'Completed'
+                : 'Not logged',
+            done: record.productTaken == ProductTakenStatus.taken,
+          ),
+          _CheckInRow(
+            icon: Icons.water_drop_outlined,
+            label: 'Hydration',
+            value: record.hydrationMl > 0
+                ? '${record.hydrationMl} ml'
+                : 'Not logged',
+            done: record.hydrationMl > 0,
+          ),
+          _CheckInRow(
+            icon: Icons.monitor_weight_outlined,
+            label: 'Weight',
+            value: record.weightRecorded
+                ? '${record.weightValueKg.toStringAsFixed(1)} kg'
+                : 'Not logged',
+            done: record.weightRecorded,
+          ),
+          if (planType == UserPlanType.mealReplacement) ...[
+            _CheckInRow(
+              icon: Icons.bedtime_outlined,
+              label: 'Sleep',
+              value: record.sleepHours > 0
+                  ? '${record.sleepHours.toStringAsFixed(1)} h'
+                  : 'Not logged',
+              done: record.sleepHours > 0,
+            ),
+            _CheckInRow(
+              icon: Icons.mood_outlined,
+              label: 'Mood',
+              value: record.moodTag.isNotEmpty
+                  ? record.moodTag[0].toUpperCase() + record.moodTag.substring(1)
+                  : 'Not logged',
+              done: record.moodTag.isNotEmpty,
+            ),
+          ],
+          const SizedBox(height: LuckdateSpacing.md),
+          LdCard(
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.bolt_outlined,
+                  color: LuckdateColors.sunGold,
+                ),
+                const SizedBox(width: LuckdateSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Ritual completion', style: LuckdateTextStyles.title),
+                      Text(
+                        '$ritualPercent% of today\'s rituals',
+                        style: LuckdateTextStyles.caption,
+                      ),
+                    ],
+                  ),
+                ),
+                Text('$ritualPercent%', style: LuckdateTextStyles.h2),
+              ],
+            ),
+          ),
+        ],
+        const SizedBox(height: LuckdateSpacing.lg),
+        LdSecondaryButton(
+          label: 'Close',
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
+    );
+  }
+}
+
+class _CheckInRow extends StatelessWidget {
+  const _CheckInRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.done,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool done;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
+      child: LdCard(
+        completed: done,
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: done
+                  ? LuckdateColors.deepSage
+                  : LuckdateColors.textSecondary,
+            ),
+            const SizedBox(width: LuckdateSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label, style: LuckdateTextStyles.title),
+                  Text(value, style: LuckdateTextStyles.caption),
+                ],
+              ),
+            ),
+            Icon(
+              done ? Icons.check_circle : Icons.radio_button_unchecked,
+              color: done
+                  ? LuckdateColors.deepSage
+                  : LuckdateColors.lineSoft,
+              size: 20,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
