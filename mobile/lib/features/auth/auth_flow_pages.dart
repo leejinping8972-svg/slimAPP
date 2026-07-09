@@ -168,7 +168,10 @@ class RegisterSuccessPage extends ConsumerWidget {
 
     return LdScaffold(
       showBack: true,
-      onBack: () => context.go('/login'),
+      onBack: () {
+        ref.read(appStateProvider.notifier).clearLoginSession();
+        context.go('/login');
+      },
       body: Padding(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(

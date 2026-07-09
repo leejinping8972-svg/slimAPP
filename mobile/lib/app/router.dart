@@ -45,6 +45,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!profile.isLoggedIn && !isPublicAuth) return '/login';
 
       if (profile.isLoggedIn) {
+        if (!profile.isNewRegistration &&
+            (path == '/register-success' || path == '/link-order')) {
+          return '/today';
+        }
         if (profile.isNewRegistration &&
             !profile.couponRewardSeen &&
             path != '/register-success') {
@@ -58,6 +62,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return '/link-order';
         }
         if (!profile.onboardingComplete &&
+            profile.isNewRegistration &&
             profile.orderLinkStatus != OrderLinkStatus.notStarted &&
             path != '/onboarding' &&
             path != '/register-success' &&
@@ -67,7 +72,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         if (profile.onboardingComplete &&
             (path == '/login' ||
                 path == '/register' ||
-                path == '/onboarding')) {
+                path == '/onboarding' ||
+                path == '/register-success' ||
+                path == '/link-order')) {
           return '/today';
         }
       }

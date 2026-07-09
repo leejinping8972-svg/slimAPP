@@ -180,12 +180,7 @@ class LoginPage extends ConsumerWidget {
 
   void _signIn(GoRouter router, WidgetRef ref) {
     ref.read(appStateProvider.notifier).loginExistingUser();
-    final profile = ref.read(appStateProvider).profile;
-    if (profile.onboardingComplete) {
-      router.go('/today');
-    } else {
-      router.go('/onboarding');
-    }
+    router.go('/today');
   }
 
   void _signUp(GoRouter router) => router.go('/register');

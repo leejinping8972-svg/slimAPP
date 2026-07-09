@@ -25,7 +25,7 @@ void main() {
     return router;
   }
 
-  testWidgets('Login Sign in navigates to onboarding', (tester) async {
+  testWidgets('Login Sign in navigates to home', (tester) async {
     final router = await pumpApp(tester);
     router.go('/login');
     await tester.pumpAndSettle();
@@ -39,18 +39,19 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hi, I am Viva'), findsOneWidget);
+    expect(find.text('Today\'s Ritual'), findsOneWidget);
   });
 
-  testWidgets('Onboarding back returns to login from first step', (tester) async {
+  testWidgets('Register success back clears session and returns to login',
+      (tester) async {
     final router = await pumpApp(tester);
-    router.go('/login');
+    router.go('/register');
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hi, I am Viva'), findsOneWidget);
+    expect(find.text('Welcome to luckdate'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.arrow_back_ios_new).first);
     await tester.pumpAndSettle();

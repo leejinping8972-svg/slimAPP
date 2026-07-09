@@ -84,6 +84,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
       profile: state.profile.copyWith(
         isLoggedIn: true,
         isNewRegistration: false,
+        onboardingComplete: true,
+        couponRewardSeen: true,
+        orderLinkStatus: OrderLinkStatus.linked,
+        userPlanType: UserPlanType.mealReplacement,
+        linkedOrderNo: 'LD-DEMO-001',
+        linkedProductName: 'Solar Protein 28-Day',
       ),
     );
   }
