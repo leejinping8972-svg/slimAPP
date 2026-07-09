@@ -16,6 +16,16 @@ class ChatPage extends ConsumerStatefulWidget {
 class _ChatPageState extends ConsumerState<ChatPage> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
+  bool _canSend = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      final canSend = _controller.text.trim().isNotEmpty;
+      if (canSend != _canSend) setState(() => _canSend = canSend);
+    });
+  }
 
   @override
   void dispose() {
@@ -44,40 +54,19 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     ref.listen(appStateProvider, (_, __) => _scrollToBottom());
 
-    return Scaffold(
-      backgroundColor: LuckdateColors.cloudIvory,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-          onPressed: () => context.go('/today'),
-        ),
-        title: const Text('Chatviva'),
-        centerTitle: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: LuckdateSpacing.md),
-            child: GestureDetector(
-              onTap: () => context.push('/profile'),
-              child: CircleAvatar(
-                radius: 16,
-                backgroundColor: LuckdateColors.solarSand.withValues(
-                  alpha: 0.45,
-                ),
-                child: Text(
-                  state.profile.nickname.isNotEmpty
-                      ? state.profile.nickname[0].toUpperCase()
-                      : 'L',
-                  style: LuckdateTextStyles.caption.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
+    return LdScaffold(
+      title: 'Viva',
+      showBack: true,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: LuckdateSpacing.md),
+          child: LdProfileAvatar(
+            nickname: state.profile.nickname,
+            radius: 18,
+            onTap: () => context.push('/profile'),
           ),
-        ],
-      ),
+        ),
+      ],
       body: Column(
         children: [
           Padding(
@@ -90,36 +79,35 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             child: _TodayMiniCard(record: record),
           ),
           if (_isEveningMoodWindow())
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.fromLTRB(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
                 LuckdateSpacing.lg,
                 0,
                 LuckdateSpacing.lg,
                 LuckdateSpacing.sm,
               ),
-              padding: const EdgeInsets.all(LuckdateSpacing.md),
-              decoration: BoxDecoration(
-                color: LuckdateColors.sunGold.withValues(alpha: 0.18),
-                borderRadius: BorderRadius.circular(LuckdateRadius.lg),
-              ),
-              child: Text(
-                'Evening check-in: how are you feeling tonight?',
-                style: LuckdateTextStyles.bodySmall,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(LuckdateSpacing.md),
+                decoration: BoxDecoration(
+                  color: LuckdateColors.sunGold.withValues(alpha: 0.18),
+                  borderRadius: BorderRadius.circular(LuckdateRadius.lg),
+                ),
+                child: Text(
+                  'Evening check-in: how are you feeling tonight?',
+                  style: LuckdateTextStyles.bodySmall,
+                ),
               ),
             ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: LuckdateSpacing.lg,
-              vertical: LuckdateSpacing.sm,
-            ),
-            color: LuckdateColors.sageSoft,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
             child: Text(
               'Viva provides lifestyle companionship — not medical advice.',
               style: LuckdateTextStyles.caption,
+              textAlign: TextAlign.center,
             ),
           ),
+          const SizedBox(height: LuckdateSpacing.sm),
           Expanded(
             child: ListView.separated(
               controller: _scrollController,
@@ -150,21 +138,32 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(LuckdateSpacing.lg),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                hintText: 'Ask Viva anything...',
-                suffixIcon: IconButton(
-                  icon: const Icon(
-                    Icons.send_rounded,
-                    color: LuckdateColors.deepSage,
-                  ),
-                  onPressed: _send,
-                ),
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                LuckdateSpacing.lg,
+                LuckdateSpacing.sm,
+                LuckdateSpacing.lg,
+                LuckdateSpacing.lg +
+                    MediaQuery.viewInsetsOf(context).bottom,
               ),
-              onSubmitted: (_) => _send(),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: 'Ask Viva anything...',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.send_rounded,
+                      color: _canSend
+                          ? LuckdateColors.deepSage
+                          : LuckdateColors.lineSoft,
+                    ),
+                    onPressed: _canSend ? _send : null,
+                  ),
+                ),
+                onSubmitted: (_) => _send(),
+              ),
             ),
           ),
         ],
@@ -236,28 +235,32 @@ class _TodayMiniCard extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: LuckdateSpacing.sm),
-          Row(
+          Wrap(
+            spacing: LuckdateSpacing.sm,
+            runSpacing: LuckdateSpacing.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text('Mood', style: LuckdateTextStyles.caption),
-              const SizedBox(width: LuckdateSpacing.sm),
               ..._moods.map((mood) {
                 final selected = record.moodTag == mood.$1;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 6),
+                return Material(
+                  color: Colors.transparent,
                   child: InkWell(
                     onTap: () =>
                         ref.read(appStateProvider.notifier).logMood(mood.$1),
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
+                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                    child: Ink(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+                        horizontal: 12,
+                        vertical: 8,
                       ),
                       decoration: BoxDecoration(
                         color: selected
                             ? LuckdateColors.sageSoft
                             : Colors.transparent,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(
+                          LuckdateRadius.pill,
+                        ),
                         border: Border.all(
                           color: selected
                               ? LuckdateColors.deepSage

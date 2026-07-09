@@ -114,20 +114,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                     ],
                   ),
                 ),
-                GestureDetector(
+                LdProfileAvatar(
+                  nickname: profile.nickname,
                   onTap: () => context.push('/profile'),
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: LuckdateColors.solarSand.withValues(
-                      alpha: 0.45,
-                    ),
-                    child: Text(
-                      profile.nickname.isNotEmpty
-                          ? profile.nickname[0].toUpperCase()
-                          : 'L',
-                      style: LuckdateTextStyles.title,
-                    ),
-                  ),
                 ),
               ],
             ),
@@ -185,8 +174,8 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                     ),
                   ),
                   const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
+                    Icons.chevron_right,
+                    size: 20,
                     color: LuckdateColors.textSecondary,
                   ),
                 ],
@@ -347,6 +336,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
   Widget _purchaseGuideCard(BuildContext context, WidgetRef ref) {
     return LdCard(
+      accentColor: LuckdateColors.sunGold,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -385,7 +375,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
               TextButton(
                 onPressed: () =>
                     ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
-                child: const Text('Dismiss for 24h'),
+                child: const Text('Dismiss'),
               ),
             ],
           ),
@@ -584,35 +574,31 @@ class _HydrationSheetState extends State<_HydrationSheet>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(LuckdateSpacing.lg),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Hydration', style: LuckdateTextStyles.h2),
-          const SizedBox(height: LuckdateSpacing.base),
-          ScaleTransition(
-            scale: _pulse,
-            child: Icon(
-              Icons.water_drop_rounded,
-              size: 56,
-              color: LuckdateColors.deepSage.withValues(alpha: 0.85),
-            ),
+    return LdBottomSheetBody(
+      children: [
+        Text('Hydration', style: LuckdateTextStyles.h2),
+        const SizedBox(height: LuckdateSpacing.base),
+        ScaleTransition(
+          scale: _pulse,
+          child: Icon(
+            Icons.water_drop_rounded,
+            size: 56,
+            color: LuckdateColors.deepSage.withValues(alpha: 0.85),
           ),
-          const SizedBox(height: LuckdateSpacing.sm),
-          Text(
-            '$_ml / ${widget.target} ml',
-            style: LuckdateTextStyles.display.copyWith(fontSize: 36),
-          ),
-          const SizedBox(height: LuckdateSpacing.lg),
-          LdPrimaryButton(label: '+ 250 ml', onPressed: () => _addWater(250)),
-          const SizedBox(height: LuckdateSpacing.sm),
-          LdSecondaryButton(
-            label: 'Done',
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: LuckdateSpacing.sm),
+        Text(
+          '$_ml / ${widget.target} ml',
+          style: LuckdateTextStyles.display.copyWith(fontSize: 36),
+        ),
+        const SizedBox(height: LuckdateSpacing.lg),
+        LdPrimaryButton(label: '+ 250 ml', onPressed: () => _addWater(250)),
+        const SizedBox(height: LuckdateSpacing.sm),
+        LdSecondaryButton(
+          label: 'Done',
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
     );
   }
 }
@@ -647,51 +633,47 @@ class _WeightSheetState extends State<_WeightSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(LuckdateSpacing.lg),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Weight', style: LuckdateTextStyles.h2),
-          Text(
-            'Default range ±3 kg. Drag to the edge to expand.',
-            style: LuckdateTextStyles.bodySmall,
-          ),
-          Slider(
-            value: _weight.clamp(_min, _max),
-            min: _min,
-            max: _max,
-            divisions: ((_max - _min) * 10).round().clamp(1, 800),
-            activeColor: LuckdateColors.deepSage,
-            onChanged: (v) {
-              setState(() {
-                _weight = v;
-                if (v <= _min + 0.05) _min = (_min - 1).clamp(40, _weight);
-                if (v >= _max - 0.05) _max = (_max + 1).clamp(_weight, 120);
-              });
-            },
-          ),
-          Text(
-            '${_weight.toStringAsFixed(1)} kg',
-            style: LuckdateTextStyles.h1,
-          ),
-          const SizedBox(height: LuckdateSpacing.base),
-          LdPrimaryButton(
-            label: 'Log weight',
-            onPressed: () {
-              widget.ref
-                  .read(appStateProvider.notifier)
-                  .updateTodayRecord(
-                    widget.record.copyWith(
-                      weightRecorded: true,
-                      weightValueKg: _weight,
-                    ),
-                  );
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
+    return LdBottomSheetBody(
+      children: [
+        Text('Weight', style: LuckdateTextStyles.h2),
+        Text(
+          'Default range ±3 kg. Drag to the edge to expand.',
+          style: LuckdateTextStyles.bodySmall,
+        ),
+        Slider(
+          value: _weight.clamp(_min, _max),
+          min: _min,
+          max: _max,
+          divisions: ((_max - _min) * 10).round().clamp(1, 800),
+          activeColor: LuckdateColors.deepSage,
+          onChanged: (v) {
+            setState(() {
+              _weight = v;
+              if (v <= _min + 0.05) _min = (_min - 1).clamp(40, _weight);
+              if (v >= _max - 0.05) _max = (_max + 1).clamp(_weight, 120);
+            });
+          },
+        ),
+        Text(
+          '${_weight.toStringAsFixed(1)} kg',
+          style: LuckdateTextStyles.h1,
+        ),
+        const SizedBox(height: LuckdateSpacing.base),
+        LdPrimaryButton(
+          label: 'Log weight',
+          onPressed: () {
+            widget.ref
+                .read(appStateProvider.notifier)
+                .updateTodayRecord(
+                  widget.record.copyWith(
+                    weightRecorded: true,
+                    weightValueKg: _weight,
+                  ),
+                );
+            Navigator.pop(context);
+          },
+        ),
+      ],
     );
   }
 }
@@ -717,41 +699,37 @@ class _SleepSheetState extends State<_SleepSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(LuckdateSpacing.lg),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('How long did you sleep?', style: LuckdateTextStyles.h2),
-          const SizedBox(height: LuckdateSpacing.md),
-          Text(
-            '${_hours.toStringAsFixed(1)} hours',
-            style: LuckdateTextStyles.display.copyWith(fontSize: 32),
-          ),
-          Slider(
-            value: _hours,
-            min: 4,
-            max: 12,
-            divisions: 16,
-            activeColor: LuckdateColors.deepSage,
-            onChanged: (v) => setState(() => _hours = v),
-          ),
-          LdPrimaryButton(
-            label: 'Save',
-            onPressed: () {
-              widget.ref
-                  .read(appStateProvider.notifier)
-                  .updateTodayRecord(
-                    widget.record.copyWith(
-                      sleepHours: _hours,
-                      sleepQuality: 'logged',
-                    ),
-                  );
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
+    return LdBottomSheetBody(
+      children: [
+        Text('How long did you sleep?', style: LuckdateTextStyles.h2),
+        const SizedBox(height: LuckdateSpacing.md),
+        Text(
+          '${_hours.toStringAsFixed(1)} hours',
+          style: LuckdateTextStyles.display.copyWith(fontSize: 32),
+        ),
+        Slider(
+          value: _hours,
+          min: 4,
+          max: 12,
+          divisions: 16,
+          activeColor: LuckdateColors.deepSage,
+          onChanged: (v) => setState(() => _hours = v),
+        ),
+        LdPrimaryButton(
+          label: 'Save',
+          onPressed: () {
+            widget.ref
+                .read(appStateProvider.notifier)
+                .updateTodayRecord(
+                  widget.record.copyWith(
+                    sleepHours: _hours,
+                    sleepQuality: 'logged',
+                  ),
+                );
+            Navigator.pop(context);
+          },
+        ),
+      ],
     );
   }
 }

@@ -135,6 +135,19 @@ class JourneyPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.md),
             _dayMap(journey),
+            const SizedBox(height: LuckdateSpacing.sm),
+            Row(
+              children: [
+                _legendDot(LuckdateColors.deepSage, 'Completed'),
+                const SizedBox(width: LuckdateSpacing.md),
+                _legendDot(LuckdateColors.sunGold, 'Today'),
+                const SizedBox(width: LuckdateSpacing.md),
+                _legendDot(
+                  LuckdateColors.lineSoft.withValues(alpha: 0.8),
+                  'Upcoming',
+                ),
+              ],
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
@@ -361,6 +374,20 @@ class Day28ReportPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(appStateProvider);
+    final journey = state.journey;
+    final profile = state.profile;
+    final startVitality = journey.vitalityTrend.isNotEmpty
+        ? journey.vitalityTrend.first
+        : 0.0;
+    final endVitality = journey.day > 0 && journey.vitalityTrend.length >= journey.day
+        ? journey.vitalityTrend[journey.day - 1]
+        : journey.vitalityScores.dailyVitality.toDouble();
+    final vitalityChange = (endVitality - startVitality).round();
+    final activeDays = journey.dayStatuses
+        .where((status) => status == 'completed' || status == 'today')
+        .length;
+
     return LdScaffold(
       title: 'Day 28 Report',
       showBack: true,
@@ -382,20 +409,20 @@ class Day28ReportPage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             VitalityMetricCard(
               label: 'Completion',
-              value: '87%',
+              value: '${journey.completionPercent}%',
               subtitle: 'Ritual completion rate',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
               label: 'Days active',
-              value: '24',
+              value: '$activeDays',
               subtitle: 'Days with records',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
               label: 'Vitality change',
-              value: '+18%',
-              subtitle: 'From Day 1 to Day 28',
+              value: '${vitalityChange >= 0 ? '+' : ''}$vitalityChange',
+              subtitle: 'From Day 1 to Day ${journey.day}',
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
@@ -404,7 +431,7 @@ class Day28ReportPage extends ConsumerWidget {
                   const LdSunnyAvatar(size: 56),
                   const SizedBox(height: LuckdateSpacing.md),
                   Text(
-                    'Freya, 28 days of gentle steps. You did not chase perfection — you built a rhythm. Ready for your next journey?',
+                    '${profile.nickname}, 28 days of gentle steps. You did not chase perfection — you built a rhythm. Ready for your next journey?',
                     style: LuckdateTextStyles.body,
                     textAlign: TextAlign.center,
                   ),
@@ -435,16 +462,25 @@ class _ProfileEntryAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return LdProfileAvatar(
+      nickname: nickname,
+      radius: 18,
       onTap: () => context.push('/profile'),
-      child: CircleAvatar(
-        radius: 18,
-        backgroundColor: LuckdateColors.solarSand.withValues(alpha: 0.45),
-        child: Text(
-          nickname.isNotEmpty ? nickname[0].toUpperCase() : 'L',
-          style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w700),
-        ),
-      ),
     );
   }
+}
+
+Widget _legendDot(Color color, String label) {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Container(
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      ),
+      const SizedBox(width: 4),
+      Text(label, style: LuckdateTextStyles.caption),
+    ],
+  );
 }

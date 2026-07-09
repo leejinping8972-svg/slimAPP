@@ -65,12 +65,14 @@ class LdCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(LuckdateSpacing.base),
     this.completed = false,
     this.onTap,
+    this.accentColor,
   });
 
   final Widget child;
   final EdgeInsets padding;
   final bool completed;
   final VoidCallback? onTap;
+  final Color? accentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,25 @@ class LdCard extends StatelessWidget {
               ),
             ],
           ),
-          child: child,
+          child: accentColor == null
+              ? child
+              : IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        width: 4,
+                        decoration: BoxDecoration(
+                          color: accentColor,
+                          borderRadius: const BorderRadius.horizontal(
+                            left: Radius.circular(LuckdateRadius.xl),
+                          ),
+                        ),
+                      ),
+                      Expanded(child: child),
+                    ],
+                  ),
+                ),
         ),
       ),
     );
@@ -182,7 +202,80 @@ class LdSecondaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(LuckdateRadius.pill),
         ),
       ),
-      child: Text(label),
+      child: Text(
+        label,
+        style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+}
+
+class LdProfileAvatar extends StatelessWidget {
+  const LdProfileAvatar({
+    super.key,
+    required this.nickname,
+    this.radius = 20,
+    this.onTap,
+  });
+
+  final String nickname;
+  final double radius;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final avatar = CircleAvatar(
+      radius: radius,
+      backgroundColor: LuckdateColors.solarSand.withValues(alpha: 0.45),
+      child: Text(
+        nickname.isNotEmpty ? nickname[0].toUpperCase() : 'L',
+        style: (radius >= 28 ? LuckdateTextStyles.h2 : LuckdateTextStyles.title)
+            .copyWith(fontSize: radius >= 28 ? null : radius * 0.85),
+      ),
+    );
+    if (onTap == null) return avatar;
+    return GestureDetector(onTap: onTap, child: avatar);
+  }
+}
+
+class LdSheetHandle extends StatelessWidget {
+  const LdSheetHandle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: 40,
+        height: 4,
+        margin: const EdgeInsets.only(bottom: LuckdateSpacing.md),
+        decoration: BoxDecoration(
+          color: LuckdateColors.lineSoft,
+          borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        ),
+      ),
+    );
+  }
+}
+
+class LdBottomSheetBody extends StatelessWidget {
+  const LdBottomSheetBody({super.key, required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        LuckdateSpacing.lg,
+        LuckdateSpacing.sm,
+        LuckdateSpacing.lg,
+        LuckdateSpacing.lg + bottomInset,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [const LdSheetHandle(), ...children],
+      ),
     );
   }
 }
@@ -203,28 +296,32 @@ class LdChoiceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(
-          color: selected
-              ? (color ?? LuckdateColors.deepSage).withValues(alpha: 0.15)
-              : LuckdateColors.ivoryWhite,
-          borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-          border: Border.all(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        child: Ink(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
             color: selected
-                ? (color ?? LuckdateColors.deepSage)
-                : LuckdateColors.lineSoft,
+                ? (color ?? LuckdateColors.deepSage).withValues(alpha: 0.15)
+                : LuckdateColors.ivoryWhite,
+            borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+            border: Border.all(
+              color: selected
+                  ? (color ?? LuckdateColors.deepSage)
+                  : LuckdateColors.lineSoft,
+            ),
           ),
-        ),
-        child: Text(
-          label,
-          style: LuckdateTextStyles.bodySmall.copyWith(
-            color: selected
-                ? LuckdateColors.deepSage
-                : LuckdateColors.textSecondary,
-            fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+          child: Text(
+            label,
+            style: LuckdateTextStyles.bodySmall.copyWith(
+              color: selected
+                  ? LuckdateColors.deepSage
+                  : LuckdateColors.textSecondary,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+            ),
           ),
         ),
       ),
@@ -271,10 +368,15 @@ class SunnyBubble extends StatelessWidget {
                 bottomRight: Radius.circular(LuckdateRadius.lg),
               ),
             ),
-            child: Text(
-              isStreaming && text.isEmpty ? '...' : text,
-              style: LuckdateTextStyles.body,
-            ),
+            child: isStreaming && text.isEmpty
+                ? Text(
+                    '●  ●  ●',
+                    style: LuckdateTextStyles.body.copyWith(
+                      color: LuckdateColors.textSecondary,
+                      letterSpacing: 2,
+                    ),
+                  )
+                : Text(text, style: LuckdateTextStyles.body),
           ),
         ),
       ],
@@ -440,11 +542,15 @@ class RitualCard extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            completed ? Icons.check_circle_rounded : Icons.circle_outlined,
-            color: completed
-                ? LuckdateColors.deepSage
-                : LuckdateColors.lineSoft,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 220),
+            child: Icon(
+              completed ? Icons.check_circle_rounded : Icons.circle_outlined,
+              key: ValueKey(completed),
+              color: completed
+                  ? LuckdateColors.deepSage
+                  : LuckdateColors.lineSoft,
+            ),
           ),
         ],
       ),
@@ -574,14 +680,22 @@ class BadgeCard extends StatelessWidget {
 }
 
 class StatePlaceholder extends StatelessWidget {
-  const StatePlaceholder({super.key, required this.type, this.onRetry});
+  const StatePlaceholder({
+    super.key,
+    required this.type,
+    this.onRetry,
+    this.title,
+    this.message,
+  });
 
   final String type;
   final VoidCallback? onRetry;
+  final String? title;
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
-    final (icon, title, message) = switch (type) {
+    final (icon, defaultTitle, defaultMessage) = switch (type) {
       'loading' => (
         Icons.hourglass_top_rounded,
         'Loading',
@@ -604,18 +718,30 @@ class StatePlaceholder extends StatelessWidget {
       ),
       _ => (Icons.info_outline, 'Notice', ''),
     };
+    final displayTitle = title ?? defaultTitle;
+    final displayMessage = message ?? defaultMessage;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(LuckdateSpacing.xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 48, color: LuckdateColors.vitalitySage),
+            if (type == 'loading')
+              const SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: LuckdateColors.deepSage,
+                ),
+              )
+            else
+              Icon(icon, size: 48, color: LuckdateColors.vitalitySage),
             const SizedBox(height: LuckdateSpacing.base),
-            Text(title, style: LuckdateTextStyles.title),
+            Text(displayTitle, style: LuckdateTextStyles.title),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              message,
+              displayMessage,
               style: LuckdateTextStyles.bodySmall,
               textAlign: TextAlign.center,
             ),

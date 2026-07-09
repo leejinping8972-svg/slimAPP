@@ -160,7 +160,7 @@ class _MainShell extends StatelessWidget {
                 NavigationDestination(
                   icon: Icon(Icons.chat_bubble_outline_rounded),
                   selectedIcon: Icon(Icons.chat_bubble_rounded),
-                  label: 'Chatviva',
+                  label: 'Viva',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.explore_outlined),

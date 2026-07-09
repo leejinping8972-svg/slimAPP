@@ -221,8 +221,8 @@ class OrderLinkPage extends ConsumerStatefulWidget {
 }
 
 class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
-  final _orderController = TextEditingController(text: 'ORD-2026-MEAL');
-  final _phoneController = TextEditingController(text: '1234');
+  final _orderController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   @override
   void dispose() {
@@ -301,7 +301,10 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             const SizedBox(height: LuckdateSpacing.xl),
             TextField(
               controller: _orderController,
-              decoration: const InputDecoration(labelText: 'Order number'),
+              decoration: const InputDecoration(
+                labelText: 'Order number',
+                hintText: 'ORD-2026-MEAL',
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.base),
             TextField(
@@ -310,6 +313,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               maxLength: 4,
               decoration: const InputDecoration(
                 labelText: 'Last 4 digits of phone',
+                hintText: '1234',
               ),
             ),
             const SizedBox(height: LuckdateSpacing.base),

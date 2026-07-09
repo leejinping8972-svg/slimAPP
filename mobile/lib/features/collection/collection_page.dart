@@ -100,7 +100,13 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                                 return LdChoiceChip(
                                   label: d,
                                   selected: false,
-                                  onTap: () {},
+                                  onTap: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Coming soon'),
+                                      ),
+                                    );
+                                  },
                                 );
                               }).toList(),
                         ),
@@ -134,7 +140,14 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   ),
                 ),
                 const SizedBox(height: LuckdateSpacing.lg),
-                GridView.builder(
+                if (filtered.isEmpty)
+                  const StatePlaceholder(
+                    type: 'empty',
+                    title: 'No products found',
+                    message: 'Try another category to explore more options.',
+                  )
+                else
+                  GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -39,7 +39,16 @@ class LuckdateRadius {
   static const md = 12.0;
   static const lg = 18.0;
   static const xl = 24.0;
+  static const sheet = 28.0;
   static const pill = 999.0;
+}
+
+class LuckdateGradients {
+  static const authHero = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFFFAF8F2), Color(0xFFF5F0E4)],
+  );
 }
 
 class LuckdateTextStyles {
@@ -86,8 +95,8 @@ class LuckdateTextStyles {
     color: LuckdateColors.textSecondary,
   );
   static const tabLabel = TextStyle(
-    fontSize: 11,
-    height: 14 / 11,
+    fontSize: 12,
+    height: 16 / 12,
     fontWeight: FontWeight.w500,
   );
 }
@@ -142,6 +151,36 @@ ThemeData buildLuckdateTheme() {
       bodyLarge: LuckdateTextStyles.body,
       bodyMedium: LuckdateTextStyles.bodySmall,
       labelSmall: LuckdateTextStyles.caption,
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: LuckdateColors.ivoryWhite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(LuckdateRadius.xl),
+      ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: LuckdateColors.textPrimary,
+      contentTextStyle: LuckdateTextStyles.body.copyWith(
+        color: LuckdateColors.ivoryWhite,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+      ),
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: LuckdateColors.ivoryWhite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(LuckdateRadius.sheet),
+        ),
+      ),
+    ),
+    navigationBarTheme: NavigationBarThemeData(
+      height: 72,
+      backgroundColor: LuckdateColors.ivoryWhite,
+      indicatorColor: LuckdateColors.sageSoft,
+      labelTextStyle: WidgetStatePropertyAll(LuckdateTextStyles.tabLabel),
     ),
   );
 }

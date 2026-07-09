@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class ProfilePage extends ConsumerWidget {
     final journey = state.journey;
 
     return LdScaffold(
+      title: 'Profile',
       showBack: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -24,16 +26,7 @@ class ProfilePage extends ConsumerWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 36,
-                  backgroundColor: LuckdateColors.solarSand.withValues(
-                    alpha: 0.4,
-                  ),
-                  child: Text(
-                    profile.nickname.isNotEmpty ? profile.nickname[0] : 'F',
-                    style: LuckdateTextStyles.h2,
-                  ),
-                ),
+                LdProfileAvatar(nickname: profile.nickname, radius: 36),
                 const SizedBox(width: LuckdateSpacing.base),
                 Expanded(
                   child: Column(
@@ -72,8 +65,15 @@ class ProfilePage extends ConsumerWidget {
               Icons.straighten,
               'Units',
               '${profile.weightUnit} / ${profile.heightUnit}',
+              showChevron: false,
             ),
-            _settingsTile(context, Icons.language, 'Language', 'English (US)'),
+            _settingsTile(
+              context,
+              Icons.language,
+              'Language',
+              'English (US)',
+              showChevron: false,
+            ),
             _settingsTile(
               context,
               Icons.notifications_outlined,
@@ -149,60 +149,64 @@ class ProfilePage extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: LuckdateSpacing.xl),
-            _sectionTitle('Demo Controls'),
-            Text(
-              'Switch journey day for presentations',
-              style: LuckdateTextStyles.bodySmall,
-            ),
-            const SizedBox(height: LuckdateSpacing.md),
-            Row(
-              children: [
-                Expanded(
-                  child: _dayBtn(ref, DemoDay.day1, 'Day 1', state.demoDay),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _dayBtn(ref, DemoDay.day12, 'Day 12', state.demoDay),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _dayBtn(ref, DemoDay.day28, 'Day 28', state.demoDay),
-                ),
-              ],
-            ),
-            const SizedBox(height: LuckdateSpacing.md),
-            Row(
-              children: [
-                Expanded(
-                  child: LdSecondaryButton(
-                    label: 'Show Loading',
-                    onPressed: () => ref
-                        .read(appStateProvider.notifier)
-                        .toggleLoadingDemo(true),
+            if (kDebugMode) ...[
+              const SizedBox(height: LuckdateSpacing.xl),
+              _sectionTitle('Demo Controls'),
+              Text(
+                'Switch journey day for presentations',
+                style: LuckdateTextStyles.bodySmall,
+              ),
+              const SizedBox(height: LuckdateSpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: _dayBtn(ref, DemoDay.day1, 'Day 1', state.demoDay),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: LdSecondaryButton(
-                    label: 'Show Error',
-                    onPressed: () => ref
-                        .read(appStateProvider.notifier)
-                        .toggleErrorDemo(true),
+                  const SizedBox(width: LuckdateSpacing.sm),
+                  Expanded(
+                    child: _dayBtn(ref, DemoDay.day12, 'Day 12', state.demoDay),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: LuckdateSpacing.xl),
-            LdSecondaryButton(
-              label: 'Restart Onboarding',
-              onPressed: () {
-                ref
-                    .read(appStateProvider.notifier)
-                    .updateProfile(profile.copyWith(onboardingComplete: false));
-                context.go('/onboarding');
-              },
-            ),
+                  const SizedBox(width: LuckdateSpacing.sm),
+                  Expanded(
+                    child: _dayBtn(ref, DemoDay.day28, 'Day 28', state.demoDay),
+                  ),
+                ],
+              ),
+              const SizedBox(height: LuckdateSpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: LdSecondaryButton(
+                      label: 'Show Loading',
+                      onPressed: () => ref
+                          .read(appStateProvider.notifier)
+                          .toggleLoadingDemo(true),
+                    ),
+                  ),
+                  const SizedBox(width: LuckdateSpacing.sm),
+                  Expanded(
+                    child: LdSecondaryButton(
+                      label: 'Show Error',
+                      onPressed: () => ref
+                          .read(appStateProvider.notifier)
+                          .toggleErrorDemo(true),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: LuckdateSpacing.xl),
+              LdSecondaryButton(
+                label: 'Restart Onboarding',
+                onPressed: () {
+                  ref
+                      .read(appStateProvider.notifier)
+                      .updateProfile(
+                        profile.copyWith(onboardingComplete: false),
+                      );
+                  context.go('/onboarding');
+                },
+              ),
+            ],
           ],
         ),
       ),
@@ -247,6 +251,7 @@ class ProfilePage extends ConsumerWidget {
     String title,
     String value, {
     VoidCallback? onTap,
+    bool showChevron = true,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
@@ -278,11 +283,12 @@ class ProfilePage extends ConsumerWidget {
             const SizedBox(width: LuckdateSpacing.md),
             Expanded(child: Text(title, style: LuckdateTextStyles.body)),
             Text(value, style: LuckdateTextStyles.caption),
-            const Icon(
-              Icons.chevron_right,
-              size: 20,
-              color: LuckdateColors.textSecondary,
-            ),
+            if (showChevron)
+              const Icon(
+                Icons.chevron_right,
+                size: 20,
+                color: LuckdateColors.textSecondary,
+              ),
           ],
         ),
       ),
