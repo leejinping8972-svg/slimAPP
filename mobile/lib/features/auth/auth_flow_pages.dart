@@ -319,7 +319,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               controller: _orderController,
               decoration: const InputDecoration(
                 labelText: 'Order number',
-                hintText: '代餐粉 / 其他',
+                hintText: 'meal or other',
               ),
             ),
             const SizedBox(height: LuckdateSpacing.base),
@@ -340,11 +340,11 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                   Text('Demo guide', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    '• Enter 代餐粉 → Solar Protein 28-Day Slim Journey',
+                    '• Enter meal → Solar Protein 28-Day Slim Journey',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Enter 其他 → Other product, daily reminder only',
+                    '• Enter other → Other product, daily reminder only',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(

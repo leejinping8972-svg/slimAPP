@@ -22,10 +22,12 @@ class MockOrderService {
     final normalizedOrder = orderNo.trim();
     final phone = phoneLast4.trim();
 
-    // Demo keywords for presentations (no real order lookup).
-    if (normalizedOrder == '代餐粉' ||
-        normalizedOrder.contains('代餐') ||
-        normalizedOrder.toLowerCase() == 'meal') {
+    // Demo keywords (English UI; legacy Chinese aliases still accepted).
+    if (normalizedOrder.toLowerCase() == 'meal' ||
+        normalizedOrder.toLowerCase() == 'meal replacement' ||
+        normalizedOrder.toLowerCase() == 'solar' ||
+        normalizedOrder == '代餐粉' ||
+        normalizedOrder.contains('代餐')) {
       return const OrderLinkResult(
         success: true,
         productName: 'Solar Protein™ 28-Day',
@@ -33,9 +35,10 @@ class MockOrderService {
       );
     }
 
-    if (normalizedOrder == '其他' ||
-        normalizedOrder == '其他产品' ||
-        normalizedOrder.toLowerCase() == 'other') {
+    if (normalizedOrder.toLowerCase() == 'other' ||
+        normalizedOrder.toLowerCase() == 'supplement' ||
+        normalizedOrder == '其他' ||
+        normalizedOrder == '其他产品') {
       return const OrderLinkResult(
         success: true,
         productName: 'Youth Solar™',
