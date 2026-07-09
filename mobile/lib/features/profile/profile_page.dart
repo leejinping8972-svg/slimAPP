@@ -41,7 +41,7 @@ class ProfilePage extends ConsumerWidget {
                     children: [
                       Text(profile.nickname, style: LuckdateTextStyles.h2),
                       Text(
-                        'Day ${journey.day} · Slim Journey',
+                        _profileSubtitle(profile, journey),
                         style: LuckdateTextStyles.caption,
                       ),
                     ],
@@ -57,13 +57,15 @@ class ProfilePage extends ConsumerWidget {
               profile.membershipExpires,
             ),
             const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('My Journey'),
-            _tile(
-              Icons.explore_outlined,
-              'Slim Journey 28 Days',
-              'Phase: ${journey.phase}',
-            ),
-            const SizedBox(height: LuckdateSpacing.lg),
+            if (profile.userPlanType == UserPlanType.mealReplacement) ...[
+              _sectionTitle('My Journey'),
+              _tile(
+                Icons.explore_outlined,
+                'Slim Journey 28 Days',
+                'Phase: ${journey.phase} · Day ${journey.day}',
+              ),
+              const SizedBox(height: LuckdateSpacing.lg),
+            ],
             _sectionTitle('Settings'),
             _settingsTile(
               context,
@@ -79,6 +81,7 @@ class ProfilePage extends ConsumerWidget {
               profile.userPlanType == UserPlanType.mealReplacement
                   ? '${profile.reminderTime} / ${profile.reminderTime2}'
                   : profile.reminderTime,
+              onTap: () => context.push('/profile/reminders'),
             ),
             _settingsTile(
               context,
@@ -107,7 +110,7 @@ class ProfilePage extends ConsumerWidget {
                 context,
                 Icons.local_offer_outlined,
                 'Coupons',
-                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} ${profile.welcomeCoupon!.status}',
+                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} days left',
               ),
             const SizedBox(height: LuckdateSpacing.lg),
             _sectionTitle('Product Center'),
@@ -241,30 +244,33 @@ class ProfilePage extends ConsumerWidget {
     BuildContext context,
     IconData icon,
     String title,
-    String value,
-  ) {
+    String value, {
+    VoidCallback? onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
       child: LdCard(
-        onTap: () {
-          if (title.contains('Disclaimer')) {
-            showDialog<void>(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text('Health Disclaimer'),
-                content: const Text(
-                  'luckdate provides lifestyle and product-use companionship. It does not provide medical diagnosis or treatment. Consult a professional if you have health conditions, are pregnant, or take medication.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx),
-                    child: const Text('OK'),
+        onTap:
+            onTap ??
+            () {
+              if (title.contains('Disclaimer')) {
+                showDialog<void>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Health Disclaimer'),
+                    content: const Text(
+                      'luckdate provides lifestyle and product-use companionship. It does not provide medical diagnosis or treatment. Consult a professional if you have health conditions, are pregnant, or take medication.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx),
+                        child: const Text('OK'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
-        },
+                );
+              }
+            },
         child: Row(
           children: [
             Icon(icon, color: LuckdateColors.deepSage, size: 22),
@@ -288,5 +294,18 @@ class ProfilePage extends ConsumerWidget {
       selected: current == day,
       onPressed: () => ref.read(appStateProvider.notifier).switchDemoDay(day),
     );
+  }
+
+  String _profileSubtitle(UserProfile profile, JourneyState journey) {
+    return switch (profile.userPlanType) {
+      UserPlanType.mealReplacement => 'Day ${journey.day} · Slim Journey',
+      UserPlanType.nonMealReplacement => 'Product reminder plan',
+      UserPlanType.noProduct => 'Basic tracking mode',
+    };
+  }
+
+  int _couponDaysLeft(DateTime expiresAt) {
+    final days = expiresAt.difference(DateTime.now()).inDays;
+    return days < 0 ? 0 : days;
   }
 }

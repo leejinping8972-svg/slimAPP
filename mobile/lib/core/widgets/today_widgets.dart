@@ -44,9 +44,9 @@ class TopMetricsRow extends StatelessWidget {
             children: [
               Text('Consistency', style: LuckdateTextStyles.caption),
               const SizedBox(height: LuckdateSpacing.sm),
-              Consistency7DayStrip(values: consistency5d),
+              Consistency5DayStrip(values: consistency5d),
               const SizedBox(height: 6),
-              Text('Last 7 days', style: LuckdateTextStyles.caption),
+              Text('Last 5 days', style: LuckdateTextStyles.caption),
             ],
           ),
         ),
@@ -160,14 +160,61 @@ class Consistency7DayStrip extends StatelessWidget {
   }
 }
 
-/// Kept for older call sites.
 class Consistency5DayStrip extends StatelessWidget {
   const Consistency5DayStrip({super.key, required this.values});
 
   final List<bool> values;
 
   @override
-  Widget build(BuildContext context) => Consistency7DayStrip(values: values);
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final items = List<bool>.from(values);
+    while (items.length < 5) {
+      items.insert(0, false);
+    }
+    final week = items.length > 5 ? items.sublist(items.length - 5) : items;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (i) {
+        final day = now.subtract(Duration(days: 4 - i));
+        final completed = week[i];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          child: Column(
+            children: [
+              Text(
+                '${day.day}',
+                style: LuckdateTextStyles.caption.copyWith(
+                  fontSize: 10,
+                  color: LuckdateColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: completed
+                      ? LuckdateColors.deepSage
+                      : LuckdateColors.lineSoft.withValues(alpha: 0.5),
+                  border: Border.all(
+                    color: completed
+                        ? LuckdateColors.deepSage
+                        : LuckdateColors.lineSoft,
+                  ),
+                ),
+                child: completed
+                    ? const Icon(Icons.check, size: 12, color: Colors.white)
+                    : null,
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
 }
 
 class WeightTrendCard extends StatelessWidget {

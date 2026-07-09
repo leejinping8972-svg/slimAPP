@@ -175,7 +175,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Consistency',
                     value: '${scores.consistencyScore}%',
-                    subtitle: '7-day',
+                    subtitle: '5-day',
                   ),
                 ),
               ],
@@ -415,6 +415,11 @@ class Day28ReportPage extends ConsumerWidget {
             LdPrimaryButton(
               label: 'Explore Next Journey',
               onPressed: () => context.push('/collection'),
+            ),
+            const SizedBox(height: LuckdateSpacing.sm),
+            LdSecondaryButton(
+              label: 'Not now',
+              onPressed: () => context.pop(),
             ),
           ],
         ),

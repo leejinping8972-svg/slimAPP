@@ -9,6 +9,7 @@ import '../../features/collection/collection_page.dart';
 import '../../features/journey/journey_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/profile/profile_page.dart';
+import '../../features/profile/reminder_settings_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../../features/today/today_page.dart';
 import '../../shared/models/models.dart';
@@ -93,6 +94,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/collection', builder: (_, __) => const CollectionPage()),
       GoRoute(path: '/profile', builder: (_, __) => const ProfilePage()),
+      GoRoute(
+        path: '/profile/reminders',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, __) => const ReminderSettingsPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return _MainShell(navigationShell: navigationShell);
@@ -132,33 +138,37 @@ class _MainShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hideBottomNav = navigationShell.currentIndex == 1;
+
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: navigationShell.goBranch,
-        backgroundColor: LuckdateColors.ivoryWhite,
-        indicatorColor: LuckdateColors.sageSoft,
-        height: 72,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Ritual',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.chat_bubble_outline_rounded),
-            selectedIcon: Icon(Icons.chat_bubble_rounded),
-            label: 'Chatviva',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.explore_outlined),
-            selectedIcon: Icon(Icons.explore_rounded),
-            label: 'Journey',
-          ),
-        ],
-      ),
+      bottomNavigationBar: hideBottomNav
+          ? null
+          : NavigationBar(
+              selectedIndex: navigationShell.currentIndex,
+              onDestinationSelected: navigationShell.goBranch,
+              backgroundColor: LuckdateColors.ivoryWhite,
+              indicatorColor: LuckdateColors.sageSoft,
+              height: 72,
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home_rounded),
+                  label: 'Ritual',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.chat_bubble_outline_rounded),
+                  selectedIcon: Icon(Icons.chat_bubble_rounded),
+                  label: 'Chatviva',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.explore_outlined),
+                  selectedIcon: Icon(Icons.explore_rounded),
+                  label: 'Journey',
+                ),
+              ],
+            ),
     );
   }
 }

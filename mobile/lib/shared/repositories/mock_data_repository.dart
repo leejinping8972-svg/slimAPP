@@ -41,8 +41,8 @@ class MockDataRepository {
       if (day <= 1) return end;
       return start - (start - end) * (i / (day - 1));
     });
-    final consistency5d = List<bool>.generate(7, (i) {
-      final dayIndex = day - 7 + i;
+    final consistency5d = List<bool>.generate(5, (i) {
+      final dayIndex = day - 5 + i;
       if (dayIndex < 0) return false;
       if (dayIndex >= dayStatuses.length) return false;
       final status = dayStatuses[dayIndex];
@@ -161,7 +161,7 @@ class MockDataRepository {
       UserPlanType.nonMealReplacement =>
         'Hi Freya, I will remind you to use your product each day and help you track how you feel.',
       UserPlanType.noProduct =>
-        'Hi Freya, you do not have a plan yet, but you can keep logging and chatting with me about your goals.',
+        'You do not have a dedicated plan yet, but you can keep chatting with me. Tell me your goals and I will recommend the right products.',
     };
     return [
       ChatMessage(

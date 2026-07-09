@@ -7,11 +7,69 @@ import '../../core/widgets/today_widgets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
-class TodayPage extends ConsumerWidget {
+class TodayPage extends ConsumerStatefulWidget {
   const TodayPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TodayPage> createState() => _TodayPageState();
+}
+
+class _TodayPageState extends ConsumerState<TodayPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowJourneyComplete());
+  }
+
+  void _maybeShowJourneyComplete() {
+    final state = ref.read(appStateProvider);
+    final profile = state.profile;
+    final journey = state.journey;
+    if (!mounted) return;
+    if (profile.userPlanType != UserPlanType.mealReplacement) return;
+    if (journey.day < 28 || profile.journeyCompleteSeen) return;
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: const Text('Journey Complete'),
+        content: const Text(
+          'You grew toward the light for 28 days. View your completion report and explore your next journey.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              ref.read(appStateProvider.notifier).markJourneyCompleteSeen();
+              Navigator.pop(ctx);
+            },
+            child: const Text('Not now'),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(appStateProvider.notifier).markJourneyCompleteSeen();
+              Navigator.pop(ctx);
+              context.push('/journey/report');
+            },
+            child: const Text('View report'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(appStateProvider, (previous, next) {
+      if (previous?.journey.day != next.journey.day ||
+          previous?.profile.journeyCompleteSeen != next.profile.journeyCompleteSeen) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _maybeShowJourneyComplete(),
+        );
+      }
+    });
+
     final state = ref.watch(appStateProvider);
     if (state.showLoading)
       return const LdScaffold(body: StatePlaceholder(type: 'loading'));

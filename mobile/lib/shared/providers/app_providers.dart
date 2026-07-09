@@ -155,6 +155,21 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  void markJourneyCompleteSeen() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(journeyCompleteSeen: true),
+    );
+  }
+
+  void updateReminders({required String reminderTime, String? reminderTime2}) {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        reminderTime: reminderTime,
+        reminderTime2: reminderTime2 ?? state.profile.reminderTime2,
+      ),
+    );
+  }
+
   void updateProfile(UserProfile profile) {
     state = state.copyWith(profile: profile);
   }
@@ -195,13 +210,13 @@ class AppStateNotifier extends StateNotifier<AppState> {
           : 'Track your habits and chat with Viva while you explore products.',
       vitalityTrend: const [],
       weightTrend: const [],
-      consistency5d: const [false, false, false, false, false, false, false],
+      consistency5d: const [false, false, false, false, false],
       dayStatuses: const [],
       unlockedMilestones: const [],
       todayRecord: const TodayRecord(),
       vitalityScores: const VitalityScores(),
       sunnyCardMessage: profile.userPlanType == UserPlanType.noProduct
-          ? 'You do not have a plan yet, but you can keep logging and chatting with me.'
+          ? 'You do not have a dedicated plan yet, but you can keep chatting with me. Tell me your goals and I will recommend the right products.'
           : 'Remember to take your product today.',
     );
   }
