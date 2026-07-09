@@ -612,6 +612,21 @@ class WeightTrendCard extends StatelessWidget {
                   ),
                 ),
                 borderData: FlBorderData(show: false),
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipItems: (touchedSpots) {
+                      return touchedSpots.map((spot) {
+                        return LineTooltipItem(
+                          '${spot.y.toStringAsFixed(1)} kg',
+                          LuckdateTextStyles.caption.copyWith(
+                            color: LuckdateColors.ivoryWhite,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
                 lineBarsData: [
                   LineChartBarData(
                     spots: weights
