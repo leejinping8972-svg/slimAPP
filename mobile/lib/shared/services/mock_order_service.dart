@@ -19,8 +19,29 @@ class MockOrderService {
     required String orderNo,
     required String phoneLast4,
   }) {
-    final normalizedOrder = orderNo.trim().toUpperCase();
+    final normalizedOrder = orderNo.trim();
     final phone = phoneLast4.trim();
+
+    // Demo keywords for presentations (no real order lookup).
+    if (normalizedOrder == '代餐粉' ||
+        normalizedOrder.contains('代餐') ||
+        normalizedOrder.toLowerCase() == 'meal') {
+      return const OrderLinkResult(
+        success: true,
+        productName: 'Solar Protein™ 28-Day',
+        isMealReplacement: true,
+      );
+    }
+
+    if (normalizedOrder == '其他' ||
+        normalizedOrder == '其他产品' ||
+        normalizedOrder.toLowerCase() == 'other') {
+      return const OrderLinkResult(
+        success: true,
+        productName: 'Youth Solar™',
+        isMealReplacement: false,
+      );
+    }
 
     if (phone.length != 4 || !RegExp(r'^\d{4}$').hasMatch(phone)) {
       return const OrderLinkResult(
@@ -29,7 +50,9 @@ class MockOrderService {
       );
     }
 
-    if (normalizedOrder == 'ORD-2026-MEAL' && phone == '1234') {
+    final orderUpper = normalizedOrder.toUpperCase();
+
+    if (orderUpper == 'ORD-2026-MEAL' && phone == '1234') {
       return const OrderLinkResult(
         success: true,
         productName: 'Solar Protein 28-Day',
@@ -37,7 +60,7 @@ class MockOrderService {
       );
     }
 
-    if (normalizedOrder == 'ORD-2026-VITA' && phone == '5678') {
+    if (orderUpper == 'ORD-2026-VITA' && phone == '5678') {
       return const OrderLinkResult(
         success: true,
         productName: 'Vitality Collagen Boost',

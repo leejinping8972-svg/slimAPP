@@ -337,38 +337,27 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   Widget _purchaseGuideCard(BuildContext context, WidgetRef ref) {
     return LdCard(
       accentColor: LuckdateColors.sunGold,
+      onTap: () => context.push('/collection/product/solar_protein'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Unlock your full health plan', style: LuckdateTextStyles.title),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            'Buy Solar Protein or another meal replacement to start your 28-day journey.',
+            'Get Solar Protein to start your 28-day Slim Journey — tap to view the plan.',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
-            label: 'View products',
-            onPressed: () {
-              final coupon = ref.read(appStateProvider).profile.welcomeCoupon;
-              context.push('/collection');
-              if (coupon != null && coupon.status == 'unused') {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Your \$${coupon.amount.toStringAsFixed(0)} welcome coupon will apply at checkout.',
-                    ),
-                  ),
-                );
-              }
-            },
+            label: 'View 28-Day Plan',
+            onPressed: () => context.push('/collection/product/solar_protein'),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Row(
             children: [
               Expanded(
                 child: LdSecondaryButton(
-                  label: 'Browse first',
+                  label: 'Browse all products',
                   onPressed: () => context.push('/collection'),
                 ),
               ),

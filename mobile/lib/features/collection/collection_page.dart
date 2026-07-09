@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class CollectionPage extends ConsumerStatefulWidget {
@@ -196,7 +197,8 @@ class ProductDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(productsProvider);
-    final coupon = ref.watch(appStateProvider).profile.welcomeCoupon;
+    final profile = ref.watch(appStateProvider).profile;
+    final coupon = profile.welcomeCoupon;
     return LdScaffold(
       showBack: true,
       body: productsAsync.when(
@@ -208,6 +210,10 @@ class ProductDetailPage extends ConsumerWidget {
           final color = Color(
             int.parse(product.colorHex.replaceFirst('#', '0xFF')),
           );
+          final isSolarProtein = product.id == 'solar_protein';
+          final showPurchaseFlow =
+              profile.userPlanType == UserPlanType.noProduct && isSolarProtein;
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(LuckdateSpacing.lg),
             child: Column(
@@ -225,6 +231,16 @@ class ProductDetailPage extends ConsumerWidget {
                 const SizedBox(height: LuckdateSpacing.xl),
                 Text(product.name, style: LuckdateTextStyles.h1),
                 Text(product.series, style: LuckdateTextStyles.caption),
+                if (product.tag.isNotEmpty) ...[
+                  const SizedBox(height: LuckdateSpacing.sm),
+                  Text(
+                    product.tag,
+                    style: LuckdateTextStyles.caption.copyWith(
+                      color: LuckdateColors.deepSage,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(product.shortDescription, style: LuckdateTextStyles.body),
                 const SizedBox(height: LuckdateSpacing.lg),
@@ -245,8 +261,12 @@ class ProductDetailPage extends ConsumerWidget {
                 _section('Warnings', product.warnings),
                 const SizedBox(height: LuckdateSpacing.xl),
                 LdPrimaryButton(
-                  label: 'Continue Your Journey',
+                  label: showPurchaseFlow ? 'Buy now' : 'Continue Your Journey',
                   onPressed: () {
+                    if (showPurchaseFlow) {
+                      _handlePurchase(context, ref);
+                      return;
+                    }
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Order flow — demo placeholder'),
@@ -262,6 +282,27 @@ class ProductDetailPage extends ConsumerWidget {
         error: (_, __) => const StatePlaceholder(type: 'error'),
       ),
     );
+  }
+
+  Future<void> _handlePurchase(BuildContext context, WidgetRef ref) async {
+    ref.read(appStateProvider.notifier).purchaseSolarProtein();
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Purchase successful'),
+        content: const Text(
+          'Solar Protein is ready. Next, see your 28-day Slim Journey overview.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
+    );
+    if (!context.mounted) return;
+    context.push('/plan/intro');
   }
 
   Widget _section(String title, String body) {

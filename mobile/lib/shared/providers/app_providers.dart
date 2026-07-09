@@ -141,6 +141,42 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  void purchaseSolarProtein() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        linkedProductName: 'Solar Protein™',
+        membershipPlan: 'Solar Protein 28-Day',
+      ),
+    );
+  }
+
+  void activateSlimJourney() {
+    final profile = state.profile.copyWith(
+      userPlanType: UserPlanType.mealReplacement,
+      hidePurchaseGuideCard: true,
+      linkedOrderNo: state.profile.linkedOrderNo.isEmpty
+          ? 'PURCHASE-DEMO'
+          : state.profile.linkedOrderNo,
+      orderLinkStatus: OrderLinkStatus.linked,
+      linkedProductName: 'Solar Protein™',
+      membershipPlan: 'Solar Protein 28-Day',
+      onboardingComplete: true,
+      isLoggedIn: true,
+    );
+    final journey = _repo.journeyForDay(DemoDay.day1);
+    state = state.copyWith(
+      profile: profile,
+      demoDay: DemoDay.day1,
+      journey: journey,
+      chatMessages: _repo.initialChatMessages(
+        1,
+        planType: UserPlanType.mealReplacement,
+        hasWelcomeCoupon: profile.welcomeCoupon != null,
+        linkedProductName: profile.linkedProductName,
+      ),
+    );
+  }
+
   void setLoggedIn() {
     loginExistingUser();
   }

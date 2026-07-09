@@ -242,6 +242,12 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
       _showFailureDialog(result.message);
       return;
     }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Linked: ${result.productName}'),
+      ),
+    );
     final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
     if (onboarded) {
       context.pop();
@@ -283,6 +289,16 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     );
   }
 
+  void _skip() {
+    ref.read(appStateProvider.notifier).skipOrderLink();
+    final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
+    if (onboarded) {
+      context.pop();
+    } else {
+      context.go('/onboarding');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LdScaffold(
@@ -295,7 +311,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             Text('Link your order', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Tell us your order so we can personalize your plan.',
+              'Link your order to unlock the right plan. You can skip and explore first.',
               style: LuckdateTextStyles.bodySmall,
             ),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -303,7 +319,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               controller: _orderController,
               decoration: const InputDecoration(
                 labelText: 'Order number',
-                hintText: 'ORD-2026-MEAL',
+                hintText: '代餐粉 / 其他',
               ),
             ),
             const SizedBox(height: LuckdateSpacing.base),
@@ -312,7 +328,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               keyboardType: TextInputType.number,
               maxLength: 4,
               decoration: const InputDecoration(
-                labelText: 'Last 4 digits of phone',
+                labelText: 'Last 4 digits of phone (optional for demo)',
                 hintText: '1234',
               ),
             ),
@@ -321,14 +337,18 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Demo orders', style: LuckdateTextStyles.title),
+                  Text('Demo guide', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    'Meal replacement: ORD-2026-MEAL + 1234',
+                    '• Enter 代餐粉 → Solar Protein 28-Day Slim Journey',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    'Non-meal product: ORD-2026-VITA + 5678',
+                    '• Enter 其他 → Other product, daily reminder only',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                  Text(
+                    '• Skip → No plan yet; purchase Solar Protein on Ritual',
                     style: LuckdateTextStyles.caption,
                   ),
                 ],
@@ -339,10 +359,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             const SizedBox(height: LuckdateSpacing.sm),
             LdSecondaryButton(
               label: 'Skip for now',
-              onPressed: () {
-                ref.read(appStateProvider.notifier).skipOrderLink();
-                context.go('/onboarding');
-              },
+              onPressed: _skip,
             ),
           ],
         ),

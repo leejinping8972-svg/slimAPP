@@ -8,6 +8,7 @@ import '../../features/chat/chat_page.dart';
 import '../../features/collection/collection_page.dart';
 import '../../features/journey/journey_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
+import '../../features/onboarding/plan_intro_page.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/profile/reminder_settings_page.dart';
 import '../../features/splash/splash_page.dart';
@@ -80,6 +81,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const RegisterSuccessPage(),
       ),
       GoRoute(path: '/link-order', builder: (_, __) => const OrderLinkPage()),
+      GoRoute(
+        path: '/plan/intro',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, __) => const PlanIntroPage(),
+      ),
       GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingPage()),
       GoRoute(
         path: '/journey/report',
