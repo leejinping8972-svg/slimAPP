@@ -46,20 +46,33 @@ class VitalityScorer {
     return 0;
   }
 
-  static int ritualCompletion(TodayRecord record) {
-    var completed = 0;
-    const total = 5;
-    if (record.productTaken != ProductTakenStatus.notRecorded) completed++;
-    if (record.hydrationMl > 0) completed++;
-    if (record.weightRecorded) completed++;
-    if (record.moodTag.isNotEmpty) completed++;
-    if (record.sleepHours > 0 || record.sleepQuality.isNotEmpty) completed++;
-    return ((completed / total) * 100).round();
+  static int ritualCompletion(TodayRecord record, UserPlanType planType) {
+    final checks = switch (planType) {
+      UserPlanType.mealReplacement => [
+        record.productTaken != ProductTakenStatus.notRecorded,
+        record.hydrationMl > 0,
+        record.weightRecorded,
+        record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
+      ],
+      UserPlanType.nonMealReplacement => [
+        record.productTaken != ProductTakenStatus.notRecorded,
+        record.hydrationMl > 0,
+        record.weightRecorded,
+      ],
+      UserPlanType.noProduct => [
+        record.hydrationMl > 0,
+        record.weightRecorded,
+      ],
+    };
+    if (checks.isEmpty) return 0;
+    final completed = checks.where((done) => done).length;
+    return ((completed / checks.length) * 100).round();
   }
 
   static VitalityScores calculate({
     required TodayRecord record,
     required int hydrationTargetMl,
+    required UserPlanType planType,
     double consistency7d = 0,
   }) {
     final pScore = productScore(record.productTaken);
@@ -68,7 +81,7 @@ class VitalityScorer {
     final mScore = moodCheckScore(
       moodTag: record.moodTag,
       energyTag: record.energyTag,
-      fromChat: false,
+      fromChat: record.moodTag.isNotEmpty,
     );
     final sScore = sleepScore(
       hours: record.sleepHours,
@@ -86,7 +99,7 @@ class VitalityScorer {
 
     return VitalityScores(
       dailyVitality: daily,
-      ritualCompletion: ritualCompletion(record),
+      ritualCompletion: ritualCompletion(record, planType),
       hydrationScore: hScore,
       productRitualScore: pScore,
       weightCheckScore: wScore,

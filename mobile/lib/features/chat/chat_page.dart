@@ -89,6 +89,25 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
             child: _TodayMiniCard(record: record),
           ),
+          if (_isEveningMoodWindow())
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.fromLTRB(
+                LuckdateSpacing.lg,
+                0,
+                LuckdateSpacing.lg,
+                LuckdateSpacing.sm,
+              ),
+              padding: const EdgeInsets.all(LuckdateSpacing.md),
+              decoration: BoxDecoration(
+                color: LuckdateColors.sunGold.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(LuckdateRadius.lg),
+              ),
+              child: Text(
+                'Evening check-in: how are you feeling tonight?',
+                style: LuckdateTextStyles.bodySmall,
+              ),
+            ),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
@@ -171,33 +190,93 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     _controller.clear();
     ref.read(appStateProvider.notifier).sendChatMessage(text);
   }
+
+  bool _isEveningMoodWindow() {
+    final hour = DateTime.now().hour;
+    return hour >= 20 && hour < 22;
+  }
 }
 
-class _TodayMiniCard extends StatelessWidget {
+class _TodayMiniCard extends ConsumerWidget {
   const _TodayMiniCard({required this.record});
 
   final TodayRecord record;
 
+  static const _moods = [
+    ('great', '😊', 'Great'),
+    ('okay', '😐', 'Okay'),
+    ('tired', '😴', 'Tired'),
+  ];
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return LdCard(
       padding: const EdgeInsets.symmetric(
         horizontal: LuckdateSpacing.base,
         vertical: LuckdateSpacing.sm,
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const LdSunnyAvatar(size: 28),
-          const SizedBox(width: LuckdateSpacing.sm),
-          Expanded(
-            child: Text(
-              'Today: ${record.hydrationMl} ml water'
-              '${record.weightRecorded ? ' · ${record.weightValueKg.toStringAsFixed(1)} kg' : ''}'
-              '${record.productTaken == ProductTakenStatus.taken ? ' · product logged' : ''}',
-              style: LuckdateTextStyles.caption,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+          Row(
+            children: [
+              const LdSunnyAvatar(size: 28),
+              const SizedBox(width: LuckdateSpacing.sm),
+              Expanded(
+                child: Text(
+                  'Today: ${record.hydrationMl} ml water'
+                  '${record.weightRecorded ? ' · ${record.weightValueKg.toStringAsFixed(1)} kg' : ''}'
+                  '${record.productTaken == ProductTakenStatus.taken ? ' · product logged' : ''}'
+                  '${record.moodTag.isNotEmpty ? ' · mood: ${record.moodTag}' : ''}',
+                  style: LuckdateTextStyles.caption,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Row(
+            children: [
+              Text('Mood', style: LuckdateTextStyles.caption),
+              const SizedBox(width: LuckdateSpacing.sm),
+              ..._moods.map((mood) {
+                final selected = record.moodTag == mood.$1;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: InkWell(
+                    onTap: () =>
+                        ref.read(appStateProvider.notifier).logMood(mood.$1),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: selected
+                            ? LuckdateColors.sageSoft
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: selected
+                              ? LuckdateColors.deepSage
+                              : LuckdateColors.lineSoft,
+                        ),
+                      ),
+                      child: Text(
+                        '${mood.$2} ${mood.$3}',
+                        style: LuckdateTextStyles.caption.copyWith(
+                          fontWeight: selected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ],
           ),
         ],
       ),

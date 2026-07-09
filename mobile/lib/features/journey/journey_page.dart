@@ -167,7 +167,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Mood',
                     value: '${scores.moodCheckScore}',
-                    subtitle: 'Feedback',
+                    subtitle: 'Evening feedback',
                   ),
                 ),
                 const SizedBox(width: 8),

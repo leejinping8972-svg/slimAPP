@@ -20,6 +20,7 @@ class MockDataRepository {
     final scores = VitalityScorer.calculate(
       record: todayRecord,
       hydrationTargetMl: 2000,
+      planType: UserPlanType.mealReplacement,
       consistency7d: consistency7d,
     );
     final trend = List<double>.generate(journeyDays, (i) {
@@ -152,16 +153,24 @@ class MockDataRepository {
   List<ChatMessage> initialChatMessages(
     int day, {
     UserPlanType planType = UserPlanType.mealReplacement,
+    bool hasWelcomeCoupon = false,
+    String linkedProductName = '',
   }) {
+    final couponNote = hasWelcomeCoupon
+        ? ' Your \$5 welcome coupon is ready in Product Center.'
+        : '';
+    final productNote = linkedProductName.isNotEmpty
+        ? ' Your $linkedProductName plan is linked.'
+        : '';
     final greeting = switch (planType) {
       UserPlanType.mealReplacement =>
         day == 1
-            ? 'Hi Freya, I am Viva — your growth companion for the next 28 days. How are you feeling today?'
+            ? 'Hi Freya, I am Viva — your growth companion for the next 28 days.$productNote$couponNote How are you feeling today?'
             : 'Good to see you on Day $day, Freya. How is your rhythm today?',
       UserPlanType.nonMealReplacement =>
-        'Hi Freya, I will remind you to use your product each day and help you track how you feel.',
+        'Hi Freya, I will remind you to use your product each day.$productNote$couponNote How are you feeling today?',
       UserPlanType.noProduct =>
-        'You do not have a dedicated plan yet, but you can keep chatting with me. Tell me your goals and I will recommend the right products.',
+        'You do not have a dedicated plan yet, but you can keep chatting with me. Tell me your goals and I will recommend the right products.$couponNote',
     };
     return [
       ChatMessage(

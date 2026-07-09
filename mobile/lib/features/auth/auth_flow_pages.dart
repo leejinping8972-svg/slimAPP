@@ -242,7 +242,22 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
       _showFailureDialog(result.message);
       return;
     }
-    context.go('/onboarding');
+    final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
+    if (onboarded) {
+      context.pop();
+    } else {
+      context.go('/onboarding');
+    }
+  }
+
+  void _continueAfterFailure() {
+    final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
+    ref.read(appStateProvider.notifier).skipOrderLink();
+    if (onboarded) {
+      context.pop();
+    } else {
+      context.go('/onboarding');
+    }
   }
 
   void _showFailureDialog(String message) {
@@ -259,8 +274,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
-              ref.read(appStateProvider.notifier).skipOrderLink();
-              context.go('/onboarding');
+              _continueAfterFailure();
             },
             child: const Text('Continue'),
           ),

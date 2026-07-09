@@ -18,7 +18,10 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
   @override
   Widget build(BuildContext context) {
     final productsAsync = ref.watch(productsProvider);
-    final journey = ref.watch(appStateProvider).journey;
+    final state = ref.watch(appStateProvider);
+    final journey = state.journey;
+    final profile = state.profile;
+    final coupon = profile.welcomeCoupon;
     final showExtension = journey.day >= 28;
 
     return LdScaffold(
@@ -39,6 +42,37 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   'The House of Vitality — curated for your next chapter.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
+                if (coupon != null && coupon.status == 'unused') ...[
+                  const SizedBox(height: LuckdateSpacing.lg),
+                  LdCard(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.local_offer_outlined,
+                          color: LuckdateColors.deepSage,
+                        ),
+                        const SizedBox(width: LuckdateSpacing.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '\$${coupon.amount.toStringAsFixed(0)} coupon applied at checkout',
+                                style: LuckdateTextStyles.body.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                'Storewide · valid for 30 days',
+                                style: LuckdateTextStyles.caption,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 if (showExtension) ...[
                   const SizedBox(height: LuckdateSpacing.xl),
                   LdCard(
@@ -149,6 +183,7 @@ class ProductDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(productsProvider);
+    final coupon = ref.watch(appStateProvider).profile.welcomeCoupon;
     return LdScaffold(
       showBack: true,
       body: productsAsync.when(
@@ -181,6 +216,15 @@ class ProductDetailPage extends ConsumerWidget {
                 Text(product.shortDescription, style: LuckdateTextStyles.body),
                 const SizedBox(height: LuckdateSpacing.lg),
                 Text(product.priceDisplay, style: LuckdateTextStyles.h2),
+                if (coupon != null && coupon.status == 'unused') ...[
+                  const SizedBox(height: LuckdateSpacing.sm),
+                  Text(
+                    '\$${coupon.amount.toStringAsFixed(0)} welcome coupon will apply',
+                    style: LuckdateTextStyles.caption.copyWith(
+                      color: LuckdateColors.success,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: LuckdateSpacing.xl),
                 _section('Benefits', product.benefits),
                 _section('Usage', product.usage),

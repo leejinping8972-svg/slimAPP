@@ -359,7 +359,19 @@ class _TodayPageState extends ConsumerState<TodayPage> {
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
             label: 'View products',
-            onPressed: () => context.push('/collection'),
+            onPressed: () {
+              final coupon = ref.read(appStateProvider).profile.welcomeCoupon;
+              context.push('/collection');
+              if (coupon != null && coupon.status == 'unused') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Your \$${coupon.amount.toStringAsFixed(0)} welcome coupon will apply at checkout.',
+                    ),
+                  ),
+                );
+              }
+            },
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Row(
@@ -552,9 +564,20 @@ class _HydrationSheetState extends State<_HydrationSheet>
     widget.ref
         .read(appStateProvider.notifier)
         .updateTodayRecord(widget.record.copyWith(hydrationMl: _ml));
-    if (_ml >= widget.target) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Daily hydration goal reached ✓')),
+    if (_ml >= widget.target && widget.record.hydrationMl < widget.target) {
+      showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          title: const Text('Hydration goal reached'),
+          content: const Text('Daily hydration goal reached ✓'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Done'),
+            ),
+          ],
+        ),
       );
     }
   }

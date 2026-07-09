@@ -98,6 +98,7 @@ class ProfilePage extends ConsumerWidget {
               profile.linkedOrderNo.isEmpty
                   ? 'No linked order'
                   : profile.linkedOrderNo,
+              onTap: () => context.push('/link-order'),
             ),
             _settingsTile(
               context,

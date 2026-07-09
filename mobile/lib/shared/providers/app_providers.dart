@@ -170,6 +170,29 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  void logMood(String moodTag) {
+    final record = state.journey.todayRecord.copyWith(moodTag: moodTag);
+    updateTodayRecord(record);
+    final moodMsg = ChatMessage(
+      id: '${DateTime.now().millisecondsSinceEpoch}_mood',
+      isUser: true,
+      text: 'I feel $moodTag today',
+      timestamp: DateTime.now(),
+    );
+    final reply = ChatMessage(
+      id: '${moodMsg.id}_reply',
+      isUser: false,
+      text: switch (moodTag) {
+        'great' => 'Love that energy. Keep the rhythm gentle tonight.',
+        'okay' => 'Okay is still a win. Rest when you need it.',
+        'tired' => 'Thank you for sharing. A lighter evening might help.',
+        _ => 'Thanks for checking in. I am here if you want to talk.',
+      },
+      timestamp: DateTime.now(),
+    );
+    state = state.copyWith(chatMessages: [...state.chatMessages, moodMsg, reply]);
+  }
+
   void updateProfile(UserProfile profile) {
     state = state.copyWith(profile: profile);
   }
@@ -189,6 +212,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
       chatMessages: _repo.initialChatMessages(
         1,
         planType: profile.userPlanType,
+        hasWelcomeCoupon: profile.welcomeCoupon != null,
+        linkedProductName: profile.linkedProductName,
       ),
     );
   }
@@ -226,7 +251,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
     state = state.copyWith(
       demoDay: day,
       journey: journey,
-      chatMessages: _repo.initialChatMessages(journey.day),
+      chatMessages: _repo.initialChatMessages(
+        journey.day,
+        planType: state.profile.userPlanType,
+        hasWelcomeCoupon: state.profile.welcomeCoupon != null,
+        linkedProductName: state.profile.linkedProductName,
+      ),
     );
   }
 
@@ -234,6 +264,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
     final scores = VitalityScorer.calculate(
       record: record,
       hydrationTargetMl: state.profile.hydrationTargetMl,
+      planType: state.profile.userPlanType,
       consistency7d: record.consistency7d,
     );
     state = state.copyWith(
