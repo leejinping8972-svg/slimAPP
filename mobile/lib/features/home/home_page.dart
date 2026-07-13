@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../core/widgets/ld_shell.dart';
 import '../../core/widgets/ritual_sheets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
@@ -131,114 +132,89 @@ class _HomePageState extends ConsumerState<HomePage> {
     final pendingRituals = ritualItems.where((e) => !e.completed).length;
     final showMoodCard = _isEveningMoodWindow();
 
-    return LdScaffold(
-      title: 'Sunny',
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: LuckdateSpacing.md),
-          child: LdProfileAvatar(
-            nickname: profile.nickname,
-            radius: 18,
-            onTap: () => context.go('/me'),
-          ),
-        ),
-      ],
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
-            child: Text(
-              'Sunny provides lifestyle companionship — not medical advice.',
-              style: LuckdateTextStyles.caption,
-              textAlign: TextAlign.center,
+    return Scaffold(
+      backgroundColor: LuckdateColors.cloudIvory,
+      body: SafeArea(
+        child: Column(
+          children: [
+            _HomeHeader(
+              nickname: profile.nickname,
+              onProfileTap: () => context.go('/me'),
             ),
-          ),
-          const SizedBox(height: LuckdateSpacing.sm),
-          Expanded(
-            child: ListView(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(LuckdateSpacing.lg),
-              children: [
-                if (!profile.sunnyIntroSeen) ...[
-                  _SunnyIntroCard(
-                    onDismiss: () => ref
-                        .read(appStateProvider.notifier)
-                        .markSunnyIntroSeen(),
-                  ),
-                  const SizedBox(height: LuckdateSpacing.md),
-                ],
-                _DailyRitualCard(
-                  pendingCount: pendingRituals,
-                  items: ritualItems,
-                ),
-                const SizedBox(height: LuckdateSpacing.md),
-                _ProductRecCard(
-                  planType: profile.userPlanType,
-                  linkedProductName: profile.linkedProductName,
-                  onBrowse: () => context.go('/mall'),
-                  onViewPlan: () =>
-                      context.push('/collection/product/solar_protein'),
-                ),
-                if (showMoodCard) ...[
-                  const SizedBox(height: LuckdateSpacing.md),
-                  _MoodCheckInCard(record: record),
-                ],
-                const SizedBox(height: LuckdateSpacing.lg),
-                ...messages.map((msg) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: LuckdateSpacing.md),
-                    child: msg.isUser
-                        ? UserBubble(text: msg.text)
-                        : SunnyBubble(
-                            text: msg.text,
-                            isStreaming: msg.isStreaming,
-                          ),
-                  );
-                }),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
+              child: Text(
+                'Sunny provides lifestyle companionship — not medical advice.',
+                style: LuckdateTextStyles.caption,
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+            const SizedBox(height: LuckdateSpacing.sm),
+            Expanded(
+              child: ListView(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(LuckdateSpacing.lg),
                 children: [
-                  _quickBtn('Water', 'water'),
-                  _quickBtn('Meal', 'meal'),
-                  _quickBtn('Adjust', 'adjust'),
+                  if (!profile.sunnyIntroSeen) ...[
+                    _SunnyIntroCard(
+                      onDismiss: () => ref
+                          .read(appStateProvider.notifier)
+                          .markSunnyIntroSeen(),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.md),
+                  ],
+                  _DailyRitualCard(
+                    pendingCount: pendingRituals,
+                    items: ritualItems,
+                  ),
+                  const SizedBox(height: LuckdateSpacing.md),
+                  _ProductRecCard(
+                    planType: profile.userPlanType,
+                    linkedProductName: profile.linkedProductName,
+                    onBrowse: () => context.go('/mall'),
+                    onViewPlan: () =>
+                        context.push('/collection/product/solar_protein'),
+                  ),
+                  if (showMoodCard) ...[
+                    const SizedBox(height: LuckdateSpacing.md),
+                    _MoodCheckInCard(record: record),
+                  ],
+                  const SizedBox(height: LuckdateSpacing.lg),
+                  ...messages.map((msg) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: LuckdateSpacing.md),
+                      child: msg.isUser
+                          ? UserBubble(text: msg.text)
+                          : SunnyBubble(
+                              text: msg.text,
+                              isStreaming: msg.isStreaming,
+                            ),
+                    );
+                  }),
                 ],
               ),
             ),
-          ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                LuckdateSpacing.lg,
-                LuckdateSpacing.sm,
-                LuckdateSpacing.lg,
-                LuckdateSpacing.lg + MediaQuery.viewInsetsOf(context).bottom,
-              ),
-              child: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: 'Ask Sunny anything...',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.send_rounded,
-                      color: _canSend
-                          ? LuckdateColors.deepSage
-                          : LuckdateColors.lineSoft,
-                    ),
-                    onPressed: _canSend ? _send : null,
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _quickBtn('Water', 'water'),
+                    _quickBtn('Meal', 'meal'),
+                    _quickBtn('Adjust', 'adjust'),
+                  ],
                 ),
-                onSubmitted: (_) => _send(),
               ),
             ),
-          ),
-        ],
+            LdChatComposer(
+              controller: _controller,
+              canSend: _canSend,
+              onSend: _send,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -265,6 +241,58 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool _isEveningMoodWindow() {
     final hour = DateTime.now().hour;
     return hour >= 20 && hour < 22;
+  }
+}
+
+class _HomeHeader extends StatelessWidget {
+  const _HomeHeader({
+    required this.nickname,
+    required this.onProfileTap,
+  });
+
+  final String nickname;
+  final VoidCallback onProfileTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(
+        LuckdateSpacing.lg,
+        LuckdateSpacing.sm,
+        LuckdateSpacing.lg,
+        LuckdateSpacing.md,
+      ),
+      decoration: const BoxDecoration(
+        gradient: LuckdateGradients.pageHeader,
+        border: Border(
+          bottom: BorderSide(color: LuckdateColors.lineSoft, width: 0.5),
+        ),
+      ),
+      child: Row(
+        children: [
+          const LdSunnyAvatar(size: 36),
+          const SizedBox(width: LuckdateSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Sunny', style: LuckdateTextStyles.title),
+                Text(
+                  'Your vitality companion',
+                  style: LuckdateTextStyles.caption,
+                ),
+              ],
+            ),
+          ),
+          LdProfileAvatar(
+            nickname: nickname,
+            radius: 18,
+            onTap: onProfileTap,
+          ),
+        ],
+      ),
+    );
   }
 }
 

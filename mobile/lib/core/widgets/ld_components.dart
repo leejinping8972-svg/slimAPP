@@ -32,6 +32,7 @@ class LdScaffold extends StatelessWidget {
       backgroundColor: LuckdateColors.cloudIvory,
       appBar: hasAppBar
           ? AppBar(
+              centerTitle: true,
               title: title != null ? Text(title!) : const SizedBox.shrink(),
               actions: actions,
               automaticallyImplyLeading: false,
@@ -93,13 +94,7 @@ class LdCard extends StatelessWidget {
                   : LuckdateColors.lineSoft,
               width: 1,
             ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x1A000000),
-                offset: Offset(0, 6),
-                blurRadius: 16,
-              ),
-            ],
+            boxShadow: LuckdateShadows.card,
           ),
           child: accentColor == null
               ? child
@@ -305,12 +300,12 @@ class LdChoiceChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: selected
-                ? (color ?? LuckdateColors.deepSage).withValues(alpha: 0.15)
+                ? LuckdateColors.deepSage
                 : LuckdateColors.ivoryWhite,
             borderRadius: BorderRadius.circular(LuckdateRadius.pill),
             border: Border.all(
               color: selected
-                  ? (color ?? LuckdateColors.deepSage)
+                  ? LuckdateColors.deepSage
                   : LuckdateColors.lineSoft,
             ),
           ),
@@ -318,7 +313,7 @@ class LdChoiceChip extends StatelessWidget {
             label,
             style: LuckdateTextStyles.bodySmall.copyWith(
               color: selected
-                  ? LuckdateColors.deepSage
+                  ? LuckdateColors.ivoryWhite
                   : LuckdateColors.textSecondary,
               fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
             ),
@@ -361,12 +356,16 @@ class SunnyBubble extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(LuckdateSpacing.md),
             decoration: BoxDecoration(
-              color: LuckdateColors.moonBeige.withValues(alpha: 0.35),
+              color: LuckdateColors.chatBubble,
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(LuckdateRadius.lg),
                 bottomLeft: Radius.circular(LuckdateRadius.lg),
                 bottomRight: Radius.circular(LuckdateRadius.lg),
               ),
+              border: Border.all(
+                color: LuckdateColors.lineSoft.withValues(alpha: 0.6),
+              ),
+              boxShadow: LuckdateShadows.soft,
             ),
             child: isStreaming && text.isEmpty
                 ? Text(
@@ -405,6 +404,7 @@ class UserBubble extends StatelessWidget {
             bottomLeft: Radius.circular(LuckdateRadius.lg),
             bottomRight: Radius.circular(LuckdateRadius.lg),
           ),
+          boxShadow: LuckdateShadows.soft,
         ),
         child: Text(
           text,
@@ -424,12 +424,16 @@ class LdProgressRing extends StatelessWidget {
     required this.centerLabel,
     required this.subLabel,
     this.size = 180,
+    this.showSunIcon = true,
+    this.ringColor = LuckdateColors.sunGold,
   });
 
   final double percent;
   final String centerLabel;
   final String subLabel;
   final double size;
+  final bool showSunIcon;
+  final Color ringColor;
 
   @override
   Widget build(BuildContext context) {
@@ -446,19 +450,21 @@ class LdProgressRing extends StatelessWidget {
               value: percent / 100,
               strokeWidth: 10,
               backgroundColor: LuckdateColors.lineSoft,
-              color: LuckdateColors.sunGold,
+              color: ringColor,
               strokeCap: StrokeCap.round,
             ),
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.wb_sunny_rounded,
-                color: LuckdateColors.sunGold,
-                size: 28,
-              ),
-              const SizedBox(height: 4),
+              if (showSunIcon) ...[
+                Icon(
+                  Icons.wb_sunny_rounded,
+                  color: LuckdateColors.sunGold,
+                  size: 28,
+                ),
+                const SizedBox(height: 4),
+              ],
               Text(centerLabel, style: LuckdateTextStyles.h2),
               Text(subLabel, style: LuckdateTextStyles.caption),
             ],

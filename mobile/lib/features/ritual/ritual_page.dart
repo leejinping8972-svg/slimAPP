@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../core/widgets/ld_shell.dart';
 import '../../core/widgets/ritual_sheets.dart';
 import '../../core/widgets/today_widgets.dart';
 import '../../shared/models/models.dart';
@@ -34,25 +35,36 @@ class _RitualPageState extends ConsumerState<RitualPage> {
 
     return LdScaffold(
       title: 'My Vitality Score',
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.ios_share_rounded, size: 20),
+          onPressed: () {},
+        ),
+      ],
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _RangeSelector(
+            LdSegmentedControl<_VitalityRange>(
+              options: const [
+                _VitalityRange.today,
+                _VitalityRange.week,
+                _VitalityRange.month,
+                _VitalityRange.quarter,
+              ],
               selected: _range,
               onChanged: (v) => setState(() => _range = v),
+              labelBuilder: _rangeLabel,
             ),
             const SizedBox(height: LuckdateSpacing.lg),
             LdCard(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LdProgressRing(
-                    percent: scores.dailyVitality.toDouble(),
-                    centerLabel: '${scores.dailyVitality}',
-                    subLabel: VitalityScorer.vitalityLabel(scores.dailyVitality),
-                    size: 120,
+                  LdScoreRing(
+                    score: scores.dailyVitality,
+                    label: VitalityScorer.vitalityLabel(scores.dailyVitality),
                   ),
                   const SizedBox(width: LuckdateSpacing.lg),
                   Expanded(
@@ -69,23 +81,21 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                           style: LuckdateTextStyles.bodySmall,
                         ),
                         const SizedBox(height: LuckdateSpacing.md),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: LuckdateColors.ivoryWhite,
-                            borderRadius:
-                                BorderRadius.circular(LuckdateRadius.pill),
-                            border: Border.all(color: LuckdateColors.lineSoft),
-                          ),
-                          child: Text(
-                            'Score Insights →',
-                            style: LuckdateTextStyles.caption.copyWith(
-                              fontWeight: FontWeight.w600,
+                        OutlinedButton(
+                          onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: LuckdateColors.textPrimary,
+                            side: const BorderSide(color: LuckdateColors.lineSoft),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(LuckdateRadius.pill),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 8,
                             ),
                           ),
+                          child: const Text('Score Insights →'),
                         ),
                         const SizedBox(height: LuckdateSpacing.md),
                         Text(
@@ -96,6 +106,7 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                             color: yesterdayDelta >= 0
                                 ? LuckdateColors.deepSage
                                 : LuckdateColors.textSecondary,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -209,26 +220,11 @@ class _RitualPageState extends ConsumerState<RitualPage> {
               ),
             ],
             const SizedBox(height: LuckdateSpacing.lg),
-            LdCard(
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.eco_outlined,
-                    color: LuckdateColors.deepSage,
-                  ),
-                  const SizedBox(width: LuckdateSpacing.md),
-                  Expanded(
-                    child: Text(
-                      'Your body is in balance and your habits are on track. Consistency is your superpower.',
-                      style: LuckdateTextStyles.bodySmall,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Share'),
-                  ),
-                ],
-              ),
+            LdVitalityBanner(
+              message:
+                  'Your body is in balance and your habits are on track. Consistency is your superpower.',
+              actionLabel: 'Share',
+              onAction: () {},
             ),
           ],
         ),
@@ -241,7 +237,8 @@ class _RitualPageState extends ConsumerState<RitualPage> {
     if (full.isEmpty) return const [];
     return switch (range) {
       _VitalityRange.today => full.length >= 1 ? [full.last] : full,
-      _VitalityRange.week => full.length > 7 ? full.sublist(full.length - 7) : full,
+      _VitalityRange.week =>
+        full.length > 7 ? full.sublist(full.length - 7) : full,
       _VitalityRange.month =>
         full.length > 28 ? full.sublist(full.length - 28) : full,
       _VitalityRange.quarter =>
@@ -261,59 +258,6 @@ class _RitualPageState extends ConsumerState<RitualPage> {
         _VitalityRange.month => '30 Days',
         _VitalityRange.quarter => '90 Days',
       };
-}
-
-class _RangeSelector extends StatelessWidget {
-  const _RangeSelector({required this.selected, required this.onChanged});
-
-  final _VitalityRange selected;
-  final ValueChanged<_VitalityRange> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    const options = [
-      (_VitalityRange.today, 'Today'),
-      (_VitalityRange.week, '7 Days'),
-      (_VitalityRange.month, '30 Days'),
-      (_VitalityRange.quarter, '90 Days'),
-    ];
-    return Row(
-      children: options.map((opt) {
-        final active = selected == opt.$1;
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-              right: opt.$1 != _VitalityRange.quarter ? 6 : 0,
-            ),
-            child: Material(
-              color: active
-                  ? LuckdateColors.deepSage
-                  : LuckdateColors.ivoryWhite,
-              borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-              child: InkWell(
-                onTap: () => onChanged(opt.$1),
-                borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    opt.$2,
-                    textAlign: TextAlign.center,
-                    style: LuckdateTextStyles.caption.copyWith(
-                      color: active
-                          ? LuckdateColors.ivoryWhite
-                          : LuckdateColors.textSecondary,
-                      fontWeight:
-                          active ? FontWeight.w600 : FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
 }
 
 class _BreakdownTile extends StatelessWidget {
@@ -337,7 +281,25 @@ class _BreakdownTile extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
-          Text('${dimension.score}', style: LuckdateTextStyles.title),
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: dimension.highlighted
+                    ? LuckdateColors.sunGold
+                    : LuckdateColors.deepSage,
+                width: 2,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '${dimension.score}',
+              style: LuckdateTextStyles.title.copyWith(fontSize: 15),
+            ),
+          ),
+          const SizedBox(height: 4),
           Text(
             VitalityScorer.scoreRating(dimension.score),
             style: LuckdateTextStyles.caption,

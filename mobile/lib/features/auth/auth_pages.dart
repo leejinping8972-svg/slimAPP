@@ -263,7 +263,7 @@ class _LoginHeroHeader extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFFAF8F2), Color(0xFFF5F0E4), Color(0xFFEDE6D6)],
+          colors: [Color(0xFFFFFBF7), Color(0xFFFFF3EA), Color(0xFFF5EBE0)],
         ),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(32),

@@ -53,11 +53,14 @@ class _MealPlanView extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _PlanTimeline(currentDay: journey.day, totalDays: journey.totalDays),
+            const SizedBox(height: LuckdateSpacing.xl),
             Center(
               child: LdProgressRing(
                 percent: journey.completionPercent.toDouble(),
                 centerLabel: '${journey.completionPercent}%',
                 subLabel: 'Day ${journey.day} / ${journey.totalDays}',
+                ringColor: LuckdateColors.deepSage,
               ),
             ),
             const SizedBox(height: LuckdateSpacing.sm),
@@ -385,4 +388,41 @@ Widget _legendDot(Color color, String label) {
       Text(label, style: LuckdateTextStyles.caption),
     ],
   );
+}
+
+class _PlanTimeline extends StatelessWidget {
+  const _PlanTimeline({required this.currentDay, required this.totalDays});
+
+  final int currentDay;
+  final int totalDays;
+
+  @override
+  Widget build(BuildContext context) {
+    return LdCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('28-Day Slim Journey', style: LuckdateTextStyles.title),
+          const SizedBox(height: LuckdateSpacing.sm),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+            child: LinearProgressIndicator(
+              value: currentDay / totalDays,
+              minHeight: 8,
+              backgroundColor: LuckdateColors.lineSoft,
+              color: LuckdateColors.deepSage,
+            ),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Day $currentDay', style: LuckdateTextStyles.caption),
+              Text('$totalDays days', style: LuckdateTextStyles.caption),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

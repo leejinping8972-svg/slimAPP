@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../core/widgets/ld_shell.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/vitality_scorer.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key, this.rootTab = false});
@@ -26,22 +28,154 @@ class ProfilePage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                LdProfileAvatar(nickname: profile.nickname, radius: 36),
-                const SizedBox(width: LuckdateSpacing.base),
-                Expanded(
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(LuckdateSpacing.lg),
+              decoration: BoxDecoration(
+                gradient: LuckdateGradients.pageHeader,
+                borderRadius: BorderRadius.circular(LuckdateRadius.xl),
+                border: Border.all(color: LuckdateColors.lineSoft),
+                boxShadow: LuckdateShadows.card,
+              ),
+              child: Row(
+                children: [
+                  LdProfileAvatar(nickname: profile.nickname, radius: 32),
+                  const SizedBox(width: LuckdateSpacing.base),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(profile.nickname, style: LuckdateTextStyles.h2),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: LuckdateColors.sageSoft,
+                            borderRadius:
+                                BorderRadius.circular(LuckdateRadius.pill),
+                          ),
+                          child: Text(
+                            'Vitality Member',
+                            style: LuckdateTextStyles.caption.copyWith(
+                              color: LuckdateColors.deepSage,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _profileSubtitle(profile, journey),
+                          style: LuckdateTextStyles.caption,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: LuckdateSpacing.lg),
+            LdCard(
+              child: Row(
+                children: [
+                  LdScoreRing(
+                    score: journey.vitalityScores.dailyVitality,
+                    label: VitalityScorer.vitalityLabel(
+                      journey.vitalityScores.dailyVitality,
+                    ),
+                    size: 96,
+                  ),
+                  const SizedBox(width: LuckdateSpacing.lg),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Vitality Score', style: LuckdateTextStyles.title),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Ritual ${journey.vitalityScores.ritualCompletion}% · Consistency ${journey.vitalityScores.consistencyScore}%',
+                          style: LuckdateTextStyles.bodySmall,
+                        ),
+                        const SizedBox(height: LuckdateSpacing.sm),
+                        Text(
+                          profile.membershipExpires,
+                          style: LuckdateTextStyles.caption,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: LuckdateSpacing.xl),
+            _sectionTitle('My Achievements'),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 6,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 0.95,
+              ),
+              itemBuilder: (context, index) {
+                final unlocked = index < journey.unlockedMilestones.length;
+                final icons = [
+                  Icons.water_drop_outlined,
+                  Icons.bedtime_outlined,
+                  Icons.emoji_events_outlined,
+                  Icons.favorite_outline,
+                  Icons.spa_outlined,
+                  Icons.star_outline,
+                ];
+                return LdCard(
+                  completed: unlocked,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(profile.nickname, style: LuckdateTextStyles.h2),
+                      Icon(
+                        icons[index],
+                        color: unlocked
+                            ? LuckdateColors.deepSage
+                            : LuckdateColors.lineSoft,
+                      ),
+                      const SizedBox(height: 6),
                       Text(
-                        _profileSubtitle(profile, journey),
+                        unlocked ? 'Unlocked' : 'Locked',
                         style: LuckdateTextStyles.caption,
                       ),
                     ],
                   ),
-                ),
+                );
+              },
+            ),
+            const SizedBox(height: LuckdateSpacing.xl),
+            _sectionTitle('Quick Menu'),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.1,
+              children: [
+                _menuTile(Icons.shopping_bag_outlined, 'Orders', () {
+                  context.push('/link-order');
+                }),
+                _menuTile(Icons.local_offer_outlined, 'Coupons', () {}),
+                _menuTile(Icons.notifications_outlined, 'Reminders', () {
+                  context.push('/profile/reminders');
+                }),
+                _menuTile(Icons.storefront_outlined, 'Mall', () {
+                  context.go('/mall');
+                }),
+                _menuTile(Icons.event_note_outlined, 'Plan', () {
+                  context.go('/plan');
+                }),
+                _menuTile(Icons.straighten, 'Units', () {}),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -137,7 +271,7 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          'Enter Product Center to view all nutrition plans.',
+                          'Enter Mall to view all nutrition plans.',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],
@@ -211,6 +345,25 @@ class ProfilePage extends ConsumerWidget {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _menuTile(IconData icon, String label, VoidCallback onTap) {
+    return LdCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(LuckdateSpacing.sm),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: LuckdateColors.deepSage, size: 22),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: LuckdateTextStyles.caption,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

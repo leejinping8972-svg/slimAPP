@@ -69,7 +69,7 @@ class _MetricRing extends StatelessWidget {
                 value: progress.clamp(0, 1),
                 strokeWidth: 6,
                 backgroundColor: LuckdateColors.lineSoft,
-                color: LuckdateColors.sunGold,
+                color: LuckdateColors.deepSage,
               ),
               Text(
                 value,
@@ -459,7 +459,7 @@ class DayCheckInSheet extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.bolt_outlined,
-                  color: LuckdateColors.sunGold,
+                  color: LuckdateColors.deepSage,
                 ),
                 const SizedBox(width: LuckdateSpacing.md),
                 Expanded(

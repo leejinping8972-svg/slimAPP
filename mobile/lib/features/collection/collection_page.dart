@@ -39,12 +39,44 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Mall', style: LuckdateTextStyles.h1),
-                const SizedBox(height: LuckdateSpacing.sm),
-                Text(
-                  'The House of Vitality — curated for your next chapter.',
-                  style: LuckdateTextStyles.bodySmall,
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(LuckdateSpacing.lg),
+                  decoration: BoxDecoration(
+                    gradient: LuckdateGradients.pageHeader,
+                    borderRadius: BorderRadius.circular(LuckdateRadius.xl),
+                    border: Border.all(color: LuckdateColors.lineSoft),
+                    boxShadow: LuckdateShadows.card,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Mall', style: LuckdateTextStyles.h1),
+                      const SizedBox(height: LuckdateSpacing.xs),
+                      Text(
+                        'The House of Vitality — curated for your next chapter.',
+                        style: LuckdateTextStyles.bodySmall,
+                      ),
+                      const SizedBox(height: LuckdateSpacing.md),
+                      TextField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: 'Search products...',
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: LuckdateColors.textSecondary,
+                          ),
+                          filled: true,
+                          fillColor: LuckdateColors.ivoryWhite,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: LuckdateSpacing.sm,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+                const SizedBox(height: LuckdateSpacing.lg),
                 if (coupon != null && coupon.status == 'unused') ...[
                   const SizedBox(height: LuckdateSpacing.lg),
                   LdCard(

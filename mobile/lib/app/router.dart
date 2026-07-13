@@ -16,6 +16,7 @@ import '../../features/journey/journey_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../core/widgets/ld_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeKey = GlobalKey<NavigatorState>(debugLabel: 'home');
@@ -175,39 +176,9 @@ class _MainShell extends StatelessWidget {
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: navigationShell.goBranch,
-        backgroundColor: LuckdateColors.ivoryWhite,
-        indicatorColor: LuckdateColors.sageSoft,
-        height: 72,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.wb_sunny_outlined),
-            selectedIcon: Icon(Icons.wb_sunny_rounded),
-            label: 'Ritual',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.event_note_outlined),
-            selectedIcon: Icon(Icons.event_note_rounded),
-            label: 'Plan',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.storefront_outlined),
-            selectedIcon: Icon(Icons.storefront_rounded),
-            label: 'Mall',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
-            label: 'Me',
-          ),
-        ],
+      bottomNavigationBar: LdMainBottomNav(
+        currentIndex: navigationShell.currentIndex,
+        onTap: navigationShell.goBranch,
       ),
     );
   }
