@@ -8,7 +8,9 @@ import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class ProfilePage extends ConsumerWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, this.rootTab = false});
+
+  final bool rootTab;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,8 +19,8 @@ class ProfilePage extends ConsumerWidget {
     final journey = state.journey;
 
     return LdScaffold(
-      title: 'Profile',
-      showBack: true,
+      title: 'Me',
+      showBack: !rootTab,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
@@ -114,9 +116,9 @@ class ProfilePage extends ConsumerWidget {
                 '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} days left',
               ),
             const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('Product Center'),
+            _sectionTitle('Mall'),
             LdCard(
-              onTap: () => context.push('/collection'),
+              onTap: () => context.go('/mall'),
               child: Row(
                 children: [
                   const Icon(

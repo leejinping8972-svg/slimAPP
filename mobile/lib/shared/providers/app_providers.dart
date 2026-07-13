@@ -86,6 +86,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
         isNewRegistration: false,
         onboardingComplete: true,
         couponRewardSeen: true,
+        sunnyIntroSeen: true,
         orderLinkStatus: OrderLinkStatus.linked,
         userPlanType: UserPlanType.mealReplacement,
         linkedOrderNo: 'LD-DEMO-001',
@@ -197,6 +198,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  void markSunnyIntroSeen() {
+    state = state.copyWith(
+      profile: state.profile.copyWith(sunnyIntroSeen: true),
+    );
+  }
+
   void markJourneyCompleteSeen() {
     state = state.copyWith(
       profile: state.profile.copyWith(journeyCompleteSeen: true),
@@ -274,7 +281,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
       themeZh: '',
       encouragement: profile.userPlanType == UserPlanType.nonMealReplacement
           ? 'We will remind you to use your product each day.'
-          : 'Track your habits and chat with Viva while you explore products.',
+          : 'Track your habits and chat with Sunny while you explore products.',
       vitalityTrend: const [],
       weightTrend: const [],
       consistency5d: const [false, false, false, false, false],

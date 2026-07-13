@@ -21,14 +21,14 @@ void main() {
         ),
       ),
     );
+    await tester.pump();
+    router.go('/login');
     await tester.pumpAndSettle();
     return router;
   }
 
   testWidgets('Login Sign in navigates to home', (tester) async {
     final router = await pumpApp(tester);
-    router.go('/login');
-    await tester.pumpAndSettle();
 
     expect(find.text('Sign In'), findsOneWidget);
 
@@ -39,7 +39,7 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Today\'s Ritual'), findsOneWidget);
+    expect(find.text('Sunny'), findsOneWidget);
   });
 
   testWidgets('Register success back clears session and returns to login',

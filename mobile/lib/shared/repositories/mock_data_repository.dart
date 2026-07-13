@@ -165,7 +165,7 @@ class MockDataRepository {
     final greeting = switch (planType) {
       UserPlanType.mealReplacement =>
         day == 1
-            ? 'Hi Freya, I am Viva — your growth companion for the next 28 days.$productNote$couponNote How are you feeling today?'
+            ? 'Hi Freya, I am Sunny — your growth companion for the next 28 days.$productNote$couponNote How are you feeling today?'
             : 'Good to see you on Day $day, Freya. How is your rhythm today?',
       UserPlanType.nonMealReplacement =>
         'Hi Freya, I will remind you to use your product each day.$productNote$couponNote How are you feeling today?',

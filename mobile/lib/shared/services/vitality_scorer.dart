@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class VitalityScorer {
@@ -110,10 +111,78 @@ class VitalityScorer {
   }
 
   static String vitalityLabel(int score) {
-    if (score >= 90) return 'Great rhythm';
+    if (score >= 90) return 'Excellent';
+    if (score >= 80) return 'Good';
     if (score >= 75) return 'Good and steady';
     if (score >= 50) return 'Keep it gentle';
     if (score >= 1) return 'One small step counts';
     return 'No pressure — restart anytime';
   }
+
+  static String scoreRating(int score) {
+    if (score >= 90) return 'Excellent';
+    if (score >= 80) return 'Good';
+    if (score >= 60) return 'Fair';
+    return 'Needs focus';
+  }
+
+  static List<VitalityDimension> breakdown(VitalityScores scores) {
+    return [
+      VitalityDimension(
+        key: 'nutrition',
+        label: 'Nutrition',
+        score: scores.productRitualScore,
+        icon: Icons.apple_outlined,
+      ),
+      VitalityDimension(
+        key: 'exercise',
+        label: 'Movement',
+        score: ((scores.ritualCompletion * 0.85) + scores.consistencyScore * 0.15)
+            .round()
+            .clamp(0, 100),
+        icon: Icons.directions_run_outlined,
+      ),
+      VitalityDimension(
+        key: 'body_mind',
+        label: 'Body & Mind',
+        score: scores.moodCheckScore,
+        icon: Icons.spa_outlined,
+      ),
+      VitalityDimension(
+        key: 'sleep',
+        label: 'Sleep',
+        score: scores.sleepScore,
+        icon: Icons.bedtime_outlined,
+      ),
+      VitalityDimension(
+        key: 'hydration',
+        label: 'Hydration',
+        score: scores.hydrationScore,
+        icon: Icons.water_drop_outlined,
+      ),
+      VitalityDimension(
+        key: 'habits',
+        label: 'Habits',
+        score: scores.consistencyScore,
+        icon: Icons.wb_sunny_outlined,
+        highlighted: true,
+      ),
+    ];
+  }
+}
+
+class VitalityDimension {
+  const VitalityDimension({
+    required this.key,
+    required this.label,
+    required this.score,
+    required this.icon,
+    this.highlighted = false,
+  });
+
+  final String key;
+  final String label;
+  final int score;
+  final IconData icon;
+  final bool highlighted;
 }

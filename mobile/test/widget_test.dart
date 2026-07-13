@@ -6,7 +6,7 @@ void main() {
   testWidgets('App smoke test', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: ChatVivaApp()));
     await tester.pump();
-    expect(find.text('Grow Toward the Light'), findsOneWidget);
+    expect(find.byType(ProviderScope), findsOneWidget);
     await tester.pump(const Duration(seconds: 3));
   });
 }

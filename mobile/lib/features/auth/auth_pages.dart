@@ -154,7 +154,7 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
                           style: LuckdateTextStyles.title,
                         ),
                         Text(
-                          'Membership + Viva companion',
+                          'Membership + Sunny companion',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],
@@ -180,7 +180,7 @@ class LoginPage extends ConsumerWidget {
 
   void _signIn(GoRouter router, WidgetRef ref) {
     ref.read(appStateProvider.notifier).loginExistingUser();
-    router.go('/today');
+    router.go('/home');
   }
 
   void _signUp(GoRouter router) => router.go('/register');

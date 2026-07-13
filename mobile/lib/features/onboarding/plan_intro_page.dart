@@ -41,7 +41,7 @@ class PlanIntroPage extends ConsumerWidget {
                     '• Log Solar Protein\n'
                     '• Track hydration and weight\n'
                     '• Record sleep\n'
-                    '• Chat with Viva anytime',
+                    '• Chat with Sunny anytime',
                     style: LuckdateTextStyles.bodySmall,
                   ),
                 ],
@@ -52,7 +52,7 @@ class PlanIntroPage extends ConsumerWidget {
               label: 'Start my plan',
               onPressed: () {
                 ref.read(appStateProvider.notifier).activateSlimJourney();
-                context.go('/today');
+                context.go('/home');
               },
             ),
           ],

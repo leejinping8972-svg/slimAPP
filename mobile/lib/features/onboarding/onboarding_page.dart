@@ -101,7 +101,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             isLoggedIn: true,
           );
       ref.read(appStateProvider.notifier).completeOnboarding(profile);
-      context.go('/today');
+      context.go('/home');
     }
   }
 
@@ -257,7 +257,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             child: SunnySunflower(size: 160, showStem: true, useImage: true),
           ),
           const SizedBox(height: LuckdateSpacing.xl),
-          Text('Hi, I am Viva', style: LuckdateTextStyles.h1),
+          Text('Hi, I am Sunny', style: LuckdateTextStyles.h1),
           const SizedBox(height: LuckdateSpacing.md),
           Text(
             planType == UserPlanType.mealReplacement
@@ -540,7 +540,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     ? 'We will keep your plan gentle and steady. Please confirm any health concerns with a professional.'
                     : 'Day 1 starts with one small step — not perfection.')
               : planType == UserPlanType.nonMealReplacement
-              ? 'We will remind you to use your product each day. You can still log weight and chat with Viva.'
+              ? 'We will remind you to use your product each day. You can still log weight and chat with Sunny.'
               : 'You can log, chat, and explore products. Link an order anytime from Profile.',
           style: LuckdateTextStyles.body,
         ),

@@ -44,7 +44,7 @@ class LdScaffold extends StatelessWidget {
                             if (context.canPop()) {
                               context.pop();
                             } else {
-                              context.go('/today');
+                              context.go('/home');
                             }
                           },
                     )

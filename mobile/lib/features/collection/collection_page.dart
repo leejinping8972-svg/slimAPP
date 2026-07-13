@@ -7,7 +7,9 @@ import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class CollectionPage extends ConsumerStatefulWidget {
-  const CollectionPage({super.key});
+  const CollectionPage({super.key, this.rootTab = false});
+
+  final bool rootTab;
 
   @override
   ConsumerState<CollectionPage> createState() => _CollectionPageState();
@@ -26,7 +28,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
     final showExtension = journey.day >= 28;
 
     return LdScaffold(
-      showBack: true,
+      showBack: !widget.rootTab,
       body: productsAsync.when(
         data: (products) {
           final filtered = _filter == 'All'
@@ -37,7 +39,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Product Center', style: LuckdateTextStyles.h1),
+                Text('Mall', style: LuckdateTextStyles.h1),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(
                   'The House of Vitality — curated for your next chapter.',

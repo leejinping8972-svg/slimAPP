@@ -50,6 +50,7 @@ class UserProfile {
     this.userPlanType = UserPlanType.noProduct,
     this.hidePurchaseGuideCard = false,
     this.journeyCompleteSeen = false,
+    this.sunnyIntroSeen = false,
     this.welcomeCoupon,
     this.activationCode = '',
     this.membershipPlan = 'Solar Protein 28-Day',
@@ -80,6 +81,7 @@ class UserProfile {
   final UserPlanType userPlanType;
   final bool hidePurchaseGuideCard;
   final bool journeyCompleteSeen;
+  final bool sunnyIntroSeen;
   final UserCoupon? welcomeCoupon;
   final String activationCode;
   final String membershipPlan;
@@ -110,6 +112,7 @@ class UserProfile {
     UserPlanType? userPlanType,
     bool? hidePurchaseGuideCard,
     bool? journeyCompleteSeen,
+    bool? sunnyIntroSeen,
     UserCoupon? welcomeCoupon,
     String? activationCode,
     String? membershipPlan,
@@ -140,6 +143,7 @@ class UserProfile {
       userPlanType: userPlanType ?? this.userPlanType,
       hidePurchaseGuideCard: hidePurchaseGuideCard ?? this.hidePurchaseGuideCard,
       journeyCompleteSeen: journeyCompleteSeen ?? this.journeyCompleteSeen,
+      sunnyIntroSeen: sunnyIntroSeen ?? this.sunnyIntroSeen,
       welcomeCoupon: welcomeCoupon ?? this.welcomeCoupon,
       activationCode: activationCode ?? this.activationCode,
       membershipPlan: membershipPlan ?? this.membershipPlan,

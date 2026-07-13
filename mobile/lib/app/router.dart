@@ -4,22 +4,25 @@ import 'package:go_router/go_router.dart';
 import 'theme/luckdate_theme.dart';
 import '../../features/auth/auth_flow_pages.dart';
 import '../../features/auth/auth_pages.dart';
-import '../../features/chat/chat_page.dart';
 import '../../features/collection/collection_page.dart';
-import '../../features/journey/journey_page.dart';
+import '../../features/home/home_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/onboarding/plan_intro_page.dart';
+import '../../features/plan/plan_page.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/profile/reminder_settings_page.dart';
+import '../../features/ritual/ritual_page.dart';
+import '../../features/journey/journey_page.dart';
 import '../../features/splash/splash_page.dart';
-import '../../features/today/today_page.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _todayKey = GlobalKey<NavigatorState>(debugLabel: 'today');
-final _chatKey = GlobalKey<NavigatorState>(debugLabel: 'chat');
-final _journeyKey = GlobalKey<NavigatorState>(debugLabel: 'journey');
+final _homeKey = GlobalKey<NavigatorState>(debugLabel: 'home');
+final _ritualKey = GlobalKey<NavigatorState>(debugLabel: 'ritual');
+final _planKey = GlobalKey<NavigatorState>(debugLabel: 'plan');
+final _mallKey = GlobalKey<NavigatorState>(debugLabel: 'mall');
+final _meKey = GlobalKey<NavigatorState>(debugLabel: 'me');
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
@@ -32,8 +35,9 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final path = state.matchedLocation;
       final profile = ref.read(appStateProvider).profile;
-      if (path.startsWith('/region') || path.startsWith('/activation'))
+      if (path.startsWith('/region') || path.startsWith('/activation')) {
         return '/login';
+      }
 
       final isPublicAuth =
           path == '/' ||
@@ -47,7 +51,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (profile.isLoggedIn) {
         if (!profile.isNewRegistration &&
             (path == '/register-success' || path == '/link-order')) {
-          return '/today';
+          return '/home';
         }
         if (profile.isNewRegistration &&
             !profile.couponRewardSeen &&
@@ -74,8 +78,11 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path == '/register' ||
                 path == '/onboarding' ||
                 path == '/register-success' ||
-                path == '/link-order')) {
-          return '/today';
+                path == '/link-order' ||
+                path == '/today' ||
+                path == '/chat' ||
+                path == '/journey')) {
+          return '/home';
         }
       }
       return null;
@@ -106,8 +113,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) =>
             ProductDetailPage(productId: state.pathParameters['id']!),
       ),
-      GoRoute(path: '/collection', builder: (_, __) => const CollectionPage()),
-      GoRoute(path: '/profile', builder: (_, __) => const ProfilePage()),
       GoRoute(
         path: '/profile/reminders',
         parentNavigatorKey: _rootNavigatorKey,
@@ -119,23 +124,38 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
         branches: [
           StatefulShellBranch(
-            navigatorKey: _todayKey,
+            navigatorKey: _homeKey,
             routes: [
-              GoRoute(path: '/today', builder: (_, __) => const TodayPage()),
+              GoRoute(path: '/home', builder: (_, __) => const HomePage()),
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _chatKey,
+            navigatorKey: _ritualKey,
             routes: [
-              GoRoute(path: '/chat', builder: (_, __) => const ChatPage()),
+              GoRoute(path: '/ritual', builder: (_, __) => const RitualPage()),
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _journeyKey,
+            navigatorKey: _planKey,
+            routes: [
+              GoRoute(path: '/plan', builder: (_, __) => const PlanPage()),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _mallKey,
             routes: [
               GoRoute(
-                path: '/journey',
-                builder: (_, __) => const JourneyPage(),
+                path: '/mall',
+                builder: (_, __) => const CollectionPage(rootTab: true),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _meKey,
+            routes: [
+              GoRoute(
+                path: '/me',
+                builder: (_, __) => const ProfilePage(rootTab: true),
               ),
             ],
           ),
@@ -152,37 +172,43 @@ class _MainShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hideBottomNav = navigationShell.currentIndex == 1;
-
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: navigationShell,
-      bottomNavigationBar: hideBottomNav
-          ? null
-          : NavigationBar(
-              selectedIndex: navigationShell.currentIndex,
-              onDestinationSelected: navigationShell.goBranch,
-              backgroundColor: LuckdateColors.ivoryWhite,
-              indicatorColor: LuckdateColors.sageSoft,
-              height: 72,
-              destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home_rounded),
-                  label: 'Ritual',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.chat_bubble_outline_rounded),
-                  selectedIcon: Icon(Icons.chat_bubble_rounded),
-                  label: 'Viva',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.explore_outlined),
-                  selectedIcon: Icon(Icons.explore_rounded),
-                  label: 'Journey',
-                ),
-              ],
-            ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: navigationShell.goBranch,
+        backgroundColor: LuckdateColors.ivoryWhite,
+        indicatorColor: LuckdateColors.sageSoft,
+        height: 72,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.wb_sunny_outlined),
+            selectedIcon: Icon(Icons.wb_sunny_rounded),
+            label: 'Ritual',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.event_note_outlined),
+            selectedIcon: Icon(Icons.event_note_rounded),
+            label: 'Plan',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront_rounded),
+            label: 'Mall',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
+            label: 'Me',
+          ),
+        ],
+      ),
     );
   }
 }
