@@ -7,11 +7,11 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="luckdate — Feel Alive. Meet luckdate.">
-  <meta name="theme-color" content="#5E6B45">
+  <meta name="theme-color" content="#3D3428">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="luckdate">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
@@ -24,7 +24,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #2A2418;
+      background: #3D3428;
       overscroll-behavior: none;
     }
     #loading {
@@ -33,7 +33,7 @@
       z-index: 9999;
       overflow: hidden;
       cursor: pointer;
-      background: #2A2418;
+      background: linear-gradient(180deg, #5C5042 0%, #3D3428 55%, #2A2418 100%);
     }
     #loading img {
       width: 100%;
@@ -41,6 +41,39 @@
       object-fit: cover;
       object-position: center;
       display: block;
+    }
+    #loading .fallback {
+      display: none;
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+    #loading.fallback-active img { display: none; }
+    #loading.fallback-active .fallback { display: flex; }
+    #loading .fallback h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      font-weight: 500;
+    }
+    #loading .fallback p {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 400;
+      opacity: 0.95;
+    }
+    #loading .fallback .brand {
+      position: absolute;
+      bottom: 48px;
+      font-size: 18px;
+      letter-spacing: 5px;
+      color: #D4A853;
+      font-weight: 300;
     }
     @media (min-width: 500px) {
       body {
@@ -70,9 +103,26 @@
 </head>
 <body>
   <div id="loading">
-    <img src="splash_screen.png" alt="Feel Alive. Meet luckdate.">
+    <img id="splash-img" alt="Feel Alive. Meet luckdate.">
+    <div class="fallback">
+      <h1>Feel Alive.</h1>
+      <p>Meet luckdate.</p>
+      <div class="brand">luckdate</div>
+    </div>
   </div>
   <script>
+    (function () {
+      var base = document.querySelector('base');
+      var href = base ? base.getAttribute('href') : '/';
+      if (!href.endsWith('/')) href += '/';
+      var img = document.getElementById('splash-img');
+      var loading = document.getElementById('loading');
+      img.src = href + 'splash_screen.png';
+      img.onerror = function () {
+        loading.classList.add('fallback-active');
+      };
+    })();
+
     function hideLoading() {
       var el = document.getElementById('loading');
       if (el) el.remove();

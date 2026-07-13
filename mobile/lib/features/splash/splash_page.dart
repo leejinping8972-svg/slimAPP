@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/sunny_sunflower.dart';
 
 class SplashPage extends StatefulWidget {
@@ -37,15 +38,87 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF3D3428),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: _goNext,
-        child: SizedBox.expand(
-          child: Image.asset(
-            'assets/images/splash_screen.png',
-            fit: BoxFit.cover,
-            alignment: Alignment.center,
-          ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/images/splash_screen.png',
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              gaplessPlayback: true,
+              errorBuilder: (_, __, ___) => const _SplashFallback(),
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x33000000),
+                    Color(0x00000000),
+                    Color(0x66000000),
+                  ],
+                  stops: [0, 0.45, 1],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SplashFallback extends StatelessWidget {
+  const _SplashFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF5C5042), Color(0xFF3D3428), Color(0xFF2A2418)],
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            const Spacer(flex: 3),
+            const SunnySunflower(size: 72, showStem: false),
+            const SizedBox(height: LuckdateSpacing.xxl),
+            Text(
+              'Feel Alive.',
+              style: LuckdateTextStyles.display.copyWith(
+                color: LuckdateColors.ivoryWhite,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: LuckdateSpacing.sm),
+            Text(
+              'Meet luckdate.',
+              style: LuckdateTextStyles.h1.copyWith(
+                color: LuckdateColors.ivoryWhite,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const Spacer(flex: 2),
+            Text(
+              'luckdate',
+              style: LuckdateTextStyles.brand.copyWith(
+                color: LuckdateColors.sunGold,
+                letterSpacing: 5,
+              ),
+            ),
+            const SizedBox(height: LuckdateSpacing.xxl),
+          ],
         ),
       ),
     );
