@@ -219,6 +219,22 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  void updateExerciseTarget(int kcal) {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        exerciseTargetKcal: kcal.clamp(100, 2000),
+      ),
+    );
+  }
+
+  void updateCalorieTarget(int kcal) {
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        calorieTargetKcal: kcal.clamp(800, 4000),
+      ),
+    );
+  }
+
   void logMood(String moodTag) {
     final record = state.journey.todayRecord.copyWith(moodTag: moodTag);
     updateTodayRecord(record);
@@ -379,6 +395,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
         await sendChatMessage('I feel a bit tired today');
       case 'adjust':
         await sendChatMessage('I have a dinner party tonight, can we adjust?');
+      case 'exercise':
+        await sendChatMessage('I did 45 minutes of yoga');
+      case 'sleep':
+        await sendChatMessage('I slept 7 hours last night');
     }
   }
 

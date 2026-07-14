@@ -1,4 +1,5 @@
 import '../models/models.dart';
+import 'check_in_estimator.dart';
 
 class SunnyIntentRouter {
   SunnyIntentResult route({
@@ -30,6 +31,75 @@ class SunnyIntentRouter {
       );
     }
 
+    if (_matches(lower, ['dinner party', 'party', '聚餐', 'adjust plan'])) {
+      return SunnyIntentResult(
+        reply:
+            'A social dinner does not undo your journey. Enjoy it gently, hydrate well, and we will keep tomorrow light and steady.',
+        intents: ['plan_adjustment'],
+        todayUpdates: today,
+      );
+    }
+
+    if (_matches(lower, [
+      'exercise',
+      'workout',
+      'ran',
+      'run',
+      'yoga',
+      'walked',
+      'walking',
+      'gym',
+      '运动',
+      '跑步',
+      '瑜伽',
+    ])) {
+      final updated = CheckInEstimator.applyExerciseFromText(today, lower);
+      final addedMin = updated.exerciseMinutes - today.exerciseMinutes;
+      final addedKcal = updated.exerciseKcal - today.exerciseKcal;
+      return SunnyIntentResult(
+        reply:
+            'Nice work — I logged about $addedMin min of movement (~$addedKcal kcal burned). Your Check-in Record will update automatically.',
+        intents: ['record_exercise'],
+        todayUpdates: updated,
+      );
+    }
+
+    if (_matches(lower, [
+      'ate',
+      'eaten',
+      'breakfast',
+      'lunch',
+      'dinner',
+      'snack',
+      'salad',
+      'yogurt',
+      'salmon',
+      'oatmeal',
+      '吃了',
+      '早餐',
+      '午餐',
+      '晚餐',
+    ])) {
+      final updated = CheckInEstimator.applyMealFromText(today, lower);
+      final meal = updated.meals.last;
+      return SunnyIntentResult(
+        reply:
+            'Logged “${meal.name}” at ~${meal.kcal} kcal (AI estimate). Protein ${meal.protein}g · Carbs ${meal.carbs}g · Fat ${meal.fat}g. You can review it in Check-in Record.',
+        intents: ['record_meal'],
+        todayUpdates: updated,
+      );
+    }
+
+    if (_matches(lower, ['slept', 'sleep', 'hours of sleep', '睡觉', '睡眠'])) {
+      final updated = CheckInEstimator.applySleepFromText(today, lower);
+      return SunnyIntentResult(
+        reply:
+            'I noted your sleep: ${updated.sleepHours}h (${updated.sleepQuality}). Rest is part of your vitality rhythm.',
+        intents: ['record_sleep'],
+        todayUpdates: updated,
+      );
+    }
+
     if (_matches(lower, ['hungry', 'haven\'t had enough water', 'not enough water', 'a bit hungry'])) {
       return SunnyIntentResult(
         reply:
@@ -40,11 +110,12 @@ class SunnyIntentRouter {
     }
 
     if (_matches(lower, ['drank', 'shake', 'protein', 'meal replacement', '代餐'])) {
+      final updated = CheckInEstimator.applyProductShake(today);
       return SunnyIntentResult(
         reply:
-            'Got it — I logged your Solar Protein for today. That is one gentle step toward your Day $journeyDay rhythm.',
-        intents: ['record_product'],
-        todayUpdates: today.copyWith(productTaken: ProductTakenStatus.taken),
+            'Got it — I logged your Solar Protein (~280 kcal, AI estimate) for Day $journeyDay. Check-in Record will show the intake.',
+        intents: ['record_product', 'record_meal'],
+        todayUpdates: updated,
       );
     }
 
@@ -77,15 +148,6 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['dinner', 'party', '聚餐', 'adjust', 'plan'])) {
-      return SunnyIntentResult(
-        reply:
-            'A social dinner does not undo your journey. Enjoy it gently, hydrate well, and we will keep tomorrow light and steady.',
-        intents: ['plan_adjustment'],
-        todayUpdates: today,
-      );
-    }
-
     if (_matches(lower, ['when', 'how', 'product', 'solar', 'drink'])) {
       return const SunnyIntentResult(
         reply:
@@ -96,7 +158,7 @@ class SunnyIntentRouter {
 
     return SunnyIntentResult(
       reply:
-          'I am here with you on Day $journeyDay, $nickname. One gentle step today is enough — would you like to log water, your shake, or how you feel?',
+          'I am here with you on Day $journeyDay, $nickname. Log meals, water, exercise, or sleep in chat — I will estimate calories and update your Check-in Record.',
       intents: ['small_talk'],
       todayUpdates: today,
     );

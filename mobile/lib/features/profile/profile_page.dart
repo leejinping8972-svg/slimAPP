@@ -162,6 +162,9 @@ class ProfilePage extends ConsumerWidget {
               crossAxisSpacing: 10,
               childAspectRatio: 1.1,
               children: [
+                _menuTile(Icons.restaurant_menu_outlined, 'Check-in Record', () {
+                  context.push('/record');
+                }),
                 _menuTile(Icons.shopping_bag_outlined, 'Orders', () {
                   context.push('/link-order');
                 }),
@@ -175,7 +178,6 @@ class ProfilePage extends ConsumerWidget {
                 _menuTile(Icons.event_note_outlined, 'Plan', () {
                   context.go('/plan');
                 }),
-                _menuTile(Icons.straighten, 'Units', () {}),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),

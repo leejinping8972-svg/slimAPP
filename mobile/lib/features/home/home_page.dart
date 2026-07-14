@@ -21,10 +21,10 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   static const _quickAsks = [
     ('☀️', 'Daily Ritual'),
-    ('🎯', 'How to improve focus?'),
-    ('🌸', 'Cycle regulation tips for women'),
-    ('🏃', 'What exercise should I do today?'),
-    ('🌱', 'How to relieve anxiety?'),
+    ('💧', 'I drank a glass of water'),
+    ('🏃', 'I did 45 minutes of yoga'),
+    ('🥗', 'I ate a chicken salad for lunch'),
+    ('😴', 'I slept 7 hours last night'),
   ];
 
   @override

@@ -39,6 +39,8 @@ class UserProfile {
     this.reminderTime2 = '20:00',
     this.mealSlot = 'breakfast',
     this.hydrationTargetMl = 2000,
+    this.calorieTargetKcal = 1600,
+    this.exerciseTargetKcal = 500,
     this.riskLevel = RiskLevel.p2,
     this.onboardingComplete = false,
     this.isLoggedIn = false,
@@ -70,6 +72,8 @@ class UserProfile {
   final String reminderTime2;
   final String mealSlot;
   final int hydrationTargetMl;
+  final int calorieTargetKcal;
+  final int exerciseTargetKcal;
   final RiskLevel riskLevel;
   final bool onboardingComplete;
   final bool isLoggedIn;
@@ -101,6 +105,8 @@ class UserProfile {
     String? reminderTime2,
     String? mealSlot,
     int? hydrationTargetMl,
+    int? calorieTargetKcal,
+    int? exerciseTargetKcal,
     RiskLevel? riskLevel,
     bool? onboardingComplete,
     bool? isLoggedIn,
@@ -132,6 +138,8 @@ class UserProfile {
       reminderTime2: reminderTime2 ?? this.reminderTime2,
       mealSlot: mealSlot ?? this.mealSlot,
       hydrationTargetMl: hydrationTargetMl ?? this.hydrationTargetMl,
+      calorieTargetKcal: calorieTargetKcal ?? this.calorieTargetKcal,
+      exerciseTargetKcal: exerciseTargetKcal ?? this.exerciseTargetKcal,
       riskLevel: riskLevel ?? this.riskLevel,
       onboardingComplete: onboardingComplete ?? this.onboardingComplete,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
@@ -152,6 +160,28 @@ class UserProfile {
   }
 }
 
+class MealLogEntry {
+  const MealLogEntry({
+    required this.meal,
+    required this.name,
+    required this.time,
+    required this.kcal,
+    this.protein = 0,
+    this.carbs = 0,
+    this.fat = 0,
+    this.source = 'chat',
+  });
+
+  final String meal;
+  final String name;
+  final String time;
+  final int kcal;
+  final int protein;
+  final int carbs;
+  final int fat;
+  final String source;
+}
+
 class TodayRecord {
   const TodayRecord({
     this.productTaken = ProductTakenStatus.notRecorded,
@@ -164,6 +194,15 @@ class TodayRecord {
     this.sleepQuality = '',
     this.ritualCompletionRate = 0,
     this.consistency7d = 0,
+    this.intakeKcal = 0,
+    this.proteinG = 0,
+    this.carbsG = 0,
+    this.fatG = 0,
+    this.fiberG = 0,
+    this.exerciseKcal = 0,
+    this.exerciseMinutes = 0,
+    this.exerciseSessions = 0,
+    this.meals = const [],
   });
 
   final ProductTakenStatus productTaken;
@@ -176,6 +215,15 @@ class TodayRecord {
   final String sleepQuality;
   final double ritualCompletionRate;
   final double consistency7d;
+  final int intakeKcal;
+  final int proteinG;
+  final int carbsG;
+  final int fatG;
+  final int fiberG;
+  final int exerciseKcal;
+  final int exerciseMinutes;
+  final int exerciseSessions;
+  final List<MealLogEntry> meals;
 
   TodayRecord copyWith({
     ProductTakenStatus? productTaken,
@@ -188,6 +236,15 @@ class TodayRecord {
     String? sleepQuality,
     double? ritualCompletionRate,
     double? consistency7d,
+    int? intakeKcal,
+    int? proteinG,
+    int? carbsG,
+    int? fatG,
+    int? fiberG,
+    int? exerciseKcal,
+    int? exerciseMinutes,
+    int? exerciseSessions,
+    List<MealLogEntry>? meals,
   }) {
     return TodayRecord(
       productTaken: productTaken ?? this.productTaken,
@@ -200,6 +257,15 @@ class TodayRecord {
       sleepQuality: sleepQuality ?? this.sleepQuality,
       ritualCompletionRate: ritualCompletionRate ?? this.ritualCompletionRate,
       consistency7d: consistency7d ?? this.consistency7d,
+      intakeKcal: intakeKcal ?? this.intakeKcal,
+      proteinG: proteinG ?? this.proteinG,
+      carbsG: carbsG ?? this.carbsG,
+      fatG: fatG ?? this.fatG,
+      fiberG: fiberG ?? this.fiberG,
+      exerciseKcal: exerciseKcal ?? this.exerciseKcal,
+      exerciseMinutes: exerciseMinutes ?? this.exerciseMinutes,
+      exerciseSessions: exerciseSessions ?? this.exerciseSessions,
+      meals: meals ?? this.meals,
     );
   }
 }

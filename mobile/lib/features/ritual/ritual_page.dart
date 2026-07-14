@@ -95,6 +95,47 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                       onViewPlan: () => context.push('/sunny/suggestions'),
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
+                    LdCard(
+                      onTap: () => context.push('/record'),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: LuckdateColors.sageSoft,
+                              borderRadius:
+                                  BorderRadius.circular(LuckdateRadius.md),
+                            ),
+                            child: const Icon(
+                              Icons.restaurant_menu_outlined,
+                              color: LuckdateColors.deepSage,
+                            ),
+                          ),
+                          const SizedBox(width: LuckdateSpacing.md),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Check-in Record',
+                                  style: LuckdateTextStyles.title,
+                                ),
+                                Text(
+                                  'Track meals, water, and daily nutrition.',
+                                  style: LuckdateTextStyles.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.chevron_right_rounded,
+                            color: LuckdateColors.textSecondary,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.lg),
                     ConsistencyCalendarCard(
                       consistency5d: journey.consistency5d,
                       consistencyScore: scores.consistencyScore,

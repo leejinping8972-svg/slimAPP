@@ -7,6 +7,7 @@ import '../../features/auth/auth_pages.dart';
 import '../../features/collection/collection_page.dart';
 import '../../features/home/home_page.dart';
 import '../../features/home/sunny_suggestion_page.dart';
+import '../../features/record/check_in_record_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/onboarding/plan_intro_page.dart';
 import '../../features/plan/plan_page.dart';
@@ -112,6 +113,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/sunny/suggestions',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (_, __) => const SunnySuggestionPage(),
+      ),
+      GoRoute(
+        path: '/record',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, __) => const CheckInRecordPage(),
       ),
       GoRoute(
         path: '/journey/report',
