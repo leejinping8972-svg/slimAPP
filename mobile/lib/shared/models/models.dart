@@ -262,6 +262,18 @@ class JourneyState {
   final String sunnyCardMessage;
 }
 
+class ChatSuggestionItem {
+  const ChatSuggestionItem({
+    required this.emoji,
+    required this.title,
+    required this.subtitle,
+  });
+
+  final String emoji;
+  final String title;
+  final String subtitle;
+}
+
 class ChatMessage {
   const ChatMessage({
     required this.id,
@@ -269,6 +281,8 @@ class ChatMessage {
     required this.text,
     this.timestamp,
     this.isStreaming = false,
+    this.suggestions,
+    this.actionLabels,
   });
 
   final String id;
@@ -276,14 +290,23 @@ class ChatMessage {
   final String text;
   final DateTime? timestamp;
   final bool isStreaming;
+  final List<ChatSuggestionItem>? suggestions;
+  final List<String>? actionLabels;
 
-  ChatMessage copyWith({String? text, bool? isStreaming}) {
+  ChatMessage copyWith({
+    String? text,
+    bool? isStreaming,
+    List<ChatSuggestionItem>? suggestions,
+    List<String>? actionLabels,
+  }) {
     return ChatMessage(
       id: id,
       isUser: isUser,
       text: text ?? this.text,
       timestamp: timestamp,
       isStreaming: isStreaming ?? this.isStreaming,
+      suggestions: suggestions ?? this.suggestions,
+      actionLabels: actionLabels ?? this.actionLabels,
     );
   }
 }

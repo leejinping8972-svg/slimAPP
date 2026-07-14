@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../core/widgets/ld_shell.dart';
-import '../../core/widgets/ritual_sheets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
@@ -19,6 +18,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
   bool _canSend = false;
+
+  static const _quickAsks = [
+    ('🎯', 'How to improve focus?'),
+    ('🌸', 'Cycle regulation tips for women'),
+    ('🏃', 'What exercise should I do today?'),
+    ('🌱', 'How to relieve anxiety?'),
+  ];
 
   @override
   void initState() {
@@ -87,30 +93,11 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
-  void _handleRitualTap(String title, UserProfile profile, TodayRecord record) {
-    switch (title) {
-      case 'Hydration':
-        showHydrationSheet(
-          context,
-          ref,
-          record,
-          profile.hydrationTargetMl,
-        );
-      case 'Weight':
-        showWeightSheet(context, ref, record, profile);
-      case 'Sleep':
-        showSleepSheet(context, ref, record);
-      case 'Solar Protein™':
-      case 'Your product':
-        ref.read(appStateProvider.notifier).updateTodayRecord(
-              record.copyWith(productTaken: ProductTakenStatus.taken),
-            );
-      default:
-        if (title == profile.linkedProductName) {
-          ref.read(appStateProvider.notifier).updateTodayRecord(
-                record.copyWith(productTaken: ProductTakenStatus.taken),
-              );
-        }
+  void _onActionTap(String label) {
+    if (label == 'View Detailed Plan') {
+      context.go('/plan');
+    } else if (label == 'Set Sleep Goal') {
+      context.go('/ritual');
     }
   }
 
@@ -119,114 +106,65 @@ class _HomePageState extends ConsumerState<HomePage> {
     final state = ref.watch(appStateProvider);
     final messages = state.chatMessages;
     final profile = state.profile;
-    final journey = state.journey;
-    final record = journey.todayRecord;
 
     ref.listen(appStateProvider, (_, __) => _scrollToBottom());
-
-    final ritualItems = ritualItemsForPlan(
-      profile: profile,
-      record: record,
-      onItemTap: (title) => _handleRitualTap(title, profile, record),
-    );
-    final pendingRituals = ritualItems.where((e) => !e.completed).length;
-    final showMoodCard = _isEveningMoodWindow();
 
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: SafeArea(
         child: Column(
           children: [
-            _HomeHeader(
-              nickname: profile.nickname,
-              onProfileTap: () => context.go('/me'),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
-              child: Text(
-                'Sunny provides lifestyle companionship — not medical advice.',
-                style: LuckdateTextStyles.caption,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
+            const _HomeHeader(),
             Expanded(
               child: ListView(
                 controller: _scrollController,
-                padding: const EdgeInsets.all(LuckdateSpacing.lg),
+                padding: const EdgeInsets.fromLTRB(
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.sm,
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.md,
+                ),
                 children: [
-                  if (!profile.sunnyIntroSeen) ...[
-                    _SunnyIntroCard(
-                      onDismiss: () => ref
-                          .read(appStateProvider.notifier)
-                          .markSunnyIntroSeen(),
-                    ),
-                    const SizedBox(height: LuckdateSpacing.md),
-                  ],
-                  _DailyRitualCard(
-                    pendingCount: pendingRituals,
-                    items: ritualItems,
-                  ),
-                  const SizedBox(height: LuckdateSpacing.md),
-                  _ProductRecCard(
-                    planType: profile.userPlanType,
-                    linkedProductName: profile.linkedProductName,
-                    onBrowse: () => context.go('/mall'),
-                    onViewPlan: () =>
-                        context.push('/collection/product/solar_protein'),
-                  ),
-                  if (showMoodCard) ...[
-                    const SizedBox(height: LuckdateSpacing.md),
-                    _MoodCheckInCard(record: record),
-                  ],
+                  _SunnyIntroCard(nickname: profile.nickname),
                   const SizedBox(height: LuckdateSpacing.lg),
                   ...messages.map((msg) {
                     return Padding(
-                      padding:
-                          const EdgeInsets.only(bottom: LuckdateSpacing.md),
+                      padding: const EdgeInsets.only(bottom: LuckdateSpacing.md),
                       child: msg.isUser
-                          ? UserBubble(text: msg.text)
+                          ? UserBubble(
+                              text: msg.text,
+                              timestamp: msg.timestamp,
+                              nickname: profile.nickname,
+                            )
                           : SunnyBubble(
                               text: msg.text,
                               isStreaming: msg.isStreaming,
+                              timestamp: msg.timestamp,
+                              suggestions: msg.suggestions,
+                              actionLabels: msg.actionLabels,
+                              onActionTap: _onActionTap,
                             ),
                     );
                   }),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _quickBtn('Water', 'water'),
-                    _quickBtn('Meal', 'meal'),
-                    _quickBtn('Adjust', 'adjust'),
-                  ],
-                ),
-              ),
+            _QuickAskRow(
+              items: _quickAsks,
+              onTap: (text) {
+                ref.read(appStateProvider.notifier).sendChatMessage(text);
+              },
             ),
             LdChatComposer(
               controller: _controller,
               canSend: _canSend,
               onSend: _send,
+              hintText: 'Chat with Sunny...',
+              disclaimer:
+                  'Sunny may make mistakes. Please use for reference based on your own situation.',
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _quickBtn(String label, String action) {
-    return Padding(
-      padding: const EdgeInsets.only(right: LuckdateSpacing.sm),
-      child: LdChoiceChip(
-        label: label,
-        selected: false,
-        onTap: () =>
-            ref.read(appStateProvider.notifier).sendQuickAction(action),
       ),
     );
   }
@@ -237,58 +175,54 @@ class _HomePageState extends ConsumerState<HomePage> {
     _controller.clear();
     ref.read(appStateProvider.notifier).sendChatMessage(text);
   }
-
-  bool _isEveningMoodWindow() {
-    final hour = DateTime.now().hour;
-    return hour >= 20 && hour < 22;
-  }
 }
 
 class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({
-    required this.nickname,
-    required this.onProfileTap,
-  });
-
-  final String nickname;
-  final VoidCallback onProfileTap;
+  const _HomeHeader();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(
-        LuckdateSpacing.lg,
         LuckdateSpacing.sm,
-        LuckdateSpacing.lg,
+        LuckdateSpacing.sm,
+        LuckdateSpacing.sm,
         LuckdateSpacing.md,
       ),
       decoration: const BoxDecoration(
-        gradient: LuckdateGradients.pageHeader,
+        color: LuckdateColors.cloudIvory,
         border: Border(
           bottom: BorderSide(color: LuckdateColors.lineSoft, width: 0.5),
         ),
       ),
       child: Row(
         children: [
-          const LdSunnyAvatar(size: 36),
-          const SizedBox(width: LuckdateSpacing.md),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+            color: LuckdateColors.textPrimary,
+          ),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Sunny', style: LuckdateTextStyles.title),
                 Text(
-                  'Your vitality companion',
+                  'Sunny AI Chat',
+                  style: LuckdateTextStyles.title.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  'Your Vitality Companion',
                   style: LuckdateTextStyles.caption,
                 ),
               ],
             ),
           ),
-          LdProfileAvatar(
-            nickname: nickname,
-            radius: 18,
-            onTap: onProfileTap,
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_horiz, size: 22),
+            color: LuckdateColors.textPrimary,
           ),
         ],
       ),
@@ -297,230 +231,147 @@ class _HomeHeader extends StatelessWidget {
 }
 
 class _SunnyIntroCard extends StatelessWidget {
-  const _SunnyIntroCard({required this.onDismiss});
+  const _SunnyIntroCard({required this.nickname});
 
-  final VoidCallback onDismiss;
+  final String nickname;
 
   @override
   Widget build(BuildContext context) {
-    return _SunnyCardFrame(
-      child: LdCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return Container(
+      padding: const EdgeInsets.all(LuckdateSpacing.base),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9F6F1),
+        borderRadius: BorderRadius.circular(LuckdateRadius.xl),
+        border: Border.all(color: LuckdateColors.lineSoft.withValues(alpha: 0.7)),
+        boxShadow: LuckdateShadows.soft,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const LdSunnyAvatar(size: 44),
+          const SizedBox(width: LuckdateSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const LdSunnyAvatar(size: 40),
-                const SizedBox(width: LuckdateSpacing.md),
-                Expanded(
-                  child: Text(
-                    'Hi, I am Sunny',
-                    style: LuckdateTextStyles.title,
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: LuckdateSpacing.sm,
+                  children: [
+                    Text(
+                      'Sunny ☀️',
+                      style: LuckdateTextStyles.title.copyWith(fontSize: 15),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: LuckdateColors.ivoryWhite,
+                        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                        border: Border.all(color: LuckdateColors.lineSoft),
+                      ),
+                      child: Text(
+                        'AI Companion',
+                        style: LuckdateTextStyles.caption.copyWith(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Hi $nickname, I\'m Sunny. What would you like to chat about today?',
+                  style: LuckdateTextStyles.bodySmall,
+                ),
+                const SizedBox(height: LuckdateSpacing.sm),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: LuckdateColors.chocolateBrown,
+                      side: const BorderSide(color: LuckdateColors.lineSoft),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(LuckdateRadius.pill),
+                      ),
+                    ),
+                    child: Text(
+                      'Learn about Sunny >',
+                      style: LuckdateTextStyles.caption.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: LuckdateSpacing.md),
-            Text(
-              'Your growth companion for daily rituals, gentle guidance, and product care. Log rituals right here — I will cheer you on.',
-              style: LuckdateTextStyles.bodySmall,
-            ),
-            const SizedBox(height: LuckdateSpacing.md),
-            LdPrimaryButton(label: 'Nice to meet you', onPressed: onDismiss),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _DailyRitualCard extends StatelessWidget {
-  const _DailyRitualCard({
-    required this.pendingCount,
-    required this.items,
-  });
+class _QuickAskRow extends StatelessWidget {
+  const _QuickAskRow({required this.items, required this.onTap});
 
-  final int pendingCount;
-  final List<RitualLogItem> items;
+  final List<(String, String)> items;
+  final ValueChanged<String> onTap;
 
   @override
   Widget build(BuildContext context) {
-    final ordered = [
-      ...items.where((e) => !e.completed),
-      ...items.where((e) => e.completed),
-    ];
-
-    return _SunnyCardFrame(
-      child: LdCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Today\'s Ritual', style: LuckdateTextStyles.title),
-            const SizedBox(height: 4),
-            Text(
-              pendingCount > 0
-                  ? '$pendingCount items left — tap to log'
-                  : 'All rituals logged today ✓',
-              style: LuckdateTextStyles.caption,
-            ),
-            const SizedBox(height: LuckdateSpacing.md),
-            ...ordered.map(
-              (item) => Padding(
-                padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
-                child: RitualCard(
-                  title: item.title,
-                  subtitle: item.subtitle,
-                  icon: item.icon,
-                  completed: item.completed,
-                  onTap: item.onTap,
-                ),
-              ),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        LuckdateSpacing.lg,
+        0,
+        LuckdateSpacing.lg,
+        LuckdateSpacing.sm,
       ),
-    );
-  }
-}
-
-class _ProductRecCard extends StatelessWidget {
-  const _ProductRecCard({
-    required this.planType,
-    required this.linkedProductName,
-    required this.onBrowse,
-    required this.onViewPlan,
-  });
-
-  final UserPlanType planType;
-  final String linkedProductName;
-  final VoidCallback onBrowse;
-  final VoidCallback onViewPlan;
-
-  @override
-  Widget build(BuildContext context) {
-    final (title, body, cta, action) = switch (planType) {
-      UserPlanType.noProduct => (
-          'Unlock your 28-day plan',
-          'Solar Protein starts your Slim Journey — rituals, tracking, and Sunny support.',
-          'View 28-Day Plan',
-          onViewPlan,
-        ),
-      UserPlanType.nonMealReplacement => (
-          'Complement your routine',
-          linkedProductName.isEmpty
-              ? 'Browse nutrition picks that pair well with your product.'
-              : 'More picks to support $linkedProductName and your daily rhythm.',
-          'Browse Mall',
-          onBrowse,
-        ),
-      UserPlanType.mealReplacement => (
-          'Additional Nutrition',
-          'Curated picks to complement your Solar Protein ritual.',
-          'Browse Mall',
-          onBrowse,
-        ),
-    };
-
-    return _SunnyCardFrame(
-      child: LdCard(
-        onTap: action,
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: LuckdateColors.sunGold.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(
-                Icons.local_mall_outlined,
-                color: LuckdateColors.chocolateBrown,
-              ),
-            ),
-            const SizedBox(width: LuckdateSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: LuckdateTextStyles.title),
-                  Text(body, style: LuckdateTextStyles.bodySmall),
-                  const SizedBox(height: LuckdateSpacing.sm),
-                  Text(
-                    '$cta →',
-                    style: LuckdateTextStyles.caption.copyWith(
-                      color: LuckdateColors.deepSage,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MoodCheckInCard extends ConsumerWidget {
-  const _MoodCheckInCard({required this.record});
-
-  final TodayRecord record;
-
-  static const _moods = [
-    ('great', '😊', 'Great'),
-    ('okay', '😐', 'Okay'),
-    ('tired', '😴', 'Tired'),
-  ];
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return _SunnyCardFrame(
-      child: LdCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Evening check-in', style: LuckdateTextStyles.title),
-            const SizedBox(height: 4),
-            Text(
-              'How are you feeling tonight?',
-              style: LuckdateTextStyles.bodySmall,
-            ),
-            const SizedBox(height: LuckdateSpacing.md),
-            Wrap(
-              spacing: LuckdateSpacing.sm,
-              runSpacing: LuckdateSpacing.sm,
-              children: _moods.map((mood) {
-                final selected = record.moodTag == mood.$1;
-                return Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () =>
-                        ref.read(appStateProvider.notifier).logMood(mood.$1),
-                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-                    child: Ink(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: selected
-                            ? LuckdateColors.sageSoft
-                            : Colors.transparent,
-                        borderRadius:
-                            BorderRadius.circular(LuckdateRadius.pill),
-                        border: Border.all(
-                          color: selected
-                              ? LuckdateColors.deepSage
-                              : LuckdateColors.lineSoft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('You might want to ask', style: LuckdateTextStyles.caption),
+          const SizedBox(height: LuckdateSpacing.sm),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: items.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: LuckdateSpacing.sm),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => onTap(item.$2),
+                      borderRadius:
+                          BorderRadius.circular(LuckdateRadius.pill),
+                      child: Ink(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
                         ),
-                      ),
-                      child: Text(
-                        '${mood.$2} ${mood.$3}',
-                        style: LuckdateTextStyles.caption.copyWith(
-                          fontWeight:
-                              selected ? FontWeight.w600 : FontWeight.w400,
+                        decoration: BoxDecoration(
+                          color: LuckdateColors.ivoryWhite,
+                          borderRadius:
+                              BorderRadius.circular(LuckdateRadius.pill),
+                          border: Border.all(color: LuckdateColors.lineSoft),
+                        ),
+                        child: Text(
+                          '${item.$1} ${item.$2}',
+                          style: LuckdateTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
@@ -528,27 +379,9 @@ class _MoodCheckInCard extends ConsumerWidget {
                 );
               }).toList(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class _SunnyCardFrame extends StatelessWidget {
-  const _SunnyCardFrame({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const LdSunnyAvatar(size: 32),
-        const SizedBox(width: LuckdateSpacing.sm),
-        Expanded(child: child),
-      ],
     );
   }
 }

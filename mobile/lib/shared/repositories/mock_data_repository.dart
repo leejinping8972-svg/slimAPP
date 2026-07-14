@@ -156,28 +156,60 @@ class MockDataRepository {
     bool hasWelcomeCoupon = false,
     String linkedProductName = '',
   }) {
-    final couponNote = hasWelcomeCoupon
-        ? ' Your \$5 welcome coupon is ready in Product Center.'
-        : '';
-    final productNote = linkedProductName.isNotEmpty
-        ? ' Your $linkedProductName plan is linked.'
-        : '';
-    final greeting = switch (planType) {
-      UserPlanType.mealReplacement =>
-        day == 1
-            ? 'Hi Freya, I am Sunny — your growth companion for the next 28 days.$productNote$couponNote How are you feeling today?'
-            : 'Good to see you on Day $day, Freya. How is your rhythm today?',
-      UserPlanType.nonMealReplacement =>
-        'Hi Freya, I will remind you to use your product each day.$productNote$couponNote How are you feeling today?',
-      UserPlanType.noProduct =>
-        'You do not have a dedicated plan yet, but you can keep chatting with me. Tell me your goals and I will recommend the right products.$couponNote',
-    };
+    // Signature retained for callers; Home chat seeds a design-matched demo thread.
+    final _ = (day, planType, hasWelcomeCoupon, linkedProductName);
+    final now = DateTime.now();
+    final t1 = DateTime(now.year, now.month, now.day, 10, 30);
+    final t2 = DateTime(now.year, now.month, now.day, 10, 31);
+
     return [
       ChatMessage(
-        id: 'welcome',
+        id: 'demo_user_1',
+        isUser: true,
+        text:
+            'I\'ve been staying up late lately and can\'t wake up in the morning. My energy is low. How should I adjust?',
+        timestamp: t1,
+      ),
+      ChatMessage(
+        id: 'demo_sunny_1',
         isUser: false,
-        text: greeting,
-        timestamp: DateTime.now(),
+        text:
+            'Staying up late disrupts your circadian rhythm, affecting hormones, mood, and metabolism. We can start with three areas: Sleep Rhythm + Energy Management + Gentle Habits — to gradually regain your pace and vitality ✨',
+        timestamp: t1,
+        suggestions: const [
+          ChatSuggestionItem(
+            emoji: '🌙',
+            title: 'Establish a Regular Routine',
+            subtitle:
+                'Aim to sleep by 11:00 PM and wake up at a fixed time every morning.',
+          ),
+          ChatSuggestionItem(
+            emoji: '☀️',
+            title: 'Morning Wake-up Ritual',
+            subtitle:
+                '10 minutes of sunlight + warm water + light stretching to energize your body.',
+          ),
+          ChatSuggestionItem(
+            emoji: '🤎',
+            title: 'Evening Relaxation Routine',
+            subtitle:
+                'Foot soak / Yoga / Meditation for 10 minutes to help you unwind.',
+          ),
+        ],
+        actionLabels: const ['View Detailed Plan', 'Set Sleep Goal'],
+      ),
+      ChatMessage(
+        id: 'demo_user_2',
+        isUser: true,
+        text: 'OK, I\'ll start trying tonight!',
+        timestamp: t2,
+      ),
+      ChatMessage(
+        id: 'demo_sunny_2',
+        isUser: false,
+        text:
+            'Great job, Freya! Every small start leads to significant changes 🌿 I\'ll be here with you, witnessing your growth and transformation!',
+        timestamp: t2,
       ),
     ];
   }

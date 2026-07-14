@@ -340,10 +340,29 @@ class LdSunnyAvatar extends StatelessWidget {
 }
 
 class SunnyBubble extends StatelessWidget {
-  const SunnyBubble({super.key, required this.text, this.isStreaming = false});
+  const SunnyBubble({
+    super.key,
+    required this.text,
+    this.isStreaming = false,
+    this.timestamp,
+    this.suggestions,
+    this.actionLabels,
+    this.onActionTap,
+  });
 
   final String text;
   final bool isStreaming;
+  final DateTime? timestamp;
+  final List<ChatSuggestionItem>? suggestions;
+  final List<String>? actionLabels;
+  final ValueChanged<String>? onActionTap;
+
+  String _formatTime(DateTime? t) {
+    final d = t ?? DateTime.now();
+    final h = d.hour.toString().padLeft(2, '0');
+    final m = d.minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -353,29 +372,91 @@ class SunnyBubble extends StatelessWidget {
         const LdSunnyAvatar(size: 32),
         const SizedBox(width: LuckdateSpacing.sm),
         Flexible(
-          child: Container(
-            padding: const EdgeInsets.all(LuckdateSpacing.md),
-            decoration: BoxDecoration(
-              color: LuckdateColors.chatBubble,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(LuckdateRadius.lg),
-                bottomLeft: Radius.circular(LuckdateRadius.lg),
-                bottomRight: Radius.circular(LuckdateRadius.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 4, bottom: 4),
+                child: Text(
+                  'Sunny ${_formatTime(timestamp)}',
+                  style: LuckdateTextStyles.caption.copyWith(fontSize: 11),
+                ),
               ),
-              border: Border.all(
-                color: LuckdateColors.lineSoft.withValues(alpha: 0.6),
+              Container(
+                padding: const EdgeInsets.all(LuckdateSpacing.md),
+                decoration: BoxDecoration(
+                  color: LuckdateColors.ivoryWhite,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(LuckdateRadius.lg),
+                    bottomLeft: Radius.circular(LuckdateRadius.lg),
+                    bottomRight: Radius.circular(LuckdateRadius.lg),
+                  ),
+                  border: Border.all(
+                    color: LuckdateColors.lineSoft.withValues(alpha: 0.8),
+                  ),
+                  boxShadow: LuckdateShadows.soft,
+                ),
+                child: isStreaming && text.isEmpty
+                    ? Text(
+                        '●  ●  ●',
+                        style: LuckdateTextStyles.body.copyWith(
+                          color: LuckdateColors.textSecondary,
+                          letterSpacing: 2,
+                        ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(text, style: LuckdateTextStyles.body),
+                          if (suggestions != null &&
+                              suggestions!.isNotEmpty) ...[
+                            const SizedBox(height: LuckdateSpacing.md),
+                            _SuggestionPanel(items: suggestions!),
+                          ],
+                          if (actionLabels != null &&
+                              actionLabels!.isNotEmpty) ...[
+                            const SizedBox(height: LuckdateSpacing.md),
+                            Wrap(
+                              spacing: LuckdateSpacing.sm,
+                              runSpacing: LuckdateSpacing.sm,
+                              children: actionLabels!.map((label) {
+                                return OutlinedButton(
+                                  onPressed: onActionTap == null
+                                      ? null
+                                      : () => onActionTap!(label),
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor:
+                                        LuckdateColors.chocolateBrown,
+                                    side: const BorderSide(
+                                      color: LuckdateColors.lineSoft,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    minimumSize: Size.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        LuckdateRadius.pill,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    label,
+                                    style: LuckdateTextStyles.caption.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ],
+                      ),
               ),
-              boxShadow: LuckdateShadows.soft,
-            ),
-            child: isStreaming && text.isEmpty
-                ? Text(
-                    '●  ●  ●',
-                    style: LuckdateTextStyles.body.copyWith(
-                      color: LuckdateColors.textSecondary,
-                      letterSpacing: 2,
-                    ),
-                  )
-                : Text(text, style: LuckdateTextStyles.body),
+            ],
           ),
         ),
       ],
@@ -383,36 +464,124 @@ class SunnyBubble extends StatelessWidget {
   }
 }
 
-class UserBubble extends StatelessWidget {
-  const UserBubble({super.key, required this.text});
+class _SuggestionPanel extends StatelessWidget {
+  const _SuggestionPanel({required this.items});
 
-  final String text;
+  final List<ChatSuggestionItem> items;
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * 0.78,
-        ),
-        padding: const EdgeInsets.all(LuckdateSpacing.md),
-        decoration: BoxDecoration(
-          color: LuckdateColors.deepSage,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(LuckdateRadius.lg),
-            bottomLeft: Radius.circular(LuckdateRadius.lg),
-            bottomRight: Radius.circular(LuckdateRadius.lg),
-          ),
-          boxShadow: LuckdateShadows.soft,
-        ),
-        child: Text(
-          text,
-          style: LuckdateTextStyles.body.copyWith(
-            color: LuckdateColors.ivoryWhite,
-          ),
-        ),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.md),
+      decoration: BoxDecoration(
+        color: LuckdateColors.cloudIvory,
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+        border: Border.all(color: LuckdateColors.lineSoft.withValues(alpha: 0.7)),
       ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '🌱 My Suggestions',
+            style: LuckdateTextStyles.title.copyWith(fontSize: 14),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          ...items.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item.emoji, style: const TextStyle(fontSize: 18)),
+                  const SizedBox(width: LuckdateSpacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.title,
+                          style: LuckdateTextStyles.bodySmall.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(item.subtitle, style: LuckdateTextStyles.caption),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UserBubble extends StatelessWidget {
+  const UserBubble({
+    super.key,
+    required this.text,
+    this.timestamp,
+    this.nickname = 'Me',
+  });
+
+  final String text;
+  final DateTime? timestamp;
+  final String nickname;
+
+  String _formatTime(DateTime? t) {
+    final d = t ?? DateTime.now();
+    final h = d.hour.toString().padLeft(2, '0');
+    final m = d.minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 4, bottom: 4),
+                child: Text(
+                  'Me ${_formatTime(timestamp)}',
+                  style: LuckdateTextStyles.caption.copyWith(fontSize: 11),
+                ),
+              ),
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.sizeOf(context).width * 0.72,
+                ),
+                padding: const EdgeInsets.all(LuckdateSpacing.md),
+                decoration: BoxDecoration(
+                  color: LuckdateColors.vitalitySage,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(LuckdateRadius.lg),
+                    bottomLeft: Radius.circular(LuckdateRadius.lg),
+                    bottomRight: Radius.circular(LuckdateRadius.lg),
+                  ),
+                  boxShadow: LuckdateShadows.soft,
+                ),
+                child: Text(
+                  text,
+                  style: LuckdateTextStyles.body.copyWith(
+                    color: LuckdateColors.ivoryWhite,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: LuckdateSpacing.sm),
+        LdProfileAvatar(nickname: nickname, radius: 16),
+      ],
     );
   }
 }

@@ -39,7 +39,7 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sunny'), findsOneWidget);
+    expect(find.text('Sunny AI Chat'), findsOneWidget);
   });
 
   testWidgets('Register success back clears session and returns to login',

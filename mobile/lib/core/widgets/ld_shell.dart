@@ -152,13 +152,17 @@ class LdChatComposer extends StatelessWidget {
     required this.controller,
     required this.canSend,
     required this.onSend,
-    this.hintText = 'Ask Sunny anything...',
+    this.hintText = 'Chat with Sunny...',
+    this.showMic = true,
+    this.disclaimer,
   });
 
   final TextEditingController controller;
   final bool canSend;
   final VoidCallback onSend;
   final String hintText;
+  final bool showMic;
+  final String? disclaimer;
 
   @override
   Widget build(BuildContext context) {
@@ -167,64 +171,92 @@ class LdChatComposer extends StatelessWidget {
         LuckdateSpacing.lg,
         LuckdateSpacing.sm,
         LuckdateSpacing.lg,
-        LuckdateSpacing.lg + MediaQuery.viewInsetsOf(context).bottom,
+        LuckdateSpacing.md + MediaQuery.viewInsetsOf(context).bottom,
       ),
       decoration: const BoxDecoration(
-        color: LuckdateColors.ivoryWhite,
-        border: Border(top: BorderSide(color: LuckdateColors.lineSoft, width: 0.5)),
+        color: LuckdateColors.cloudIvory,
       ),
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: hintText,
-                  filled: true,
-                  fillColor: LuckdateColors.cloudIvory,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: LuckdateSpacing.lg,
-                    vertical: LuckdateSpacing.md,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-                    borderSide: const BorderSide(
-                      color: LuckdateColors.deepSage,
-                      width: 1,
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: LuckdateColors.ivoryWhite,
+                      borderRadius:
+                          BorderRadius.circular(LuckdateRadius.pill),
+                      border: Border.all(color: LuckdateColors.lineSoft),
+                      boxShadow: LuckdateShadows.soft,
+                    ),
+                    child: Row(
+                      children: [
+                        if (showMic)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: Icon(
+                              Icons.mic_none_rounded,
+                              size: 22,
+                              color: LuckdateColors.textSecondary,
+                            ),
+                          ),
+                        Expanded(
+                          child: TextField(
+                            controller: controller,
+                            decoration: InputDecoration(
+                              hintText: hintText,
+                              hintStyle: LuckdateTextStyles.bodySmall.copyWith(
+                                color: LuckdateColors.textSecondary,
+                              ),
+                              filled: false,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: LuckdateSpacing.md,
+                                vertical: LuckdateSpacing.md,
+                              ),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
+                            onSubmitted: (_) => onSend(),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                onSubmitted: (_) => onSend(),
-              ),
-            ),
-            const SizedBox(width: LuckdateSpacing.sm),
-            Material(
-              color: canSend ? LuckdateColors.deepSage : LuckdateColors.lineSoft,
-              shape: const CircleBorder(),
-              child: InkWell(
-                onTap: canSend ? onSend : null,
-                customBorder: const CircleBorder(),
-                child: const SizedBox(
-                  width: 44,
-                  height: 44,
-                  child: Icon(
-                    Icons.send_rounded,
-                    color: LuckdateColors.ivoryWhite,
-                    size: 20,
+                const SizedBox(width: LuckdateSpacing.sm),
+                Material(
+                  color: canSend
+                      ? LuckdateColors.vitalitySage
+                      : LuckdateColors.lineSoft,
+                  shape: const CircleBorder(),
+                  child: InkWell(
+                    onTap: canSend ? onSend : null,
+                    customBorder: const CircleBorder(),
+                    child: const SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: Icon(
+                        Icons.send_rounded,
+                        color: LuckdateColors.ivoryWhite,
+                        size: 20,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
+            if (disclaimer != null) ...[
+              const SizedBox(height: LuckdateSpacing.sm),
+              Text(
+                disclaimer!,
+                style: LuckdateTextStyles.caption.copyWith(fontSize: 10),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ],
         ),
       ),
