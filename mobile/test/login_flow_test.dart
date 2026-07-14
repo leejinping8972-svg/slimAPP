@@ -40,7 +40,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('My Vitality Score'), findsOneWidget);
-    expect(find.text('Score Trend'), findsOneWidget);
+    expect(find.text('Sunny'), findsWidgets);
+    expect(find.text('Ritual'), findsOneWidget);
   });
 
   testWidgets('Register success back clears session and returns to login',

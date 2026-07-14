@@ -115,7 +115,15 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            _HomeHeader(onBack: () => context.go('/ritual')),
+            _HomeHeader(
+              onBack: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.go('/ritual');
+                }
+              },
+            ),
             Expanded(
               child: ListView(
                 controller: _scrollController,

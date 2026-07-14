@@ -8,11 +8,13 @@ class LdMainBottomNav extends StatelessWidget {
     required this.onTap,
   });
 
+  /// Visual tab index: 0 Sunny, 1 Ritual, 2 Plan, 3 Mall, 4 Me.
   final int currentIndex;
   final ValueChanged<int> onTap;
 
   static const _items = [
-    (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded, 'Ritual'),
+    (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded, 'Sunny'),
+    (Icons.local_florist_outlined, Icons.local_florist_rounded, 'Ritual'),
     (Icons.event_note_outlined, Icons.event_note_rounded, 'Plan'),
     (Icons.storefront_outlined, Icons.storefront_rounded, 'Mall'),
     (Icons.person_outline_rounded, Icons.person_rounded, 'Me'),

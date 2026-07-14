@@ -177,12 +177,22 @@ class _MainShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Nav: 0 Sunny (fullscreen /home), 1-4 map to shell branches 0-3.
+    final selectedNavIndex = navigationShell.currentIndex + 1;
+
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: navigationShell,
       bottomNavigationBar: LdMainBottomNav(
-        currentIndex: navigationShell.currentIndex,
-        onTap: navigationShell.goBranch,
+        currentIndex: selectedNavIndex,
+        onTap: (index) {
+          if (index == 0) {
+            // Enter Sunny as a root route so the bottom nav is hidden.
+            context.push('/home');
+            return;
+          }
+          navigationShell.goBranch(index - 1);
+        },
       ),
     );
   }

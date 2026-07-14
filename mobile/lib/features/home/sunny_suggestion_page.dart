@@ -29,7 +29,13 @@ class _SunnySuggestionPageState extends ConsumerState<SunnySuggestionPage> {
         child: Column(
           children: [
             _Header(
-              onBack: () => context.go('/ritual'),
+              onBack: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.go('/ritual');
+                }
+              },
             ),
             Expanded(
               child: ListView(
