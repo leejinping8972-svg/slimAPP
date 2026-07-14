@@ -6,6 +6,7 @@ import '../../features/auth/auth_flow_pages.dart';
 import '../../features/auth/auth_pages.dart';
 import '../../features/collection/collection_page.dart';
 import '../../features/home/home_page.dart';
+import '../../features/home/sunny_suggestion_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/onboarding/plan_intro_page.dart';
 import '../../features/plan/plan_page.dart';
@@ -19,7 +20,6 @@ import '../../shared/providers/app_providers.dart';
 import '../../core/widgets/ld_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _homeKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _ritualKey = GlobalKey<NavigatorState>(debugLabel: 'ritual');
 final _planKey = GlobalKey<NavigatorState>(debugLabel: 'plan');
 final _mallKey = GlobalKey<NavigatorState>(debugLabel: 'mall');
@@ -52,7 +52,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (profile.isLoggedIn) {
         if (!profile.isNewRegistration &&
             (path == '/register-success' || path == '/link-order')) {
-          return '/home';
+          return '/ritual';
         }
         if (profile.isNewRegistration &&
             !profile.couponRewardSeen &&
@@ -83,7 +83,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path == '/today' ||
                 path == '/chat' ||
                 path == '/journey')) {
-          return '/home';
+          return '/ritual';
         }
       }
       return null;
@@ -103,6 +103,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const PlanIntroPage(),
       ),
       GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingPage()),
+      GoRoute(
+        path: '/home',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, __) => const HomePage(),
+      ),
+      GoRoute(
+        path: '/sunny/suggestions',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, __) => const SunnySuggestionPage(),
+      ),
       GoRoute(
         path: '/journey/report',
         parentNavigatorKey: _rootNavigatorKey,
@@ -124,12 +134,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           return _MainShell(navigationShell: navigationShell);
         },
         branches: [
-          StatefulShellBranch(
-            navigatorKey: _homeKey,
-            routes: [
-              GoRoute(path: '/home', builder: (_, __) => const HomePage()),
-            ],
-          ),
           StatefulShellBranch(
             navigatorKey: _ritualKey,
             routes: [

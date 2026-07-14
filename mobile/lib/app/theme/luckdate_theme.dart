@@ -78,7 +78,11 @@ class LuckdateGradients {
 }
 
 class LuckdateTextStyles {
+  // Keep Montserrat from Font/ (wired in pubspec via assets/fonts).
+  static const String fontFamily = 'Montserrat';
+
   static const display = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 32,
     height: 40 / 32,
     fontWeight: FontWeight.w600,
@@ -86,6 +90,7 @@ class LuckdateTextStyles {
     letterSpacing: -0.5,
   );
   static const h1 = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 26,
     height: 32 / 26,
     fontWeight: FontWeight.w600,
@@ -93,30 +98,35 @@ class LuckdateTextStyles {
     letterSpacing: -0.3,
   );
   static const h2 = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 20,
     height: 26 / 20,
     fontWeight: FontWeight.w600,
     color: LuckdateColors.textPrimary,
   );
   static const title = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 17,
     height: 22 / 17,
     fontWeight: FontWeight.w600,
     color: LuckdateColors.textPrimary,
   );
   static const body = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 15,
     height: 22 / 15,
     fontWeight: FontWeight.w400,
     color: LuckdateColors.textPrimary,
   );
   static const bodySmall = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 13,
     height: 18 / 13,
     fontWeight: FontWeight.w400,
     color: LuckdateColors.textSecondary,
   );
   static const caption = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 11,
     height: 14 / 11,
     fontWeight: FontWeight.w500,
@@ -124,12 +134,14 @@ class LuckdateTextStyles {
     letterSpacing: 0.2,
   );
   static const tabLabel = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 10,
     height: 12 / 10,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.3,
   );
   static const brand = TextStyle(
+    fontFamily: fontFamily,
     fontSize: 18,
     fontWeight: FontWeight.w300,
     letterSpacing: 4,

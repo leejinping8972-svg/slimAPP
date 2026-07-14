@@ -52,7 +52,7 @@ class PlanIntroPage extends ConsumerWidget {
               label: 'Start my plan',
               onPressed: () {
                 ref.read(appStateProvider.notifier).activateSlimJourney();
-                context.go('/home');
+                context.go('/ritual');
               },
             ),
           ],

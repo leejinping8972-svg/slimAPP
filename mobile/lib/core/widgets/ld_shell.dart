@@ -12,7 +12,6 @@ class LdMainBottomNav extends StatelessWidget {
   final ValueChanged<int> onTap;
 
   static const _items = [
-    (Icons.home_outlined, Icons.home_rounded, 'Home'),
     (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded, 'Ritual'),
     (Icons.event_note_outlined, Icons.event_note_rounded, 'Plan'),
     (Icons.storefront_outlined, Icons.storefront_rounded, 'Mall'),

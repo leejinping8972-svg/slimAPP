@@ -101,7 +101,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             isLoggedIn: true,
           );
       ref.read(appStateProvider.notifier).completeOnboarding(profile);
-      context.go('/home');
+      context.go('/ritual');
     }
   }
 

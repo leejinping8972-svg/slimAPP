@@ -27,7 +27,7 @@ void main() {
     return router;
   }
 
-  testWidgets('Login Sign in navigates to home', (tester) async {
+  testWidgets('Login Sign in navigates to ritual', (tester) async {
     final router = await pumpApp(tester);
 
     expect(find.text('Sign In'), findsOneWidget);
@@ -39,7 +39,8 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sunny AI Chat'), findsOneWidget);
+    expect(find.text('My Vitality Score'), findsOneWidget);
+    expect(find.text('Chat with Sunny'), findsOneWidget);
   });
 
   testWidgets('Register success back clears session and returns to login',

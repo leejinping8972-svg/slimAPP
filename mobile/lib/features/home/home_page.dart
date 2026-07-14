@@ -20,6 +20,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool _canSend = false;
 
   static const _quickAsks = [
+    ('☀️', 'Daily Ritual'),
     ('🎯', 'How to improve focus?'),
     ('🌸', 'Cycle regulation tips for women'),
     ('🏃', 'What exercise should I do today?'),
@@ -95,7 +96,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _onActionTap(String label) {
     if (label == 'View Detailed Plan') {
-      context.go('/plan');
+      context.push('/sunny/suggestions');
     } else if (label == 'Set Sleep Goal') {
       context.go('/ritual');
     }
@@ -114,7 +115,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            const _HomeHeader(),
+            _HomeHeader(onBack: () => context.go('/ritual')),
             Expanded(
               child: ListView(
                 controller: _scrollController,
@@ -125,7 +126,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                   LuckdateSpacing.md,
                 ),
                 children: [
-                  _SunnyIntroCard(nickname: profile.nickname),
+                  _SunnyIntroCard(
+                    nickname: profile.nickname,
+                    onLearnMore: () => context.push('/sunny/suggestions'),
+                  ),
                   const SizedBox(height: LuckdateSpacing.lg),
                   ...messages.map((msg) {
                     return Padding(
@@ -152,6 +156,10 @@ class _HomePageState extends ConsumerState<HomePage> {
             _QuickAskRow(
               items: _quickAsks,
               onTap: (text) {
+                if (text == 'Daily Ritual') {
+                  context.go('/ritual');
+                  return;
+                }
                 ref.read(appStateProvider.notifier).sendChatMessage(text);
               },
             ),
@@ -178,7 +186,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 }
 
 class _HomeHeader extends StatelessWidget {
-  const _HomeHeader();
+  const _HomeHeader({required this.onBack});
+
+  final VoidCallback onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +209,7 @@ class _HomeHeader extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: onBack,
             icon: const Icon(Icons.arrow_back_ios_new, size: 18),
             color: LuckdateColors.textPrimary,
           ),
@@ -231,9 +241,13 @@ class _HomeHeader extends StatelessWidget {
 }
 
 class _SunnyIntroCard extends StatelessWidget {
-  const _SunnyIntroCard({required this.nickname});
+  const _SunnyIntroCard({
+    required this.nickname,
+    required this.onLearnMore,
+  });
 
   final String nickname;
+  final VoidCallback onLearnMore;
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +305,7 @@ class _SunnyIntroCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: onLearnMore,
                     style: OutlinedButton.styleFrom(
                       foregroundColor: LuckdateColors.chocolateBrown,
                       side: const BorderSide(color: LuckdateColors.lineSoft),

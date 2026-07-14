@@ -180,7 +180,7 @@ class LoginPage extends ConsumerWidget {
 
   void _signIn(GoRouter router, WidgetRef ref) {
     ref.read(appStateProvider.notifier).loginExistingUser();
-    router.go('/home');
+    router.go('/ritual');
   }
 
   void _signUp(GoRouter router) => router.go('/register');

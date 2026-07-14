@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../core/widgets/ld_shell.dart';
@@ -56,6 +57,72 @@ class _RitualPageState extends ConsumerState<RitualPage> {
               selected: _range,
               onChanged: (v) => setState(() => _range = v),
               labelBuilder: _rangeLabel,
+            ),
+            const SizedBox(height: LuckdateSpacing.lg),
+            LdCard(
+              onTap: () => context.push('/home'),
+              child: Row(
+                children: [
+                  const LdSunnyAvatar(size: 44),
+                  const SizedBox(width: LuckdateSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Chat with Sunny', style: LuckdateTextStyles.title),
+                        Text(
+                          'Ask questions, get focus tips, and open today\'s suggestion card.',
+                          style: LuckdateTextStyles.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: LuckdateColors.textSecondary,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: LuckdateSpacing.md),
+            LdCard(
+              onTap: () => context.push('/sunny/suggestions'),
+              child: Row(
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: LuckdateColors.sageSoft,
+                      borderRadius: BorderRadius.circular(LuckdateRadius.md),
+                    ),
+                    child: const Icon(
+                      Icons.auto_awesome_rounded,
+                      color: LuckdateColors.deepSage,
+                    ),
+                  ),
+                  const SizedBox(width: LuckdateSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sunny Suggestion Card',
+                          style: LuckdateTextStyles.title,
+                        ),
+                        Text(
+                          'Daily focus plan with your ritual check-in entry.',
+                          style: LuckdateTextStyles.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: LuckdateColors.textSecondary,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.lg),
             LdCard(
