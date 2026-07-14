@@ -5,6 +5,7 @@ import 'theme/luckdate_theme.dart';
 import '../../features/auth/auth_flow_pages.dart';
 import '../../features/auth/auth_pages.dart';
 import '../../features/collection/collection_page.dart';
+import '../../features/collection/product_detail_page.dart';
 import '../../features/home/home_page.dart';
 import '../../features/home/sunny_suggestion_page.dart';
 import '../../features/record/check_in_record_page.dart';

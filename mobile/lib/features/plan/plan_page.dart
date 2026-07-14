@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../core/widgets/ld_shell.dart';
+import '../../core/widgets/ritual_sheets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
@@ -18,7 +19,6 @@ class PlanPage extends ConsumerStatefulWidget {
 
 class _PlanPageState extends ConsumerState<PlanPage> {
   _PlanTab _tab = _PlanTab.inProgress;
-  bool _expandTasks = false;
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +89,9 @@ class _PlanPageState extends ConsumerState<PlanPage> {
     return switch (profile.userPlanType) {
       UserPlanType.mealReplacement => _MealPlanInProgress(
           journey: journey,
-          expandTasks: _expandTasks,
-          onToggleExpand: () => setState(() => _expandTasks = !_expandTasks),
+          profile: profile,
           onPlanDetails: () => context.push('/journey/report'),
           onShare: () {},
-          onTaskTap: (route) {
-            if (route != null) context.go(route);
-          },
         ),
       UserPlanType.noProduct => _PurchaseGuideView(
           hideCard: profile.hidePurchaseGuideCard,
@@ -153,30 +149,24 @@ class _PlanHeader extends StatelessWidget {
   }
 }
 
-class _MealPlanInProgress extends StatelessWidget {
+class _MealPlanInProgress extends ConsumerWidget {
   const _MealPlanInProgress({
     required this.journey,
-    required this.expandTasks,
-    required this.onToggleExpand,
+    required this.profile,
     required this.onPlanDetails,
     required this.onShare,
-    required this.onTaskTap,
   });
 
   final JourneyState journey;
-  final bool expandTasks;
-  final VoidCallback onToggleExpand;
+  final UserProfile profile;
   final VoidCallback onPlanDetails;
   final VoidCallback onShare;
-  final ValueChanged<String?> onTaskTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final record = journey.todayRecord;
     final tasks = _todayTasks(record);
     final doneCount = tasks.where((t) => t.done).length;
-    final visible = expandTasks ? tasks : tasks.take(5).toList();
-    final canExpand = tasks.length > 5;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -207,41 +197,15 @@ class _MealPlanInProgress extends StatelessWidget {
           ],
         ),
         const SizedBox(height: LuckdateSpacing.md),
-        ...visible.map(
+        ...tasks.map(
           (task) => Padding(
             padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
-            child: _TaskRow(task: task, onTap: () => onTaskTap(task.route)),
+            child: _TaskRow(
+              task: task,
+              onTap: () => _openQuickSheet(context, ref, task.action, record),
+            ),
           ),
         ),
-        if (canExpand)
-          Center(
-            child: TextButton.icon(
-              onPressed: onToggleExpand,
-              icon: Icon(
-                expandTasks
-                    ? Icons.keyboard_arrow_up_rounded
-                    : Icons.keyboard_arrow_down_rounded,
-                size: 18,
-                color: LuckdateColors.textSecondary,
-              ),
-              label: Text(
-                expandTasks ? 'Collapse Tasks' : 'Expand All Tasks',
-                style: LuckdateTextStyles.caption,
-              ),
-            ),
-          )
-        else
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                'Expand All Tasks',
-                style: LuckdateTextStyles.caption.copyWith(
-                  color: LuckdateColors.textSecondary,
-                ),
-              ),
-            ),
-          ),
         const SizedBox(height: LuckdateSpacing.md),
         Text('Plan Phases', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
@@ -263,8 +227,40 @@ class _MealPlanInProgress extends StatelessWidget {
     );
   }
 
+  void _openQuickSheet(
+    BuildContext context,
+    WidgetRef ref,
+    _PlanTaskAction action,
+    TodayRecord record,
+  ) {
+    switch (action) {
+      case _PlanTaskAction.meal:
+        showMealCheckInSheet(context, ref, record);
+      case _PlanTaskAction.water:
+        showHydrationSheet(
+          context,
+          ref,
+          record,
+          profile.hydrationTargetMl,
+        );
+      case _PlanTaskAction.weight:
+        showWeightSheet(context, ref, record, profile);
+      case _PlanTaskAction.sleep:
+        showSleepSheet(context, ref, record);
+    }
+  }
+
   List<_PlanTask> _todayTasks(TodayRecord record) {
     return [
+      _PlanTask(
+        icon: Icons.monitor_weight_outlined,
+        color: const Color(0xFF8FA86E),
+        title: 'Weight Check-in',
+        subtitle: 'Morning Ritual',
+        time: '07:30',
+        done: record.weightRecorded,
+        action: _PlanTaskAction.weight,
+      ),
       _PlanTask(
         icon: Icons.local_cafe_outlined,
         color: const Color(0xFFC4A484),
@@ -273,16 +269,7 @@ class _MealPlanInProgress extends StatelessWidget {
         time: '08:00',
         done: record.productTaken == ProductTakenStatus.taken ||
             record.productTaken == ProductTakenStatus.partial,
-        route: '/ritual',
-      ),
-      _PlanTask(
-        icon: Icons.directions_run_rounded,
-        color: const Color(0xFF7A9E7E),
-        title: '30 Mins Exercise',
-        subtitle: 'Move Your Body',
-        time: '09:30',
-        done: record.productTaken == ProductTakenStatus.taken,
-        route: '/sunny/suggestions',
+        action: _PlanTaskAction.meal,
       ),
       _PlanTask(
         icon: Icons.water_drop_outlined,
@@ -291,34 +278,7 @@ class _MealPlanInProgress extends StatelessWidget {
         subtitle: 'Drink Water',
         time: '10:00',
         done: record.hydrationMl >= 500,
-        route: '/ritual',
-      ),
-      _PlanTask(
-        icon: Icons.spa_outlined,
-        color: const Color(0xFF9A8BB5),
-        title: '10 Mins Meditation',
-        subtitle: 'Mind Reset',
-        time: '11:00',
-        done: false,
-        route: '/sunny/suggestions',
-      ),
-      _PlanTask(
-        icon: Icons.favorite_border_rounded,
-        color: const Color(0xFFD4A373),
-        title: 'Gratitude Journal',
-        subtitle: 'Gratitude Journal',
-        time: '21:00',
-        done: record.moodTag.isNotEmpty,
-        route: '/home',
-      ),
-      _PlanTask(
-        icon: Icons.monitor_weight_outlined,
-        color: const Color(0xFF8FA86E),
-        title: 'Weight Check-in',
-        subtitle: 'Morning Ritual',
-        time: '07:30',
-        done: record.weightRecorded,
-        route: '/ritual',
+        action: _PlanTaskAction.water,
       ),
       _PlanTask(
         icon: Icons.bedtime_outlined,
@@ -327,11 +287,13 @@ class _MealPlanInProgress extends StatelessWidget {
         subtitle: 'Protect Your Rhythm',
         time: '22:30',
         done: record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
-        route: '/ritual',
+        action: _PlanTaskAction.sleep,
       ),
     ];
   }
 }
+
+enum _PlanTaskAction { meal, water, weight, sleep }
 
 class _PlanTask {
   const _PlanTask({
@@ -341,7 +303,7 @@ class _PlanTask {
     required this.subtitle,
     required this.time,
     required this.done,
-    this.route,
+    required this.action,
   });
 
   final IconData icon;
@@ -350,7 +312,7 @@ class _PlanTask {
   final String subtitle;
   final String time;
   final bool done;
-  final String? route;
+  final _PlanTaskAction action;
 }
 
 class _CurrentPlanHero extends StatelessWidget {

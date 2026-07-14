@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/check_in_estimator.dart';
 import 'ld_components.dart';
 import 'today_widgets.dart';
 
@@ -59,6 +60,23 @@ void showSleepSheet(
       borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
     ),
     builder: (ctx) => SleepSheet(record: record),
+  );
+}
+
+void showMealCheckInSheet(
+  BuildContext context,
+  WidgetRef ref,
+  TodayRecord record,
+) {
+  showModalBottomSheet<void>(
+    context: context,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    backgroundColor: LuckdateColors.ivoryWhite,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+    ),
+    builder: (ctx) => MealCheckInSheet(record: record),
   );
 }
 
@@ -299,6 +317,47 @@ class _SleepSheetState extends ConsumerState<SleepSheet> {
                 );
             Navigator.pop(context);
           },
+        ),
+      ],
+    );
+  }
+}
+
+class MealCheckInSheet extends ConsumerWidget {
+  const MealCheckInSheet({super.key, required this.record});
+
+  final TodayRecord record;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final alreadyLogged = record.productTaken == ProductTakenStatus.taken ||
+        record.productTaken == ProductTakenStatus.partial;
+
+    return LdBottomSheetBody(
+      children: [
+        Text('Nutritional Meal', style: LuckdateTextStyles.h2),
+        const SizedBox(height: LuckdateSpacing.sm),
+        Text(
+          alreadyLogged
+              ? 'Morning protein is already logged for today.'
+              : 'Quick-log your Solar Protein or morning meal. AI will estimate calories in Check-in Record.',
+          style: LuckdateTextStyles.bodySmall,
+        ),
+        const SizedBox(height: LuckdateSpacing.lg),
+        LdPrimaryButton(
+          label: alreadyLogged ? 'Logged ✓' : 'Log Solar Protein',
+          onPressed: alreadyLogged
+              ? () => Navigator.pop(context)
+              : () {
+                  final updated = CheckInEstimator.applyProductShake(record);
+                  ref.read(appStateProvider.notifier).updateTodayRecord(updated);
+                  Navigator.pop(context);
+                },
+        ),
+        const SizedBox(height: LuckdateSpacing.sm),
+        LdSecondaryButton(
+          label: 'Cancel',
+          onPressed: () => Navigator.pop(context),
         ),
       ],
     );
