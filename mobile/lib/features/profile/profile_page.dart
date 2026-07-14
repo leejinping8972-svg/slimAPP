@@ -107,49 +107,6 @@ class ProfilePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            _sectionTitle('My Achievements'),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 6,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.95,
-              ),
-              itemBuilder: (context, index) {
-                final unlocked = index < journey.unlockedMilestones.length;
-                final icons = [
-                  Icons.water_drop_outlined,
-                  Icons.bedtime_outlined,
-                  Icons.emoji_events_outlined,
-                  Icons.favorite_outline,
-                  Icons.spa_outlined,
-                  Icons.star_outline,
-                ];
-                return LdCard(
-                  completed: unlocked,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        icons[index],
-                        color: unlocked
-                            ? LuckdateColors.deepSage
-                            : LuckdateColors.lineSoft,
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        unlocked ? 'Unlocked' : 'Locked',
-                        style: LuckdateTextStyles.caption,
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: LuckdateSpacing.xl),
             _sectionTitle('Quick Menu'),
             GridView.count(
               shrinkWrap: true,

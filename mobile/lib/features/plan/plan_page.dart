@@ -251,6 +251,12 @@ class _MealPlanInProgress extends ConsumerWidget {
   }
 
   List<_PlanTask> _todayTasks(TodayRecord record) {
+    final mealDone = record.productTaken == ProductTakenStatus.taken ||
+        record.productTaken == ProductTakenStatus.partial ||
+        record.meals.isNotEmpty;
+    final sleepDone =
+        record.sleepHours > 0 || record.sleepQuality.isNotEmpty;
+
     return [
       _PlanTask(
         icon: Icons.monitor_weight_outlined,
@@ -259,6 +265,9 @@ class _MealPlanInProgress extends ConsumerWidget {
         subtitle: 'Morning Ritual',
         time: '07:30',
         done: record.weightRecorded,
+        valueText: record.weightRecorded && record.weightValueKg > 0
+            ? '${record.weightValueKg.toStringAsFixed(1)} kg'
+            : (record.weightRecorded ? 'Logged' : null),
         action: _PlanTaskAction.weight,
       ),
       _PlanTask(
@@ -267,8 +276,8 @@ class _MealPlanInProgress extends ConsumerWidget {
         title: 'Nutritional Meal',
         subtitle: 'Morning Protein',
         time: '08:00',
-        done: record.productTaken == ProductTakenStatus.taken ||
-            record.productTaken == ProductTakenStatus.partial,
+        done: mealDone,
+        valueText: _mealValueText(record),
         action: _PlanTaskAction.meal,
       ),
       _PlanTask(
@@ -278,6 +287,7 @@ class _MealPlanInProgress extends ConsumerWidget {
         subtitle: 'Drink Water',
         time: '10:00',
         done: record.hydrationMl >= 500,
+        valueText: record.hydrationMl > 0 ? '${record.hydrationMl} ml' : null,
         action: _PlanTaskAction.water,
       ),
       _PlanTask(
@@ -286,10 +296,33 @@ class _MealPlanInProgress extends ConsumerWidget {
         title: 'Sleep Wind-down',
         subtitle: 'Protect Your Rhythm',
         time: '22:30',
-        done: record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
+        done: sleepDone,
+        valueText: record.sleepHours > 0
+            ? '${record.sleepHours.toStringAsFixed(1)} h'
+            : (sleepDone ? 'Logged' : null),
         action: _PlanTaskAction.sleep,
       ),
     ];
+  }
+
+  String? _mealValueText(TodayRecord record) {
+    MealLogEntry? meal;
+    for (final entry in record.meals) {
+      final name = entry.name.toLowerCase();
+      final type = entry.meal.toLowerCase();
+      if (name.contains('protein') || type.contains('replacement')) {
+        meal = entry;
+        break;
+      }
+    }
+    meal ??= record.meals.isNotEmpty ? record.meals.first : null;
+    if (meal != null) return '${meal.kcal} kcal';
+    if (record.intakeKcal > 0) return '${record.intakeKcal} kcal';
+    if (record.productTaken == ProductTakenStatus.taken ||
+        record.productTaken == ProductTakenStatus.partial) {
+      return 'Logged';
+    }
+    return null;
   }
 }
 
@@ -304,6 +337,7 @@ class _PlanTask {
     required this.time,
     required this.done,
     required this.action,
+    this.valueText,
   });
 
   final IconData icon;
@@ -312,6 +346,7 @@ class _PlanTask {
   final String subtitle;
   final String time;
   final bool done;
+  final String? valueText;
   final _PlanTaskAction action;
 }
 
@@ -540,7 +575,20 @@ class _TaskRow extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                Text(task.subtitle, style: LuckdateTextStyles.caption),
+                Text(
+                  task.done && (task.valueText?.isNotEmpty ?? false)
+                      ? task.valueText!
+                      : task.subtitle,
+                  style: LuckdateTextStyles.caption.copyWith(
+                    color: task.done && (task.valueText?.isNotEmpty ?? false)
+                        ? LuckdateColors.deepSage
+                        : LuckdateColors.textSecondary,
+                    fontWeight:
+                        task.done && (task.valueText?.isNotEmpty ?? false)
+                            ? FontWeight.w600
+                            : FontWeight.w400,
+                  ),
+                ),
               ],
             ),
           ),
