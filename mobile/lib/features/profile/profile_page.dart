@@ -20,10 +20,7 @@ class ProfilePage extends ConsumerWidget {
     final profile = state.profile;
     final journey = state.journey;
 
-    return LdScaffold(
-      title: 'Me',
-      showBack: !rootTab,
-      body: SingleChildScrollView(
+    final page = SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,7 +344,36 @@ class ProfilePage extends ConsumerWidget {
             ],
           ],
         ),
-      ),
+    );
+
+    if (rootTab) {
+      return Scaffold(
+        backgroundColor: LuckdateColors.cloudIvory,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.sm,
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.md,
+                ),
+                child: Center(
+                  child: Text('Me', style: LuckdateTextStyles.title),
+                ),
+              ),
+              Expanded(child: page),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return LdScaffold(
+      title: 'Me',
+      showBack: true,
+      body: page,
     );
   }
 

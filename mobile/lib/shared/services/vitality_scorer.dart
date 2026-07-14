@@ -40,29 +40,102 @@ class VitalityScorer {
 
   static int sleepScore({required double hours, required String quality}) {
     if (hours <= 0 && quality.isEmpty) return 0;
-    if (hours >= 7 && (quality == 'good' || quality == 'okay')) return 100;
-    if ((hours >= 6 && hours < 7) || quality == 'okay') return 80;
+    if (hours >= 7 && (quality == 'good' || quality == 'okay' || quality == 'logged')) {
+      return 100;
+    }
+    if ((hours >= 6 && hours < 7) || quality == 'okay' || quality == 'logged') {
+      return 80;
+    }
     if (hours > 0 && hours < 6) return 60;
     if (quality.isNotEmpty) return 70;
     return 0;
   }
 
+  /// Nutrition from Sunny chat + quick meal check-in (intake, meals, product).
+  static int nutritionScore(TodayRecord record, int calorieTargetKcal) {
+    final hasMealLog = record.meals.isNotEmpty || record.intakeKcal > 0;
+    final product = productScore(record.productTaken);
+    if (!hasMealLog && product == 0) return 0;
+
+    var logPoints = 0;
+    if (product > 0) logPoints += (product * 0.35).round();
+    logPoints += (record.meals.length * 18).clamp(0, 45);
+
+    var intakePoints = 0;
+    if (calorieTargetKcal > 0 && record.intakeKcal > 0) {
+      final ratio = record.intakeKcal / calorieTargetKcal;
+      if (ratio >= 0.7 && ratio <= 1.15) {
+        intakePoints = 40;
+      } else if (ratio >= 0.45 && ratio < 0.7) {
+        intakePoints = 28;
+      } else if (ratio > 1.15 && ratio <= 1.4) {
+        intakePoints = 24;
+      } else if (ratio > 0) {
+        intakePoints = 16;
+      }
+    } else if (hasMealLog) {
+      intakePoints = 22;
+    }
+
+    return (logPoints + intakePoints).clamp(0, 100);
+  }
+
+  /// Exercise from Sunny chat movement logs (+ check-in record).
+  static int exerciseScore(TodayRecord record, int exerciseTargetKcal) {
+    if (record.exerciseKcal <= 0 && record.exerciseMinutes <= 0) return 0;
+
+    if (exerciseTargetKcal > 0 && record.exerciseKcal > 0) {
+      return ((record.exerciseKcal / exerciseTargetKcal).clamp(0.0, 1.0) * 100)
+          .round();
+    }
+
+    final fromMinutes =
+        ((record.exerciseMinutes / 30).clamp(0.0, 1.0) * 100).round();
+    final sessionBonus = (record.exerciseSessions * 15).clamp(0, 30);
+    return (fromMinutes + sessionBonus).clamp(0, 100);
+  }
+
+  /// Habits = today's ritual check-ins (chat + sheets), blended with 7d streak.
+  static int habitsScore(
+    TodayRecord record,
+    UserPlanType planType,
+    double consistency7d,
+  ) {
+    final checks = <bool>[
+      record.weightRecorded,
+      record.productTaken != ProductTakenStatus.notRecorded ||
+          record.meals.isNotEmpty ||
+          record.intakeKcal > 0,
+      record.hydrationMl > 0,
+      record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
+      record.exerciseKcal > 0 || record.exerciseMinutes > 0,
+      record.moodTag.isNotEmpty || record.energyTag.isNotEmpty,
+    ];
+
+    final todayRate = checks.where((done) => done).length / checks.length;
+    final todayPct = (todayRate * 100).round();
+    if (consistency7d <= 0) return todayPct;
+    return (todayPct * 0.7 + consistency7d * 100 * 0.3).round().clamp(0, 100);
+  }
+
   static int ritualCompletion(TodayRecord record, UserPlanType planType) {
     final checks = switch (planType) {
       UserPlanType.mealReplacement => [
-        record.productTaken != ProductTakenStatus.notRecorded,
+        record.productTaken != ProductTakenStatus.notRecorded ||
+            record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
         record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
       ],
       UserPlanType.nonMealReplacement => [
-        record.productTaken != ProductTakenStatus.notRecorded,
+        record.productTaken != ProductTakenStatus.notRecorded ||
+            record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
       ],
       UserPlanType.noProduct => [
         record.hydrationMl > 0,
-        record.weightRecorded,
+        record.weightRecorded || record.meals.isNotEmpty,
       ],
     };
     if (checks.isEmpty) return 0;
@@ -75,8 +148,12 @@ class VitalityScorer {
     required int hydrationTargetMl,
     required UserPlanType planType,
     double consistency7d = 0,
+    int calorieTargetKcal = 1600,
+    int exerciseTargetKcal = 500,
   }) {
     final pScore = productScore(record.productTaken);
+    final nScore = nutritionScore(record, calorieTargetKcal);
+    final eScore = exerciseScore(record, exerciseTargetKcal);
     final hScore = hydrationScore(record.hydrationMl, hydrationTargetMl);
     final wScore = weightCheckScore(record.weightRecorded);
     final mScore = moodCheckScore(
@@ -88,14 +165,10 @@ class VitalityScorer {
       hours: record.sleepHours,
       quality: record.sleepQuality,
     );
-    final cScore = (consistency7d * 100).round();
+    final cScore = habitsScore(record, planType, consistency7d);
 
-    final daily = (pScore / 100 * 25 +
-            hScore / 100 * 25 +
-            wScore / 100 * 15 +
-            mScore / 100 * 15 +
-            sScore / 100 * 10 +
-            cScore / 100 * 10)
+    // Daily score mirrors Score Breakdown (six dimensions from live check-ins).
+    final daily = ((nScore + eScore + mScore + sScore + hScore + cScore) / 6)
         .round();
 
     return VitalityScores(
@@ -103,6 +176,8 @@ class VitalityScorer {
       ritualCompletion: ritualCompletion(record, planType),
       hydrationScore: hScore,
       productRitualScore: pScore,
+      nutritionScore: nScore,
+      exerciseScore: eScore,
       weightCheckScore: wScore,
       moodCheckScore: mScore,
       sleepScore: sScore,
@@ -123,7 +198,8 @@ class VitalityScorer {
     if (score >= 90) return 'Excellent';
     if (score >= 80) return 'Good';
     if (score >= 60) return 'Fair';
-    return 'Needs focus';
+    if (score > 0) return 'Needs focus';
+    return 'Not logged';
   }
 
   static List<VitalityDimension> breakdown(VitalityScores scores) {
@@ -131,15 +207,13 @@ class VitalityScorer {
       VitalityDimension(
         key: 'nutrition',
         label: 'Nutrition',
-        score: scores.productRitualScore,
+        score: scores.nutritionScore,
         icon: Icons.apple_outlined,
       ),
       VitalityDimension(
         key: 'exercise',
         label: 'Exercise',
-        score: ((scores.ritualCompletion * 0.85) + scores.consistencyScore * 0.15)
-            .round()
-            .clamp(0, 100),
+        score: scores.exerciseScore,
         icon: Icons.directions_run_outlined,
       ),
       VitalityDimension(
@@ -165,7 +239,7 @@ class VitalityScorer {
         label: 'Habits',
         score: scores.consistencyScore,
         icon: Icons.wb_sunny_outlined,
-        highlighted: true,
+        highlighted: scores.consistencyScore > 0 && scores.consistencyScore < 80,
       ),
     ];
   }

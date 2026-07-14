@@ -182,23 +182,41 @@ class _MainShell extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
+  int _selectedNavIndex(String location) {
+    if (location.startsWith('/me') || location.startsWith('/profile')) {
+      return 4;
+    }
+    if (location.startsWith('/mall') || location.startsWith('/collection')) {
+      return 3;
+    }
+    if (location.startsWith('/plan')) return 2;
+    if (location.startsWith('/ritual')) return 1;
+    return navigationShell.currentIndex + 1;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Nav: 0 Sunny (fullscreen /home), 1-4 map to shell branches 0-3.
-    final selectedNavIndex = navigationShell.currentIndex + 1;
+    final location = GoRouterState.of(context).matchedLocation;
 
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: navigationShell,
       bottomNavigationBar: LdMainBottomNav(
-        currentIndex: selectedNavIndex,
+        currentIndex: _selectedNavIndex(location),
         onTap: (index) {
-          if (index == 0) {
-            // Enter Sunny as a root route so the bottom nav is hidden.
-            context.push('/home');
-            return;
+          switch (index) {
+            case 0:
+              // Fullscreen Sunny chat — keep bottom nav off this route.
+              context.push('/home');
+            case 1:
+              context.go('/ritual');
+            case 2:
+              context.go('/plan');
+            case 3:
+              context.go('/mall');
+            case 4:
+              context.go('/me');
           }
-          navigationShell.goBranch(index - 1);
         },
       ),
     );

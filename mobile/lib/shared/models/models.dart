@@ -276,6 +276,8 @@ class VitalityScores {
     this.ritualCompletion = 0,
     this.hydrationScore = 0,
     this.productRitualScore = 0,
+    this.nutritionScore = 0,
+    this.exerciseScore = 0,
     this.weightCheckScore = 0,
     this.moodCheckScore = 0,
     this.sleepScore = 0,
@@ -286,6 +288,8 @@ class VitalityScores {
   final int ritualCompletion;
   final int hydrationScore;
   final int productRitualScore;
+  final int nutritionScore;
+  final int exerciseScore;
   final int weightCheckScore;
   final int moodCheckScore;
   final int sleepScore;

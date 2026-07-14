@@ -225,6 +225,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
         exerciseTargetKcal: kcal.clamp(100, 2000),
       ),
     );
+    updateTodayRecord(state.journey.todayRecord);
   }
 
   void updateCalorieTarget(int kcal) {
@@ -233,6 +234,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
         calorieTargetKcal: kcal.clamp(800, 4000),
       ),
     );
+    updateTodayRecord(state.journey.todayRecord);
   }
 
   void logMood(String moodTag) {
@@ -331,6 +333,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
       hydrationTargetMl: state.profile.hydrationTargetMl,
       planType: state.profile.userPlanType,
       consistency7d: record.consistency7d,
+      calorieTargetKcal: state.profile.calorieTargetKcal,
+      exerciseTargetKcal: state.profile.exerciseTargetKcal,
     );
     state = state.copyWith(
       journey: JourneyState(

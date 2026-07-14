@@ -42,6 +42,11 @@ void main() {
     expect(find.text('My Vitality Score'), findsOneWidget);
     expect(find.text('Sunny'), findsWidgets);
     expect(find.text('Ritual'), findsOneWidget);
+
+    await tester.tap(find.text('Me'));
+    await tester.pumpAndSettle();
+    expect(find.text('Vitality Member'), findsOneWidget);
+    expect(find.text('Check-in Record'), findsOneWidget);
   });
 
   testWidgets('Register success back clears session and returns to login',

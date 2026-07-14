@@ -22,6 +22,8 @@ class MockDataRepository {
       hydrationTargetMl: 2000,
       planType: UserPlanType.mealReplacement,
       consistency7d: consistency7d,
+      calorieTargetKcal: 1600,
+      exerciseTargetKcal: 500,
     );
     final trend = List<double>.generate(journeyDays, (i) {
       if (i < day) return 55 + (i * 1.2) + (i % 3 == 0 ? 5 : 0);
