@@ -200,15 +200,22 @@ class LoginPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const _LoginHeroHeader(),
+                      const AuthMarketingHeader(
+                        title: 'Welcome',
+                        subtitle:
+                            'A refined wellness ritual\nstarts with one tap.',
+                        tagline: 'Grow Toward the Light',
+                      ),
                       Transform.translate(
                         offset: const Offset(0, -28),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: LuckdateSpacing.lg,
                           ),
-                          child: _LoginFormCard(
-                            onSignIn: () => _signIn(router, ref),
+                          child: AuthFormCard(
+                            title: 'Sign In',
+                            buttonLabel: 'Sign in',
+                            onSubmit: () => _signIn(router, ref),
                           ),
                         ),
                       ),
@@ -252,8 +259,22 @@ class LoginPage extends ConsumerWidget {
   }
 }
 
-class _LoginHeroHeader extends StatelessWidget {
-  const _LoginHeroHeader();
+/// Shared cream hero header for Sign In / Sign Up.
+class AuthMarketingHeader extends StatelessWidget {
+  const AuthMarketingHeader({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.tagline,
+    this.showBack = false,
+    this.onBack,
+  });
+
+  final String title;
+  final String subtitle;
+  final String tagline;
+  final bool showBack;
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -282,16 +303,24 @@ class _LoginHeroHeader extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: EdgeInsets.fromLTRB(
               LuckdateSpacing.lg,
-              LuckdateSpacing.xl,
+              showBack ? LuckdateSpacing.sm : LuckdateSpacing.xl,
               LuckdateSpacing.lg,
               52,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const _BrandLogo(),
+                if (showBack)
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: onBack,
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+                  ),
+                if (showBack) const SizedBox(height: LuckdateSpacing.md),
+                const AuthBrandLogo(),
                 const SizedBox(height: LuckdateSpacing.xl),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -301,14 +330,14 @@ class _LoginHeroHeader extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Welcome',
+                            title,
                             style: LuckdateTextStyles.display.copyWith(
                               fontSize: 34,
                             ),
                           ),
                           const SizedBox(height: LuckdateSpacing.sm),
                           Text(
-                            'A refined wellness ritual\nstarts with one tap.',
+                            subtitle,
                             style: LuckdateTextStyles.body.copyWith(
                               color: LuckdateColors.textSecondary,
                               height: 1.5,
@@ -316,7 +345,7 @@ class _LoginHeroHeader extends StatelessWidget {
                           ),
                           const SizedBox(height: LuckdateSpacing.sm),
                           Text(
-                            'Grow Toward the Light',
+                            tagline,
                             style: LuckdateTextStyles.caption.copyWith(
                               color: LuckdateColors.chocolateBrown.withValues(
                                 alpha: 0.7,
@@ -340,8 +369,8 @@ class _LoginHeroHeader extends StatelessWidget {
   }
 }
 
-class _BrandLogo extends StatelessWidget {
-  const _BrandLogo();
+class AuthBrandLogo extends StatelessWidget {
+  const AuthBrandLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -369,10 +398,21 @@ class _BrandLogo extends StatelessWidget {
   }
 }
 
-class _LoginFormCard extends StatelessWidget {
-  const _LoginFormCard({required this.onSignIn});
+class AuthFormCard extends StatelessWidget {
+  const AuthFormCard({
+    super.key,
+    required this.title,
+    required this.buttonLabel,
+    required this.onSubmit,
+    this.emailController,
+    this.passwordController,
+  });
 
-  final VoidCallback onSignIn;
+  final String title;
+  final String buttonLabel;
+  final VoidCallback onSubmit;
+  final TextEditingController? emailController;
+  final TextEditingController? passwordController;
 
   @override
   Widget build(BuildContext context) {
@@ -398,17 +438,22 @@ class _LoginFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Sign In', style: LuckdateTextStyles.h2),
+            Text(title, style: LuckdateTextStyles.h2),
             const SizedBox(height: LuckdateSpacing.xl),
-            const _UnderlineField(label: 'Email', hint: 'you@email.com'),
+            AuthUnderlineField(
+              label: 'Email',
+              hint: 'you@email.com',
+              controller: emailController,
+            ),
             const SizedBox(height: LuckdateSpacing.lg),
-            const _UnderlineField(
+            AuthUnderlineField(
               label: 'Password',
               hint: '••••••••',
               obscure: true,
+              controller: passwordController,
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
-            LdPrimaryButton(label: 'Sign in', onPressed: onSignIn),
+            LdPrimaryButton(label: buttonLabel, onPressed: onSubmit),
           ],
         ),
       ),
@@ -416,16 +461,19 @@ class _LoginFormCard extends StatelessWidget {
   }
 }
 
-class _UnderlineField extends StatelessWidget {
-  const _UnderlineField({
+class AuthUnderlineField extends StatelessWidget {
+  const AuthUnderlineField({
+    super.key,
     required this.label,
     required this.hint,
     this.obscure = false,
+    this.controller,
   });
 
   final String label;
   final String hint;
   final bool obscure;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -434,6 +482,7 @@ class _UnderlineField extends StatelessWidget {
       children: [
         Text(label, style: LuckdateTextStyles.caption),
         TextField(
+          controller: controller,
           obscureText: obscure,
           decoration: InputDecoration(
             hintText: hint,

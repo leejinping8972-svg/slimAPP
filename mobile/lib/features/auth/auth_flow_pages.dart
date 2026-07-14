@@ -5,6 +5,7 @@ import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/providers/app_providers.dart';
 import '../splash/splash_page.dart';
+import 'auth_pages.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -34,126 +35,73 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: LuckdateSpacing.sm),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: () => context.go('/login'),
-                    icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(
-                  LuckdateSpacing.lg,
-                  LuckdateSpacing.md,
-                  LuckdateSpacing.lg,
-                  LuckdateSpacing.xxl,
-                ),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xFFFAF8F2), Color(0xFFF5F0E4)],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const SymbolHero(size: 100),
-                    const SizedBox(height: LuckdateSpacing.xl),
-                    Text(
-                      'Create your account',
-                      style: LuckdateTextStyles.h1,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: LuckdateSpacing.sm),
-                    Text(
-                      'Begin your premium ritual with luckdate.',
-                      style: LuckdateTextStyles.bodySmall,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Transform.translate(
-                offset: const Offset(0, -20),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: LuckdateSpacing.lg,
-                  ),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(LuckdateRadius.xl),
-                    child: Container(
-                      padding: const EdgeInsets.all(LuckdateSpacing.xl),
-                      decoration: BoxDecoration(
-                        color: LuckdateColors.ivoryWhite,
-                        borderRadius: BorderRadius.circular(LuckdateRadius.xl),
-                        border: Border.all(
-                          color: LuckdateColors.lineSoft.withValues(alpha: 0.8),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AuthMarketingHeader(
+                        title: 'Join us',
+                        subtitle:
+                            'Begin your premium ritual\nwith luckdate today.',
+                        tagline: 'Grow Toward the Light',
+                        showBack: true,
+                        onBack: () => context.go('/login'),
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0, -28),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: LuckdateSpacing.lg,
+                          ),
+                          child: AuthFormCard(
+                            title: 'Create Account',
+                            buttonLabel: 'Create account',
+                            onSubmit: _submit,
+                            emailController: _emailController,
+                            passwordController: _passwordController,
+                          ),
                         ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x12000000),
-                            offset: Offset(0, 10),
-                            blurRadius: 28,
-                          ),
-                        ],
                       ),
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: _emailController,
-                            decoration: _registerInputDecoration(
-                              'Email',
-                              'you@email.com',
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          LuckdateSpacing.lg,
+                          LuckdateSpacing.sm,
+                          LuckdateSpacing.lg,
+                          LuckdateSpacing.lg,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Already have an account? ',
+                              style: LuckdateTextStyles.bodySmall,
                             ),
-                          ),
-                          const SizedBox(height: LuckdateSpacing.base),
-                          TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: _registerInputDecoration(
-                              'Password',
-                              '••••••••',
+                            GestureDetector(
+                              onTap: () => context.go('/login'),
+                              child: Text(
+                                'Sign in',
+                                style: LuckdateTextStyles.bodySmall.copyWith(
+                                  color: LuckdateColors.deepSage,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: LuckdateSpacing.xl),
-                          LdPrimaryButton(
-                            label: 'Create account',
-                            onPressed: _submit,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(height: LuckdateSpacing.xl),
-            ],
-          ),
+            );
+          },
         ),
-      ),
-    );
-  }
-
-  InputDecoration _registerInputDecoration(String label, String hint) {
-    return InputDecoration(
-      labelText: label,
-      hintText: hint,
-      hintStyle: LuckdateTextStyles.bodySmall.copyWith(
-        color: LuckdateColors.textSecondary.withValues(alpha: 0.45),
-      ),
-      enabledBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: LuckdateColors.lineSoft),
-      ),
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: LuckdateColors.deepSage, width: 1.5),
       ),
     );
   }

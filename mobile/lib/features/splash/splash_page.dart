@@ -11,27 +11,35 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
   bool _navigated = false;
   Timer? _timer;
+  late final AnimationController _pulse;
 
   @override
   void initState() {
     super.initState();
+    _pulse = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1100),
+    )..repeat(reverse: true);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _timer = Timer(const Duration(milliseconds: 2200), _goNext);
+      _timer = Timer(const Duration(seconds: 2), _goNext);
     });
   }
 
   void _goNext() {
     if (!mounted || _navigated) return;
     _navigated = true;
-    GoRouter.of(context).go('/login');
+    GoRouter.of(context).go('/register');
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _pulse.dispose();
     super.dispose();
   }
 
@@ -39,9 +47,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF3D3428),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: _goNext,
+      body: AbsorbPointer(
+        absorbing: true,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -60,9 +67,45 @@ class _SplashPageState extends State<SplashPage> {
                   colors: [
                     Color(0x33000000),
                     Color(0x00000000),
-                    Color(0x66000000),
+                    Color(0x99000000),
                   ],
-                  stops: [0, 0.45, 1],
+                  stops: [0, 0.4, 1],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 48),
+                  child: FadeTransition(
+                    opacity: Tween<double>(begin: 0.45, end: 1).animate(
+                      CurvedAnimation(parent: _pulse, curve: Curves.easeInOut),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 28,
+                          height: 28,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.4,
+                            color: LuckdateColors.sunGold.withValues(alpha: 0.95),
+                            backgroundColor:
+                                Colors.white.withValues(alpha: 0.18),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          'Loading…',
+                          style: LuckdateTextStyles.caption.copyWith(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
