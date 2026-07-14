@@ -136,7 +136,7 @@ class VitalityScorer {
       ),
       VitalityDimension(
         key: 'exercise',
-        label: 'Movement',
+        label: 'Exercise',
         score: ((scores.ritualCompletion * 0.85) + scores.consistencyScore * 0.15)
             .round()
             .clamp(0, 100),
@@ -144,7 +144,7 @@ class VitalityScorer {
       ),
       VitalityDimension(
         key: 'body_mind',
-        label: 'Body & Mind',
+        label: 'Mindfulness',
         score: scores.moodCheckScore,
         icon: Icons.spa_outlined,
       ),

@@ -345,13 +345,26 @@ class LdVitalityBanner extends StatelessWidget {
             child: Text(message, style: LuckdateTextStyles.bodySmall),
           ),
           if (actionLabel != null)
-            TextButton(
+            OutlinedButton.icon(
               onPressed: onAction,
-              style: TextButton.styleFrom(
-                foregroundColor: LuckdateColors.deepSage,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              icon: const Icon(Icons.ios_share_rounded, size: 14),
+              label: Text(
+                actionLabel!,
+                style: LuckdateTextStyles.caption.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              child: Text(actionLabel!),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: LuckdateColors.textPrimary,
+                backgroundColor: LuckdateColors.ivoryWhite,
+                side: const BorderSide(color: LuckdateColors.lineSoft),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                ),
+              ),
             ),
         ],
       ),
