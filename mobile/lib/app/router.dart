@@ -38,9 +38,22 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       // Prefer path over matchedLocation so hash routes are stable on GH Pages.
       final path = state.uri.path.isEmpty ? '/' : state.uri.path;
-      final profile = ref.read(appStateProvider).profile;
+      final app = ref.read(appStateProvider);
+      final profile = app.profile;
       if (path.startsWith('/region') || path.startsWith('/activation')) {
         return '/login';
+      }
+
+      // Guests must pass launch splash→guide before auth screens.
+      // Fixes refresh / deep-link to #/register skipping the guide.
+      if (!profile.isLoggedIn && !app.launchGuideSeen) {
+        if (path == '/login' ||
+            path == '/register' ||
+            path == '/welcome' ||
+            path == '/register-success' ||
+            path == '/link-order') {
+          return '/';
+        }
       }
 
       final isPublicAuth =

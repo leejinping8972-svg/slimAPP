@@ -1,5 +1,6 @@
 import 'package:chatviva_slim/app/router.dart';
 import 'package:chatviva_slim/app/theme/luckdate_theme.dart';
+import 'package:chatviva_slim/shared/providers/app_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,10 +9,12 @@ import 'package:go_router/go_router.dart';
 void main() {
   Future<GoRouter> pumpApp(WidgetTester tester) async {
     late GoRouter router;
+    late WidgetRef widgetRef;
     await tester.pumpWidget(
       ProviderScope(
         child: Consumer(
           builder: (context, ref, _) {
+            widgetRef = ref;
             router = ref.watch(routerProvider);
             return MaterialApp.router(
               theme: buildLuckdateTheme(),
@@ -22,6 +25,8 @@ void main() {
       ),
     );
     await tester.pump();
+    // Simulate having left the launch guide.
+    widgetRef.read(appStateProvider.notifier).markLaunchGuideSeen();
     router.go('/login');
     await tester.pumpAndSettle();
     return router;
@@ -59,5 +64,28 @@ void main() {
 
     expect(find.textContaining('privacy policy'), findsOneWidget);
     expect(find.textContaining('I agree'), findsWidgets);
+  });
+
+  testWidgets('Guest deep-link to register is forced back to launch',
+      (tester) async {
+    late GoRouter router;
+    await tester.pumpWidget(
+      ProviderScope(
+        child: Consumer(
+          builder: (context, ref, _) {
+            router = ref.watch(routerProvider);
+            return MaterialApp.router(
+              theme: buildLuckdateTheme(),
+              routerConfig: router,
+            );
+          },
+        ),
+      ),
+    );
+    await tester.pump();
+    router.go('/register');
+    await tester.pump();
+    expect(router.state.uri.path, '/');
+    expect(find.text('Create Account'), findsNothing);
   });
 }

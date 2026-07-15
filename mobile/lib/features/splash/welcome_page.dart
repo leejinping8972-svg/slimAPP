@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/super_symbol_mark.dart';
+import '../../shared/providers/app_providers.dart';
 import 'splash_backdrop.dart';
 
 /// Guide UI (logo / copy / CTAs) used after splash on `/`, and at `/welcome`.
-class WelcomeGuideView extends StatefulWidget {
+class WelcomeGuideView extends ConsumerStatefulWidget {
   const WelcomeGuideView({super.key});
 
   @override
-  State<WelcomeGuideView> createState() => _WelcomeGuideViewState();
+  ConsumerState<WelcomeGuideView> createState() => _WelcomeGuideViewState();
 }
 
 /// Deep-link alias — same guide UI.
@@ -20,7 +22,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) => const WelcomeGuideView();
 }
 
-class _WelcomeGuideViewState extends State<WelcomeGuideView>
+class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
     with TickerProviderStateMixin {
   late final AnimationController _light;
   late final AnimationController _liquid;
@@ -59,6 +61,16 @@ class _WelcomeGuideViewState extends State<WelcomeGuideView>
     super.dispose();
   }
 
+  void _goRegister() {
+    ref.read(appStateProvider.notifier).markLaunchGuideSeen();
+    context.go('/register');
+  }
+
+  void _goLogin() {
+    ref.read(appStateProvider.notifier).markLaunchGuideSeen();
+    context.go('/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +84,6 @@ class _WelcomeGuideViewState extends State<WelcomeGuideView>
             lightAnimation: _light,
             liquidAnimation: _liquid,
           ),
-          // Soft vignette so bottom CTAs stay readable — keep photo dominant.
           const DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -137,7 +148,6 @@ class _WelcomeGuideViewState extends State<WelcomeGuideView>
                         ),
                       );
                     },
-                    // Primary: Start My Journey → register
                     child: SizedBox(
                       height: 56,
                       child: ElevatedButton(
@@ -149,7 +159,7 @@ class _WelcomeGuideViewState extends State<WelcomeGuideView>
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        onPressed: () => context.go('/register'),
+                        onPressed: _goRegister,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -170,7 +180,6 @@ class _WelcomeGuideViewState extends State<WelcomeGuideView>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  // Secondary: Log in → login
                   SizedBox(
                     height: 52,
                     child: OutlinedButton(
@@ -185,7 +194,7 @@ class _WelcomeGuideViewState extends State<WelcomeGuideView>
                         ),
                         backgroundColor: Colors.white.withValues(alpha: 0.14),
                       ),
-                      onPressed: () => context.go('/login'),
+                      onPressed: _goLogin,
                       child: const Text(
                         'Log in',
                         style: TextStyle(

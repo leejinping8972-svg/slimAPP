@@ -26,6 +26,7 @@ class AppState {
     required this.chatMessages,
     required this.showLoading,
     required this.showError,
+    this.launchGuideSeen = false,
   });
 
   final UserProfile profile;
@@ -34,6 +35,8 @@ class AppState {
   final List<ChatMessage> chatMessages;
   final bool showLoading;
   final bool showError;
+  /// Session flag: guest must finish launch guide before /login or /register.
+  final bool launchGuideSeen;
 
   AppState copyWith({
     UserProfile? profile,
@@ -42,6 +45,7 @@ class AppState {
     List<ChatMessage>? chatMessages,
     bool? showLoading,
     bool? showError,
+    bool? launchGuideSeen,
   }) {
     return AppState(
       profile: profile ?? this.profile,
@@ -50,6 +54,7 @@ class AppState {
       chatMessages: chatMessages ?? this.chatMessages,
       showLoading: showLoading ?? this.showLoading,
       showError: showError ?? this.showError,
+      launchGuideSeen: launchGuideSeen ?? this.launchGuideSeen,
     );
   }
 }
@@ -78,6 +83,11 @@ class AppStateNotifier extends StateNotifier<AppState> {
       scope: 'global',
       expiresAt: DateTime.now().add(const Duration(days: 30)),
     );
+  }
+
+  void markLaunchGuideSeen() {
+    if (state.launchGuideSeen) return;
+    state = state.copyWith(launchGuideSeen: true);
   }
 
   void loginExistingUser() {
