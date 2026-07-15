@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
+import '../../core/widgets/super_symbol_mark.dart';
 import 'splash_backdrop.dart';
 
-/// Onboarding guide after splash — same art, soft motion + CTAs.
+/// Guide page: lifestyle photo + code-drawn logo / copy / super-symbol.
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
 
@@ -34,7 +35,7 @@ class _WelcomePageState extends State<WelcomePage>
     )..repeat(reverse: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      precacheImage(const AssetImage(kSplashImageAsset), context);
+      precacheImage(const AssetImage(kWelcomeImageAsset), context);
     });
   }
 
@@ -54,33 +55,33 @@ class _WelcomePageState extends State<WelcomePage>
         fit: StackFit.expand,
         children: [
           SplashBackdrop(
+            assetPath: kWelcomeImageAsset,
             animated: true,
             lightAnimation: _light,
             liquidAnimation: _liquid,
           ),
-          // Soft bottom readabilty for CTAs
           const DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
+                  Color(0x14000000),
                   Color(0x00000000),
-                  Color(0x22000000),
-                  Color(0x66000000),
+                  Color(0x55000000),
                 ],
-                stops: [0.45, 0.72, 1],
+                stops: [0.0, 0.42, 1],
               ),
             ),
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 12, 24, 20),
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const _WelcomeBrand(),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 22),
                   Text(
                     'Feel Alive.\nMeet luckdate.',
                     style: LuckdateTextStyles.display.copyWith(
@@ -90,11 +91,11 @@ class _WelcomePageState extends State<WelcomePage>
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
                   Container(
                     width: 36,
                     height: 2,
-                    color: LuckdateColors.sunGold.withValues(alpha: 0.85),
+                    color: LuckdateColors.sunGold.withValues(alpha: 0.9),
                   ),
                   const SizedBox(height: 16),
                   const _RitualGlassCard(),
@@ -209,39 +210,35 @@ class _WelcomeBrand extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
             Text(
               'luckdate',
               style: TextStyle(
                 fontFamily: 'Montserrat',
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: FontWeight.w500,
-                letterSpacing: 1.2,
-                color: LuckdateColors.deepSage,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              'YOUR DAILY VITALITY COMPANION',
-              style: LuckdateTextStyles.caption.copyWith(
                 letterSpacing: 1.4,
-                fontSize: 9,
-                color: LuckdateColors.chocolateBrown.withValues(alpha: 0.75),
-                fontWeight: FontWeight.w600,
+                color: LuckdateColors.deepSage,
+                height: 1,
               ),
             ),
+            const SizedBox(width: 8),
+            const SuperSymbolMark(size: 26, color: LuckdateColors.deepSage),
           ],
         ),
-        const SizedBox(width: 8),
-        Icon(
-          Icons.wb_sunny_outlined,
-          size: 22,
-          color: LuckdateColors.sunGold.withValues(alpha: 0.9),
+        const SizedBox(height: 6),
+        Text(
+          'YOUR DAILY VITALITY COMPANION',
+          style: LuckdateTextStyles.caption.copyWith(
+            letterSpacing: 1.6,
+            fontSize: 9,
+            color: LuckdateColors.chocolateBrown.withValues(alpha: 0.78),
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -256,14 +253,14 @@ class _RitualGlassCard extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 200),
+        constraints: const BoxConstraints(maxWidth: 210),
         child: Container(
           padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.42),
+            color: Colors.white.withValues(alpha: 0.48),
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.55),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
             boxShadow: const [
               BoxShadow(
@@ -273,37 +270,42 @@ class _RitualGlassCard extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.eco_outlined,
-                size: 18,
-                color: LuckdateColors.deepSage.withValues(alpha: 0.85),
-              ),
-              const SizedBox(height: 8),
-              Text.rich(
-                TextSpan(
-                  style: LuckdateTextStyles.bodySmall.copyWith(
-                    color: LuckdateColors.chocolateBrown,
-                    height: 1.35,
-                  ),
-                  children: [
-                    const TextSpan(text: 'Every Great Day Starts with '),
-                    TextSpan(
-                      text: 'One Small Ritual.',
-                      style: LuckdateTextStyles.bodySmall.copyWith(
-                        color: LuckdateColors.sunGold,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              SuperSymbolMark(size: 20, color: LuckdateColors.deepSage),
+              SizedBox(height: 10),
+              _RitualCopy(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _RitualCopy extends StatelessWidget {
+  const _RitualCopy();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        style: LuckdateTextStyles.bodySmall.copyWith(
+          color: LuckdateColors.chocolateBrown,
+          height: 1.4,
+        ),
+        children: [
+          const TextSpan(text: 'Every Great Day Starts with '),
+          TextSpan(
+            text: 'One Small Ritual.',
+            style: LuckdateTextStyles.bodySmall.copyWith(
+              color: LuckdateColors.sunGold,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
