@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../app/theme/luckdate_theme.dart';
-import '../../core/widgets/super_symbol_mark.dart';
 import '../../shared/providers/app_providers.dart';
 import 'splash_backdrop.dart';
 
@@ -37,19 +35,21 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
     super.initState();
     _light = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 11),
+      duration: const Duration(seconds: 9),
     )..repeat(reverse: true);
     _liquid = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 4200),
-    )..repeat(reverse: true);
+    )..repeat();
     _breathe = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2300),
+      duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       precacheImage(const AssetImage(kWelcomeImageAsset), context);
+      precacheImage(const AssetImage(kBrandLogoAsset), context);
+      precacheImage(const AssetImage(kSuperSymbolAsset), context);
     });
   }
 
@@ -105,7 +105,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const _WelcomeBrand(),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 24),
                   Text(
                     'Feel Alive.\nMeet luckdate.',
                     style: TextStyle(
@@ -126,28 +126,8 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                   const SizedBox(height: 20),
                   const _RitualGlassCard(),
                   const Spacer(),
-                  AnimatedBuilder(
-                    animation: _breathe,
-                    builder: (context, child) {
-                      final glow = 0.18 + _breathe.value * 0.32;
-                      final scale = 1 + (_breathe.value * 0.014);
-                      return Transform.scale(
-                        scale: scale,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: _olive.withValues(alpha: glow),
-                                blurRadius: 16 + _breathe.value * 12,
-                                spreadRadius: 0.5,
-                              ),
-                            ],
-                          ),
-                          child: child,
-                        ),
-                      );
-                    },
+                  _BreathingButton(
+                    breath: _breathe,
                     child: SizedBox(
                       height: 56,
                       child: ElevatedButton(
@@ -155,6 +135,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                           backgroundColor: _olive,
                           foregroundColor: Colors.white,
                           elevation: 0,
+                          shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -180,28 +161,33 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  SizedBox(
-                    height: 52,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.8),
-                          width: 1.2,
+                  _BreathingButton(
+                    breath: _breathe,
+                    phase: 0.5,
+                    glowColor: Colors.white,
+                    child: SizedBox(
+                      height: 52,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            width: 1.3,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          backgroundColor: Colors.white.withValues(alpha: 0.14),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: Colors.white.withValues(alpha: 0.14),
-                      ),
-                      onPressed: _goLogin,
-                      child: const Text(
-                        'Log in',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        onPressed: _goLogin,
+                        child: const Text(
+                          'Log in',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -234,11 +220,54 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
   }
 }
 
+class _BreathingButton extends StatelessWidget {
+  const _BreathingButton({
+    required this.breath,
+    required this.child,
+    this.glowColor = const Color(0xFF5E6550),
+    this.phase = 0,
+  });
+
+  final Animation<double> breath;
+  final Widget child;
+  final Color glowColor;
+  final double phase;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: breath,
+      builder: (context, child) {
+        final t = ((breath.value + phase) % 1.0);
+        final eased = Curves.easeInOut.transform(t);
+        final glow = 0.22 + eased * 0.42;
+        final scale = 1 + eased * 0.028;
+        return Transform.scale(
+          scale: scale,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: glowColor.withValues(alpha: glow),
+                  blurRadius: 14 + eased * 18,
+                  spreadRadius: 1 + eased * 2,
+                ),
+              ],
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
 class _WelcomeBrand extends StatelessWidget {
   const _WelcomeBrand();
 
   static const _taupe = Color(0xFF4F463E);
-  static const _gold = Color(0xFFC4A06E);
 
   @override
   Widget build(BuildContext context) {
@@ -246,20 +275,11 @@ class _WelcomeBrand extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'luckdate',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 26,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.6,
-                color: _taupe,
-                height: 1,
-              ),
-            ),
+            const BrandAssetImage(kBrandLogoAsset, height: 32),
             const SizedBox(width: 8),
-            const SuperSymbolMark(size: 28, color: _gold),
+            const BrandAssetImage(kSuperSymbolAsset, height: 32, width: 32),
           ],
         ),
         const SizedBox(height: 8),
@@ -280,9 +300,6 @@ class _WelcomeBrand extends StatelessWidget {
 
 class _RitualGlassCard extends StatelessWidget {
   const _RitualGlassCard();
-
-  static const _taupe = Color(0xFF4F463E);
-  static const _gold = Color(0xFFC4A06E);
 
   @override
   Widget build(BuildContext context) {
@@ -307,7 +324,7 @@ class _RitualGlassCard extends StatelessWidget {
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SuperSymbolMark(size: 22, color: _gold),
+              BrandAssetImage(kSuperSymbolAsset, height: 24, width: 24),
               SizedBox(height: 12),
               _RitualCopy(),
             ],
