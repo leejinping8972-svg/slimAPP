@@ -27,7 +27,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   void _submit() {
     ref.read(appStateProvider.notifier).completeRegistration();
-    context.go('/register-success');
+    context.go('/home');
   }
 
   @override

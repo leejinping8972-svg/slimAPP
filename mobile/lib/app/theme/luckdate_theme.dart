@@ -20,11 +20,18 @@ class LuckdateColors {
   static const chatBubble = Color(0xFFF8F3EC);
   static const navIndicator = Color(0xFFE8EFE0);
 
-  static const youth = Color(0xFF6E7D5B);
-  static const femme = Color(0xFFD99A8E);
-  static const recovery = Color(0xFFA593B5);
-  static const active = Color(0xFF9DB3B3);
-  static const daily = Color(0xFFD8A955);
+  static const youth = Color(0xFFE7C8C4);
+  static const femme = Color(0xFFE8C4BC);
+  static const recovery = Color(0xFFC9C2D9);
+  static const active = Color(0xFFBFD1DA);
+  static const daily = Color(0xFFE3D4B6);
+  static const slimVitality = Color(0xFFA7B09A);
+  static const beautyVitality = Color(0xFFE7C8C4);
+  static const healthyAging = Color(0xFFD8BE8A);
+  static const womensVitality = Color(0xFFE8C4BC);
+  static const mindVitality = Color(0xFFC9C2D9);
+  static const energyVitality = Color(0xFFBFD1DA);
+  static const dailyVitality = Color(0xFFE3D4B6);
 }
 
 class LuckdateSpacing {

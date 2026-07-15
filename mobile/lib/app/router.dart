@@ -52,29 +52,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!profile.isLoggedIn && !isPublicAuth) return '/login';
 
       if (profile.isLoggedIn) {
+        if (path == '/login' || path == '/register') {
+          return profile.onboardingComplete ? '/ritual' : '/home';
+        }
         if (!profile.isNewRegistration &&
             (path == '/register-success' || path == '/link-order')) {
-          return '/ritual';
-        }
-        if (profile.isNewRegistration &&
-            !profile.couponRewardSeen &&
-            path != '/register-success') {
-          return '/register-success';
-        }
-        if (profile.isNewRegistration &&
-            profile.couponRewardSeen &&
-            profile.orderLinkStatus == OrderLinkStatus.notStarted &&
-            path != '/link-order' &&
-            path != '/onboarding') {
-          return '/link-order';
-        }
-        if (!profile.onboardingComplete &&
-            profile.isNewRegistration &&
-            profile.orderLinkStatus != OrderLinkStatus.notStarted &&
-            path != '/onboarding' &&
-            path != '/register-success' &&
-            path != '/link-order') {
-          return '/onboarding';
+          return profile.onboardingComplete ? '/ritual' : '/home';
         }
         if (profile.onboardingComplete &&
             (path == '/login' ||

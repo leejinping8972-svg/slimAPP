@@ -6,6 +6,7 @@ import '../../core/widgets/ld_components.dart';
 import '../../core/widgets/ld_shell.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/onboarding_chat_guide.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -134,11 +135,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                   LuckdateSpacing.md,
                 ),
                 children: [
-                  _SunnyIntroCard(
-                    nickname: profile.nickname,
-                    onLearnMore: () => context.push('/sunny/suggestions'),
-                  ),
-                  const SizedBox(height: LuckdateSpacing.lg),
+                  if (profile.onboardingComplete) ...[
+                    _SunnyIntroCard(
+                      nickname: profile.nickname,
+                      onLearnMore: () => context.push('/sunny/suggestions'),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.lg),
+                  ],
                   ...messages.map((msg) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: LuckdateSpacing.md),
@@ -162,7 +165,13 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             _QuickAskRow(
-              items: _quickAsks,
+              items: profile.onboardingComplete
+                  ? _quickAsks
+                  : OnboardingChatGuide.quickAsksFor(
+                      profile.onboardingStep.isEmpty
+                          ? 'privacy'
+                          : profile.onboardingStep,
+                    ),
               onTap: (text) {
                 if (text == 'Daily Ritual') {
                   context.go('/ritual');

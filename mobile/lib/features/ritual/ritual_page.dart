@@ -12,7 +12,7 @@ import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/vitality_scorer.dart';
 
-enum _VitalityRange { today, week, month, quarter }
+enum _VitalityRange { today, days28, days56, days84 }
 
 class RitualPage extends ConsumerStatefulWidget {
   const RitualPage({super.key});
@@ -23,7 +23,7 @@ class RitualPage extends ConsumerStatefulWidget {
 
 class _RitualPageState extends ConsumerState<RitualPage> {
   _VitalityRange _range = _VitalityRange.today;
-  _VitalityRange _trendRange = _VitalityRange.week;
+  _VitalityRange _trendRange = _VitalityRange.days28;
   int _focusIndex = 0;
 
   @override
@@ -59,9 +59,9 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                     LdSegmentedControl<_VitalityRange>(
                       options: const [
                         _VitalityRange.today,
-                        _VitalityRange.week,
-                        _VitalityRange.month,
-                        _VitalityRange.quarter,
+                        _VitalityRange.days28,
+                        _VitalityRange.days56,
+                        _VitalityRange.days84,
                       ],
                       selected: _range,
                       onChanged: (v) => setState(() {
@@ -178,9 +178,9 @@ class _RitualPageState extends ConsumerState<RitualPage> {
 
   void _cycleTrendRange() {
     const order = [
-      _VitalityRange.week,
-      _VitalityRange.month,
-      _VitalityRange.quarter,
+      _VitalityRange.days28,
+      _VitalityRange.days56,
+      _VitalityRange.days84,
       _VitalityRange.today,
     ];
     final i = order.indexOf(_trendRange);
@@ -192,12 +192,12 @@ class _RitualPageState extends ConsumerState<RitualPage> {
     if (full.isEmpty) return const [];
     return switch (range) {
       _VitalityRange.today => full.length >= 1 ? [full.last] : full,
-      _VitalityRange.week =>
-        full.length > 7 ? full.sublist(full.length - 7) : full,
-      _VitalityRange.month =>
+      _VitalityRange.days28 =>
         full.length > 28 ? full.sublist(full.length - 28) : full,
-      _VitalityRange.quarter =>
-        full.length > 90 ? full.sublist(full.length - 90) : full,
+      _VitalityRange.days56 =>
+        full.length > 56 ? full.sublist(full.length - 56) : full,
+      _VitalityRange.days84 =>
+        full.length > 84 ? full.sublist(full.length - 84) : full,
     };
   }
 
@@ -209,9 +209,9 @@ class _RitualPageState extends ConsumerState<RitualPage> {
 
   String _rangeLabel(_VitalityRange range) => switch (range) {
         _VitalityRange.today => 'Today',
-        _VitalityRange.week => '7 Days',
-        _VitalityRange.month => '30 Days',
-        _VitalityRange.quarter => '90 Days',
+        _VitalityRange.days28 => '28 Days',
+        _VitalityRange.days56 => '56 Days',
+        _VitalityRange.days84 => '84 Days',
       };
 }
 
@@ -355,9 +355,9 @@ class _TrendCard extends StatelessWidget {
 
   String get _rangeLabel => switch (range) {
         _VitalityRange.today => 'Today',
-        _VitalityRange.week => '7 Days',
-        _VitalityRange.month => '30 Days',
-        _VitalityRange.quarter => '90 Days',
+        _VitalityRange.days28 => '28 Days',
+        _VitalityRange.days56 => '56 Days',
+        _VitalityRange.days84 => '84 Days',
       };
 
   @override

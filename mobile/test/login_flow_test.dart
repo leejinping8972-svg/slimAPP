@@ -49,8 +49,7 @@ void main() {
     expect(find.text('Check-in Record'), findsOneWidget);
   });
 
-  testWidgets('Register success back clears session and returns to login',
-      (tester) async {
+  testWidgets('Register opens Sunny onboarding chat', (tester) async {
     final router = await pumpApp(tester);
     router.go('/register');
     await tester.pumpAndSettle();
@@ -58,11 +57,7 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to luckdate'), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_new).first);
-    await tester.pumpAndSettle();
-
-    expect(find.text('Sign In'), findsOneWidget);
+    expect(find.textContaining('privacy policy'), findsOneWidget);
+    expect(find.textContaining('I agree'), findsWidgets);
   });
 }

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/models.dart';
 import '../repositories/mock_data_repository.dart';
 import '../services/mock_order_service.dart';
+import '../services/onboarding_chat_guide.dart';
 import '../services/sunny_intent_router.dart';
 import '../services/vitality_scorer.dart';
 
@@ -96,15 +97,21 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   void completeRegistration() {
+    final profile = state.profile.copyWith(
+      isLoggedIn: true,
+      isNewRegistration: true,
+      couponRewardSeen: true,
+      orderLinkStatus: OrderLinkStatus.skipped,
+      userPlanType: UserPlanType.noProduct,
+      onboardingComplete: false,
+      onboardingStep: 'privacy',
+      sunnyIntroSeen: true,
+      welcomeCoupon: _issueWelcomeCoupon(),
+    );
     state = state.copyWith(
-      profile: state.profile.copyWith(
-        isLoggedIn: true,
-        isNewRegistration: true,
-        couponRewardSeen: false,
-        orderLinkStatus: OrderLinkStatus.notStarted,
-        userPlanType: UserPlanType.noProduct,
-        welcomeCoupon: _issueWelcomeCoupon(),
-      ),
+      profile: profile,
+      chatMessages: OnboardingChatGuide.seedMessages(),
+      journey: _buildBasicJourney(profile),
     );
   }
 
@@ -264,7 +271,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
     state = state.copyWith(profile: profile);
   }
 
-  void completeOnboarding(UserProfile profile) {
+  void completeOnboarding(UserProfile profile, {bool preserveChat = false}) {
     final journey = profile.userPlanType == UserPlanType.mealReplacement
         ? _repo.journeyForDay(DemoDay.day1)
         : _buildBasicJourney(profile);
@@ -273,15 +280,18 @@ class AppStateNotifier extends StateNotifier<AppState> {
         onboardingComplete: true,
         isLoggedIn: true,
         isNewRegistration: false,
+        onboardingStep: 'done',
       ),
       demoDay: DemoDay.day1,
       journey: journey,
-      chatMessages: _repo.initialChatMessages(
-        1,
-        planType: profile.userPlanType,
-        hasWelcomeCoupon: profile.welcomeCoupon != null,
-        linkedProductName: profile.linkedProductName,
-      ),
+      chatMessages: preserveChat
+          ? state.chatMessages
+          : _repo.initialChatMessages(
+              1,
+              planType: profile.userPlanType,
+              hasWelcomeCoupon: profile.welcomeCoupon != null,
+              linkedProductName: profile.linkedProductName,
+            ),
     );
   }
 
@@ -374,16 +384,29 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
     state = state.copyWith(chatMessages: [...messages, placeholder]);
 
-    final result = _router.route(
-      input: text,
-      today: state.journey.todayRecord,
-      journeyDay: state.journey.day,
-      hydrationTargetMl: state.profile.hydrationTargetMl,
-      nickname: state.profile.nickname,
-    );
+    late final SunnyIntentResult result;
+    if (!state.profile.onboardingComplete) {
+      final guided = OnboardingChatGuide.handle(
+        input: text,
+        profile: state.profile,
+      );
+      state = state.copyWith(profile: guided.profile);
+      if (guided.profile.onboardingComplete) {
+        completeOnboarding(guided.profile, preserveChat: true);
+      }
+      result = guided.result;
+    } else {
+      result = _router.route(
+        input: text,
+        today: state.journey.todayRecord,
+        journeyDay: state.journey.day,
+        hydrationTargetMl: state.profile.hydrationTargetMl,
+        nickname: state.profile.nickname,
+      );
 
-    if (result.todayUpdates != null) {
-      updateTodayRecord(result.todayUpdates!);
+      if (result.todayUpdates != null) {
+        updateTodayRecord(result.todayUpdates!);
+      }
     }
 
     await _streamReply(placeholder.id, result.reply);

@@ -156,11 +156,13 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                     children:
                         [
                           'All',
-                          'Daily',
-                          'Youth',
-                          'Femme',
-                          'Recovery',
-                          'Active',
+                          'Slim Vitality',
+                          'Beauty Vitality',
+                          'Healthy Aging',
+                          "Women's Vitality",
+                          'Mind Vitality',
+                          'Energy Vitality',
+                          'Daily Vitality',
                         ].map((s) {
                           return Padding(
                             padding: const EdgeInsets.only(right: 8),
@@ -213,11 +215,13 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
 
   Color? _seriesColor(String series) {
     return switch (series) {
-      'Youth' => LuckdateColors.youth,
-      'Femme' => LuckdateColors.femme,
-      'Recovery' => LuckdateColors.recovery,
-      'Active' => LuckdateColors.active,
-      'Daily' => LuckdateColors.daily,
+      'Slim Vitality' => LuckdateColors.slimVitality,
+      'Beauty Vitality' => LuckdateColors.beautyVitality,
+      'Healthy Aging' => LuckdateColors.healthyAging,
+      "Women's Vitality" => LuckdateColors.womensVitality,
+      'Mind Vitality' => LuckdateColors.mindVitality,
+      'Energy Vitality' => LuckdateColors.energyVitality,
+      'Daily Vitality' => LuckdateColors.dailyVitality,
       _ => null,
     };
   }
