@@ -7,7 +7,7 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="luckdate — Feel Alive. Meet luckdate.">
-  <meta name="theme-color" content="#3D3428">
+  <meta name="theme-color" content="#EDE4D8">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,16 +24,17 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #3D3428;
+      background: #EDE4D8;
       overscroll-behavior: none;
     }
+    /* Native HTML splash — non-interactive while Flutter boots */
     #loading {
       position: fixed;
       inset: 0;
       z-index: 9999;
       overflow: hidden;
-      cursor: pointer;
-      background: linear-gradient(180deg, #5C5042 0%, #3D3428 55%, #2A2418 100%);
+      pointer-events: none;
+      background: #EDE4D8;
     }
     #loading img {
       width: 100%;
@@ -49,32 +50,46 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #5E6B45;
       font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       text-align: center;
       padding: 24px;
+      background: linear-gradient(160deg, #FFFBF7 0%, #F5EBE0 55%, #EDE4D8 100%);
     }
     #loading.fallback-active img { display: none; }
     #loading.fallback-active .fallback { display: flex; }
     #loading .fallback h1 {
       margin: 0 0 8px;
       font-size: 32px;
-      font-weight: 500;
+      font-weight: 600;
     }
     #loading .fallback p {
       margin: 0;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 400;
-      opacity: 0.95;
+      opacity: 0.9;
     }
     #loading .fallback .brand {
       position: absolute;
       bottom: 48px;
-      font-size: 18px;
-      letter-spacing: 5px;
+      font-size: 16px;
+      letter-spacing: 4px;
       color: #D4A853;
-      font-weight: 300;
+      font-weight: 400;
     }
+    #loading .spinner {
+      position: absolute;
+      left: 50%;
+      bottom: 48px;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 28px;
+      border: 2.5px solid rgba(94, 107, 69, 0.25);
+      border-top-color: #5E6B45;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
     @media (min-width: 500px) {
       body {
         display: flex;
@@ -109,6 +124,7 @@
       <p>Meet luckdate.</p>
       <div class="brand">luckdate</div>
     </div>
+    <div class="spinner" aria-hidden="true"></div>
   </div>
   <script>
     (function () {
@@ -117,19 +133,29 @@
       if (!href.endsWith('/')) href += '/';
       var img = document.getElementById('splash-img');
       var loading = document.getElementById('loading');
-      img.src = href + 'splash_screen.png';
+      // Prefer lifestyle welcome art; fall back to splash_screen.png
+      img.src = href + 'welcome_bg.png';
       img.onerror = function () {
-        loading.classList.add('fallback-active');
+        if (img.dataset.triedAlt) {
+          loading.classList.add('fallback-active');
+          return;
+        }
+        img.dataset.triedAlt = '1';
+        img.src = href + 'splash_screen.png';
       };
-    })();
 
-    function hideLoading() {
-      var el = document.getElementById('loading');
-      if (el) el.remove();
-    }
-    window.addEventListener('flutter-first-frame', hideLoading);
-    document.getElementById('loading').addEventListener('click', hideLoading);
-    setTimeout(hideLoading, 10000);
+      var ready = false;
+      function hideLoading() {
+        if (ready) return;
+        ready = true;
+        var el = document.getElementById('loading');
+        if (el) el.remove();
+      }
+      // Wait for Flutter first frame; never reveal a blank canvas early.
+      window.addEventListener('flutter-first-frame', hideLoading);
+      // Safety net if first-frame event is missed.
+      setTimeout(hideLoading, 12000);
+    })();
   </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>

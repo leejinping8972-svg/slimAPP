@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage>
     )..repeat(reverse: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      precacheImage(const AssetImage(kSplashImageAsset), context);
+      precacheImage(const AssetImage(kWelcomeImageAsset), context);
       _timer = Timer(const Duration(seconds: 2), _goNext);
     });
   }
@@ -53,7 +53,7 @@ class _SplashPageState extends State<SplashPage>
         child: Stack(
           fit: StackFit.expand,
           children: [
-            const SplashBackdrop(),
+            const SplashBackdrop(assetPath: kWelcomeImageAsset),
             Align(
               alignment: Alignment.bottomCenter,
               child: SafeArea(

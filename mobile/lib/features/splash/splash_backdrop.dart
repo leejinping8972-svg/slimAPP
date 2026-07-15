@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../core/widgets/sunny_sunflower.dart';
 
-/// Shared background art for splash.
-const kSplashImageAsset = 'assets/images/splash_screen.png';
-
-/// Lifestyle background for welcome / guide page.
+/// Lifestyle background shared by HTML shell, Flutter splash, and welcome.
+const kSplashImageAsset = 'assets/images/welcome_bg.png';
 const kWelcomeImageAsset = 'assets/images/welcome_bg.png';
 
 class SplashBackdrop extends StatelessWidget {
   const SplashBackdrop({
     super.key,
-    this.assetPath = kSplashImageAsset,
+    this.assetPath = kWelcomeImageAsset,
     this.animated = false,
     this.lightAnimation,
     this.liquidAnimation,
