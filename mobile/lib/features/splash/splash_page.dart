@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../../core/widgets/sunny_sunflower.dart';
 import 'splash_backdrop.dart';
+import 'welcome_page.dart';
 
-/// Full-bleed lifestyle splash — non-interactive, then auto-enter guide.
+/// Launch flow on `/`:
+/// 1) Splash image only (2s, not clickable)
+/// 2) In-place guide UI (same route — avoids redirect races to /login)
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
@@ -13,7 +15,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  bool _navigated = false;
+  bool _showGuide = false;
   Timer? _timer;
 
   @override
@@ -21,14 +23,11 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       precacheImage(const AssetImage(kWelcomeImageAsset), context);
-      _timer = Timer(const Duration(seconds: 2), _goNext);
+      _timer = Timer(const Duration(seconds: 2), () {
+        if (!mounted) return;
+        setState(() => _showGuide = true);
+      });
     });
-  }
-
-  void _goNext() {
-    if (!mounted || _navigated) return;
-    _navigated = true;
-    GoRouter.of(context).go('/welcome');
   }
 
   @override
@@ -39,6 +38,10 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Stay on `/` — only flip UI. Buttons navigate to /register or /login.
+    if (_showGuide) {
+      return const WelcomeGuideView();
+    }
     return const Scaffold(
       backgroundColor: kSplashScaffoldColor,
       body: IgnorePointer(

@@ -4,15 +4,23 @@ import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/super_symbol_mark.dart';
 import 'splash_backdrop.dart';
 
-/// Guide page after splash — shared lifestyle bg + code-drawn brand UI.
-class WelcomePage extends StatefulWidget {
+/// Guide UI (logo / copy / CTAs) used after splash on `/`, and at `/welcome`.
+class WelcomeGuideView extends StatefulWidget {
+  const WelcomeGuideView({super.key});
+
+  @override
+  State<WelcomeGuideView> createState() => _WelcomeGuideViewState();
+}
+
+/// Deep-link alias — same guide UI.
+class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  Widget build(BuildContext context) => const WelcomeGuideView();
 }
 
-class _WelcomePageState extends State<WelcomePage>
+class _WelcomeGuideViewState extends State<WelcomeGuideView>
     with TickerProviderStateMixin {
   late final AnimationController _light;
   late final AnimationController _liquid;

@@ -36,7 +36,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     refreshListenable: refresh,
     redirect: (context, state) {
-      final path = state.matchedLocation;
+      // Prefer path over matchedLocation so hash routes are stable on GH Pages.
+      final path = state.uri.path.isEmpty ? '/' : state.uri.path;
       final profile = ref.read(appStateProvider).profile;
       if (path.startsWith('/region') || path.startsWith('/activation')) {
         return '/login';
@@ -50,9 +51,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           path == '/register-success' ||
           path == '/link-order';
 
+      // Guests may only browse public auth/launch screens.
       if (!profile.isLoggedIn && !isPublicAuth) return '/login';
 
       if (profile.isLoggedIn) {
+        // Logged-in users skip launch/guide.
         if (path == '/' || path == '/welcome') {
           return profile.onboardingComplete ? '/ritual' : '/home';
         }
@@ -64,9 +67,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return profile.onboardingComplete ? '/ritual' : '/home';
         }
         if (profile.onboardingComplete &&
-            (path == '/login' ||
-                path == '/register' ||
-                path == '/onboarding' ||
+            (path == '/onboarding' ||
                 path == '/register-success' ||
                 path == '/link-order' ||
                 path == '/today' ||
