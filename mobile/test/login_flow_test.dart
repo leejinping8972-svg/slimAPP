@@ -7,6 +7,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
+  Future<void> pumpFrames(WidgetTester tester, [int count = 6]) async {
+    for (var i = 0; i < count; i++) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+  }
+
   Future<GoRouter> pumpApp(WidgetTester tester) async {
     late GoRouter router;
     late WidgetRef widgetRef;
@@ -28,7 +34,7 @@ void main() {
     // Simulate having left the launch guide.
     widgetRef.read(appStateProvider.notifier).markLaunchGuideSeen();
     router.go('/login');
-    await tester.pumpAndSettle();
+    await pumpFrames(tester);
     return router;
   }
 
@@ -42,14 +48,14 @@ void main() {
     await tester.pump();
 
     await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
-    await tester.pumpAndSettle();
+    await pumpFrames(tester, 12);
 
     expect(find.text('My Vitality Score'), findsOneWidget);
     expect(find.text('Sunny'), findsWidgets);
     expect(find.text('Ritual'), findsOneWidget);
 
     await tester.tap(find.text('Me'));
-    await tester.pumpAndSettle();
+    await pumpFrames(tester, 12);
     expect(find.text('Vitality Member'), findsOneWidget);
     expect(find.text('Check-in Record'), findsOneWidget);
   });
@@ -57,10 +63,10 @@ void main() {
   testWidgets('Register opens Sunny onboarding chat', (tester) async {
     final router = await pumpApp(tester);
     router.go('/register');
-    await tester.pumpAndSettle();
+    await pumpFrames(tester);
 
     await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
-    await tester.pumpAndSettle();
+    await pumpFrames(tester, 12);
 
     expect(find.textContaining('privacy policy'), findsOneWidget);
     expect(find.textContaining('I agree'), findsWidgets);

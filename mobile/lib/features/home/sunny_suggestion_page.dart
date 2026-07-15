@@ -139,7 +139,7 @@ class _IntroRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const LdSunnyAvatar(size: 52),
+        const LdSunnyAvatar(size: 52, mood: SunnyMood.heart, cycleIdle: false),
         const SizedBox(width: LuckdateSpacing.md),
         Expanded(
           child: Column(

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
-import 'sunny_sunflower.dart';
+import 'sunny_avatar.dart';
+
+export 'sunny_avatar.dart';
 
 class LdScaffold extends StatelessWidget {
   const LdScaffold({
@@ -324,21 +326,6 @@ class LdChoiceChip extends StatelessWidget {
   }
 }
 
-class LdSunnyAvatar extends StatelessWidget {
-  const LdSunnyAvatar({super.key, this.size = 40});
-
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: SunnySunflower(size: size, showStem: false),
-    );
-  }
-}
-
 class SunnyBubble extends StatelessWidget {
   const SunnyBubble({
     super.key,
@@ -348,6 +335,7 @@ class SunnyBubble extends StatelessWidget {
     this.suggestions,
     this.actionLabels,
     this.onActionTap,
+    this.mood,
   });
 
   final String text;
@@ -356,6 +344,7 @@ class SunnyBubble extends StatelessWidget {
   final List<ChatSuggestionItem>? suggestions;
   final List<String>? actionLabels;
   final ValueChanged<String>? onActionTap;
+  final SunnyMood? mood;
 
   String _formatTime(DateTime? t) {
     final d = t ?? DateTime.now();
@@ -366,10 +355,16 @@ class SunnyBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final avatarMood =
+        mood ?? SunnyMoodX.fromMessage(text, streaming: isStreaming);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const LdSunnyAvatar(size: 32),
+        LdSunnyAvatar(
+          size: 32,
+          mood: avatarMood,
+          cycleIdle: false,
+        ),
         const SizedBox(width: LuckdateSpacing.sm),
         Flexible(
           child: Column(

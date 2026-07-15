@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
+import '../../core/widgets/brand_assets.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/providers/app_providers.dart';
 import '../splash/splash_page.dart';
@@ -377,15 +378,8 @@ class AuthBrandLogo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'luckdate',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w300,
-            letterSpacing: 4,
-            color: LuckdateColors.chocolateBrown,
-          ),
-        ),
+        const BrandAssetImage(kBrandLogoAsset, height: 26),
+        const SizedBox(height: 4),
         Text(
           'The House of Vitality',
           style: LuckdateTextStyles.caption.copyWith(

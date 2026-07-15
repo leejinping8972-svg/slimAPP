@@ -27,6 +27,7 @@ flutter:
   assets:
     - assets/mock/
     - assets/images/
+    - assets/images/sunny_ip/
   fonts:
     - family: Montserrat
       fonts:

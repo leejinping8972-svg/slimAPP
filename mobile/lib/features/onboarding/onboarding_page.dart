@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
-import '../../core/widgets/sunny_sunflower.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/bmi_helper.dart';
@@ -253,8 +252,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: SunnySunflower(size: 160, showStem: true, useImage: true),
+          const Center(
+            child: LdSunnyAvatar(size: 160),
           ),
           const SizedBox(height: LuckdateSpacing.xl),
           Text('Hi, I am Sunny', style: LuckdateTextStyles.h1),
