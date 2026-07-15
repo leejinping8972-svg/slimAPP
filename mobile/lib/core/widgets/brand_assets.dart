@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// Lifestyle / brand image assets.
 const kSplashImageAsset = 'assets/images/welcome_bg.png';
 const kWelcomeImageAsset = 'assets/images/welcome_bg.png';
+const kWelcomeVideoAsset = 'assets/videos/welcome_bg.mp4';
 const kBrandLogoAsset = 'assets/images/logo.png';
 const kSuperSymbolAsset = 'assets/images/super_symbol_gold.png';
 

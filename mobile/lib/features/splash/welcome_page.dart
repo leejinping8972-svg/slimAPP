@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/providers/app_providers.dart';
 import 'splash_backdrop.dart';
+import 'welcome_video_backdrop.dart';
 
 /// Guide UI (logo / copy / CTAs) used after splash on `/`, and at `/welcome`.
 class WelcomeGuideView extends ConsumerStatefulWidget {
@@ -21,9 +22,7 @@ class WelcomePage extends StatelessWidget {
 }
 
 class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
-    with TickerProviderStateMixin {
-  late final AnimationController _light;
-  late final AnimationController _liquid;
+    with SingleTickerProviderStateMixin {
   late final AnimationController _breathe;
 
   static const _taupe = Color(0xFF4F463E);
@@ -33,14 +32,6 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
   @override
   void initState() {
     super.initState();
-    _light = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 9),
-    )..repeat(reverse: true);
-    _liquid = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 4200),
-    )..repeat();
     _breathe = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
@@ -55,8 +46,6 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
 
   @override
   void dispose() {
-    _light.dispose();
-    _liquid.dispose();
     _breathe.dispose();
     super.dispose();
   }
@@ -78,12 +67,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          SplashBackdrop(
-            assetPath: kWelcomeImageAsset,
-            animated: true,
-            lightAnimation: _light,
-            liquidAnimation: _liquid,
-          ),
+          const WelcomeVideoBackdrop(),
           const DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
