@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/sunny_sunflower.dart';
+import 'splash_backdrop.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -26,6 +27,7 @@ class _SplashPageState extends State<SplashPage>
     )..repeat(reverse: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      precacheImage(const AssetImage(kSplashImageAsset), context);
       _timer = Timer(const Duration(seconds: 2), _goNext);
     });
   }
@@ -33,7 +35,7 @@ class _SplashPageState extends State<SplashPage>
   void _goNext() {
     if (!mounted || _navigated) return;
     _navigated = true;
-    GoRouter.of(context).go('/register');
+    GoRouter.of(context).go('/welcome');
   }
 
   @override
@@ -46,33 +48,12 @@ class _SplashPageState extends State<SplashPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF3D3428),
-      body: AbsorbPointer(
-        absorbing: true,
+      backgroundColor: kSplashScaffoldColor,
+      body: IgnorePointer(
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/images/splash_screen.png',
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-              gaplessPlayback: true,
-              errorBuilder: (_, __, ___) => const _SplashFallback(),
-            ),
-            const DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0x33000000),
-                    Color(0x00000000),
-                    Color(0x99000000),
-                  ],
-                  stops: [0, 0.4, 1],
-                ),
-              ),
-            ),
+            const SplashBackdrop(),
             Align(
               alignment: Alignment.bottomCenter,
               child: SafeArea(
@@ -90,17 +71,19 @@ class _SplashPageState extends State<SplashPage>
                           height: 28,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.4,
-                            color: LuckdateColors.sunGold.withValues(alpha: 0.95),
+                            color: LuckdateColors.deepSage.withValues(alpha: 0.9),
                             backgroundColor:
-                                Colors.white.withValues(alpha: 0.18),
+                                Colors.white.withValues(alpha: 0.35),
                           ),
                         ),
                         const SizedBox(height: 14),
                         Text(
                           'Loading…',
                           style: LuckdateTextStyles.caption.copyWith(
-                            color: Colors.white.withValues(alpha: 0.85),
+                            color: LuckdateColors.chocolateBrown
+                                .withValues(alpha: 0.85),
                             letterSpacing: 1.2,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -109,58 +92,6 @@ class _SplashPageState extends State<SplashPage>
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SplashFallback extends StatelessWidget {
-  const _SplashFallback();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF5C5042), Color(0xFF3D3428), Color(0xFF2A2418)],
-        ),
-      ),
-      child: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(flex: 3),
-            const SunnySunflower(size: 72, showStem: false),
-            const SizedBox(height: LuckdateSpacing.xxl),
-            Text(
-              'Feel Alive.',
-              style: LuckdateTextStyles.display.copyWith(
-                color: LuckdateColors.ivoryWhite,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            Text(
-              'Meet luckdate.',
-              style: LuckdateTextStyles.h1.copyWith(
-                color: LuckdateColors.ivoryWhite,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const Spacer(flex: 2),
-            Text(
-              'luckdate',
-              style: LuckdateTextStyles.brand.copyWith(
-                color: LuckdateColors.sunGold,
-                letterSpacing: 5,
-              ),
-            ),
-            const SizedBox(height: LuckdateSpacing.xxl),
           ],
         ),
       ),

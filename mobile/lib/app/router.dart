@@ -17,7 +17,7 @@ import '../../features/profile/reminder_settings_page.dart';
 import '../../features/ritual/ritual_page.dart';
 import '../../features/journey/journey_page.dart';
 import '../../features/splash/splash_page.dart';
-import '../../shared/models/models.dart';
+import '../../features/splash/welcome_page.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../core/widgets/ld_shell.dart';
 
@@ -44,6 +44,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       final isPublicAuth =
           path == '/' ||
+          path == '/welcome' ||
           path == '/login' ||
           path == '/register' ||
           path == '/register-success' ||
@@ -52,6 +53,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!profile.isLoggedIn && !isPublicAuth) return '/login';
 
       if (profile.isLoggedIn) {
+        if (path == '/' || path == '/welcome') {
+          return profile.onboardingComplete ? '/ritual' : '/home';
+        }
         if (path == '/login' || path == '/register') {
           return profile.onboardingComplete ? '/ritual' : '/home';
         }
@@ -75,6 +79,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/', builder: (_, __) => const SplashPage()),
+      GoRoute(path: '/welcome', builder: (_, __) => const WelcomePage()),
       GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterPage()),
       GoRoute(
