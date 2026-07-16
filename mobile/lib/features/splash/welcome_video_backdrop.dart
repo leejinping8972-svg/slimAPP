@@ -3,7 +3,7 @@ import 'package:video_player/video_player.dart';
 import '../../core/widgets/brand_assets.dart';
 
 /// Full-bleed looping muted video for the launch guide background.
-/// Falls back to [kWelcomeImageAsset] while loading or on failure.
+/// Always paints a still frame first; video is best-effort and never blocks UI.
 class WelcomeVideoBackdrop extends StatefulWidget {
   const WelcomeVideoBackdrop({super.key});
 
@@ -14,22 +14,42 @@ class WelcomeVideoBackdrop extends StatefulWidget {
 class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop> {
   VideoPlayerController? _controller;
   bool _ready = false;
+  bool _failed = false;
 
   @override
   void initState() {
     super.initState();
-    _boot();
+    // Defer video so first frame (still image + copy) always paints.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _boot());
   }
 
   Future<void> _boot() async {
-    final controller = VideoPlayerController.asset(kWelcomeVideoAsset);
+    if (!mounted || _failed) return;
+    VideoPlayerController? controller;
     try {
-      await controller.initialize();
-      await controller.setLooping(true);
-      await controller.setVolume(0);
-      await controller.play();
+      controller = VideoPlayerController.asset(kWelcomeVideoAsset);
+      await controller.initialize().timeout(const Duration(seconds: 12));
       if (!mounted) {
         await controller.dispose();
+        return;
+      }
+      await controller.setLooping(true);
+      await controller.setVolume(0);
+      // Autoplay can fail on web without a gesture — keep still frame if so.
+      try {
+        await controller.play();
+      } catch (_) {
+        /* still show first decoded frame if any */
+      }
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
+      if (!controller.value.isInitialized ||
+          controller.value.hasError ||
+          controller.value.size.isEmpty) {
+        await controller.dispose();
+        if (mounted) setState(() => _failed = true);
         return;
       }
       setState(() {
@@ -37,40 +57,55 @@ class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop> {
         _ready = true;
       });
     } catch (_) {
-      await controller.dispose();
-      if (mounted) setState(() => _ready = false);
+      try {
+        await controller?.dispose();
+      } catch (_) {}
+      if (mounted) {
+        setState(() {
+          _failed = true;
+          _ready = false;
+          _controller = null;
+        });
+      }
     }
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    final c = _controller;
+    _controller = null;
+    c?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final controller = _controller;
-    if (!_ready || controller == null || !controller.value.isInitialized) {
-      return const SizedBox.expand(
-        child: _StillFrame(),
-      );
-    }
+    final showVideo = _ready &&
+        !_failed &&
+        controller != null &&
+        controller.value.isInitialized &&
+        !controller.value.hasError &&
+        !controller.value.size.isEmpty;
 
-    final size = controller.value.size;
-    return SizedBox.expand(
-      child: ColoredBox(
-        color: kSplashScaffoldColor,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          clipBehavior: Clip.hardEdge,
-          child: SizedBox(
-            width: size.width == 0 ? 1080 : size.width,
-            height: size.height == 0 ? 1920 : size.height,
-            child: VideoPlayer(controller),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        const _StillFrame(),
+        if (showVideo)
+          ColoredBox(
+            color: kSplashScaffoldColor,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              clipBehavior: Clip.hardEdge,
+              child: SizedBox(
+                width: controller.value.size.width,
+                height: controller.value.size.height,
+                child: VideoPlayer(controller),
+              ),
+            ),
           ),
-        ),
-      ),
+      ],
     );
   }
 }

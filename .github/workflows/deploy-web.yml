@@ -39,7 +39,9 @@ jobs:
         run: flutter pub get
 
       - name: Build web
-        run: flutter build web --release --base-href /${{ github.event.repository.name }}/ --no-web-resources-cdn
+        # Disable PWA service-worker precache — large video assets exceed
+        # mobile cache quotas and can leave GitHub Pages on a blank screen.
+        run: flutter build web --release --base-href /${{ github.event.repository.name }}/ --no-web-resources-cdn --pwa-strategy=none
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
