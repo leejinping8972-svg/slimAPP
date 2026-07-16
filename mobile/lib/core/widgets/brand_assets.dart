@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 const kSplashImageAsset = 'assets/images/welcome_bg.png';
 const kWelcomeImageAsset = 'assets/images/welcome_bg.png';
 const kWelcomeVideoAsset = 'assets/videos/welcome_bg.mp4';
+/// Public URL path under `web/` (and build output root) for mobile browsers.
+const kWelcomeVideoPublicPath = 'welcome_bg.mp4';
 const kBrandLogoAsset = 'assets/images/logo.png';
 const kSuperSymbolAsset = 'assets/images/super_symbol_gold.png';
 

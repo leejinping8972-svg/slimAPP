@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import '../../core/widgets/brand_assets.dart';
+import 'welcome_video_web_stub.dart'
+    if (dart.library.html) 'welcome_video_web.dart';
 
 /// Full-bleed looping muted video for the launch guide background.
-/// Always paints a still frame first; video is best-effort and never blocks UI.
+/// Still frame always paints first; video is best-effort and never blocks UI.
 class WelcomeVideoBackdrop extends StatefulWidget {
   const WelcomeVideoBackdrop({super.key});
 
@@ -11,36 +14,60 @@ class WelcomeVideoBackdrop extends StatefulWidget {
   State<WelcomeVideoBackdrop> createState() => _WelcomeVideoBackdropState();
 }
 
-class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop> {
+class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop>
+    with WidgetsBindingObserver {
   VideoPlayerController? _controller;
   bool _ready = false;
   bool _failed = false;
+  bool _useNativeWebVideo = false;
 
   @override
   void initState() {
     super.initState();
-    // Defer video so first frame (still image + copy) always paints.
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _boot());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    final c = _controller;
+    _controller = null;
+    c?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _ensurePlaying();
+    }
   }
 
   Future<void> _boot() async {
     if (!mounted || _failed) return;
+
+    // Mobile browsers (esp. iOS Safari) are more reliable with a native
+    // HTML <video playsinline muted autoplay> than video_player's canvas path.
+    if (kIsWeb && WelcomeNativeWebVideo.isSupported) {
+      setState(() => _useNativeWebVideo = true);
+      return;
+    }
+
     VideoPlayerController? controller;
     try {
       controller = VideoPlayerController.asset(kWelcomeVideoAsset);
-      await controller.initialize().timeout(const Duration(seconds: 12));
+      await controller.setVolume(0);
+      await controller.initialize().timeout(const Duration(seconds: 20));
       if (!mounted) {
         await controller.dispose();
         return;
       }
       await controller.setLooping(true);
       await controller.setVolume(0);
-      // Autoplay can fail on web without a gesture — keep still frame if so.
       try {
         await controller.play();
-      } catch (_) {
-        /* still show first decoded frame if any */
-      }
+      } catch (_) {}
       if (!mounted) {
         await controller.dispose();
         return;
@@ -56,6 +83,7 @@ class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop> {
         _controller = controller;
         _ready = true;
       });
+      Future<void>.delayed(const Duration(milliseconds: 400), _ensurePlaying);
     } catch (_) {
       try {
         await controller?.dispose();
@@ -70,18 +98,20 @@ class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop> {
     }
   }
 
-  @override
-  void dispose() {
+  Future<void> _ensurePlaying() async {
     final c = _controller;
-    _controller = null;
-    c?.dispose();
-    super.dispose();
+    if (c == null || !c.value.isInitialized) return;
+    try {
+      await c.setVolume(0);
+      if (!c.value.isPlaying) await c.play();
+    } catch (_) {}
   }
 
   @override
   Widget build(BuildContext context) {
     final controller = _controller;
-    final showVideo = _ready &&
+    final showVideo = !_useNativeWebVideo &&
+        _ready &&
         !_failed &&
         controller != null &&
         controller.value.isInitialized &&
@@ -92,6 +122,7 @@ class _WelcomeVideoBackdropState extends State<WelcomeVideoBackdrop> {
       fit: StackFit.expand,
       children: [
         const _StillFrame(),
+        if (_useNativeWebVideo) const WelcomeNativeWebVideo(),
         if (showVideo)
           ColoredBox(
             color: kSplashScaffoldColor,
