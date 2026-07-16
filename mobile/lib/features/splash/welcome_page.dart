@@ -105,10 +105,13 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    width: 18,
-                    height: 1.5,
-                    color: _gold.withValues(alpha: 0.95),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: 12,
+                      height: 1.5,
+                      color: _gold.withValues(alpha: 0.95),
+                    ),
                   ),
                   // Open middle — leave the video subject unobstructed.
                   const Spacer(),
