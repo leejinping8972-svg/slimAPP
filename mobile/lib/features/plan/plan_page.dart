@@ -86,6 +86,19 @@ class _PlanPageState extends ConsumerState<PlanPage> {
     required UserProfile profile,
     required JourneyState journey,
   }) {
+    if (profile.isAwaitingReceipt) {
+      return _AwaitingReceiptView(
+        productName: profile.linkedProductName,
+        onConfirmReceipt: () {
+          ref.read(appStateProvider.notifier).confirmReceipt();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Plan started — welcome to Day 1!')),
+          );
+        },
+        onViewOverview: () => context.push('/plan/intro'),
+      );
+    }
+
     return switch (profile.userPlanType) {
       UserPlanType.mealReplacement => _MealPlanInProgress(
           journey: journey,
@@ -96,8 +109,9 @@ class _PlanPageState extends ConsumerState<PlanPage> {
       UserPlanType.noProduct => _PurchaseGuideView(
           hideCard: profile.hidePurchaseGuideCard,
           onBrowse: () => context.go('/mall'),
-          onViewPlan: () =>
+          onBuyProduct: () =>
               context.push('/collection/product/solar_protein'),
+          onProvideOrder: () => context.push('/link-order'),
           onDismiss: () =>
               ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
         ),
@@ -1016,17 +1030,74 @@ class _MyPlansView extends StatelessWidget {
   }
 }
 
+class _AwaitingReceiptView extends StatelessWidget {
+  const _AwaitingReceiptView({
+    required this.productName,
+    required this.onConfirmReceipt,
+    required this.onViewOverview,
+  });
+
+  final String productName;
+  final VoidCallback onConfirmReceipt;
+  final VoidCallback onViewOverview;
+
+  @override
+  Widget build(BuildContext context) {
+    final label =
+        productName.isEmpty ? 'Solar Protein™' : productName;
+
+    return ListView(
+      padding: const EdgeInsets.all(LuckdateSpacing.lg),
+      children: [
+        Text('Waiting for delivery', style: LuckdateTextStyles.h1),
+        const SizedBox(height: LuckdateSpacing.sm),
+        Text(
+          'You purchased $label. Confirm receipt once your package arrives to unlock your 28-day Slim Journey.',
+          style: LuckdateTextStyles.body,
+        ),
+        const SizedBox(height: LuckdateSpacing.xl),
+        LdCard(
+          accentColor: LuckdateColors.sunGold,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Confirm receipt to start', style: LuckdateTextStyles.title),
+              const SizedBox(height: LuckdateSpacing.sm),
+              Text(
+                'Day 1 rituals, milestones, and Sunny support unlock after you confirm delivery.',
+                style: LuckdateTextStyles.bodySmall,
+              ),
+              const SizedBox(height: LuckdateSpacing.lg),
+              LdPrimaryButton(
+                label: 'Confirm Receipt & Start Plan',
+                onPressed: onConfirmReceipt,
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              LdSecondaryButton(
+                label: 'View Plan Overview',
+                onPressed: onViewOverview,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _PurchaseGuideView extends StatelessWidget {
   const _PurchaseGuideView({
     required this.hideCard,
     required this.onBrowse,
-    required this.onViewPlan,
+    required this.onBuyProduct,
+    required this.onProvideOrder,
     required this.onDismiss,
   });
 
   final bool hideCard;
   final VoidCallback onBrowse;
-  final VoidCallback onViewPlan;
+  final VoidCallback onBuyProduct;
+  final VoidCallback onProvideOrder;
   final VoidCallback onDismiss;
 
   @override
@@ -1058,8 +1129,13 @@ class _PurchaseGuideView extends StatelessWidget {
                 ),
                 const SizedBox(height: LuckdateSpacing.lg),
                 LdPrimaryButton(
-                  label: 'View 28-Day Plan',
-                  onPressed: onViewPlan,
+                  label: 'Buy Product',
+                  onPressed: onBuyProduct,
+                ),
+                const SizedBox(height: LuckdateSpacing.sm),
+                LdSecondaryButton(
+                  label: 'Provide Order Number',
+                  onPressed: onProvideOrder,
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Row(
@@ -1080,7 +1156,12 @@ class _PurchaseGuideView extends StatelessWidget {
             ),
           ),
         const SizedBox(height: LuckdateSpacing.lg),
-        LdPrimaryButton(label: 'Browse Mall', onPressed: onBrowse),
+        LdPrimaryButton(label: 'Buy Product', onPressed: onBuyProduct),
+        const SizedBox(height: LuckdateSpacing.sm),
+        LdSecondaryButton(
+          label: 'Provide Order Number',
+          onPressed: onProvideOrder,
+        ),
       ],
     );
   }

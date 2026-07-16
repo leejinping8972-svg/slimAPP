@@ -106,7 +106,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                   ),
                   const SizedBox(height: 8),
                   Container(
-                    width: 28,
+                    width: 18,
                     height: 1.5,
                     color: _gold.withValues(alpha: 0.95),
                   ),

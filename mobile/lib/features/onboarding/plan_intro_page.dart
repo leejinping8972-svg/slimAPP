@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class PlanIntroPage extends ConsumerWidget {
@@ -10,6 +11,9 @@ class PlanIntroPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(appStateProvider).profile;
+    final awaitingReceipt = profile.isAwaitingReceipt;
+
     return LdScaffold(
       showBack: true,
       body: SingleChildScrollView(
@@ -48,13 +52,34 @@ class PlanIntroPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
-            LdPrimaryButton(
-              label: 'Start my plan',
-              onPressed: () {
-                ref.read(appStateProvider.notifier).activateSlimJourney();
-                context.go('/ritual');
-              },
-            ),
+            if (awaitingReceipt) ...[
+              LdCard(
+                accentColor: LuckdateColors.sunGold,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Confirm receipt to start', style: LuckdateTextStyles.title),
+                    const SizedBox(height: LuckdateSpacing.sm),
+                    Text(
+                      'Your Solar Protein order is on the way. Once you receive the package, confirm receipt here to unlock Day 1 of your 28-day plan.',
+                      style: LuckdateTextStyles.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.lg),
+              LdPrimaryButton(
+                label: 'Confirm Receipt & Start Plan',
+                onPressed: () {
+                  ref.read(appStateProvider.notifier).confirmReceipt();
+                  context.go('/ritual');
+                },
+              ),
+            ] else
+              LdPrimaryButton(
+                label: 'Go to Ritual',
+                onPressed: () => context.go('/ritual'),
+              ),
           ],
         ),
       ),

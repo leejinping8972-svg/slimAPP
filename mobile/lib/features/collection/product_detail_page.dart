@@ -79,8 +79,11 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
           int.parse(product.colorHex.replaceFirst('#', '0xFF')),
         );
         final isSolarProtein = product.id == 'solar_protein';
-        final showPurchaseFlow =
-            profile.userPlanType == UserPlanType.noProduct && isSolarProtein;
+        final showPurchaseFlow = profile.userPlanType == UserPlanType.noProduct &&
+            !profile.isAwaitingReceipt &&
+            isSolarProtein;
+        final showReceiptFlow =
+            profile.isAwaitingReceipt && isSolarProtein;
         final coupon = profile.welcomeCoupon;
 
         return Scaffold(
@@ -251,6 +254,10 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                       _handlePurchase();
                       return;
                     }
+                    if (showReceiptFlow) {
+                      context.push('/plan/intro');
+                      return;
+                    }
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Order flow — demo placeholder'),
@@ -273,7 +280,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
       builder: (ctx) => AlertDialog(
         title: const Text('Purchase successful'),
         content: const Text(
-          'Solar Protein is ready. Next, see your 28-day Slim Journey overview.',
+          'Purchase successful. Confirm receipt when your package arrives to start your 28-day Slim Journey.',
         ),
         actions: [
           TextButton(

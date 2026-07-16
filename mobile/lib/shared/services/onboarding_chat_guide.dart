@@ -307,7 +307,7 @@ class OnboardingChatGuide {
           onboardingComplete: true,
           isNewRegistration: false,
           sunnyIntroSeen: true,
-          membershipPlan: profile.userPlanType == UserPlanType.mealReplacement
+          membershipPlan: profile.hasActiveSlimPlan
               ? 'Solar Protein 28-Day'
               : profile.membershipPlan,
         );

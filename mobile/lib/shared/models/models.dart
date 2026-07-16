@@ -8,6 +8,12 @@ enum UserPlanType { mealReplacement, nonMealReplacement, noProduct }
 
 enum OrderLinkStatus { notStarted, linked, failed, skipped }
 
+/// How the user obtained their Solar Protein product.
+enum ProductAcquisitionSource { none, orderLinked, inAppPurchase }
+
+/// Whether the 28-day Slim Journey has started.
+enum SlimPlanStatus { notStarted, awaitingReceipt, active }
+
 class UserCoupon {
   const UserCoupon({
     required this.amount,
@@ -49,6 +55,8 @@ class UserProfile {
     this.linkedOrderNo = '',
     this.linkedProductName = '',
     this.orderLinkStatus = OrderLinkStatus.notStarted,
+    this.productSource = ProductAcquisitionSource.none,
+    this.slimPlanStatus = SlimPlanStatus.notStarted,
     this.userPlanType = UserPlanType.noProduct,
     this.hidePurchaseGuideCard = false,
     this.journeyCompleteSeen = false,
@@ -83,6 +91,8 @@ class UserProfile {
   final String linkedOrderNo;
   final String linkedProductName;
   final OrderLinkStatus orderLinkStatus;
+  final ProductAcquisitionSource productSource;
+  final SlimPlanStatus slimPlanStatus;
   final UserPlanType userPlanType;
   final bool hidePurchaseGuideCard;
   final bool journeyCompleteSeen;
@@ -118,6 +128,8 @@ class UserProfile {
     String? linkedOrderNo,
     String? linkedProductName,
     OrderLinkStatus? orderLinkStatus,
+    ProductAcquisitionSource? productSource,
+    SlimPlanStatus? slimPlanStatus,
     UserPlanType? userPlanType,
     bool? hidePurchaseGuideCard,
     bool? journeyCompleteSeen,
@@ -152,6 +164,8 @@ class UserProfile {
       linkedOrderNo: linkedOrderNo ?? this.linkedOrderNo,
       linkedProductName: linkedProductName ?? this.linkedProductName,
       orderLinkStatus: orderLinkStatus ?? this.orderLinkStatus,
+      productSource: productSource ?? this.productSource,
+      slimPlanStatus: slimPlanStatus ?? this.slimPlanStatus,
       userPlanType: userPlanType ?? this.userPlanType,
       hidePurchaseGuideCard: hidePurchaseGuideCard ?? this.hidePurchaseGuideCard,
       journeyCompleteSeen: journeyCompleteSeen ?? this.journeyCompleteSeen,
@@ -163,6 +177,14 @@ class UserProfile {
       membershipExpires: membershipExpires ?? this.membershipExpires,
     );
   }
+}
+
+extension UserProfilePlanX on UserProfile {
+  bool get isAwaitingReceipt => slimPlanStatus == SlimPlanStatus.awaitingReceipt;
+
+  bool get hasActiveSlimPlan =>
+      slimPlanStatus == SlimPlanStatus.active &&
+      userPlanType == UserPlanType.mealReplacement;
 }
 
 class MealLogEntry {

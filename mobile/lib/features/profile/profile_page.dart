@@ -142,6 +142,41 @@ class ProfilePage extends ConsumerWidget {
               profile.membershipExpires,
             ),
             const SizedBox(height: LuckdateSpacing.lg),
+            if (profile.isAwaitingReceipt) ...[
+              _sectionTitle('Pending Delivery'),
+              LdCard(
+                accentColor: LuckdateColors.sunGold,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      profile.linkedProductName.isEmpty
+                          ? 'Solar Protein™'
+                          : profile.linkedProductName,
+                      style: LuckdateTextStyles.title,
+                    ),
+                    const SizedBox(height: LuckdateSpacing.sm),
+                    Text(
+                      'Confirm receipt to start your 28-day Slim Journey.',
+                      style: LuckdateTextStyles.bodySmall,
+                    ),
+                    const SizedBox(height: LuckdateSpacing.md),
+                    LdPrimaryButton(
+                      label: 'Confirm Receipt',
+                      onPressed: () {
+                        ref.read(appStateProvider.notifier).confirmReceipt();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Plan started — welcome to Day 1!'),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.lg),
+            ],
             if (profile.userPlanType == UserPlanType.mealReplacement) ...[
               _sectionTitle('My Journey'),
               _tile(

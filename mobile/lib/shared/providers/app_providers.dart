@@ -109,6 +109,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
         couponRewardSeen: true,
         sunnyIntroSeen: true,
         orderLinkStatus: OrderLinkStatus.linked,
+        productSource: ProductAcquisitionSource.orderLinked,
+        slimPlanStatus: SlimPlanStatus.active,
         userPlanType: UserPlanType.mealReplacement,
         linkedOrderNo: 'LD-DEMO-001',
         linkedProductName: 'Solar Protein 28-Day',
@@ -156,20 +158,38 @@ class AppStateNotifier extends StateNotifier<AppState> {
       orderNo: orderNo,
       phoneLast4: phoneLast4,
     );
+    if (!result.success) {
+      state = state.copyWith(
+        profile: state.profile.copyWith(
+          linkedOrderNo: '',
+          linkedProductName: result.productName,
+          orderLinkStatus: OrderLinkStatus.failed,
+        ),
+      );
+      return result;
+    }
+
     final planType = _orderService.planTypeFor(result);
-    state = state.copyWith(
-      profile: state.profile.copyWith(
-        linkedOrderNo: result.success ? orderNo.trim() : '',
-        linkedProductName: result.productName,
-        orderLinkStatus: result.success
-            ? OrderLinkStatus.linked
-            : OrderLinkStatus.failed,
-        userPlanType: planType,
-        membershipPlan: result.success
-            ? result.productName
-            : state.profile.membershipPlan,
-      ),
+    var profile = state.profile.copyWith(
+      linkedOrderNo: orderNo.trim(),
+      linkedProductName: result.productName,
+      orderLinkStatus: OrderLinkStatus.linked,
+      productSource: ProductAcquisitionSource.orderLinked,
+      membershipPlan: result.productName,
+      userPlanType: planType,
+      slimPlanStatus: planType == UserPlanType.mealReplacement
+          ? SlimPlanStatus.active
+          : SlimPlanStatus.notStarted,
     );
+
+    if (planType == UserPlanType.mealReplacement) {
+      _applySlimJourneyActivation(
+        profile: profile,
+        refreshChat: profile.onboardingComplete,
+      );
+    } else {
+      state = state.copyWith(profile: profile);
+    }
     return result;
   }
 
@@ -178,6 +198,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
       profile: state.profile.copyWith(
         orderLinkStatus: OrderLinkStatus.skipped,
         userPlanType: UserPlanType.noProduct,
+        slimPlanStatus: SlimPlanStatus.notStarted,
+        productSource: ProductAcquisitionSource.none,
       ),
     );
   }
@@ -186,35 +208,56 @@ class AppStateNotifier extends StateNotifier<AppState> {
     state = state.copyWith(
       profile: state.profile.copyWith(
         linkedProductName: 'Solar Protein™',
+        linkedOrderNo: 'PURCHASE-PENDING',
         membershipPlan: 'Solar Protein 28-Day',
+        orderLinkStatus: OrderLinkStatus.linked,
+        productSource: ProductAcquisitionSource.inAppPurchase,
+        slimPlanStatus: SlimPlanStatus.awaitingReceipt,
+        userPlanType: UserPlanType.noProduct,
       ),
     );
   }
 
+  void confirmReceipt() {
+    if (state.profile.slimPlanStatus != SlimPlanStatus.awaitingReceipt) return;
+    _applySlimJourneyActivation(
+      profile: state.profile.copyWith(
+        linkedProductName: 'Solar Protein™',
+        linkedOrderNo: state.profile.linkedOrderNo.isEmpty
+            ? 'PURCHASE-DEMO'
+            : state.profile.linkedOrderNo,
+      ),
+      refreshChat: state.profile.onboardingComplete,
+    );
+  }
+
   void activateSlimJourney() {
-    final profile = state.profile.copyWith(
+    confirmReceipt();
+  }
+
+  void _applySlimJourneyActivation({
+    required UserProfile profile,
+    bool refreshChat = false,
+  }) {
+    final activated = profile.copyWith(
       userPlanType: UserPlanType.mealReplacement,
+      slimPlanStatus: SlimPlanStatus.active,
       hidePurchaseGuideCard: true,
-      linkedOrderNo: state.profile.linkedOrderNo.isEmpty
-          ? 'PURCHASE-DEMO'
-          : state.profile.linkedOrderNo,
-      orderLinkStatus: OrderLinkStatus.linked,
-      linkedProductName: 'Solar Protein™',
-      membershipPlan: 'Solar Protein 28-Day',
-      onboardingComplete: true,
       isLoggedIn: true,
     );
     final journey = _repo.journeyForDay(DemoDay.day1);
     state = state.copyWith(
-      profile: profile,
+      profile: activated,
       demoDay: DemoDay.day1,
       journey: journey,
-      chatMessages: _repo.initialChatMessages(
-        1,
-        planType: UserPlanType.mealReplacement,
-        hasWelcomeCoupon: profile.welcomeCoupon != null,
-        linkedProductName: profile.linkedProductName,
-      ),
+      chatMessages: refreshChat
+          ? _repo.initialChatMessages(
+              1,
+              planType: UserPlanType.mealReplacement,
+              hasWelcomeCoupon: activated.welcomeCoupon != null,
+              linkedProductName: activated.linkedProductName,
+            )
+          : state.chatMessages,
     );
   }
 
@@ -299,7 +342,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   void completeOnboarding(UserProfile profile, {bool preserveChat = false}) {
-    final journey = profile.userPlanType == UserPlanType.mealReplacement
+    final journey = profile.hasActiveSlimPlan
         ? _repo.journeyForDay(DemoDay.day1)
         : _buildBasicJourney(profile);
     state = state.copyWith(
@@ -442,7 +485,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
       suggestions: result.suggestions,
       actionLabels: result.actionLabels,
     );
-    if (result.intents.contains('onboarding_complete')) {
+    if (result.intents.contains('onboarding_complete') &&
+        state.profile.hasActiveSlimPlan) {
       final follow = ChatMessage(
         id: '${placeholder.id}_day1',
         isUser: false,
