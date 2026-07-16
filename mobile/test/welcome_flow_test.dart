@@ -38,9 +38,10 @@ void main() {
     expect(find.textContaining('Feel Alive'), findsOneWidget);
     expect(router.state.uri.path, '/');
 
-    await tester.tap(find.text('Log in'));
+    await tester.tap(find.text('Start My Journey'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('Sign In'), findsOneWidget);
+    expect(find.text('Meet Sunny'), findsOneWidget);
+    expect(router.state.uri.path, '/sunny/intro');
   });
 }

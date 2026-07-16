@@ -1,23 +1,66 @@
 import '../models/models.dart';
 
-/// Guides new users through onboarding questions inside Sunny chat.
+/// Guides new users through core questions inside Sunny chat (after fixed opening).
 class OnboardingChatGuide {
-  static const welcomeText =
-      'Welcome to luckdate! I\'m Sunny — your vitality companion.\n\n'
-      'I\'ll gather a few details through a short chat, so we can personalize '
-      'your journey.\n\n'
-      'First: do you agree to our privacy policy and health disclaimer?\n'
+  static const privacyPrompt =
+      'Before we personalize your journey, please confirm:\n\n'
+      'Do you agree to our privacy policy and health disclaimer?\n'
       'Reply "I agree" to continue.';
 
   static List<ChatMessage> seedMessages() {
     return [
       ChatMessage(
-        id: 'onboard_welcome',
+        id: 'onboard_privacy',
         isUser: false,
-        text: welcomeText,
+        text: privacyPrompt,
         timestamp: DateTime.now(),
       ),
     ];
+  }
+
+  static List<ChatSuggestionItem> planCardItems(UserProfile profile) {
+    final product = profile.linkedProductName.isNotEmpty
+        ? profile.linkedProductName
+        : 'Solar Protein 28-Day';
+    return [
+      ChatSuggestionItem(
+        emoji: '🌱',
+        title: 'Days 1–7 · Launch',
+        subtitle: 'Build your daily ritual with $product',
+      ),
+      const ChatSuggestionItem(
+        emoji: '🌿',
+        title: 'Days 8–14 · Adaptation',
+        subtitle: 'Track hydration, weight, and meal rhythm',
+      ),
+      const ChatSuggestionItem(
+        emoji: '✨',
+        title: 'Days 15–21 · Stability',
+        subtitle: 'Optimize meals, sleep, and movement',
+      ),
+      const ChatSuggestionItem(
+        emoji: '🏁',
+        title: 'Days 22–28 · Completion',
+        subtitle: 'Celebrate progress and plan your next chapter',
+      ),
+    ];
+  }
+
+  static String planBasisExplanation(UserProfile profile) {
+    final productLine = profile.linkedProductName.isNotEmpty
+        ? 'Linked product: ${profile.linkedProductName}.'
+        : 'No product linked yet — plan starts in explore mode.';
+    return 'Your 28-Day Slim Journey is ready.\n\n'
+        'How this plan was shaped:\n'
+        '• Age range: ${profile.ageRange}\n'
+        '• Body profile: ${profile.heightCm.toStringAsFixed(0)} cm · '
+        '${profile.currentWeightKg.toStringAsFixed(1)} → '
+        '${profile.targetWeightKg.toStringAsFixed(0)} kg\n'
+        '• Meal focus: ${profile.mealSlot}\n'
+        '• Morning reminder: ${profile.reminderTime}\n'
+        '• $productLine\n\n'
+        'We combine your profile, product cycle, and gentle habit science — '
+        'not perfection, but a rhythm you can grow with.';
   }
 
   static ({SunnyIntentResult result, UserProfile profile}) handle({
@@ -227,21 +270,17 @@ class OnboardingChatGuide {
           onboardingComplete: true,
           isNewRegistration: false,
           sunnyIntroSeen: true,
+          membershipPlan: profile.userPlanType == UserPlanType.mealReplacement
+              ? 'Solar Protein 28-Day'
+              : profile.membershipPlan,
         );
         return (
           profile: done,
           result: SunnyIntentResult(
-            reply:
-                'Perfect. Your profile is ready:\n'
-                '• Age ${done.ageRange}\n'
-                '• ${done.heightCm.toStringAsFixed(0)} cm · '
-                '${done.currentWeightKg.toStringAsFixed(1)} → '
-                '${done.targetWeightKg.toStringAsFixed(0)} kg\n'
-                '• Meal focus: ${done.mealSlot}\n'
-                '• Reminder: ${done.reminderTime}\n\n'
-                'You can open Ritual anytime to track vitality, or keep '
-                'chatting with me about meals, water, sleep, and movement.',
-            intents: const ['onboarding_complete'],
+            reply: planBasisExplanation(done),
+            intents: const ['onboarding_complete', 'plan_generated'],
+            suggestions: planCardItems(done),
+            actionLabels: const ['Enter Day 1', 'View My Plan'],
           ),
         );
 
@@ -249,7 +288,7 @@ class OnboardingChatGuide {
         return (
           profile: profile.copyWith(onboardingStep: 'privacy'),
           result: const SunnyIntentResult(
-            reply: welcomeText,
+            reply: privacyPrompt,
             intents: ['onboarding_restart'],
           ),
         );

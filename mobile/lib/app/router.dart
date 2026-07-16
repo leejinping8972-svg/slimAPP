@@ -18,6 +18,7 @@ import '../../features/ritual/ritual_page.dart';
 import '../../features/journey/journey_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../../features/splash/welcome_page.dart';
+import '../../features/splash/sunny_intro_page.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../core/widgets/ld_shell.dart';
 
@@ -50,15 +51,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         if (path == '/login' ||
             path == '/register' ||
             path == '/welcome' ||
+            path == '/sunny/intro' ||
             path == '/register-success' ||
             path == '/link-order') {
           return '/';
         }
       }
 
+      // Guests must finish fixed Sunny opening before register.
+      if (!profile.isLoggedIn &&
+          app.launchGuideSeen &&
+          !app.sunnyOpeningSeen &&
+          path == '/register') {
+        return '/sunny/intro';
+      }
+
       final isPublicAuth =
           path == '/' ||
           path == '/welcome' ||
+          path == '/sunny/intro' ||
           path == '/login' ||
           path == '/register' ||
           path == '/register-success' ||
@@ -79,6 +90,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             (path == '/register-success' || path == '/link-order')) {
           return profile.onboardingComplete ? '/ritual' : '/home';
         }
+        // New registration still linking product — allow link-order.
+        if (profile.isNewRegistration &&
+            profile.onboardingComplete &&
+            path == '/link-order') {
+          return '/home';
+        }
         if (profile.onboardingComplete &&
             (path == '/onboarding' ||
                 path == '/register-success' ||
@@ -94,6 +111,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/', builder: (_, __) => const SplashPage()),
       GoRoute(path: '/welcome', builder: (_, __) => const WelcomePage()),
+      GoRoute(path: '/sunny/intro', builder: (_, __) => const SunnyIntroPage()),
       GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterPage()),
       GoRoute(

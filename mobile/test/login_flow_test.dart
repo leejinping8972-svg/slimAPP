@@ -31,8 +31,9 @@ void main() {
       ),
     );
     await tester.pump();
-    // Simulate having left the launch guide.
+    // Simulate having left the launch guide and Sunny opening.
     widgetRef.read(appStateProvider.notifier).markLaunchGuideSeen();
+    widgetRef.read(appStateProvider.notifier).markSunnyOpeningSeen();
     router.go('/login');
     await pumpFrames(tester);
     return router;
@@ -60,12 +61,22 @@ void main() {
     expect(find.text('Check-in Record'), findsOneWidget);
   });
 
-  testWidgets('Register opens Sunny onboarding chat', (tester) async {
+  testWidgets('Register goes to link order then Sunny questions', (tester) async {
     final router = await pumpApp(tester);
     router.go('/register');
     await pumpFrames(tester);
 
     await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
+    await pumpFrames(tester, 12);
+
+    expect(find.text('Link your order'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Skip for now'),
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Skip for now'));
     await pumpFrames(tester, 12);
 
     expect(find.textContaining('privacy policy'), findsOneWidget);

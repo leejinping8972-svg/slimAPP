@@ -27,7 +27,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   void _submit() {
     ref.read(appStateProvider.notifier).completeRegistration();
-    context.go('/home');
+    context.go('/link-order');
   }
 
   @override
@@ -50,7 +50,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             'Begin your premium ritual\nwith luckdate today.',
                         tagline: 'Grow Toward the Light',
                         showBack: true,
-                        onBack: () => context.go('/login'),
+                        onBack: () => context.go('/sunny/intro'),
                       ),
                       Transform.translate(
                         offset: const Offset(0, -28),
@@ -182,6 +182,11 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     super.dispose();
   }
 
+  void _goToSunnyQuestions() {
+    ref.read(appStateProvider.notifier).beginOnboardingChat();
+    context.go('/home');
+  }
+
   void _link() {
     final result = ref
         .read(appStateProvider.notifier)
@@ -203,7 +208,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     if (onboarded) {
       context.pop();
     } else {
-      context.go('/onboarding');
+      _goToSunnyQuestions();
     }
   }
 
@@ -213,7 +218,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     if (onboarded) {
       context.pop();
     } else {
-      context.go('/onboarding');
+      _goToSunnyQuestions();
     }
   }
 
@@ -246,7 +251,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     if (onboarded) {
       context.pop();
     } else {
-      context.go('/onboarding');
+      _goToSunnyQuestions();
     }
   }
 
@@ -256,7 +261,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
 
     return LdScaffold(
       showBack: true,
-      onBack: () => context.go('/login'),
+      onBack: () => context.go('/register'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(

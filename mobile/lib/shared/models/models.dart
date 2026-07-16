@@ -463,6 +463,8 @@ class SunnyIntentResult {
     this.riskLevel = RiskLevel.p2,
     this.disableActions = false,
     this.todayUpdates,
+    this.suggestions,
+    this.actionLabels,
   });
 
   final String reply;
@@ -470,4 +472,6 @@ class SunnyIntentResult {
   final RiskLevel riskLevel;
   final bool disableActions;
   final TodayRecord? todayUpdates;
+  final List<ChatSuggestionItem>? suggestions;
+  final List<String>? actionLabels;
 }

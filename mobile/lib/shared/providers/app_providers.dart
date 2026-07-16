@@ -27,6 +27,7 @@ class AppState {
     required this.showLoading,
     required this.showError,
     this.launchGuideSeen = false,
+    this.sunnyOpeningSeen = false,
   });
 
   final UserProfile profile;
@@ -37,6 +38,8 @@ class AppState {
   final bool showError;
   /// Session flag: guest must finish launch guide before /login or /register.
   final bool launchGuideSeen;
+  /// Session flag: guest must finish fixed Sunny opening before /register.
+  final bool sunnyOpeningSeen;
 
   AppState copyWith({
     UserProfile? profile,
@@ -46,6 +49,7 @@ class AppState {
     bool? showLoading,
     bool? showError,
     bool? launchGuideSeen,
+    bool? sunnyOpeningSeen,
   }) {
     return AppState(
       profile: profile ?? this.profile,
@@ -55,6 +59,7 @@ class AppState {
       showLoading: showLoading ?? this.showLoading,
       showError: showError ?? this.showError,
       launchGuideSeen: launchGuideSeen ?? this.launchGuideSeen,
+      sunnyOpeningSeen: sunnyOpeningSeen ?? this.sunnyOpeningSeen,
     );
   }
 }
@@ -90,6 +95,11 @@ class AppStateNotifier extends StateNotifier<AppState> {
     state = state.copyWith(launchGuideSeen: true);
   }
 
+  void markSunnyOpeningSeen() {
+    if (state.sunnyOpeningSeen) return;
+    state = state.copyWith(sunnyOpeningSeen: true);
+  }
+
   void loginExistingUser() {
     state = state.copyWith(
       profile: state.profile.copyWith(
@@ -114,14 +124,21 @@ class AppStateNotifier extends StateNotifier<AppState> {
       orderLinkStatus: OrderLinkStatus.skipped,
       userPlanType: UserPlanType.noProduct,
       onboardingComplete: false,
-      onboardingStep: 'privacy',
+      onboardingStep: '',
       sunnyIntroSeen: true,
       welcomeCoupon: _issueWelcomeCoupon(),
     );
     state = state.copyWith(
       profile: profile,
-      chatMessages: OnboardingChatGuide.seedMessages(),
+      chatMessages: const [],
       journey: _buildBasicJourney(profile),
+    );
+  }
+
+  void beginOnboardingChat() {
+    state = state.copyWith(
+      chatMessages: OnboardingChatGuide.seedMessages(),
+      profile: state.profile.copyWith(onboardingStep: 'privacy'),
     );
   }
 
@@ -419,7 +436,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
       }
     }
 
-    await _streamReply(placeholder.id, result.reply);
+    await _streamReply(
+      placeholder.id,
+      result.reply,
+      suggestions: result.suggestions,
+      actionLabels: result.actionLabels,
+    );
   }
 
   Future<void> sendQuickAction(String action) async {
@@ -439,7 +461,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
     }
   }
 
-  Future<void> _streamReply(String id, String fullText) async {
+  Future<void> _streamReply(
+    String id,
+    String fullText, {
+    List<ChatSuggestionItem>? suggestions,
+    List<String>? actionLabels,
+  }) async {
     var current = '';
     for (var i = 0; i < fullText.length; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 18));
@@ -449,6 +476,18 @@ class AppStateNotifier extends StateNotifier<AppState> {
           return m.copyWith(
             text: current,
             isStreaming: i < fullText.length - 1,
+          );
+        }
+        return m;
+      }).toList();
+      state = state.copyWith(chatMessages: updated);
+    }
+    if (suggestions != null || actionLabels != null) {
+      final updated = state.chatMessages.map((m) {
+        if (m.id == id) {
+          return m.copyWith(
+            suggestions: suggestions,
+            actionLabels: actionLabels,
           );
         }
         return m;
