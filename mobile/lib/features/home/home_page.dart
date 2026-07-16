@@ -98,8 +98,17 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _onActionTap(String label) {
     if (label == 'View Detailed Plan' || label == 'View My Plan') {
       context.push('/plan');
-    } else if (label == 'Set Sleep Goal' || label == 'Enter Day 1') {
+    } else if (label == 'Set Sleep Goal' ||
+        label == 'Enter Day 1' ||
+        label == 'Start Day 1 Ritual' ||
+        label == 'Go to Ritual') {
       context.go('/ritual');
+    } else if (label == 'Log Water') {
+      ref.read(appStateProvider.notifier).sendQuickAction('water');
+    } else if (label == 'Log Meal') {
+      ref.read(appStateProvider.notifier).sendQuickAction('meal');
+    } else if (label == 'Log Sleep') {
+      ref.read(appStateProvider.notifier).sendQuickAction('sleep');
     }
   }
 

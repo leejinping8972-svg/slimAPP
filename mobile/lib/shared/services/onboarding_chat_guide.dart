@@ -63,6 +63,43 @@ class OnboardingChatGuide {
         'not perfection, but a rhythm you can grow with.';
   }
 
+  static String day1RitualGuide(UserProfile profile) {
+    final morning = profile.reminderTime;
+    final meal = profile.mealSlot;
+    return 'Great — let us complete Day 1 together.\n\n'
+        'Day 1 Ritual guide:\n'
+        '• Morning check-in at $morning\n'
+        '• Follow your $meal focus meal rhythm\n'
+        '• Drink at least 2 cups of water\n'
+        '• Wind down before sleep\n\n'
+        'Tap an action below and I will guide you step by step.';
+  }
+
+  static List<ChatSuggestionItem> day1RitualItems(UserProfile profile) {
+    return [
+      ChatSuggestionItem(
+        emoji: '✅',
+        title: 'Morning check-in',
+        subtitle: 'Confirm your Day 1 start and current status',
+      ),
+      ChatSuggestionItem(
+        emoji: '💧',
+        title: 'Hydration goal',
+        subtitle: 'Complete 2 cups today and keep your rhythm',
+      ),
+      ChatSuggestionItem(
+        emoji: '🥗',
+        title: 'Meal ritual',
+        subtitle: 'Follow your ${profile.mealSlot} support focus',
+      ),
+      const ChatSuggestionItem(
+        emoji: '🌙',
+        title: 'Sleep wind-down',
+        subtitle: 'Close Day 1 with a calm evening routine',
+      ),
+    ];
+  }
+
   static ({SunnyIntentResult result, UserProfile profile}) handle({
     required String input,
     required UserProfile profile,
@@ -280,7 +317,7 @@ class OnboardingChatGuide {
             reply: planBasisExplanation(done),
             intents: const ['onboarding_complete', 'plan_generated'],
             suggestions: planCardItems(done),
-            actionLabels: const ['Enter Day 1', 'View My Plan'],
+            actionLabels: const ['Start Day 1 Ritual', 'View My Plan'],
           ),
         );
 
