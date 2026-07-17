@@ -9,12 +9,14 @@ class SplashBackdrop extends StatelessWidget {
   const SplashBackdrop({
     super.key,
     this.assetPath = kWelcomeImageAsset,
+    this.alignment = Alignment.center,
     this.animated = false,
     this.lightAnimation,
     this.liquidAnimation,
   });
 
   final String assetPath;
+  final Alignment alignment;
   final bool animated;
   final Animation<double>? lightAnimation;
   final Animation<double>? liquidAnimation;
@@ -27,7 +29,7 @@ class SplashBackdrop extends StatelessWidget {
         Image.asset(
           assetPath,
           fit: BoxFit.cover,
-          alignment: Alignment.center,
+          alignment: alignment,
           gaplessPlayback: true,
           filterQuality: FilterQuality.medium,
           errorBuilder: (_, __, ___) => const _WarmFallback(),
