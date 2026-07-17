@@ -64,9 +64,11 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
+    final h = MediaQuery.sizeOf(context).height;
     // Left copy column — never wider than the clear wall zone.
     final copyWidth = (w * 0.52).clamp(188.0, 220.0);
     const cardWidth = 154.0;
+    final topInset = (h * 0.085).clamp(48.0, 72.0);
 
     return Scaffold(
       backgroundColor: kSplashScaffoldColor,
@@ -83,6 +85,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: topInset),
                   SizedBox(
                     width: copyWidth,
                     child: const _WelcomeBrand(),
@@ -241,9 +244,14 @@ class _WelcomeBrand extends StatelessWidget {
         const Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BrandAssetImage(kBrandLogoAsset, height: 24),
-            SizedBox(width: 6),
-            BrandAssetImage(kSuperSymbolAsset, height: 24, width: 24),
+            BrandAssetImage(kBrandLogoAsset, height: 32),
+            SizedBox(width: 8),
+            BrandAssetImage(
+              kSuperSymbolAsset,
+              height: 34,
+              width: 34,
+              knockoutBackground: false,
+            ),
           ],
         ),
         const SizedBox(height: 6),
@@ -285,7 +293,12 @@ class _RitualGlassCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          BrandAssetImage(kSuperSymbolAsset, height: 22, width: 22),
+          BrandAssetImage(
+            kSuperSymbolAsset,
+            height: 28,
+            width: 28,
+            knockoutBackground: false,
+          ),
           SizedBox(height: 10),
           _RitualCopy(),
         ],

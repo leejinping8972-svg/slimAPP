@@ -19,11 +19,14 @@ class BrandAssetImage extends StatelessWidget {
     super.key,
     this.height,
     this.width,
+    this.knockoutBackground = true,
   });
 
   final String asset;
   final double? height;
   final double? width;
+  /// When false, render the PNG as-is (better for gold super-symbol art).
+  final bool knockoutBackground;
 
   /// Alpha from luminance — black → transparent, gold/taupe kept.
   static const knockoutBlack = ColorFilter.matrix(<double>[
@@ -35,20 +38,19 @@ class BrandAssetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColorFiltered(
-      colorFilter: knockoutBlack,
-      child: Image.asset(
-        asset,
+    final image = Image.asset(
+      asset,
+      height: height,
+      width: width,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.high,
+      errorBuilder: (_, __, ___) => SizedBox(
         height: height,
         width: width,
-        fit: BoxFit.contain,
-        filterQuality: FilterQuality.high,
-        errorBuilder: (_, __, ___) => SizedBox(
-          height: height,
-          width: width,
-          child: const Icon(Icons.spa_outlined, color: Color(0xFFC4A06E)),
-        ),
+        child: const Icon(Icons.spa_outlined, color: Color(0xFFC4A06E)),
       ),
     );
+    if (!knockoutBackground) return image;
+    return ColorFiltered(colorFilter: knockoutBlack, child: image);
   }
 }
