@@ -134,27 +134,29 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                           ),
                         ),
                         onPressed: _goRegister,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Text(
-                              'Start My Journey',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white.withValues(alpha: 0.98),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Start My Journey',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white.withValues(alpha: 0.98),
+                                  ),
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              child: Icon(
+                              Icon(
                                 Icons.arrow_forward_rounded,
                                 size: 18,
                                 color: Colors.white.withValues(alpha: 0.95),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
