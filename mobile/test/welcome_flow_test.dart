@@ -32,6 +32,7 @@ void main() {
     await tester.pump();
 
     expect(find.text('Start My Journey'), findsOneWidget);
+    expect(find.text('Log in'), findsOneWidget);
     expect(find.textContaining('Feel Alive'), findsOneWidget);
     expect(find.textContaining('One Small Ritual'), findsOneWidget);
     expect(router.state.uri.path, '/');

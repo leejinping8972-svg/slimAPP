@@ -56,6 +56,11 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
     context.go('/sunny/intro');
   }
 
+  void _goLogin() {
+    ref.read(appStateProvider.notifier).markLaunchGuideSeen();
+    context.go('/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
@@ -151,9 +156,40 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                       ),
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  const _PageDots(),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 10),
+                  _BreathingButton(
+                    breath: _breathe,
+                    phase: 0.5,
+                    glowColor: Colors.white,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 46,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            width: 1.2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          backgroundColor: Colors.white.withValues(alpha: 0.14),
+                        ),
+                        onPressed: _goLogin,
+                        child: const Text(
+                          'Log in',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),
@@ -164,44 +200,26 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
   }
 }
 
-class _PageDots extends StatelessWidget {
-  const _PageDots();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(4, (i) {
-        final active = i == 0;
-        return Container(
-          width: active ? 7 : 5,
-          height: active ? 7 : 5,
-          margin: const EdgeInsets.symmetric(horizontal: 3.5),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white.withValues(alpha: active ? 0.95 : 0.32),
-          ),
-        );
-      }),
-    );
-  }
-}
-
 class _BreathingButton extends StatelessWidget {
   const _BreathingButton({
     required this.breath,
     required this.child,
+    this.glowColor = const Color(0xFF5E6550),
+    this.phase = 0,
   });
 
   final Animation<double> breath;
   final Widget child;
+  final Color glowColor;
+  final double phase;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: breath,
       builder: (context, child) {
-        final eased = Curves.easeInOut.transform(breath.value);
+        final t = ((breath.value + phase) % 1.0);
+        final eased = Curves.easeInOut.transform(t);
         final scale = 1 + eased * 0.015;
         return Transform.scale(scale: scale, child: child);
       },
