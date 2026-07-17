@@ -76,9 +76,8 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: LuckdateSpacing.lg),
+                const SizedBox(height: LuckdateSpacing.sm),
                 if (coupon != null && coupon.status == 'unused') ...[
-                  const SizedBox(height: LuckdateSpacing.lg),
                   LdCard(
                     child: Row(
                       children: [
@@ -149,7 +148,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                     ),
                   ),
                 ],
-                const SizedBox(height: LuckdateSpacing.xl),
+                const SizedBox(height: LuckdateSpacing.md),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -191,7 +190,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    childAspectRatio: 0.72,
+                    childAspectRatio: 0.66,
                   ),
                   itemCount: filtered.length,
                   itemBuilder: (context, index) {

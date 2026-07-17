@@ -106,33 +106,60 @@ class ProfilePage extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: LuckdateSpacing.xl),
+            const SizedBox(height: LuckdateSpacing.lg),
             _sectionTitle('Quick Menu'),
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 1.1,
-              children: [
-                _menuTile(Icons.restaurant_menu_outlined, 'Check-in Record', () {
-                  context.push('/record');
-                }),
-                _menuTile(Icons.shopping_bag_outlined, 'Orders', () {
-                  context.push('/link-order');
-                }),
-                _menuTile(Icons.local_offer_outlined, 'Coupons', () {}),
-                _menuTile(Icons.notifications_outlined, 'Reminders', () {
-                  context.push('/profile/reminders');
-                }),
-                _menuTile(Icons.storefront_outlined, 'Mall', () {
-                  context.go('/mall');
-                }),
-                _menuTile(Icons.event_note_outlined, 'Plan', () {
-                  context.go('/plan');
-                }),
-              ],
+            LdCard(
+              padding: const EdgeInsets.symmetric(
+                vertical: LuckdateSpacing.xs,
+                horizontal: LuckdateSpacing.xs,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      _quickMenuItem(
+                        Icons.restaurant_menu_outlined,
+                        'Check-in',
+                        () => context.push('/record'),
+                      ),
+                      _quickMenuItem(
+                        Icons.shopping_bag_outlined,
+                        'Orders',
+                        () => context.push('/link-order'),
+                      ),
+                      _quickMenuItem(
+                        Icons.local_offer_outlined,
+                        'Coupons',
+                        () {},
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: LuckdateColors.lineSoft,
+                  ),
+                  Row(
+                    children: [
+                      _quickMenuItem(
+                        Icons.notifications_outlined,
+                        'Reminders',
+                        () => context.push('/profile/reminders'),
+                      ),
+                      _quickMenuItem(
+                        Icons.storefront_outlined,
+                        'Mall',
+                        () => context.go('/mall'),
+                      ),
+                      _quickMenuItem(
+                        Icons.event_note_outlined,
+                        'Plan',
+                        () => context.go('/plan'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             _sectionTitle('Membership'),
@@ -369,21 +396,28 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _menuTile(IconData icon, String label, VoidCallback onTap) {
-    return LdCard(
-      onTap: onTap,
-      padding: const EdgeInsets.all(LuckdateSpacing.sm),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: LuckdateColors.deepSage, size: 22),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: LuckdateTextStyles.caption,
-            textAlign: TextAlign.center,
+  Widget _quickMenuItem(IconData icon, String label, VoidCallback onTap) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(LuckdateRadius.sm),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: LuckdateColors.deepSage, size: 20),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: LuckdateTextStyles.caption.copyWith(fontSize: 11),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

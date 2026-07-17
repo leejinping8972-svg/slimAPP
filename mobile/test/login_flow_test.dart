@@ -58,7 +58,7 @@ void main() {
     await tester.tap(find.text('Me'));
     await pumpFrames(tester, 12);
     expect(find.text('Vitality Member'), findsOneWidget);
-    expect(find.text('Check-in Record'), findsOneWidget);
+    expect(find.text('Check-in'), findsOneWidget);
   });
 
   testWidgets('Register goes to link order then Sunny questions', (tester) async {

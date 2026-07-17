@@ -744,7 +744,7 @@ class ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 140,
+            height: 110,
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
               borderRadius: const BorderRadius.vertical(
@@ -752,42 +752,54 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             child: Center(
-              child: Icon(Icons.spa_outlined, size: 48, color: color),
+              child: Icon(Icons.spa_outlined, size: 44, color: color),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(LuckdateSpacing.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (product.isNew)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 2,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(LuckdateSpacing.sm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (product.isNew)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: LuckdateColors.sunGold.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(LuckdateRadius.sm),
+                      ),
+                      child: const Text(
+                        'NEW',
+                        style: LuckdateTextStyles.caption,
+                      ),
                     ),
-                    margin: const EdgeInsets.only(bottom: 6),
-                    decoration: BoxDecoration(
-                      color: LuckdateColors.sunGold.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(LuckdateRadius.sm),
+                  Text(
+                    product.name,
+                    style: LuckdateTextStyles.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Expanded(
+                    child: Text(
+                      product.shortDescription,
+                      style: LuckdateTextStyles.bodySmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    child: const Text('NEW', style: LuckdateTextStyles.caption),
                   ),
-                Text(product.name, style: LuckdateTextStyles.title),
-                const SizedBox(height: 4),
-                Text(
-                  product.shortDescription,
-                  style: LuckdateTextStyles.bodySmall,
-                  maxLines: 2,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  product.priceDisplay,
-                  style: LuckdateTextStyles.body.copyWith(
-                    fontWeight: FontWeight.w600,
+                  Text(
+                    product.priceDisplay,
+                    style: LuckdateTextStyles.body.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
