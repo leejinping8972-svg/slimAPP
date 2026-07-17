@@ -485,22 +485,60 @@ class AppStateNotifier extends StateNotifier<AppState> {
       suggestions: result.suggestions,
       actionLabels: result.actionLabels,
     );
-    if (result.intents.contains('onboarding_complete') &&
-        state.profile.hasActiveSlimPlan) {
-      final follow = ChatMessage(
-        id: '${placeholder.id}_day1',
-        isUser: false,
-        text: '',
-        isStreaming: true,
-        timestamp: DateTime.now(),
-      );
-      state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
-      await _streamReply(
-        follow.id,
-        OnboardingChatGuide.day1RitualGuide(state.profile),
-        suggestions: OnboardingChatGuide.day1RitualItems(state.profile),
-        actionLabels: const ['Go to Ritual', 'Log Water', 'Log Meal', 'Log Sleep'],
-      );
+    if (result.intents.contains('onboarding_complete')) {
+      if (state.profile.hasActiveSlimPlan) {
+        final follow = ChatMessage(
+          id: '${placeholder.id}_day1',
+          isUser: false,
+          text: '',
+          isStreaming: true,
+          timestamp: DateTime.now(),
+        );
+        state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
+        await _streamReply(
+          follow.id,
+          OnboardingChatGuide.day1RitualGuide(state.profile),
+          suggestions: OnboardingChatGuide.day1RitualItems(state.profile),
+          actionLabels: const [
+            'Start Day 1 Check-in',
+            'Log Water',
+            'Log Meal',
+            'Log Sleep',
+          ],
+        );
+      } else if (state.profile.isAwaitingReceipt) {
+        final follow = ChatMessage(
+          id: '${placeholder.id}_receipt',
+          isUser: false,
+          text: '',
+          isStreaming: true,
+          timestamp: DateTime.now(),
+        );
+        state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
+        await _streamReply(
+          follow.id,
+          'Your Solar Protein is on the way. '
+          'Confirm receipt in Plan or Me when it arrives — '
+          'then I will guide your Day 1 check-in.',
+          actionLabels: const ['View My Plan'],
+        );
+      } else {
+        final follow = ChatMessage(
+          id: '${placeholder.id}_unlock',
+          isUser: false,
+          text: '',
+          isStreaming: true,
+          timestamp: DateTime.now(),
+        );
+        state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
+        await _streamReply(
+          follow.id,
+          'You can explore Ritual and Mall now. '
+          'Link an order or buy Solar Protein to unlock Day 1 check-in — '
+          'I will guide you as soon as your plan starts.',
+          actionLabels: const ['View My Plan', 'Browse Mall'],
+        );
+      }
     }
   }
 

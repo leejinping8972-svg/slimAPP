@@ -187,6 +187,10 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     context.go('/home');
   }
 
+  void _goToProductIntro() {
+    context.go('/product-intro');
+  }
+
   void _link() {
     final result = ref
         .read(appStateProvider.notifier)
@@ -206,9 +210,9 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     );
     final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
     if (onboarded) {
-      context.pop();
+      context.go('/product-intro');
     } else {
-      _goToSunnyQuestions();
+      _goToProductIntro();
     }
   }
 

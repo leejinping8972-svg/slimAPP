@@ -11,6 +11,7 @@ import '../../features/home/sunny_suggestion_page.dart';
 import '../../features/record/check_in_record_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/onboarding/plan_intro_page.dart';
+import '../../features/onboarding/product_intro_page.dart';
 import '../../features/plan/plan_page.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/profile/reminder_settings_page.dart';
@@ -53,7 +54,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             path == '/welcome' ||
             path == '/sunny/intro' ||
             path == '/register-success' ||
-            path == '/link-order') {
+            path == '/link-order' ||
+            path == '/product-intro') {
           return '/';
         }
       }
@@ -73,7 +75,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           path == '/login' ||
           path == '/register' ||
           path == '/register-success' ||
-          path == '/link-order';
+          path == '/link-order' ||
+          path == '/product-intro';
 
       // Guests may only browse public auth/launch screens.
       if (!profile.isLoggedIn && !isPublicAuth) return '/login';
@@ -90,7 +93,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             (path == '/register-success' || path == '/link-order')) {
           return profile.onboardingComplete ? '/ritual' : '/home';
         }
-        // New registration still linking product — allow link-order.
+        // New registration with completed chat — don't reopen link-order.
         if (profile.isNewRegistration &&
             profile.onboardingComplete &&
             path == '/link-order') {
@@ -119,6 +122,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const RegisterSuccessPage(),
       ),
       GoRoute(path: '/link-order', builder: (_, __) => const OrderLinkPage()),
+      GoRoute(
+        path: '/product-intro',
+        builder: (_, __) => const ProductIntroPage(),
+      ),
       GoRoute(
         path: '/plan/intro',
         parentNavigatorKey: _rootNavigatorKey,

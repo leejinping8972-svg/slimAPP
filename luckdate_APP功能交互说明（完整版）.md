@@ -55,9 +55,10 @@ Ritual / Plan / Mall / Me 保留底栏；Sunny 以独立全屏页打开。
 | 引导页 | `Log in` | 进入登录 |
 | Sunny 介绍 | 滑动 3 页后继续 | 进入注册；可 Skip intro 跳过 |
 | 注册 | `Create account` | 进入关联订单（同时获得 $5 欢迎券） |
-| 关联订单 | 绑定成功（Solar Protein） | **立即开通 Day 1**，再进入 Sunny 问答 |
+| 关联订单 | 绑定成功（Solar Protein） | 进入产品介绍，**立即开通 Day 1** |
 | 关联订单 | `Skip for now` | 无产品，进入 Sunny 问答 |
-| Sunny 问答 | 完成隐私→年龄→身高→体重→目标→餐次→提醒 | 进入主壳；是否 Day 1 取决于产品资格 |
+| 产品介绍 | `Continue with Sunny` | 进入 Sunny 新手问答 |
+| Sunny 问答 | 完成隐私→年龄→身高→体重→目标→餐次→提醒 | 进入主壳；已开通方案时 Sunny **主动引导 Day 1 打卡** |
 
 ### 4. 回访用户路径
 
@@ -106,7 +107,7 @@ Ritual / Plan / Mall / Me 保留底栏；Sunny 以独立全屏页打开。
 ### 8. 端到端验收路径
 
 **路径 A（订单绑定）**  
-开屏 → 引导 → Sunny 介绍 → 注册 → 关联订单成功 → Sunny 问答 → Plan/Ritual 已为 Day 1
+开屏 → 引导 → Sunny 介绍 → 注册 → 关联订单成功 → 产品介绍 → Sunny 问答 → Sunny 引导 Day 1 打卡
 
 **路径 B（内购确认收货）**  
 开屏 → 引导 → Sunny 介绍 → 注册 → Skip 订单 → Sunny 问答 → Mall 购买 → 待收货 → Confirm Receipt → Day 1

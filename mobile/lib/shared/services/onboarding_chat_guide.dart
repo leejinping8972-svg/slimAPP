@@ -66,36 +66,38 @@ class OnboardingChatGuide {
   static String day1RitualGuide(UserProfile profile) {
     final morning = profile.reminderTime;
     final meal = profile.mealSlot;
-    return 'Great — let us complete Day 1 together.\n\n'
-        'Day 1 Ritual guide:\n'
-        '• Morning check-in at $morning\n'
-        '• Follow your $meal focus meal rhythm\n'
-        '• Drink at least 2 cups of water\n'
-        '• Wind down before sleep\n\n'
-        'Tap an action below and I will guide you step by step.';
+    final name = profile.nickname.isNotEmpty ? profile.nickname : 'there';
+    return 'Nice work, $name — your plan is ready.\n\n'
+        'I will walk you through Day 1 check-in now. '
+        'Complete these four rituals today:\n\n'
+        '1. Morning check-in (around $morning)\n'
+        '2. Your $meal support meal / Solar Protein\n'
+        '3. Drink at least 2 cups of water\n'
+        '4. Sleep wind-down tonight\n\n'
+        'Start with any action below — I will log it and cheer you on.';
   }
 
   static List<ChatSuggestionItem> day1RitualItems(UserProfile profile) {
     return [
-      ChatSuggestionItem(
+      const ChatSuggestionItem(
         emoji: '✅',
-        title: 'Morning check-in',
-        subtitle: 'Confirm your Day 1 start and current status',
+        title: 'Start Day 1 check-in',
+        subtitle: 'Open Ritual and mark your first wins',
       ),
-      ChatSuggestionItem(
+      const ChatSuggestionItem(
         emoji: '💧',
-        title: 'Hydration goal',
-        subtitle: 'Complete 2 cups today and keep your rhythm',
+        title: 'Log water now',
+        subtitle: 'One glass counts — keep the streak going',
       ),
       ChatSuggestionItem(
         emoji: '🥗',
-        title: 'Meal ritual',
-        subtitle: 'Follow your ${profile.mealSlot} support focus',
+        title: 'Log your ${profile.mealSlot} meal',
+        subtitle: 'Tell me what you had and I will record it',
       ),
       const ChatSuggestionItem(
         emoji: '🌙',
-        title: 'Sleep wind-down',
-        subtitle: 'Close Day 1 with a calm evening routine',
+        title: 'Log sleep later',
+        subtitle: 'Close Day 1 with a calm wind-down',
       ),
     ];
   }
@@ -317,7 +319,14 @@ class OnboardingChatGuide {
             reply: planBasisExplanation(done),
             intents: const ['onboarding_complete', 'plan_generated'],
             suggestions: planCardItems(done),
-            actionLabels: const ['Start Day 1 Ritual', 'View My Plan'],
+            actionLabels: done.hasActiveSlimPlan
+                ? const [
+                    'Start Day 1 Check-in',
+                    'Log Water',
+                    'Log Meal',
+                    'Go to Ritual',
+                  ]
+                : const ['View My Plan', 'Browse Mall'],
           ),
         );
 

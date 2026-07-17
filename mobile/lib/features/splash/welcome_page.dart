@@ -3,10 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/providers/app_providers.dart';
 import 'splash_backdrop.dart';
-import 'welcome_video_backdrop.dart';
 
-/// Guide UI (logo / copy / CTAs) used after splash on `/`, and at `/welcome`.
-/// Layout matches brand design: brand → title → ritual card → primary CTA → dots.
+/// Guide UI after splash — static lifestyle background, left-safe copy layout.
 class WelcomeGuideView extends ConsumerStatefulWidget {
   const WelcomeGuideView({super.key});
 
@@ -14,7 +12,6 @@ class WelcomeGuideView extends ConsumerStatefulWidget {
   ConsumerState<WelcomeGuideView> createState() => _WelcomeGuideViewState();
 }
 
-/// Deep-link alias — same guide UI.
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
@@ -63,69 +60,74 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.sizeOf(context).height;
+    final size = MediaQuery.sizeOf(context);
+    final h = size.height;
+    // Keep copy in the left clear zone so the subject stays unobstructed.
+    final copyMaxWidth = (size.width * 0.58).clamp(200.0, 260.0);
 
     return Scaffold(
       backgroundColor: kSplashScaffoldColor,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          const WelcomeVideoBackdrop(),
-          // Soft vignette — keep subject clear, darken only edges.
+          const SplashBackdrop(assetPath: kWelcomeImageAsset),
+          // Light top/bottom veil only — avoid darkening the figure.
           const DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0x14000000),
+                  Color(0x18000000),
                   Color(0x00000000),
                   Color(0x00000000),
-                  Color(0x40000000),
+                  Color(0x38000000),
                 ],
-                stops: [0.0, 0.18, 0.58, 1.0],
+                stops: [0.0, 0.16, 0.62, 1.0],
               ),
             ),
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(28, 18, 28, 16),
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 14),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 1) Brand — top left
-                  const _WelcomeBrand(),
-                  SizedBox(height: h * 0.028),
-                  // 2) Headline + short gold accent
-                  Text(
-                    'Feel Alive.\nMeet luckdate.',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 30,
-                      height: 1.12,
-                      fontWeight: FontWeight.w700,
-                      color: _taupe,
-                      letterSpacing: -0.3,
+                  SizedBox(
+                    width: copyMaxWidth,
+                    child: const _WelcomeBrand(),
+                  ),
+                  SizedBox(height: h * 0.022),
+                  SizedBox(
+                    width: copyMaxWidth,
+                    child: Text(
+                      'Feel Alive.\nMeet luckdate.',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 28,
+                        height: 1.12,
+                        fontWeight: FontWeight.w700,
+                        color: _taupe,
+                        letterSpacing: -0.3,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: 36,
-                      height: 1.5,
-                      color: _gold.withValues(alpha: 0.95),
-                    ),
+                  Container(
+                    width: 36,
+                    height: 1.5,
+                    color: _gold.withValues(alpha: 0.95),
                   ),
-                  SizedBox(height: h * 0.045),
-                  // 3) Ritual card — mid-left, icon above copy (design)
-                  const _RitualGlassCard(),
-                  // Open space for lifestyle subject
+                  SizedBox(height: h * 0.036),
+                  SizedBox(
+                    width: copyMaxWidth,
+                    child: const _RitualGlassCard(),
+                  ),
                   const Spacer(),
-                  // 4) Primary CTA only (design)
                   _BreathingButton(
                     breath: _breathe,
                     child: SizedBox(
+                      width: double.infinity,
                       height: 52,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -158,7 +160,6 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                     ),
                   ),
                   const SizedBox(height: 14),
-                  // 5) Pagination dots
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(4, (i) {
@@ -176,7 +177,6 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                       );
                     }),
                   ),
-                  // Keep login reachable without breaking the design composition.
                   TextButton(
                     onPressed: _goLogin,
                     style: TextButton.styleFrom(
@@ -185,14 +185,16 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                       minimumSize: const Size(0, 32),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    child: const Text(
-                      'Log in',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white70,
+                    child: const Center(
+                      child: Text(
+                        'Log in',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white70,
+                        ),
                       ),
                     ),
                   ),
@@ -279,40 +281,33 @@ class _WelcomeBrand extends StatelessWidget {
   }
 }
 
-/// Design: vertical glass card — symbol on top, copy below.
 class _RitualGlassCard extends StatelessWidget {
   const _RitualGlassCard();
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 168),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
-          decoration: BoxDecoration(
-            color: const Color(0xE6F7F2EA),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x18000000),
-                blurRadius: 16,
-                offset: Offset(0, 6),
-              ),
-            ],
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+      decoration: BoxDecoration(
+        color: const Color(0xE6F7F2EA),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x18000000),
+            blurRadius: 16,
+            offset: Offset(0, 6),
           ),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BrandAssetImage(kSuperSymbolAsset, height: 28, width: 28),
-              SizedBox(height: 12),
-              _RitualCopy(),
-            ],
-          ),
-        ),
+        ],
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BrandAssetImage(kSuperSymbolAsset, height: 28, width: 28),
+          SizedBox(height: 12),
+          _RitualCopy(),
+        ],
       ),
     );
   }

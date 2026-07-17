@@ -98,9 +98,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _onActionTap(String label) {
     if (label == 'View Detailed Plan' || label == 'View My Plan') {
       context.push('/plan');
+    } else if (label == 'Browse Mall') {
+      context.go('/mall');
     } else if (label == 'Set Sleep Goal' ||
         label == 'Enter Day 1' ||
         label == 'Start Day 1 Ritual' ||
+        label == 'Start Day 1 Check-in' ||
         label == 'Go to Ritual') {
       context.go('/ritual');
     } else if (label == 'Log Water') {

@@ -50,7 +50,8 @@ luckdate 以 Sunny 陪伴为核心，围绕以下闭环提供体验：
 ### 3.3 注册与关联订单
 
 - 注册成功 → 进入 **关联订单** 页（可 Skip）
-- 关联订单成功（Solar Protein）→ **立即开通 Day 1**，再进入 Sunny 新手问答
+- 关联订单成功 → 进入 **产品介绍** → 再进入 Sunny 新手问答  
+  - Solar Protein：介绍后已开通 Day 1，问答结束由 Sunny 主动引导首日打卡  
 - Skip → 保持无产品状态，进入 Sunny 新手问答
 
 ### 3.4 Sunny 新手问答
@@ -145,7 +146,7 @@ luckdate 以 Sunny 陪伴为核心，围绕以下闭环提供体验：
 
 ### 路径 A：订单绑定直开 Day 1
 
-开屏 → 引导页 → Sunny 介绍 → 注册 → 关联订单成功（Solar Protein）→ Sunny 新手问答 → Plan/Ritual 已为 Day 1
+开屏 → 引导页 → Sunny 介绍 → 注册 → 关联订单成功 → 产品介绍 → Sunny 新手问答 → Sunny 引导 Day 1 打卡
 
 ### 路径 B：APP 内购买后确认收货开通
 
