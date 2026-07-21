@@ -43,3 +43,6 @@ flutter:
           weight: 700
         - asset: assets/fonts/Montserrat-Italic.ttf
           style: italic
+    - family: Caveat
+      fonts:
+        - asset: assets/fonts/Caveat-Regular.ttf

@@ -23,7 +23,6 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
     with SingleTickerProviderStateMixin {
   late final AnimationController _breathe;
 
-  static const _taupe = Color(0xFF4F463E);
   static const _olive = Color(0xFF5E6550);
   static const _gold = Color(0xFFC4A06E);
 
@@ -100,8 +99,15 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                         fontSize: 29,
                         height: 1.1,
                         fontWeight: FontWeight.w700,
-                        color: _taupe,
+                        color: const Color(0xFFF8F1E8),
                         letterSpacing: -0.4,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withValues(alpha: 0.18),
+                            blurRadius: 8,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -320,10 +326,10 @@ class _RitualCopy extends StatelessWidget {
     return Text.rich(
       TextSpan(
         style: TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 11,
-          height: 1.38,
-          color: _taupe.withValues(alpha: 0.88),
+          fontFamily: 'Caveat',
+          fontSize: 15,
+          height: 1.28,
+          color: _taupe.withValues(alpha: 0.9),
           fontWeight: FontWeight.w500,
         ),
         children: [
@@ -331,10 +337,9 @@ class _RitualCopy extends StatelessWidget {
           TextSpan(
             text: 'One Small Ritual.',
             style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontStyle: FontStyle.italic,
-              fontSize: 12,
-              height: 1.38,
+              fontFamily: 'Caveat',
+              fontSize: 16,
+              height: 1.28,
               color: _gold,
               fontWeight: FontWeight.w600,
             ),
