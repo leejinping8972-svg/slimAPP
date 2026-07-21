@@ -269,6 +269,7 @@ class AuthMarketingHeader extends StatelessWidget {
     required this.tagline,
     this.showBack = false,
     this.onBack,
+    this.showSunny = false,
   });
 
   final String title;
@@ -276,6 +277,7 @@ class AuthMarketingHeader extends StatelessWidget {
   final String tagline;
   final bool showBack;
   final VoidCallback? onBack;
+  final bool showSunny;
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +302,9 @@ class AuthMarketingHeader extends StatelessWidget {
             top: 8,
             child: Opacity(
               opacity: 0.35,
-              child: const SymbolHero(size: 130, showRing: false),
+              child: showSunny
+                  ? const LdSunnyAvatar(size: 120, cycleIdle: false)
+                  : const SymbolHero(size: 130, showRing: false),
             ),
           ),
           Padding(
@@ -358,7 +362,10 @@ class AuthMarketingHeader extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SymbolHero(size: 72),
+                    if (showSunny)
+                      const LdSunnyAvatar(size: 72, cycleIdle: true)
+                    else
+                      const SymbolHero(size: 72),
                   ],
                 ),
               ],

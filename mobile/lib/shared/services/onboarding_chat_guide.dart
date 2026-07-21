@@ -1,11 +1,16 @@
 import '../models/models.dart';
 
-/// Guides new users through core questions inside Sunny chat (after fixed opening).
+/// Guides new users through product intro + core questions inside Sunny chat.
 class OnboardingChatGuide {
   static const privacyPrompt =
       'Before we personalize your journey, please confirm:\n\n'
       'Do you agree to our privacy policy and health disclaimer?\n'
       'Reply "I agree" to continue.';
+
+  static const planOfferPrompt =
+      'Share a few basic details and I can build a personalized vitality plan '
+      'just for you.\n\n'
+      'Would you like to get it now?';
 
   static List<ChatMessage> seedMessages() {
     return [
@@ -16,6 +21,72 @@ class OnboardingChatGuide {
         timestamp: DateTime.now(),
       ),
     ];
+  }
+
+  /// Greeting + one product card per linked order + plan offer CTA.
+  static List<ChatMessage> productIntroSeedMessages(UserProfile profile) {
+    final name = profile.recipientName.isNotEmpty
+        ? profile.recipientName
+        : (profile.nickname.isNotEmpty ? profile.nickname : 'there');
+    final products = profile.linkedProducts;
+    final now = DateTime.now();
+    final messages = <ChatMessage>[
+      ChatMessage(
+        id: 'onboard_greet',
+        isUser: false,
+        text:
+            'Hi $name! ☀️ I\'m Sunny, your daily vitality partner.\n\n'
+            'I found ${products.length} linked '
+            '${products.length == 1 ? 'product' : 'products'} for you — '
+            'here is a quick intro for each one.',
+        timestamp: now,
+      ),
+    ];
+
+    for (var i = 0; i < products.length; i++) {
+      final p = products[i];
+      final journeyLine = p.isMealReplacement
+          ? '28-Day Slim Journey unlocked'
+          : 'Daily product care plan';
+      messages.add(
+        ChatMessage(
+          id: 'onboard_product_$i',
+          isUser: false,
+          text:
+              '${p.productName}\n'
+              '$journeyLine\n\n'
+              'How to use:\n'
+              '• ${p.blurb.isNotEmpty ? p.blurb : _defaultBlurb(p.isMealReplacement)}',
+          timestamp: now.add(Duration(milliseconds: i + 1)),
+          suggestions: [
+            ChatSuggestionItem(
+              emoji: p.isMealReplacement ? '🌿' : '✨',
+              title: p.productName,
+              subtitle: p.series.isNotEmpty ? p.series : journeyLine,
+            ),
+          ],
+        ),
+      );
+    }
+
+    messages.add(
+      ChatMessage(
+        id: 'onboard_plan_offer',
+        isUser: false,
+        text: planOfferPrompt,
+        timestamp: now.add(Duration(milliseconds: products.length + 2)),
+        actionLabels: const ['立即获取'],
+      ),
+    );
+    return messages;
+  }
+
+  static String _defaultBlurb(bool isMeal) {
+    return isMeal
+        ? 'Mix one serving with water or milk as meal support. '
+            'Log your shake in Sunny chat or Ritual each day.'
+        : 'Take as directed on the label. '
+            'Set a daily reminder so Sunny can check in with you.';
   }
 
   static List<ChatSuggestionItem> planCardItems(UserProfile profile) {
@@ -47,9 +118,11 @@ class OnboardingChatGuide {
   }
 
   static String planBasisExplanation(UserProfile profile) {
-    final productLine = profile.linkedProductName.isNotEmpty
-        ? 'Linked product: ${profile.linkedProductName}.'
-        : 'No product linked yet — plan starts in explore mode.';
+    final productLine = profile.linkedProducts.isNotEmpty
+        ? 'Linked products: ${profile.linkedProducts.map((p) => p.productName).join(', ')}.'
+        : profile.linkedProductName.isNotEmpty
+            ? 'Linked product: ${profile.linkedProductName}.'
+            : 'No product linked yet — plan starts in explore mode.';
     return 'Your 28-Day Slim Journey is ready.\n\n'
         'How this plan was shaped:\n'
         '• Age range: ${profile.ageRange}\n'
@@ -66,7 +139,9 @@ class OnboardingChatGuide {
   static String day1RitualGuide(UserProfile profile) {
     final morning = profile.reminderTime;
     final meal = profile.mealSlot;
-    final name = profile.nickname.isNotEmpty ? profile.nickname : 'there';
+    final name = profile.recipientName.isNotEmpty
+        ? profile.recipientName
+        : (profile.nickname.isNotEmpty ? profile.nickname : 'there');
     return 'Nice work, $name — your plan is ready.\n\n'
         'I will walk you through Day 1 check-in now. '
         'Complete these four rituals today:\n\n'
@@ -112,6 +187,28 @@ class OnboardingChatGuide {
         : profile.onboardingStep;
 
     switch (step) {
+      case 'plan_offer':
+        if (_wantsPlan(lower)) {
+          final next = profile.copyWith(onboardingStep: 'privacy');
+          return (
+            profile: next,
+            result: const SunnyIntentResult(
+              reply: privacyPrompt,
+              intents: ['onboarding_plan_offer'],
+            ),
+          );
+        }
+        return (
+          profile: profile,
+          result: const SunnyIntentResult(
+            reply:
+                'No rush — tap "立即获取" whenever you are ready, '
+                'or reply "yes" to start your personalized plan.',
+            intents: ['onboarding_plan_offer'],
+            actionLabels: ['立即获取'],
+          ),
+        );
+
       case 'privacy':
         if (_agrees(lower)) {
           final next = profile.copyWith(onboardingStep: 'age');
@@ -341,6 +438,18 @@ class OnboardingChatGuide {
     }
   }
 
+  static bool _wantsPlan(String lower) {
+    return lower.contains('立即获取') ||
+        lower.contains('获取') ||
+        lower == 'yes' ||
+        lower == 'y' ||
+        lower.contains('ok') ||
+        lower.contains('agree') ||
+        lower.contains('start') ||
+        lower.contains('要') ||
+        lower.contains('好');
+  }
+
   static bool _agrees(String lower) {
     return lower.contains('agree') ||
         lower == 'yes' ||
@@ -417,6 +526,7 @@ class OnboardingChatGuide {
 
   static List<(String, String)> quickAsksFor(String step) {
     return switch (step) {
+      'plan_offer' => [('✨', '立即获取')],
       'privacy' => [('✅', 'I agree')],
       'age' => [
         ('🌿', '35-50'),

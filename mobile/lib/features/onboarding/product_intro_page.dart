@@ -120,7 +120,16 @@ class ProductIntroPage extends ConsumerWidget {
                     context.go('/ritual');
                   }
                 } else {
-                  ref.read(appStateProvider.notifier).beginOnboardingChat();
+                  final hasProducts = ref
+                      .read(appStateProvider)
+                      .profile
+                      .linkedProducts
+                      .isNotEmpty;
+                  if (hasProducts) {
+                    ref.read(appStateProvider.notifier).beginProductIntroChat();
+                  } else {
+                    ref.read(appStateProvider.notifier).beginOnboardingChat();
+                  }
                   context.go('/home');
                 }
               },

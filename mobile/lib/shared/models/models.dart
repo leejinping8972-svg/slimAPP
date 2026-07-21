@@ -52,8 +52,10 @@ class UserProfile {
     this.isLoggedIn = false,
     this.isNewRegistration = false,
     this.couponRewardSeen = false,
+    this.recipientName = '',
     this.linkedOrderNo = '',
     this.linkedProductName = '',
+    this.linkedProducts = const [],
     this.orderLinkStatus = OrderLinkStatus.notStarted,
     this.productSource = ProductAcquisitionSource.none,
     this.slimPlanStatus = SlimPlanStatus.notStarted,
@@ -88,8 +90,12 @@ class UserProfile {
   final bool isLoggedIn;
   final bool isNewRegistration;
   final bool couponRewardSeen;
+  /// Recipient name used to look up linked orders.
+  final String recipientName;
   final String linkedOrderNo;
   final String linkedProductName;
+  /// All products found for the recipient (may be multiple).
+  final List<LinkedProductRef> linkedProducts;
   final OrderLinkStatus orderLinkStatus;
   final ProductAcquisitionSource productSource;
   final SlimPlanStatus slimPlanStatus;
@@ -97,7 +103,8 @@ class UserProfile {
   final bool hidePurchaseGuideCard;
   final bool journeyCompleteSeen;
   final bool sunnyIntroSeen;
-  /// Chat onboarding step: privacy → age → height → weight → target → meal → reminder → done
+  /// Chat onboarding step:
+  /// plan_offer → privacy → age → height → weight → target → meal → reminder → done
   final String onboardingStep;
   final UserCoupon? welcomeCoupon;
   final String activationCode;
@@ -125,8 +132,10 @@ class UserProfile {
     bool? isLoggedIn,
     bool? isNewRegistration,
     bool? couponRewardSeen,
+    String? recipientName,
     String? linkedOrderNo,
     String? linkedProductName,
+    List<LinkedProductRef>? linkedProducts,
     OrderLinkStatus? orderLinkStatus,
     ProductAcquisitionSource? productSource,
     SlimPlanStatus? slimPlanStatus,
@@ -161,8 +170,10 @@ class UserProfile {
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       isNewRegistration: isNewRegistration ?? this.isNewRegistration,
       couponRewardSeen: couponRewardSeen ?? this.couponRewardSeen,
+      recipientName: recipientName ?? this.recipientName,
       linkedOrderNo: linkedOrderNo ?? this.linkedOrderNo,
       linkedProductName: linkedProductName ?? this.linkedProductName,
+      linkedProducts: linkedProducts ?? this.linkedProducts,
       orderLinkStatus: orderLinkStatus ?? this.orderLinkStatus,
       productSource: productSource ?? this.productSource,
       slimPlanStatus: slimPlanStatus ?? this.slimPlanStatus,
@@ -185,6 +196,23 @@ extension UserProfilePlanX on UserProfile {
   bool get hasActiveSlimPlan =>
       slimPlanStatus == SlimPlanStatus.active &&
       userPlanType == UserPlanType.mealReplacement;
+}
+
+/// A product linked via recipient-name order lookup.
+class LinkedProductRef {
+  const LinkedProductRef({
+    required this.orderNo,
+    required this.productName,
+    required this.isMealReplacement,
+    this.series = '',
+    this.blurb = '',
+  });
+
+  final String orderNo;
+  final String productName;
+  final bool isMealReplacement;
+  final String series;
+  final String blurb;
 }
 
 class MealLogEntry {

@@ -10,7 +10,7 @@ void main() {
 
     container.read(appStateProvider.notifier).completeRegistration();
     final result = container.read(appStateProvider.notifier).linkOrder(
-          orderNo: 'meal',
+          recipientName: 'meal',
           phoneLast4: '1234',
         );
 

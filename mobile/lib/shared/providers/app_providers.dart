@@ -114,6 +114,14 @@ class AppStateNotifier extends StateNotifier<AppState> {
         userPlanType: UserPlanType.mealReplacement,
         linkedOrderNo: 'LD-DEMO-001',
         linkedProductName: 'Solar Protein 28-Day',
+        linkedProducts: const [
+          LinkedProductRef(
+            orderNo: 'LD-DEMO-001',
+            productName: 'Solar Protein 28-Day',
+            isMealReplacement: true,
+            series: 'Slim Vitality',
+          ),
+        ],
       ),
     );
   }
@@ -144,6 +152,15 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  /// After order lookup — greet by name, show product cards, then plan offer.
+  void beginProductIntroChat() {
+    final profile = state.profile.copyWith(onboardingStep: 'plan_offer');
+    state = state.copyWith(
+      profile: profile,
+      chatMessages: OnboardingChatGuide.productIntroSeedMessages(profile),
+    );
+  }
+
   void acknowledgeCouponReward() {
     state = state.copyWith(
       profile: state.profile.copyWith(couponRewardSeen: true),
@@ -151,28 +168,47 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   OrderLinkResult linkOrder({
-    required String orderNo,
+    required String recipientName,
     required String phoneLast4,
   }) {
     final result = _orderService.linkOrder(
-      orderNo: orderNo,
+      recipientName: recipientName,
       phoneLast4: phoneLast4,
     );
     if (!result.success) {
       state = state.copyWith(
         profile: state.profile.copyWith(
+          recipientName: recipientName.trim(),
           linkedOrderNo: '',
-          linkedProductName: result.productName,
+          linkedProductName: '',
+          linkedProducts: const [],
           orderLinkStatus: OrderLinkStatus.failed,
         ),
       );
       return result;
     }
 
+    final linked = result.products
+        .map(
+          (p) => LinkedProductRef(
+            orderNo: p.orderNo,
+            productName: p.productName,
+            isMealReplacement: p.isMealReplacement,
+            series: p.series,
+            blurb: p.blurb,
+          ),
+        )
+        .toList();
     final planType = _orderService.planTypeFor(result);
+    final displayName = result.recipientName.isNotEmpty
+        ? result.recipientName
+        : recipientName.trim();
     var profile = state.profile.copyWith(
-      linkedOrderNo: orderNo.trim(),
+      recipientName: displayName,
+      nickname: displayName.isNotEmpty ? displayName : state.profile.nickname,
+      linkedOrderNo: linked.isNotEmpty ? linked.first.orderNo : '',
       linkedProductName: result.productName,
+      linkedProducts: linked,
       orderLinkStatus: OrderLinkStatus.linked,
       productSource: ProductAcquisitionSource.orderLinked,
       membershipPlan: result.productName,
@@ -200,6 +236,9 @@ class AppStateNotifier extends StateNotifier<AppState> {
         userPlanType: UserPlanType.noProduct,
         slimPlanStatus: SlimPlanStatus.notStarted,
         productSource: ProductAcquisitionSource.none,
+        linkedProducts: const [],
+        linkedOrderNo: '',
+        linkedProductName: '',
       ),
     );
   }

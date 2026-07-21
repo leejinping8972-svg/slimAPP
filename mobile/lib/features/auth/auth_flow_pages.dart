@@ -50,6 +50,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             'Begin your premium ritual\nwith luckdate today.',
                         tagline: 'Grow Toward the Light',
                         showBack: true,
+                        showSunny: true,
                         onBack: () => context.go('/sunny/intro'),
                       ),
                       Transform.translate(
@@ -172,12 +173,12 @@ class OrderLinkPage extends ConsumerStatefulWidget {
 }
 
 class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
-  final _orderController = TextEditingController();
+  final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
 
   @override
   void dispose() {
-    _orderController.dispose();
+    _nameController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -187,15 +188,14 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     context.go('/home');
   }
 
-  void _goToProductIntro() {
-    context.go('/product-intro');
+  void _goToProductIntroChat() {
+    ref.read(appStateProvider.notifier).beginProductIntroChat();
+    context.go('/home');
   }
 
-  void _link() {
-    final result = ref
-        .read(appStateProvider.notifier)
-        .linkOrder(
-          orderNo: _orderController.text,
+  void _fetchProductInfo() {
+    final result = ref.read(appStateProvider.notifier).linkOrder(
+          recipientName: _nameController.text,
           phoneLast4: _phoneController.text,
         );
     if (!result.success) {
@@ -203,16 +203,21 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
       return;
     }
     if (!mounted) return;
+    final count = result.products.length;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Linked: ${result.productName}'),
+        content: Text(
+          count == 1
+              ? 'Found: ${result.productName}'
+              : 'Found $count linked products',
+        ),
       ),
     );
     final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
     if (onboarded) {
-      context.go('/product-intro');
+      context.go('/home');
     } else {
-      _goToProductIntro();
+      _goToProductIntroChat();
     }
   }
 
@@ -271,10 +276,13 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Center(child: LdSunnyAvatar(size: 88)),
+            const SizedBox(height: LuckdateSpacing.lg),
             Text('Link your order', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Link your order to unlock the right plan. You can skip and explore first.',
+              'Enter the recipient name and phone digits to unlock your products. '
+              'You can skip and explore first.',
               style: LuckdateTextStyles.bodySmall,
             ),
             if (coupon != null) ...[
@@ -310,10 +318,11 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             ],
             const SizedBox(height: LuckdateSpacing.xl),
             TextField(
-              controller: _orderController,
+              controller: _nameController,
+              textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
-                labelText: 'Order number',
-                hintText: 'meal or other',
+                labelText: 'Recipient name',
+                hintText: 'Any name works for demo',
               ),
             ),
             const SizedBox(height: LuckdateSpacing.base),
@@ -322,7 +331,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               keyboardType: TextInputType.number,
               maxLength: 4,
               decoration: const InputDecoration(
-                labelText: 'Last 4 digits of phone (optional for demo)',
+                labelText: 'Last 4 digits of phone',
                 hintText: '1234',
               ),
             ),
@@ -334,22 +343,29 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                   Text('Demo guide', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    '• Enter meal → Solar Protein 28-Day Slim Journey',
+                    '• Any name + 4 digits → multiple sample products',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Enter other → Other product, daily reminder only',
+                    '• Name "meal" → Solar Protein 28-Day only',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Skip → No plan yet; purchase Solar Protein on Ritual',
+                    '• Name "other" → Youth Solar only',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                  Text(
+                    '• Skip → No plan yet; explore with Sunny',
                     style: LuckdateTextStyles.caption,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
-            LdPrimaryButton(label: 'Link order', onPressed: _link),
+            LdPrimaryButton(
+              label: '获取产品说明',
+              onPressed: _fetchProductInfo,
+            ),
             const SizedBox(height: LuckdateSpacing.sm),
             LdSecondaryButton(
               label: 'Skip for now',

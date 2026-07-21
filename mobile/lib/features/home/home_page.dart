@@ -96,6 +96,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onActionTap(String label) {
+    if (label == '立即获取') {
+      ref.read(appStateProvider.notifier).sendChatMessage('立即获取');
+      return;
+    }
     if (label == 'View Detailed Plan' || label == 'View My Plan') {
       context.push('/plan');
     } else if (label == 'Browse Mall') {

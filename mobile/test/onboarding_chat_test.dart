@@ -42,4 +42,32 @@ void main() {
     expect(profile.onboardingComplete, isTrue);
     expect(profile.onboardingStep, 'done');
   });
+
+  test('Product intro offer starts privacy Q&A on 立即获取', () {
+    var profile = const UserProfile(
+      isLoggedIn: true,
+      onboardingComplete: false,
+      onboardingStep: 'plan_offer',
+      recipientName: 'Alex',
+      linkedProducts: [
+        LinkedProductRef(
+          orderNo: 'ORD-1',
+          productName: 'Solar Protein™ 28-Day',
+          isMealReplacement: true,
+        ),
+      ],
+    );
+
+    final guided = OnboardingChatGuide.handle(
+      input: '立即获取',
+      profile: profile,
+    );
+    expect(guided.profile.onboardingStep, 'privacy');
+    expect(guided.result.reply, contains('privacy policy'));
+
+    final seeds = OnboardingChatGuide.productIntroSeedMessages(profile);
+    expect(seeds.first.text, contains('Hi Alex'));
+    expect(seeds.where((m) => m.id.startsWith('onboard_product_')), hasLength(1));
+    expect(seeds.last.actionLabels, contains('立即获取'));
+  });
 }

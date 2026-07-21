@@ -1,48 +1,54 @@
 import '../models/models.dart';
 
+class LinkedProductInfo {
+  const LinkedProductInfo({
+    required this.orderNo,
+    required this.productName,
+    required this.isMealReplacement,
+    this.series = '',
+    this.blurb = '',
+  });
+
+  final String orderNo;
+  final String productName;
+  final bool isMealReplacement;
+  final String series;
+  final String blurb;
+}
+
 class OrderLinkResult {
   const OrderLinkResult({
     required this.success,
     this.productName = '',
     this.isMealReplacement = false,
     this.message = '',
+    this.products = const [],
+    this.recipientName = '',
   });
 
   final bool success;
   final String productName;
   final bool isMealReplacement;
   final String message;
+  final List<LinkedProductInfo> products;
+  final String recipientName;
 }
 
 class MockOrderService {
+  /// Demo lookup by recipient name + last 4 phone digits.
+  /// Any non-empty name + any 4-digit phone returns sample linked orders
+  /// (multiple products) so the product-intro chat can show several cards.
   OrderLinkResult linkOrder({
-    required String orderNo,
+    required String recipientName,
     required String phoneLast4,
   }) {
-    final normalizedOrder = orderNo.trim();
+    final name = recipientName.trim();
     final phone = phoneLast4.trim();
 
-    // Demo keywords (English UI; legacy Chinese aliases still accepted).
-    if (normalizedOrder.toLowerCase() == 'meal' ||
-        normalizedOrder.toLowerCase() == 'meal replacement' ||
-        normalizedOrder.toLowerCase() == 'solar' ||
-        normalizedOrder == '代餐粉' ||
-        normalizedOrder.contains('代餐')) {
+    if (name.isEmpty) {
       return const OrderLinkResult(
-        success: true,
-        productName: 'Solar Protein™ 28-Day',
-        isMealReplacement: true,
-      );
-    }
-
-    if (normalizedOrder.toLowerCase() == 'other' ||
-        normalizedOrder.toLowerCase() == 'supplement' ||
-        normalizedOrder == '其他' ||
-        normalizedOrder == '其他产品') {
-      return const OrderLinkResult(
-        success: true,
-        productName: 'Youth Solar™',
-        isMealReplacement: false,
+        success: false,
+        message: 'Please enter the recipient name on your order.',
       );
     }
 
@@ -53,33 +59,101 @@ class MockOrderService {
       );
     }
 
-    final orderUpper = normalizedOrder.toUpperCase();
+    final lower = name.toLowerCase();
 
-    if (orderUpper == 'ORD-2026-MEAL' && phone == '1234') {
-      return const OrderLinkResult(
-        success: true,
-        productName: 'Solar Protein 28-Day',
+    // Single meal-journey order when demo keyword is used.
+    if (lower == 'meal' ||
+        lower == 'solar' ||
+        lower.contains('代餐') ||
+        lower == 'meal replacement') {
+      const product = LinkedProductInfo(
+        orderNo: 'ORD-DEMO-MEAL',
+        productName: 'Solar Protein™ 28-Day',
         isMealReplacement: true,
+        series: 'Slim Vitality',
+        blurb:
+            'Mix one serving with water or milk as meal support. '
+            'Log your shake in Sunny chat or Ritual each day.',
+      );
+      return OrderLinkResult(
+        success: true,
+        productName: product.productName,
+        isMealReplacement: true,
+        recipientName: name,
+        products: const [product],
       );
     }
 
-    if (orderUpper == 'ORD-2026-VITA' && phone == '5678') {
-      return const OrderLinkResult(
+    // Single non-meal product when "other" keyword is used.
+    if (lower == 'other' ||
+        lower == 'supplement' ||
+        lower == '其他' ||
+        lower == '其他产品') {
+      const product = LinkedProductInfo(
+        orderNo: 'ORD-DEMO-OTHER',
+        productName: 'Youth Solar™',
+        isMealReplacement: false,
+        series: 'Beauty Vitality',
+        blurb:
+            'Take as directed on the label. '
+            'Set a daily reminder so Sunny can check in with you.',
+      );
+      return OrderLinkResult(
         success: true,
+        productName: product.productName,
+        isMealReplacement: false,
+        recipientName: name,
+        products: const [product],
+      );
+    }
+
+    // Default demo: any name + phone → multiple linked orders.
+    const products = [
+      LinkedProductInfo(
+        orderNo: 'ORD-2026-MEAL',
+        productName: 'Solar Protein™ 28-Day',
+        isMealReplacement: true,
+        series: 'Slim Vitality',
+        blurb:
+            'Mix one serving with water or milk as meal support. '
+            'Pair with hydration, sleep, and gentle movement for your 28-day journey.',
+      ),
+      LinkedProductInfo(
+        orderNo: 'ORD-2026-YOUTH',
+        productName: 'Youth Solar™',
+        isMealReplacement: false,
+        series: 'Beauty Vitality',
+        blurb:
+            'Take as directed on the label. '
+            'Log each serving in Sunny chat to build your streak.',
+      ),
+      LinkedProductInfo(
+        orderNo: 'ORD-2026-VITA',
         productName: 'Vitality Collagen Boost',
         isMealReplacement: false,
-      );
-    }
+        series: 'Healthy Aging',
+        blurb:
+            'Enjoy daily as part of your vitality ritual. '
+            'Sunny will remind you and track consistency.',
+      ),
+    ];
 
-    return const OrderLinkResult(
-      success: false,
-      message:
-          'We could not find your order. Please contact support. You can still continue and we will recommend a basic plan.',
+    return OrderLinkResult(
+      success: true,
+      productName: products.first.productName,
+      isMealReplacement: true,
+      recipientName: name,
+      products: products,
     );
   }
 
   UserPlanType planTypeFor(OrderLinkResult result) {
-    if (!result.success) return UserPlanType.noProduct;
-    return result.isMealReplacement ? UserPlanType.mealReplacement : UserPlanType.nonMealReplacement;
+    if (!result.success || result.products.isEmpty) {
+      return UserPlanType.noProduct;
+    }
+    final hasMeal = result.products.any((p) => p.isMealReplacement);
+    return hasMeal
+        ? UserPlanType.mealReplacement
+        : UserPlanType.nonMealReplacement;
   }
 }
