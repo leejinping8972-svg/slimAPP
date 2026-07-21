@@ -96,20 +96,13 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                     width: copyWidth,
                     child: Text(
                       'Feel Alive.\nMeet luckdate.',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 29,
                         height: 1.1,
                         fontWeight: FontWeight.w700,
                         color: _lightBrown,
                         letterSpacing: -0.4,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.14),
-                            blurRadius: 8,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
                       ),
                     ),
                   ),
