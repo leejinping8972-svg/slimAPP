@@ -66,6 +66,19 @@ void main() {
     router.go('/register');
     await pumpFrames(tester);
 
+    expect(find.text('Join with Sunny'), findsOneWidget);
+    expect(find.text('Phone number'), findsOneWidget);
+
+    await tester.tap(find.text('Classic email + password'));
+    await pumpFrames(tester);
+
+    await tester.enterText(find.byType(TextField).first, 'new@luckdate.com');
+    await tester.pump();
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Continue'));
+    await pumpFrames(tester);
+
+    await tester.enterText(find.byType(TextField).first, 'password123');
+    await tester.pump();
     await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
     await pumpFrames(tester, 12);
 
@@ -103,6 +116,6 @@ void main() {
     router.go('/register');
     await tester.pump();
     expect(router.state.uri.path, '/');
-    expect(find.text('Create Account'), findsNothing);
+    expect(find.text('Join with Sunny'), findsNothing);
   });
 }

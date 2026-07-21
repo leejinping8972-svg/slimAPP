@@ -5,8 +5,12 @@ import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/providers/app_providers.dart';
 import '../splash/splash_page.dart';
-import 'auth_pages.dart';
 
+enum _RegisterMethod { phone, email }
+
+enum _RegisterStep { method, contact, verify, password }
+
+/// Sunny-guided registration — same shell as Sunny intro, step-by-step.
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
@@ -15,19 +19,185 @@ class RegisterPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
-  final _emailController = TextEditingController();
+  final _contactController = TextEditingController();
+  final _codeController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  _RegisterStep _step = _RegisterStep.method;
+  _RegisterMethod? _method;
+  bool _codeSent = false;
+  String? _error;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _contactController.dispose();
+    _codeController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
+  void _back() {
+    if (_step == _RegisterStep.method) {
+      context.go('/sunny/intro');
+      return;
+    }
+    setState(() {
+      _error = null;
+      switch (_step) {
+        case _RegisterStep.method:
+          break;
+        case _RegisterStep.contact:
+          _step = _RegisterStep.method;
+          _method = null;
+        case _RegisterStep.verify:
+          _step = _RegisterStep.contact;
+          _codeSent = false;
+          _codeController.clear();
+        case _RegisterStep.password:
+          _step = _method == _RegisterMethod.phone
+              ? _RegisterStep.verify
+              : _RegisterStep.contact;
+      }
+    });
+  }
+
+  void _chooseMethod(_RegisterMethod method) {
+    setState(() {
+      _method = method;
+      _step = _RegisterStep.contact;
+      _error = null;
+      _contactController.clear();
+    });
+  }
+
+  void _continueFromContact() {
+    final value = _contactController.text.trim();
+    if (_method == _RegisterMethod.phone) {
+      final digits = value.replaceAll(RegExp(r'\D'), '');
+      if (digits.length < 8) {
+        setState(() => _error = 'Please enter a valid phone number.');
+        return;
+      }
+      setState(() {
+        _error = null;
+        _step = _RegisterStep.verify;
+        _codeSent = false;
+        _codeController.clear();
+      });
+      return;
+    }
+    if (!_looksLikeEmail(value)) {
+      setState(() => _error = 'Please enter a valid email address.');
+      return;
+    }
+    setState(() {
+      _error = null;
+      _step = _RegisterStep.password;
+    });
+  }
+
+  void _sendCode() {
+    final digits =
+        _contactController.text.trim().replaceAll(RegExp(r'\D'), '');
+    if (digits.length < 8) {
+      setState(() => _error = 'Please enter a valid phone number.');
+      return;
+    }
+    setState(() {
+      _codeSent = true;
+      _error = null;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Demo code sent — enter any 4+ digits')),
+    );
+  }
+
+  void _continueFromVerify() {
+    final code = _codeController.text.trim();
+    if (!_codeSent) {
+      setState(() => _error = 'Tap Send code first.');
+      return;
+    }
+    if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
+      setState(() => _error = 'Enter the verification code (4+ digits).');
+      return;
+    }
+    setState(() {
+      _error = null;
+      _step = _RegisterStep.password;
+    });
+  }
+
   void _submit() {
+    final password = _passwordController.text;
+    if (password.length < 6) {
+      setState(() => _error = 'Password needs at least 6 characters.');
+      return;
+    }
     ref.read(appStateProvider.notifier).completeRegistration();
     context.go('/link-order');
+  }
+
+  void _primaryAction() {
+    switch (_step) {
+      case _RegisterStep.method:
+        return;
+      case _RegisterStep.contact:
+        _continueFromContact();
+      case _RegisterStep.verify:
+        _continueFromVerify();
+      case _RegisterStep.password:
+        _submit();
+    }
+  }
+
+  String get _sunnyTitle {
+    switch (_step) {
+      case _RegisterStep.method:
+        return 'Let\'s create your account';
+      case _RegisterStep.contact:
+        return _method == _RegisterMethod.phone
+            ? 'What\'s your phone number?'
+            : 'What\'s your email?';
+      case _RegisterStep.verify:
+        return 'Verify it\'s you';
+      case _RegisterStep.password:
+        return 'Set a password';
+    }
+  }
+
+  String get _sunnyBody {
+    switch (_step) {
+      case _RegisterStep.method:
+        return 'I\'ll walk you through it — phone or email, your choice.';
+      case _RegisterStep.contact:
+        return _method == _RegisterMethod.phone
+            ? 'I\'ll send a short code to confirm your number.'
+            : 'We\'ll use this to keep your vitality journey safe.';
+      case _RegisterStep.verify:
+        return 'Enter the code I just sent. Demo: any 4+ digits works.';
+      case _RegisterStep.password:
+        return 'Almost done — pick something you\'ll remember.';
+    }
+  }
+
+  String get _primaryLabel {
+    switch (_step) {
+      case _RegisterStep.method:
+        return 'Continue';
+      case _RegisterStep.contact:
+        return 'Continue';
+      case _RegisterStep.verify:
+        return 'Verify & continue';
+      case _RegisterStep.password:
+        return 'Create account';
+    }
+  }
+
+  bool get _primaryEnabled => _step != _RegisterStep.method;
+
+  static bool _looksLikeEmail(String value) {
+    return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value);
   }
 
   @override
@@ -35,73 +205,281 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 16, 0),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: _back,
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Join with Sunny',
+                      textAlign: TextAlign.center,
+                      style: LuckdateTextStyles.title,
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.lg,
+                ),
+                child: Column(
+                  children: [
+                    const LdSunnyAvatar(size: 110),
+                    const SizedBox(height: LuckdateSpacing.lg),
+                    Text(
+                      _sunnyTitle,
+                      textAlign: TextAlign.center,
+                      style: LuckdateTextStyles.h1,
+                    ),
+                    const SizedBox(height: LuckdateSpacing.sm),
+                    Text(
+                      _sunnyBody,
+                      textAlign: TextAlign.center,
+                      style: LuckdateTextStyles.body.copyWith(height: 1.45),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.xl),
+                    _buildStepBody(),
+                    if (_error != null) ...[
+                      const SizedBox(height: LuckdateSpacing.md),
+                      Text(
+                        _error!,
+                        textAlign: TextAlign.center,
+                        style: LuckdateTextStyles.caption.copyWith(
+                          color: LuckdateColors.errorSoft,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                LuckdateSpacing.lg,
+                LuckdateSpacing.sm,
+                LuckdateSpacing.lg,
+                LuckdateSpacing.lg,
+              ),
+              child: Column(
+                children: [
+                  if (_primaryEnabled)
+                    LdPrimaryButton(
+                      label: _primaryLabel,
+                      onPressed: _primaryAction,
+                    ),
+                  const SizedBox(height: LuckdateSpacing.md),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AuthMarketingHeader(
-                        title: 'Join us',
-                        subtitle:
-                            'Begin your premium ritual\nwith luckdate today.',
-                        tagline: 'Grow Toward the Light',
-                        showBack: true,
-                        showSunny: true,
-                        onBack: () => context.go('/sunny/intro'),
+                      Text(
+                        'Already have an account? ',
+                        style: LuckdateTextStyles.bodySmall,
                       ),
-                      Transform.translate(
-                        offset: const Offset(0, -28),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: LuckdateSpacing.lg,
+                      GestureDetector(
+                        onTap: () => context.go('/login'),
+                        child: Text(
+                          'Sign in',
+                          style: LuckdateTextStyles.bodySmall.copyWith(
+                            color: LuckdateColors.deepSage,
+                            fontWeight: FontWeight.w600,
                           ),
-                          child: AuthFormCard(
-                            title: 'Create Account',
-                            buttonLabel: 'Create account',
-                            onSubmit: _submit,
-                            emailController: _emailController,
-                            passwordController: _passwordController,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          LuckdateSpacing.lg,
-                          LuckdateSpacing.sm,
-                          LuckdateSpacing.lg,
-                          LuckdateSpacing.lg,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Already have an account? ',
-                              style: LuckdateTextStyles.bodySmall,
-                            ),
-                            GestureDetector(
-                              onTap: () => context.go('/login'),
-                              child: Text(
-                                'Sign in',
-                                style: LuckdateTextStyles.bodySmall.copyWith(
-                                  color: LuckdateColors.deepSage,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ],
                   ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStepBody() {
+    switch (_step) {
+      case _RegisterStep.method:
+        return Column(
+          children: [
+            _MethodCard(
+              emoji: '📱',
+              title: 'Phone number',
+              subtitle: 'Quick sign-up with SMS code',
+              onTap: () => _chooseMethod(_RegisterMethod.phone),
+            ),
+            const SizedBox(height: LuckdateSpacing.sm),
+            _MethodCard(
+              emoji: '✉️',
+              title: 'Email',
+              subtitle: 'Classic email + password',
+              onTap: () => _chooseMethod(_RegisterMethod.email),
+            ),
+          ],
+        );
+      case _RegisterStep.contact:
+        final isPhone = _method == _RegisterMethod.phone;
+        return LdCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isPhone ? 'Phone number' : 'Email',
+                style: LuckdateTextStyles.caption,
+              ),
+              TextField(
+                controller: _contactController,
+                keyboardType: isPhone
+                    ? TextInputType.phone
+                    : TextInputType.emailAddress,
+                autofillHints: [
+                  if (isPhone) AutofillHints.telephoneNumber,
+                  if (!isPhone) AutofillHints.email,
+                ],
+                decoration: InputDecoration(
+                  hintText: isPhone ? '+1 555 0100' : 'you@email.com',
+                  border: InputBorder.none,
+                ),
+                onChanged: (_) {
+                  if (_error != null) setState(() => _error = null);
+                },
+                onSubmitted: (_) => _continueFromContact(),
+              ),
+            ],
+          ),
+        );
+      case _RegisterStep.verify:
+        return LdCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Verification code',
+                      style: LuckdateTextStyles.caption,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: _sendCode,
+                    child: Text(
+                      _codeSent ? 'Resend' : 'Send code',
+                      style: LuckdateTextStyles.bodySmall.copyWith(
+                        color: LuckdateColors.deepSage,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TextField(
+                controller: _codeController,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                decoration: const InputDecoration(
+                  hintText: '1234',
+                  border: InputBorder.none,
+                  counterText: '',
+                ),
+                onChanged: (_) {
+                  if (_error != null) setState(() => _error = null);
+                },
+                onSubmitted: (_) => _continueFromVerify(),
+              ),
+            ],
+          ),
+        );
+      case _RegisterStep.password:
+        return LdCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Password', style: LuckdateTextStyles.caption),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  hintText: 'At least 6 characters',
+                  border: InputBorder.none,
+                ),
+                onChanged: (_) {
+                  if (_error != null) setState(() => _error = null);
+                },
+                onSubmitted: (_) => _submit(),
+              ),
+            ],
+          ),
+        );
+    }
+  }
+}
+
+class _MethodCard extends StatelessWidget {
+  const _MethodCard({
+    required this.emoji,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final String emoji;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(LuckdateRadius.lg),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: LuckdateColors.ivoryWhite,
+            borderRadius: BorderRadius.circular(LuckdateRadius.lg),
+            border: Border.all(color: LuckdateColors.lineSoft),
+            boxShadow: LuckdateShadows.soft,
+          ),
+          padding: const EdgeInsets.all(LuckdateSpacing.base),
+          child: Row(
+            children: [
+              Text(emoji, style: const TextStyle(fontSize: 28)),
+              const SizedBox(width: LuckdateSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: LuckdateTextStyles.body.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(subtitle, style: LuckdateTextStyles.caption),
+                  ],
                 ),
               ),
-            );
-          },
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: LuckdateColors.textSecondary,
+              ),
+            ],
+          ),
         ),
       ),
     );
