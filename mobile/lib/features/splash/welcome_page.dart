@@ -25,6 +25,8 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
 
   static const _olive = Color(0xFF5E6550);
   static const _gold = Color(0xFFC4A06E);
+  /// Light brown for primary copy / CTAs (replaces white on this screen).
+  static const _lightBrown = Color(0xFFD4B896);
 
   /// Lifestyle photo — keep subject on the right, clear wall on the left.
   static const _bgAlignment = Alignment(0.12, -0.04);
@@ -99,11 +101,11 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                         fontSize: 29,
                         height: 1.1,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFFF8F1E8),
+                        color: _lightBrown,
                         letterSpacing: -0.4,
                         shadows: [
                           Shadow(
-                            color: Colors.black.withValues(alpha: 0.18),
+                            color: Colors.black.withValues(alpha: 0.14),
                             blurRadius: 8,
                             offset: const Offset(0, 1),
                           ),
@@ -131,7 +133,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _olive,
-                          foregroundColor: Colors.white,
+                          foregroundColor: _lightBrown,
                           elevation: 0,
                           shadowColor: Colors.transparent,
                           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -152,14 +154,14 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                                     fontFamily: 'Montserrat',
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white.withValues(alpha: 0.98),
+                                    color: _lightBrown,
                                   ),
                                 ),
                               ),
                               Icon(
                                 Icons.arrow_forward_rounded,
                                 size: 18,
-                                color: Colors.white.withValues(alpha: 0.95),
+                                color: _lightBrown,
                               ),
                             ],
                           ),
@@ -171,21 +173,21 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                   _BreathingButton(
                     breath: _breathe,
                     phase: 0.5,
-                    glowColor: Colors.white,
+                    glowColor: _lightBrown,
                     child: SizedBox(
                       width: double.infinity,
                       height: 46,
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
+                          foregroundColor: _lightBrown,
                           side: BorderSide(
-                            color: Colors.white.withValues(alpha: 0.85),
+                            color: _lightBrown.withValues(alpha: 0.9),
                             width: 1.2,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
-                          backgroundColor: Colors.white.withValues(alpha: 0.14),
+                          backgroundColor: _lightBrown.withValues(alpha: 0.12),
                         ),
                         onPressed: _goLogin,
                         child: const Text(
@@ -194,7 +196,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                             fontFamily: 'Montserrat',
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                            color: _lightBrown,
                           ),
                         ),
                       ),
@@ -242,7 +244,7 @@ class _BreathingButton extends StatelessWidget {
 class _WelcomeBrand extends StatelessWidget {
   const _WelcomeBrand();
 
-  static const _taupe = Color(0xFF4F463E);
+  static const _taupe = Color(0xFF3A322C);
 
   @override
   Widget build(BuildContext context) {
@@ -253,11 +255,11 @@ class _WelcomeBrand extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BrandAssetImage(kBrandLogoAsset, height: 32),
-            SizedBox(width: 8),
+            SizedBox(width: 10),
             BrandAssetImage(
               kSuperSymbolAsset,
-              height: 34,
-              width: 34,
+              height: 46,
+              width: 46,
               knockoutBackground: false,
             ),
           ],
@@ -270,7 +272,7 @@ class _WelcomeBrand extends StatelessWidget {
             fontSize: 8.5,
             letterSpacing: 1.5,
             fontWeight: FontWeight.w600,
-            color: _taupe.withValues(alpha: 0.68),
+            color: _taupe.withValues(alpha: 0.72),
           ),
         ),
       ],
