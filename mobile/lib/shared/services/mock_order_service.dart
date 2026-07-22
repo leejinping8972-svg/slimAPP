@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../models/models.dart';
 
 class LinkedProductInfo {
@@ -35,9 +37,50 @@ class OrderLinkResult {
 }
 
 class MockOrderService {
+  static const _catalog = [
+    LinkedProductInfo(
+      orderNo: 'ORD-2026-MEAL',
+      productName: 'Solar Protein™ 28-Day',
+      isMealReplacement: true,
+      series: 'Slim Vitality',
+      blurb:
+          'Mix one serving with water or milk as meal support. '
+          'Pair with hydration, sleep, and gentle movement for your 28-day journey.',
+    ),
+    LinkedProductInfo(
+      orderNo: 'ORD-2026-YOUTH',
+      productName: 'Youth Solar™',
+      isMealReplacement: false,
+      series: 'Beauty Vitality',
+      blurb:
+          'Take as directed on the label. '
+          'Log each serving in Sunny chat to build your streak.',
+    ),
+    LinkedProductInfo(
+      orderNo: 'ORD-2026-VITA',
+      productName: 'Vitality Collagen Boost',
+      isMealReplacement: false,
+      series: 'Healthy Aging',
+      blurb:
+          'Enjoy daily as part of your vitality ritual. '
+          'Sunny will remind you and track consistency.',
+    ),
+    LinkedProductInfo(
+      orderNo: 'ORD-2026-ENERGY',
+      productName: 'Daily Energy Solar',
+      isMealReplacement: false,
+      series: 'Energy Vitality',
+      blurb:
+          'Take in the morning with water. '
+          'Sunny can nudge you when it is time for your next serving.',
+    ),
+  ];
+
   /// Demo lookup by recipient name + last 4 phone digits.
-  /// Any non-empty name + any 4-digit phone returns sample linked orders
-  /// (multiple products) so the product-intro chat can show several cards.
+  ///
+  /// - `0000` → no linked orders
+  /// - otherwise → seeded random 1–3 demo orders (stable for same inputs)
+  /// - name `meal` → always Solar Protein only (Day 1 demo)
   OrderLinkResult linkOrder({
     required String recipientName,
     required String phoneLast4,
@@ -59,89 +102,35 @@ class MockOrderService {
       );
     }
 
+    if (phone == '0000') {
+      return OrderLinkResult(
+        success: false,
+        recipientName: name,
+        message: 'No linked orders found for this name and phone ending.',
+      );
+    }
+
     final lower = name.toLowerCase();
-
-    // Single meal-journey order when demo keyword is used.
-    if (lower == 'meal' ||
-        lower == 'solar' ||
-        lower.contains('代餐') ||
-        lower == 'meal replacement') {
-      const product = LinkedProductInfo(
-        orderNo: 'ORD-DEMO-MEAL',
-        productName: 'Solar Protein™ 28-Day',
-        isMealReplacement: true,
-        series: 'Slim Vitality',
-        blurb:
-            'Mix one serving with water or milk as meal support. '
-            'Log your shake in Sunny chat or Ritual each day.',
-      );
+    if (lower == 'meal' || lower == 'solar') {
+      final product = _catalog[0];
       return OrderLinkResult(
         success: true,
         productName: product.productName,
         isMealReplacement: true,
         recipientName: name,
-        products: const [product],
+        products: [product],
       );
     }
 
-    // Single non-meal product when "other" keyword is used.
-    if (lower == 'other' ||
-        lower == 'supplement' ||
-        lower == '其他' ||
-        lower == '其他产品') {
-      const product = LinkedProductInfo(
-        orderNo: 'ORD-DEMO-OTHER',
-        productName: 'Youth Solar™',
-        isMealReplacement: false,
-        series: 'Beauty Vitality',
-        blurb:
-            'Take as directed on the label. '
-            'Set a daily reminder so Sunny can check in with you.',
-      );
-      return OrderLinkResult(
-        success: true,
-        productName: product.productName,
-        isMealReplacement: false,
-        recipientName: name,
-        products: const [product],
-      );
-    }
-
-    // Default demo: any name + phone → multiple linked orders.
-    const products = [
-      LinkedProductInfo(
-        orderNo: 'ORD-2026-MEAL',
-        productName: 'Solar Protein™ 28-Day',
-        isMealReplacement: true,
-        series: 'Slim Vitality',
-        blurb:
-            'Mix one serving with water or milk as meal support. '
-            'Pair with hydration, sleep, and gentle movement for your 28-day journey.',
-      ),
-      LinkedProductInfo(
-        orderNo: 'ORD-2026-YOUTH',
-        productName: 'Youth Solar™',
-        isMealReplacement: false,
-        series: 'Beauty Vitality',
-        blurb:
-            'Take as directed on the label. '
-            'Log each serving in Sunny chat to build your streak.',
-      ),
-      LinkedProductInfo(
-        orderNo: 'ORD-2026-VITA',
-        productName: 'Vitality Collagen Boost',
-        isMealReplacement: false,
-        series: 'Healthy Aging',
-        blurb:
-            'Enjoy daily as part of your vitality ritual. '
-            'Sunny will remind you and track consistency.',
-      ),
-    ];
+    final rng = Random(Object.hash(lower, phone));
+    final count = 1 + rng.nextInt(3); // 1–3
+    final pool = List<LinkedProductInfo>.of(_catalog)..shuffle(rng);
+    final products = pool.take(count).toList();
 
     return OrderLinkResult(
       success: true,
       productName: products.first.productName,
-      isMealReplacement: true,
+      isMealReplacement: products.any((p) => p.isMealReplacement),
       recipientName: name,
       products: products,
     );

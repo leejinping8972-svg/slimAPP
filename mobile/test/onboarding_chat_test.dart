@@ -43,7 +43,7 @@ void main() {
     expect(profile.onboardingStep, 'done');
   });
 
-  test('Product intro offer starts privacy Q&A on 立即获取', () {
+  test('Product intro offer starts privacy Q&A on Get it now', () {
     var profile = const UserProfile(
       isLoggedIn: true,
       onboardingComplete: false,
@@ -59,7 +59,7 @@ void main() {
     );
 
     final guided = OnboardingChatGuide.handle(
-      input: '立即获取',
+      input: 'Get it now',
       profile: profile,
     );
     expect(guided.profile.onboardingStep, 'privacy');
@@ -68,6 +68,6 @@ void main() {
     final seeds = OnboardingChatGuide.productIntroSeedMessages(profile);
     expect(seeds.first.text, contains('Hi Alex'));
     expect(seeds.where((m) => m.id.startsWith('onboard_product_')), hasLength(1));
-    expect(seeds.last.actionLabels, contains('立即获取'));
+    expect(seeds.last.actionLabels, contains('Get it now'));
   });
 }

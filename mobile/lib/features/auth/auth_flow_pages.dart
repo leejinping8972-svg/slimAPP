@@ -4,13 +4,12 @@ import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/mock_order_service.dart';
 import '../splash/splash_page.dart';
 
 enum _RegisterMethod { phone, email }
 
-enum _RegisterStep { method, contact, verify, password }
-
-/// Sunny-guided registration — same shell as Sunny intro, step-by-step.
+/// Sunny-guided registration — all fields on one page.
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
@@ -19,86 +18,36 @@ class RegisterPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
-  final _contactController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _codeController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  _RegisterStep _step = _RegisterStep.method;
-  _RegisterMethod? _method;
+  _RegisterMethod _method = _RegisterMethod.phone;
   bool _codeSent = false;
   String? _error;
 
   @override
   void dispose() {
-    _contactController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
     _codeController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _back() {
-    if (_step == _RegisterStep.method) {
-      context.go('/sunny/intro');
-      return;
-    }
-    setState(() {
-      _error = null;
-      switch (_step) {
-        case _RegisterStep.method:
-          break;
-        case _RegisterStep.contact:
-          _step = _RegisterStep.method;
-          _method = null;
-        case _RegisterStep.verify:
-          _step = _RegisterStep.contact;
-          _codeSent = false;
-          _codeController.clear();
-        case _RegisterStep.password:
-          _step = _method == _RegisterMethod.phone
-              ? _RegisterStep.verify
-              : _RegisterStep.contact;
-      }
-    });
-  }
-
-  void _chooseMethod(_RegisterMethod method) {
+  void _setMethod(_RegisterMethod method) {
+    if (_method == method) return;
     setState(() {
       _method = method;
-      _step = _RegisterStep.contact;
       _error = null;
-      _contactController.clear();
-    });
-  }
-
-  void _continueFromContact() {
-    final value = _contactController.text.trim();
-    if (_method == _RegisterMethod.phone) {
-      final digits = value.replaceAll(RegExp(r'\D'), '');
-      if (digits.length < 8) {
-        setState(() => _error = 'Please enter a valid phone number.');
-        return;
-      }
-      setState(() {
-        _error = null;
-        _step = _RegisterStep.verify;
-        _codeSent = false;
-        _codeController.clear();
-      });
-      return;
-    }
-    if (!_looksLikeEmail(value)) {
-      setState(() => _error = 'Please enter a valid email address.');
-      return;
-    }
-    setState(() {
-      _error = null;
-      _step = _RegisterStep.password;
+      _codeSent = false;
+      _codeController.clear();
     });
   }
 
   void _sendCode() {
-    final digits =
-        _contactController.text.trim().replaceAll(RegExp(r'\D'), '');
+    final digits = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
     if (digits.length < 8) {
       setState(() => _error = 'Please enter a valid phone number.');
       return;
@@ -112,96 +61,49 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     );
   }
 
-  void _continueFromVerify() {
-    final code = _codeController.text.trim();
-    if (!_codeSent) {
-      setState(() => _error = 'Tap Send code first.');
-      return;
-    }
-    if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
-      setState(() => _error = 'Enter the verification code (4+ digits).');
-      return;
-    }
-    setState(() {
-      _error = null;
-      _step = _RegisterStep.password;
-    });
+  static bool _looksLikeEmail(String value) {
+    return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value);
   }
 
   void _submit() {
+    if (_method == _RegisterMethod.phone) {
+      final digits =
+          _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+      if (digits.length < 8) {
+        setState(() => _error = 'Please enter a valid phone number.');
+        return;
+      }
+      if (!_codeSent) {
+        setState(() => _error = 'Tap Send code first.');
+        return;
+      }
+      final code = _codeController.text.trim();
+      if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
+        setState(() => _error = 'Enter the verification code (4+ digits).');
+        return;
+      }
+    } else {
+      final email = _emailController.text.trim();
+      if (!_looksLikeEmail(email)) {
+        setState(() => _error = 'Please enter a valid email address.');
+        return;
+      }
+    }
+
     final password = _passwordController.text;
     if (password.length < 6) {
       setState(() => _error = 'Password needs at least 6 characters.');
       return;
     }
+
     ref.read(appStateProvider.notifier).completeRegistration();
     context.go('/link-order');
   }
 
-  void _primaryAction() {
-    switch (_step) {
-      case _RegisterStep.method:
-        return;
-      case _RegisterStep.contact:
-        _continueFromContact();
-      case _RegisterStep.verify:
-        _continueFromVerify();
-      case _RegisterStep.password:
-        _submit();
-    }
-  }
-
-  String get _sunnyTitle {
-    switch (_step) {
-      case _RegisterStep.method:
-        return 'Let\'s create your account';
-      case _RegisterStep.contact:
-        return _method == _RegisterMethod.phone
-            ? 'What\'s your phone number?'
-            : 'What\'s your email?';
-      case _RegisterStep.verify:
-        return 'Verify it\'s you';
-      case _RegisterStep.password:
-        return 'Set a password';
-    }
-  }
-
-  String get _sunnyBody {
-    switch (_step) {
-      case _RegisterStep.method:
-        return 'I\'ll walk you through it — phone or email, your choice.';
-      case _RegisterStep.contact:
-        return _method == _RegisterMethod.phone
-            ? 'I\'ll send a short code to confirm your number.'
-            : 'We\'ll use this to keep your vitality journey safe.';
-      case _RegisterStep.verify:
-        return 'Enter the code I just sent. Demo: any 4+ digits works.';
-      case _RegisterStep.password:
-        return 'Almost done — pick something you\'ll remember.';
-    }
-  }
-
-  String get _primaryLabel {
-    switch (_step) {
-      case _RegisterStep.method:
-        return 'Continue';
-      case _RegisterStep.contact:
-        return 'Continue';
-      case _RegisterStep.verify:
-        return 'Verify & continue';
-      case _RegisterStep.password:
-        return 'Create account';
-    }
-  }
-
-  bool get _primaryEnabled => _step != _RegisterStep.method;
-
-  static bool _looksLikeEmail(String value) {
-    return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final isPhone = _method == _RegisterMethod.phone;
+
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: SafeArea(
@@ -212,7 +114,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: _back,
+                    onPressed: () => context.go('/sunny/intro'),
                     icon: const Icon(Icons.arrow_back_ios_new, size: 20),
                   ),
                   Expanded(
@@ -230,27 +132,140 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
                   LuckdateSpacing.lg,
-                  LuckdateSpacing.lg,
+                  LuckdateSpacing.md,
                   LuckdateSpacing.lg,
                   LuckdateSpacing.lg,
                 ),
                 child: Column(
                   children: [
-                    const LdSunnyAvatar(size: 110),
-                    const SizedBox(height: LuckdateSpacing.lg),
+                    const LdSunnyAvatar(size: 96),
+                    const SizedBox(height: LuckdateSpacing.base),
                     Text(
-                      _sunnyTitle,
+                      'Create your account',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.h1,
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      _sunnyBody,
+                      'Phone or email — one quick form.',
                       textAlign: TextAlign.center,
-                      style: LuckdateTextStyles.body.copyWith(height: 1.45),
+                      style: LuckdateTextStyles.bodySmall,
                     ),
-                    const SizedBox(height: LuckdateSpacing.xl),
-                    _buildStepBody(),
+                    const SizedBox(height: LuckdateSpacing.lg),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: LdChoiceChip(
+                            label: 'Phone',
+                            selected: isPhone,
+                            onTap: () => _setMethod(_RegisterMethod.phone),
+                          ),
+                        ),
+                        const SizedBox(width: LuckdateSpacing.sm),
+                        Expanded(
+                          child: LdChoiceChip(
+                            label: 'Email',
+                            selected: !isPhone,
+                            onTap: () => _setMethod(_RegisterMethod.email),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: LuckdateSpacing.lg),
+                    LdCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (isPhone) ...[
+                            Text('Phone number', style: LuckdateTextStyles.caption),
+                            TextField(
+                              controller: _phoneController,
+                              keyboardType: TextInputType.phone,
+                              autofillHints: const [
+                                AutofillHints.telephoneNumber,
+                              ],
+                              decoration: const InputDecoration(
+                                hintText: '+1 555 0100',
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (_) {
+                                if (_error != null) {
+                                  setState(() => _error = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: LuckdateSpacing.md),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Verification code',
+                                    style: LuckdateTextStyles.caption,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: _sendCode,
+                                  child: Text(
+                                    _codeSent ? 'Resend' : 'Send code',
+                                    style: LuckdateTextStyles.bodySmall.copyWith(
+                                      color: LuckdateColors.deepSage,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TextField(
+                              controller: _codeController,
+                              keyboardType: TextInputType.number,
+                              maxLength: 6,
+                              decoration: const InputDecoration(
+                                hintText: '1234',
+                                border: InputBorder.none,
+                                counterText: '',
+                              ),
+                              onChanged: (_) {
+                                if (_error != null) {
+                                  setState(() => _error = null);
+                                }
+                              },
+                            ),
+                          ] else ...[
+                            Text('Email', style: LuckdateTextStyles.caption),
+                            TextField(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              autofillHints: const [AutofillHints.email],
+                              decoration: const InputDecoration(
+                                hintText: 'you@email.com',
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (_) {
+                                if (_error != null) {
+                                  setState(() => _error = null);
+                                }
+                              },
+                            ),
+                          ],
+                          const SizedBox(height: LuckdateSpacing.md),
+                          Text('Password', style: LuckdateTextStyles.caption),
+                          TextField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: 'At least 6 characters',
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (_) {
+                              if (_error != null) {
+                                setState(() => _error = null);
+                              }
+                            },
+                            onSubmitted: (_) => _submit(),
+                          ),
+                        ],
+                      ),
+                    ),
                     if (_error != null) ...[
                       const SizedBox(height: LuckdateSpacing.md),
                       Text(
@@ -274,11 +289,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
               child: Column(
                 children: [
-                  if (_primaryEnabled)
-                    LdPrimaryButton(
-                      label: _primaryLabel,
-                      onPressed: _primaryAction,
-                    ),
+                  LdPrimaryButton(
+                    label: 'Create account',
+                    onPressed: _submit,
+                  ),
                   const SizedBox(height: LuckdateSpacing.md),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -303,183 +317,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStepBody() {
-    switch (_step) {
-      case _RegisterStep.method:
-        return Column(
-          children: [
-            _MethodCard(
-              emoji: '📱',
-              title: 'Phone number',
-              subtitle: 'Quick sign-up with SMS code',
-              onTap: () => _chooseMethod(_RegisterMethod.phone),
-            ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            _MethodCard(
-              emoji: '✉️',
-              title: 'Email',
-              subtitle: 'Classic email + password',
-              onTap: () => _chooseMethod(_RegisterMethod.email),
-            ),
-          ],
-        );
-      case _RegisterStep.contact:
-        final isPhone = _method == _RegisterMethod.phone;
-        return LdCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                isPhone ? 'Phone number' : 'Email',
-                style: LuckdateTextStyles.caption,
-              ),
-              TextField(
-                controller: _contactController,
-                keyboardType: isPhone
-                    ? TextInputType.phone
-                    : TextInputType.emailAddress,
-                autofillHints: [
-                  if (isPhone) AutofillHints.telephoneNumber,
-                  if (!isPhone) AutofillHints.email,
-                ],
-                decoration: InputDecoration(
-                  hintText: isPhone ? '+1 555 0100' : 'you@email.com',
-                  border: InputBorder.none,
-                ),
-                onChanged: (_) {
-                  if (_error != null) setState(() => _error = null);
-                },
-                onSubmitted: (_) => _continueFromContact(),
-              ),
-            ],
-          ),
-        );
-      case _RegisterStep.verify:
-        return LdCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Verification code',
-                      style: LuckdateTextStyles.caption,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: _sendCode,
-                    child: Text(
-                      _codeSent ? 'Resend' : 'Send code',
-                      style: LuckdateTextStyles.bodySmall.copyWith(
-                        color: LuckdateColors.deepSage,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TextField(
-                controller: _codeController,
-                keyboardType: TextInputType.number,
-                maxLength: 6,
-                decoration: const InputDecoration(
-                  hintText: '1234',
-                  border: InputBorder.none,
-                  counterText: '',
-                ),
-                onChanged: (_) {
-                  if (_error != null) setState(() => _error = null);
-                },
-                onSubmitted: (_) => _continueFromVerify(),
-              ),
-            ],
-          ),
-        );
-      case _RegisterStep.password:
-        return LdCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Password', style: LuckdateTextStyles.caption),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'At least 6 characters',
-                  border: InputBorder.none,
-                ),
-                onChanged: (_) {
-                  if (_error != null) setState(() => _error = null);
-                },
-                onSubmitted: (_) => _submit(),
-              ),
-            ],
-          ),
-        );
-    }
-  }
-}
-
-class _MethodCard extends StatelessWidget {
-  const _MethodCard({
-    required this.emoji,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final String emoji;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(LuckdateRadius.lg),
-        child: Ink(
-          decoration: BoxDecoration(
-            color: LuckdateColors.ivoryWhite,
-            borderRadius: BorderRadius.circular(LuckdateRadius.lg),
-            border: Border.all(color: LuckdateColors.lineSoft),
-            boxShadow: LuckdateShadows.soft,
-          ),
-          padding: const EdgeInsets.all(LuckdateSpacing.base),
-          child: Row(
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 28)),
-              const SizedBox(width: LuckdateSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: LuckdateTextStyles.body.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(subtitle, style: LuckdateTextStyles.caption),
-                  ],
-                ),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: LuckdateColors.textSecondary,
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -554,6 +391,9 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
 
+  OrderLinkResult? _queryResult;
+  bool _queried = false;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -571,65 +411,42 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
     context.go('/home');
   }
 
-  void _fetchProductInfo() {
+  void _query() {
+    final result = ref.read(mockOrderServiceProvider).linkOrder(
+          recipientName: _nameController.text,
+          phoneLast4: _phoneController.text,
+        );
+    setState(() {
+      _queryResult = result;
+      _queried = true;
+    });
+  }
+
+  bool get _hasOrders =>
+      _queryResult != null &&
+      _queryResult!.success &&
+      _queryResult!.products.isNotEmpty;
+
+  void _getProductInfo() {
+    if (!_hasOrders) return;
     final result = ref.read(appStateProvider.notifier).linkOrder(
           recipientName: _nameController.text,
           phoneLast4: _phoneController.text,
         );
     if (!result.success) {
-      _showFailureDialog(result.message);
+      setState(() {
+        _queryResult = result;
+        _queried = true;
+      });
       return;
     }
     if (!mounted) return;
-    final count = result.products.length;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          count == 1
-              ? 'Found: ${result.productName}'
-              : 'Found $count linked products',
-        ),
-      ),
-    );
     final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
     if (onboarded) {
       context.go('/home');
     } else {
       _goToProductIntroChat();
     }
-  }
-
-  void _continueAfterFailure() {
-    final onboarded = ref.read(appStateProvider).profile.onboardingComplete;
-    ref.read(appStateProvider.notifier).skipOrderLink();
-    if (onboarded) {
-      context.pop();
-    } else {
-      _goToSunnyQuestions();
-    }
-  }
-
-  void _showFailureDialog(String message) {
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Order not found'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Try again'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              _continueAfterFailure();
-            },
-            child: const Text('Continue'),
-          ),
-        ],
-      ),
-    );
   }
 
   void _skip() {
@@ -659,8 +476,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             Text('Link your order', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Enter the recipient name and phone digits to unlock your products. '
-              'You can skip and explore first.',
+              'Search with recipient name and the last 4 phone digits.',
               style: LuckdateTextStyles.bodySmall,
             ),
             if (coupon != null) ...[
@@ -700,8 +516,16 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
                 labelText: 'Recipient name',
-                hintText: 'Any name works for demo',
+                hintText: 'Name on the order',
               ),
+              onChanged: (_) {
+                if (_queried) {
+                  setState(() {
+                    _queried = false;
+                    _queryResult = null;
+                  });
+                }
+              },
             ),
             const SizedBox(height: LuckdateSpacing.base),
             TextField(
@@ -712,7 +536,62 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                 labelText: 'Last 4 digits of phone',
                 hintText: '1234',
               ),
+              onChanged: (_) {
+                if (_queried) {
+                  setState(() {
+                    _queried = false;
+                    _queryResult = null;
+                  });
+                }
+              },
             ),
+            const SizedBox(height: LuckdateSpacing.base),
+            LdSecondaryButton(
+              label: 'Query',
+              onPressed: _query,
+            ),
+            if (_queried) ...[
+              const SizedBox(height: LuckdateSpacing.lg),
+              if (_hasOrders) ...[
+                Text(
+                  'Found ${_queryResult!.products.length} '
+                  '${_queryResult!.products.length == 1 ? 'order' : 'orders'}',
+                  style: LuckdateTextStyles.title,
+                ),
+                const SizedBox(height: LuckdateSpacing.sm),
+                ..._queryResult!.products.map((p) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
+                    child: LdCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            p.productName,
+                            style: LuckdateTextStyles.body.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '${p.orderNo} · ${p.series.isNotEmpty ? p.series : 'Vitality'}',
+                            style: LuckdateTextStyles.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+              ] else
+                LdCard(
+                  child: Text(
+                    _queryResult?.message.isNotEmpty == true
+                        ? _queryResult!.message
+                        : 'No linked orders found.',
+                    style: LuckdateTextStyles.bodySmall,
+                  ),
+                ),
+            ],
             const SizedBox(height: LuckdateSpacing.base),
             LdCard(
               child: Column(
@@ -721,7 +600,11 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                   Text('Demo guide', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    '• Any name + 4 digits → multiple sample products',
+                    '• Any name + 4 digits → 1–3 demo orders',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                  Text(
+                    '• Phone ending 0000 → no linked orders',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
@@ -729,11 +612,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Name "other" → Youth Solar only',
-                    style: LuckdateTextStyles.caption,
-                  ),
-                  Text(
-                    '• Skip → No plan yet; explore with Sunny',
+                    '• Skip → explore with Sunny first',
                     style: LuckdateTextStyles.caption,
                   ),
                 ],
@@ -741,8 +620,8 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
             LdPrimaryButton(
-              label: '获取产品说明',
-              onPressed: _fetchProductInfo,
+              label: 'Get product info',
+              onPressed: _hasOrders ? _getProductInfo : null,
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             LdSecondaryButton(

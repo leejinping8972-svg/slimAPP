@@ -11,7 +11,7 @@ class SunnyIntentRouter {
   }) {
     final lower = input.toLowerCase();
 
-    if (_matches(lower, ['pregnant', 'pregnancy', 'breastfeeding', '备孕', '怀孕'])) {
+    if (_matches(lower, ['pregnant', 'pregnancy', 'breastfeeding'])) {
       return const SunnyIntentResult(
         reply:
             'Thank you for sharing that. A standard Slim Journey is not designed for pregnancy or breastfeeding. Please speak with a healthcare professional before making any nutrition changes.',
@@ -21,7 +21,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['kill myself', 'want to die', 'hurt myself', '不想活'])) {
+    if (_matches(lower, ['kill myself', 'want to die', 'hurt myself'])) {
       return const SunnyIntentResult(
         reply:
             'I hear how much pain you are carrying right now. You deserve real support beyond this app. Please reach out to a trusted person or local crisis line right away.',
@@ -31,7 +31,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['dinner party', 'party', '聚餐', 'adjust plan'])) {
+    if (_matches(lower, ['dinner party', 'party', 'adjust plan'])) {
       return SunnyIntentResult(
         reply:
             'A social dinner does not undo your journey. Enjoy it gently, hydrate well, and we will keep tomorrow light and steady.',
@@ -49,9 +49,6 @@ class SunnyIntentRouter {
       'walked',
       'walking',
       'gym',
-      '运动',
-      '跑步',
-      '瑜伽',
     ])) {
       final updated = CheckInEstimator.applyExerciseFromText(today, lower);
       final addedMin = updated.exerciseMinutes - today.exerciseMinutes;
@@ -75,10 +72,6 @@ class SunnyIntentRouter {
       'yogurt',
       'salmon',
       'oatmeal',
-      '吃了',
-      '早餐',
-      '午餐',
-      '晚餐',
     ])) {
       final updated = CheckInEstimator.applyMealFromText(today, lower);
       final meal = updated.meals.last;
@@ -90,7 +83,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['slept', 'sleep', 'hours of sleep', '睡觉', '睡眠'])) {
+    if (_matches(lower, ['slept', 'sleep', 'hours of sleep'])) {
       final updated = CheckInEstimator.applySleepFromText(today, lower);
       return SunnyIntentResult(
         reply:
@@ -109,7 +102,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['drank', 'shake', 'protein', 'meal replacement', '代餐'])) {
+    if (_matches(lower, ['drank', 'shake', 'protein', 'meal replacement'])) {
       final updated = CheckInEstimator.applyProductShake(today);
       return SunnyIntentResult(
         reply:
@@ -119,7 +112,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['water', 'ml', 'cup', 'glass', '1500', '2000', '饮水'])) {
+    if (_matches(lower, ['water', 'ml', 'cup', 'glass', '1500', '2000'])) {
       final amount = _extractMl(lower) ?? 250;
       final newMl = today.hydrationMl + amount;
       return SunnyIntentResult(
@@ -130,7 +123,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['weight', 'kg', 'lb', 'pound', '体重'])) {
+    if (_matches(lower, ['weight', 'kg', 'lb', 'pound'])) {
       return SunnyIntentResult(
         reply:
             'Your weight is logged. One number can move — your trend over time matters more than any single day.',
@@ -139,7 +132,7 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['tired', 'stressed', 'sad', 'overwhelmed', '累', '压力'])) {
+    if (_matches(lower, ['tired', 'stressed', 'sad', 'overwhelmed'])) {
       return SunnyIntentResult(
         reply:
             'Thank you for telling me how you feel. Let us keep today simple — one small ritual is enough. Tomorrow we continue from here.',

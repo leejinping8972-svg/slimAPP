@@ -22,6 +22,38 @@ void main() {
     expect(container.read(appStateProvider).journey.day, 1);
   });
 
+  test('phone ending 0000 returns no linked orders', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    container.read(appStateProvider.notifier).completeRegistration();
+    final result = container.read(appStateProvider.notifier).linkOrder(
+          recipientName: 'Alex',
+          phoneLast4: '0000',
+        );
+
+    expect(result.success, isFalse);
+    expect(result.products, isEmpty);
+    expect(
+      container.read(appStateProvider).profile.orderLinkStatus,
+      OrderLinkStatus.failed,
+    );
+  });
+
+  test('any name and phone returns 1 to 3 demo orders', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    container.read(appStateProvider.notifier).completeRegistration();
+    final result = container.read(appStateProvider.notifier).linkOrder(
+          recipientName: 'Alex',
+          phoneLast4: '1234',
+        );
+
+    expect(result.success, isTrue);
+    expect(result.products.length, inInclusiveRange(1, 3));
+  });
+
   test('in-app purchase waits for receipt confirmation before Day 1', () {
     final container = ProviderContainer();
     addTearDown(container.dispose);

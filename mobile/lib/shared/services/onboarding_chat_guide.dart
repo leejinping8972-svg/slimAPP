@@ -75,7 +75,7 @@ class OnboardingChatGuide {
         isUser: false,
         text: planOfferPrompt,
         timestamp: now.add(Duration(milliseconds: products.length + 2)),
-        actionLabels: const ['立即获取'],
+        actionLabels: const ['Get it now'],
       ),
     );
     return messages;
@@ -202,10 +202,10 @@ class OnboardingChatGuide {
           profile: profile,
           result: const SunnyIntentResult(
             reply:
-                'No rush — tap "立即获取" whenever you are ready, '
+                'No rush — tap "Get it now" whenever you are ready, '
                 'or reply "yes" to start your personalized plan.',
             intents: ['onboarding_plan_offer'],
-            actionLabels: ['立即获取'],
+            actionLabels: ['Get it now'],
           ),
         );
 
@@ -439,24 +439,20 @@ class OnboardingChatGuide {
   }
 
   static bool _wantsPlan(String lower) {
-    return lower.contains('立即获取') ||
-        lower.contains('获取') ||
+    return lower.contains('get it now') ||
+        lower.contains('get now') ||
         lower == 'yes' ||
         lower == 'y' ||
         lower.contains('ok') ||
         lower.contains('agree') ||
-        lower.contains('start') ||
-        lower.contains('要') ||
-        lower.contains('好');
+        lower.contains('start');
   }
 
   static bool _agrees(String lower) {
     return lower.contains('agree') ||
         lower == 'yes' ||
         lower == 'y' ||
-        lower.contains('ok') ||
-        lower.contains('确认') ||
-        lower.contains('同意');
+        lower.contains('ok');
   }
 
   static String? _parseAge(String lower) {
@@ -493,10 +489,10 @@ class OnboardingChatGuide {
   }
 
   static String? _parseMeal(String lower) {
-    if (lower.contains('breakfast') || lower.contains('早餐')) return 'breakfast';
-    if (lower.contains('lunch') || lower.contains('午餐')) return 'lunch';
-    if (lower.contains('dinner') || lower.contains('晚餐')) return 'dinner';
-    if (lower.contains('not sure') || lower.contains('unsure') || lower.contains('不确定')) {
+    if (lower.contains('breakfast')) return 'breakfast';
+    if (lower.contains('lunch')) return 'lunch';
+    if (lower.contains('dinner')) return 'dinner';
+    if (lower.contains('not sure') || lower.contains('unsure')) {
       return 'not sure';
     }
     return null;
@@ -526,7 +522,7 @@ class OnboardingChatGuide {
 
   static List<(String, String)> quickAsksFor(String step) {
     return switch (step) {
-      'plan_offer' => [('✨', '立即获取')],
+      'plan_offer' => [('✨', 'Get it now')],
       'privacy' => [('✅', 'I agree')],
       'age' => [
         ('🌿', '35-50'),
