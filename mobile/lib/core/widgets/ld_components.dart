@@ -228,9 +228,8 @@ class LdAwaitingReceiptPanel extends StatelessWidget {
     final label = productName.isEmpty ? 'Solar Protein™' : productName;
 
     return LdCard(
-      accentColor: LuckdateColors.sunGold,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
