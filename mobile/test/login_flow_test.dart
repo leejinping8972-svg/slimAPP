@@ -89,18 +89,12 @@ void main() {
     expect(find.text('Create your account'), findsOneWidget);
     expect(find.text('Create account'), findsOneWidget);
 
-    // Email + verification code (no password on register).
+    // Phone or email only — no password / verification code.
     await tester.tap(find.bySemanticsLabel('Email'));
     await pumpFrames(tester);
     final fields = find.byType(TextField);
-    expect(fields, findsNWidgets(2));
+    expect(fields, findsOneWidget);
     await tester.enterText(fields.at(0), 'new@luckdate.com');
-    await tester.tap(find.text('Send code'));
-    await pumpFrames(tester);
-    ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
-        .clearSnackBars();
-    await tester.pump();
-    await tester.enterText(fields.at(1), '1234');
     await tester.pump();
     await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
     await pumpFrames(tester, 12);
@@ -109,9 +103,6 @@ void main() {
     expect(find.text('Query'), findsOneWidget);
     expect(find.text('Get product info'), findsOneWidget);
 
-    ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
-        .clearSnackBars();
-    await tester.pump();
     await tester.scrollUntilVisible(
       find.text('Skip for now'),
       200,

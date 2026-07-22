@@ -8,7 +8,7 @@ import '../../shared/services/mock_order_service.dart';
 import '../splash/splash_page.dart';
 import 'auth_pages.dart';
 
-/// Sunny-guided registration — phone or email + code only (no password).
+/// Sunny-guided registration — phone or email only (no password / code).
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
@@ -19,17 +19,14 @@ class RegisterPage extends ConsumerStatefulWidget {
 class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
-  final _codeController = TextEditingController();
 
   AuthChannel _channel = AuthChannel.phone;
-  bool _codeSent = false;
   String? _error;
 
   @override
   void dispose() {
     _phoneController.dispose();
     _emailController.dispose();
-    _codeController.dispose();
     super.dispose();
   }
 
@@ -38,34 +35,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     setState(() {
       _channel = channel;
       _error = null;
-      _codeSent = false;
-      _codeController.clear();
     });
   }
 
   void _clearError() {
     if (_error != null) setState(() => _error = null);
-  }
-
-  void _sendCode() {
-    if (_channel == AuthChannel.phone) {
-      final digits =
-          _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
-      if (digits.length < 8) {
-        setState(() => _error = 'Please enter a valid phone number.');
-        return;
-      }
-    } else if (!AuthChannelToggle.looksLikeEmail(_emailController.text)) {
-      setState(() => _error = 'Please enter a valid email address.');
-      return;
-    }
-    setState(() {
-      _codeSent = true;
-      _error = null;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Demo code sent — enter any 4+ digits')),
-    );
   }
 
   void _submit() {
@@ -78,16 +52,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       }
     } else if (!AuthChannelToggle.looksLikeEmail(_emailController.text)) {
       setState(() => _error = 'Please enter a valid email address.');
-      return;
-    }
-
-    if (!_codeSent) {
-      setState(() => _error = 'Tap Send code first.');
-      return;
-    }
-    final code = _codeController.text.trim();
-    if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
-      setState(() => _error = 'Enter the verification code (4+ digits).');
       return;
     }
 
@@ -136,7 +100,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      'Verify with a code — no password needed.',
+                      'Just your phone or email to get started.',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.bodySmall,
                     ),
@@ -167,38 +131,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                               hintText:
                                   isPhone ? '+1 555 0100' : 'you@email.com',
                               border: InputBorder.none,
-                            ),
-                            onChanged: (_) => _clearError(),
-                          ),
-                          const SizedBox(height: LuckdateSpacing.md),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Verification code',
-                                  style: LuckdateTextStyles.caption,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: _sendCode,
-                                child: Text(
-                                  _codeSent ? 'Resend' : 'Send code',
-                                  style: LuckdateTextStyles.bodySmall.copyWith(
-                                    color: LuckdateColors.deepSage,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          TextField(
-                            controller: _codeController,
-                            keyboardType: TextInputType.number,
-                            maxLength: 6,
-                            decoration: const InputDecoration(
-                              hintText: '1234',
-                              border: InputBorder.none,
-                              counterText: '',
                             ),
                             onChanged: (_) => _clearError(),
                             onSubmitted: (_) => _submit(),
