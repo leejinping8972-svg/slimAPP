@@ -418,7 +418,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               },
             ),
             const SizedBox(height: LuckdateSpacing.base),
-            LdSecondaryButton(
+            LdPrimaryButton(
               label: 'Query',
               onPressed: _query,
             ),
@@ -446,10 +446,6 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                           ),
                           const SizedBox(height: LuckdateSpacing.sm),
                           _OrderMetaRow(label: 'Order No.', value: p.orderNo),
-                          _OrderMetaRow(
-                            label: 'SKU',
-                            value: p.sku.isNotEmpty ? p.sku : '—',
-                          ),
                           _OrderMetaRow(
                             label: 'Ordered at',
                             value: p.orderedAt.isNotEmpty ? p.orderedAt : '—',
@@ -500,10 +496,31 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               label: 'Get product info',
               onPressed: _hasOrders ? _getProductInfo : null,
             ),
-            const SizedBox(height: LuckdateSpacing.sm),
-            LdSecondaryButton(
-              label: 'Skip for now',
-              onPressed: _skip,
+            const SizedBox(height: LuckdateSpacing.md),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: OutlinedButton(
+                onPressed: _skip,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: LuckdateColors.deepSage,
+                  backgroundColor: LuckdateColors.sageSoft,
+                  side: const BorderSide(
+                    color: LuckdateColors.deepSage,
+                    width: 1.5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                  ),
+                ),
+                child: Text(
+                  'Skip for now',
+                  style: LuckdateTextStyles.body.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: LuckdateColors.deepSage,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.lg),
           ],
