@@ -87,8 +87,10 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: topInset),
+                  // Brand row can be a bit wider than body copy so the wordmark
+                  // is never clipped by the left copy column.
                   SizedBox(
-                    width: copyWidth,
+                    width: (copyWidth + 36).clamp(220.0, 260.0),
                     child: const _WelcomeBrand(),
                   ),
                   const SizedBox(height: 18),
@@ -244,15 +246,24 @@ class _WelcomeBrand extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BrandAssetImage(kBrandLogoAsset, height: 32, knockoutBackground: false),
-            SizedBox(width: 10),
-            BrandAssetImage(
+            const Flexible(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: BrandAssetImage(
+                  kBrandLogoAsset,
+                  height: 28,
+                  knockoutBackground: false,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            const BrandAssetImage(
               kSuperSymbolAsset,
-              height: 46,
-              width: 46,
+              height: 40,
+              width: 40,
               knockoutBackground: false,
             ),
           ],
