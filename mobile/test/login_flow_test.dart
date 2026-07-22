@@ -42,8 +42,10 @@ void main() {
   testWidgets('Login Sign in navigates to ritual', (tester) async {
     final router = await pumpApp(tester);
 
-    expect(find.text('Sign In'), findsOneWidget);
+    expect(find.text('Welcome back'), findsOneWidget);
 
+    await tester.tap(find.bySemanticsLabel('Email'));
+    await pumpFrames(tester);
     await tester.enterText(find.byType(TextField).first, 'hq@flowhealth.com');
     await tester.enterText(find.byType(TextField).last, 'password123');
     await tester.pump();
@@ -84,16 +86,21 @@ void main() {
     router.go('/register');
     await pumpFrames(tester);
 
-    expect(find.text('Join with Sunny'), findsOneWidget);
+    expect(find.text('Create your account'), findsOneWidget);
     expect(find.text('Create account'), findsOneWidget);
 
-    // Switch to email on the single-page form (avoids SMS snackbar in tests).
-    await tester.tap(find.text('Email'));
+    // Email + verification code (no password on register).
+    await tester.tap(find.bySemanticsLabel('Email'));
     await pumpFrames(tester);
     final fields = find.byType(TextField);
     expect(fields, findsNWidgets(2));
     await tester.enterText(fields.at(0), 'new@luckdate.com');
-    await tester.enterText(fields.at(1), 'password123');
+    await tester.tap(find.text('Send code'));
+    await pumpFrames(tester);
+    ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
+        .clearSnackBars();
+    await tester.pump();
+    await tester.enterText(fields.at(1), '1234');
     await tester.pump();
     await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
     await pumpFrames(tester, 12);
@@ -102,13 +109,17 @@ void main() {
     expect(find.text('Query'), findsOneWidget);
     expect(find.text('Get product info'), findsOneWidget);
 
+    ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
+        .clearSnackBars();
+    await tester.pump();
     await tester.scrollUntilVisible(
       find.text('Skip for now'),
       200,
       scrollable: find.byType(Scrollable).last,
     );
     await pumpFrames(tester, 4);
-    await tester.tap(find.widgetWithText(OutlinedButton, 'Skip for now'));
+    await tester.ensureVisible(find.text('Skip for now'));
+    await tester.tap(find.text('Skip for now'));
     await pumpFrames(tester, 16);
 
     expect(find.textContaining('privacy policy'), findsOneWidget);

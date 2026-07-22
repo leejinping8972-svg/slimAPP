@@ -6,10 +6,9 @@ import '../../core/widgets/ld_components.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/mock_order_service.dart';
 import '../splash/splash_page.dart';
+import 'auth_pages.dart';
 
-enum _RegisterMethod { phone, email }
-
-/// Sunny-guided registration — all fields on one page.
+/// Sunny-guided registration — phone or email + code only (no password).
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
@@ -21,9 +20,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _codeController = TextEditingController();
-  final _passwordController = TextEditingController();
 
-  _RegisterMethod _method = _RegisterMethod.phone;
+  AuthChannel _channel = AuthChannel.phone;
   bool _codeSent = false;
   String? _error;
 
@@ -32,24 +30,33 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     _phoneController.dispose();
     _emailController.dispose();
     _codeController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
-  void _setMethod(_RegisterMethod method) {
-    if (_method == method) return;
+  void _setChannel(AuthChannel channel) {
+    if (_channel == channel) return;
     setState(() {
-      _method = method;
+      _channel = channel;
       _error = null;
       _codeSent = false;
       _codeController.clear();
     });
   }
 
+  void _clearError() {
+    if (_error != null) setState(() => _error = null);
+  }
+
   void _sendCode() {
-    final digits = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
-    if (digits.length < 8) {
-      setState(() => _error = 'Please enter a valid phone number.');
+    if (_channel == AuthChannel.phone) {
+      final digits =
+          _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+      if (digits.length < 8) {
+        setState(() => _error = 'Please enter a valid phone number.');
+        return;
+      }
+    } else if (!AuthChannelToggle.looksLikeEmail(_emailController.text)) {
+      setState(() => _error = 'Please enter a valid email address.');
       return;
     }
     setState(() {
@@ -61,38 +68,26 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     );
   }
 
-  static bool _looksLikeEmail(String value) {
-    return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value);
-  }
-
   void _submit() {
-    if (_method == _RegisterMethod.phone) {
+    if (_channel == AuthChannel.phone) {
       final digits =
           _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
       if (digits.length < 8) {
         setState(() => _error = 'Please enter a valid phone number.');
         return;
       }
-      if (!_codeSent) {
-        setState(() => _error = 'Tap Send code first.');
-        return;
-      }
-      final code = _codeController.text.trim();
-      if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
-        setState(() => _error = 'Enter the verification code (4+ digits).');
-        return;
-      }
-    } else {
-      final email = _emailController.text.trim();
-      if (!_looksLikeEmail(email)) {
-        setState(() => _error = 'Please enter a valid email address.');
-        return;
-      }
+    } else if (!AuthChannelToggle.looksLikeEmail(_emailController.text)) {
+      setState(() => _error = 'Please enter a valid email address.');
+      return;
     }
 
-    final password = _passwordController.text;
-    if (password.length < 6) {
-      setState(() => _error = 'Password needs at least 6 characters.');
+    if (!_codeSent) {
+      setState(() => _error = 'Tap Send code first.');
+      return;
+    }
+    final code = _codeController.text.trim();
+    if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
+      setState(() => _error = 'Enter the verification code (4+ digits).');
       return;
     }
 
@@ -102,7 +97,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isPhone = _method == _RegisterMethod.phone;
+    final isPhone = _channel == AuthChannel.phone;
 
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
@@ -117,13 +112,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     onPressed: () => context.go('/sunny/intro'),
                     icon: const Icon(Icons.arrow_back_ios_new, size: 20),
                   ),
-                  Expanded(
-                    child: Text(
-                      'Join with Sunny',
-                      textAlign: TextAlign.center,
-                      style: LuckdateTextStyles.title,
-                    ),
-                  ),
+                  const Spacer(),
                   const SizedBox(width: 48),
                 ],
               ),
@@ -132,13 +121,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
                   LuckdateSpacing.lg,
-                  LuckdateSpacing.md,
+                  LuckdateSpacing.sm,
                   LuckdateSpacing.lg,
                   LuckdateSpacing.lg,
                 ),
                 child: Column(
                   children: [
-                    const LdSunnyAvatar(size: 96),
+                    const LdSunnyAvatar(size: 72),
                     const SizedBox(height: LuckdateSpacing.base),
                     Text(
                       'Create your account',
@@ -147,120 +136,71 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      'Phone or email — one quick form.',
+                      'Verify with a code — no password needed.',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.bodySmall,
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: LdChoiceChip(
-                            label: 'Phone',
-                            selected: isPhone,
-                            onTap: () => _setMethod(_RegisterMethod.phone),
-                          ),
-                        ),
-                        const SizedBox(width: LuckdateSpacing.sm),
-                        Expanded(
-                          child: LdChoiceChip(
-                            label: 'Email',
-                            selected: !isPhone,
-                            onTap: () => _setMethod(_RegisterMethod.email),
-                          ),
-                        ),
-                      ],
+                    AuthChannelToggle(
+                      value: _channel,
+                      onChanged: _setChannel,
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
                     LdCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (isPhone) ...[
-                            Text('Phone number', style: LuckdateTextStyles.caption),
-                            TextField(
-                              controller: _phoneController,
-                              keyboardType: TextInputType.phone,
-                              autofillHints: const [
-                                AutofillHints.telephoneNumber,
-                              ],
-                              decoration: const InputDecoration(
-                                hintText: '+1 555 0100',
-                                border: InputBorder.none,
-                              ),
-                              onChanged: (_) {
-                                if (_error != null) {
-                                  setState(() => _error = null);
-                                }
-                              },
-                            ),
-                            const SizedBox(height: LuckdateSpacing.md),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Verification code',
-                                    style: LuckdateTextStyles.caption,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: _sendCode,
-                                  child: Text(
-                                    _codeSent ? 'Resend' : 'Send code',
-                                    style: LuckdateTextStyles.bodySmall.copyWith(
-                                      color: LuckdateColors.deepSage,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            TextField(
-                              controller: _codeController,
-                              keyboardType: TextInputType.number,
-                              maxLength: 6,
-                              decoration: const InputDecoration(
-                                hintText: '1234',
-                                border: InputBorder.none,
-                                counterText: '',
-                              ),
-                              onChanged: (_) {
-                                if (_error != null) {
-                                  setState(() => _error = null);
-                                }
-                              },
-                            ),
-                          ] else ...[
-                            Text('Email', style: LuckdateTextStyles.caption),
-                            TextField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: const [AutofillHints.email],
-                              decoration: const InputDecoration(
-                                hintText: 'you@email.com',
-                                border: InputBorder.none,
-                              ),
-                              onChanged: (_) {
-                                if (_error != null) {
-                                  setState(() => _error = null);
-                                }
-                              },
-                            ),
-                          ],
-                          const SizedBox(height: LuckdateSpacing.md),
-                          Text('Password', style: LuckdateTextStyles.caption),
+                          Text(
+                            isPhone ? 'Phone number' : 'Email',
+                            style: LuckdateTextStyles.caption,
+                          ),
                           TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              hintText: 'At least 6 characters',
+                            controller:
+                                isPhone ? _phoneController : _emailController,
+                            keyboardType: isPhone
+                                ? TextInputType.phone
+                                : TextInputType.emailAddress,
+                            autofillHints: isPhone
+                                ? const [AutofillHints.telephoneNumber]
+                                : const [AutofillHints.email],
+                            decoration: InputDecoration(
+                              hintText:
+                                  isPhone ? '+1 555 0100' : 'you@email.com',
                               border: InputBorder.none,
                             ),
-                            onChanged: (_) {
-                              if (_error != null) {
-                                setState(() => _error = null);
-                              }
-                            },
+                            onChanged: (_) => _clearError(),
+                          ),
+                          const SizedBox(height: LuckdateSpacing.md),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Verification code',
+                                  style: LuckdateTextStyles.caption,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: _sendCode,
+                                child: Text(
+                                  _codeSent ? 'Resend' : 'Send code',
+                                  style: LuckdateTextStyles.bodySmall.copyWith(
+                                    color: LuckdateColors.deepSage,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TextField(
+                            controller: _codeController,
+                            keyboardType: TextInputType.number,
+                            maxLength: 6,
+                            decoration: const InputDecoration(
+                              hintText: '1234',
+                              border: InputBorder.none,
+                              counterText: '',
+                            ),
+                            onChanged: (_) => _clearError(),
                             onSubmitted: (_) => _submit(),
                           ),
                         ],
