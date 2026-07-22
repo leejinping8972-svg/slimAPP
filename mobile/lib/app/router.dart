@@ -211,14 +211,15 @@ class _MainShell extends StatelessWidget {
 
   int _selectedNavIndex(String location) {
     if (location.startsWith('/me') || location.startsWith('/profile')) {
-      return 4;
-    }
-    if (location.startsWith('/mall') || location.startsWith('/collection')) {
       return 3;
     }
-    if (location.startsWith('/plan')) return 2;
-    if (location.startsWith('/ritual')) return 1;
-    return navigationShell.currentIndex + 1;
+    if (location.startsWith('/mall') || location.startsWith('/collection')) {
+      return 2;
+    }
+    if (location.startsWith('/ritual') || location.startsWith('/plan')) {
+      return 1;
+    }
+    return 1;
   }
 
   @override
@@ -238,10 +239,8 @@ class _MainShell extends StatelessWidget {
             case 1:
               context.go('/ritual');
             case 2:
-              context.go('/plan');
-            case 3:
               context.go('/mall');
-            case 4:
+            case 3:
               context.go('/me');
           }
         },

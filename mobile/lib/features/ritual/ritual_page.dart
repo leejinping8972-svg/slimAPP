@@ -56,6 +56,13 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _JourneyPlanCard(
+                      profile: profile,
+                      journey: journey,
+                      onOpenPlan: () => context.push('/plan'),
+                      onBrowseMall: () => context.go('/mall'),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.lg),
                     LdSegmentedControl<_VitalityRange>(
                       options: const [
                         _VitalityRange.today,
@@ -213,6 +220,160 @@ class _RitualPageState extends ConsumerState<RitualPage> {
         _VitalityRange.days56 => '56 Days',
         _VitalityRange.days84 => '84 Days',
       };
+}
+
+class _JourneyPlanCard extends StatelessWidget {
+  const _JourneyPlanCard({
+    required this.profile,
+    required this.journey,
+    required this.onOpenPlan,
+    required this.onBrowseMall,
+  });
+
+  final UserProfile profile;
+  final JourneyState journey;
+  final VoidCallback onOpenPlan;
+  final VoidCallback onBrowseMall;
+
+  @override
+  Widget build(BuildContext context) {
+    if (profile.isAwaitingReceipt) {
+      return LdCard(
+        onTap: onOpenPlan,
+        child: Row(
+          children: [
+            const Icon(Icons.inventory_2_outlined, color: LuckdateColors.deepSage),
+            const SizedBox(width: LuckdateSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Waiting for receipt', style: LuckdateTextStyles.title),
+                  Text(
+                    'Confirm when your package arrives to start Day 1.',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right),
+          ],
+        ),
+      );
+    }
+
+    return switch (profile.userPlanType) {
+      UserPlanType.mealReplacement => LdCard(
+          onTap: onOpenPlan,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text('Your Plan', style: LuckdateTextStyles.title),
+                  const Spacer(),
+                  Text(
+                    'Open →',
+                    style: LuckdateTextStyles.caption.copyWith(
+                      color: LuckdateColors.deepSage,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              Text(
+                '28-Day Slim Journey · Day ${journey.day}/${journey.totalDays}',
+                style: LuckdateTextStyles.body.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: LinearProgressIndicator(
+                  value: (journey.completionPercent / 100).clamp(0.0, 1.0),
+                  minHeight: 8,
+                  backgroundColor: LuckdateColors.lineSoft,
+                  color: LuckdateColors.deepSage,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                '${journey.completionPercent}% complete',
+                style: LuckdateTextStyles.caption,
+              ),
+            ],
+          ),
+        ),
+      UserPlanType.nonMealReplacement => LdCard(
+          onTap: onOpenPlan,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text('Product Care Plan', style: LuckdateTextStyles.title),
+                  const Spacer(),
+                  Text(
+                    'Open →',
+                    style: LuckdateTextStyles.caption.copyWith(
+                      color: LuckdateColors.deepSage,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              Text(
+                profile.linkedProductName.isEmpty
+                    ? 'Your linked product'
+                    : profile.linkedProductName,
+                style: LuckdateTextStyles.body.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Reminder: ${profile.reminderTime} & ${profile.reminderTime2}',
+                style: LuckdateTextStyles.caption,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                journey.todayRecord.productTaken == ProductTakenStatus.taken
+                    ? 'Taken today ✓'
+                    : 'Not logged yet today',
+                style: LuckdateTextStyles.caption.copyWith(
+                  color: LuckdateColors.deepSage,
+                ),
+              ),
+            ],
+          ),
+        ),
+      UserPlanType.noProduct => LdCard(
+          onTap: onBrowseMall,
+          child: Row(
+            children: [
+              const Icon(Icons.spa_outlined, color: LuckdateColors.deepSage),
+              const SizedBox(width: LuckdateSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Start a plan', style: LuckdateTextStyles.title),
+                    Text(
+                      'Browse Mall or link an order to unlock your Journey plan.',
+                      style: LuckdateTextStyles.caption,
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+    };
+  }
 }
 
 class _RitualHeader extends StatelessWidget {

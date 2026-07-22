@@ -53,7 +53,7 @@ void main() {
 
     expect(find.text('My Vitality Score'), findsOneWidget);
     expect(find.text('Sunny'), findsWidgets);
-    expect(find.text('Ritual'), findsOneWidget);
+    expect(find.text('Journey'), findsOneWidget);
 
     await tester.tap(find.text('Me'));
     await pumpFrames(tester, 12);

@@ -43,7 +43,7 @@ void main() {
     expect(profile.onboardingStep, 'done');
   });
 
-  test('Product intro offer starts privacy Q&A on Get it now', () {
+  test('Product intro offer starts privacy Q&A on Get Plan', () {
     var profile = const UserProfile(
       isLoggedIn: true,
       onboardingComplete: false,
@@ -59,7 +59,7 @@ void main() {
     );
 
     final guided = OnboardingChatGuide.handle(
-      input: 'Get it now',
+      input: 'Get Plan',
       profile: profile,
     );
     expect(guided.profile.onboardingStep, 'privacy');
@@ -68,6 +68,22 @@ void main() {
     final seeds = OnboardingChatGuide.productIntroSeedMessages(profile);
     expect(seeds.first.text, contains('Hi Alex'));
     expect(seeds.where((m) => m.id.startsWith('onboard_product_')), hasLength(1));
-    expect(seeds.last.actionLabels, contains('Get it now'));
+    expect(seeds.last.actionLabels, contains('Get Plan'));
+    expect(seeds.last.actionLabels, contains('Product help only'));
+  });
+
+  test('Product help only completes onboarding without plan Q&A', () {
+    var profile = const UserProfile(
+      isLoggedIn: true,
+      onboardingComplete: false,
+      onboardingStep: 'plan_offer',
+    );
+
+    final guided = OnboardingChatGuide.handle(
+      input: 'Product help only',
+      profile: profile,
+    );
+    expect(guided.profile.onboardingComplete, isTrue);
+    expect(guided.result.reply, contains('product-care'));
   });
 }

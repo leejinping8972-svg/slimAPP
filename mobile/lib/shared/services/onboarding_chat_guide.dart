@@ -8,9 +8,18 @@ class OnboardingChatGuide {
       'Reply "I agree" to continue.';
 
   static const planOfferPrompt =
-      'Share a few basic details and I can build a personalized vitality plan '
-      'just for you.\n\n'
-      'Would you like to get it now?';
+      'I can personalize your next step. What would you like to do?\n\n'
+      '• Get Plan — answer a few questions for a tailored vitality plan\n'
+      '• Product help only — tips for the products you already have\n'
+      '• Just browsing — explore Mall and Journey at your pace\n'
+      '• Not now — hang out with me anytime later';
+
+  static const planOfferActions = [
+    'Get Plan',
+    'Product help only',
+    'Just browsing',
+    'Not now',
+  ];
 
   static List<ChatMessage> seedMessages() {
     return [
@@ -75,7 +84,7 @@ class OnboardingChatGuide {
         isUser: false,
         text: planOfferPrompt,
         timestamp: now.add(Duration(milliseconds: products.length + 2)),
-        actionLabels: const ['Get it now'],
+        actionLabels: planOfferActions,
       ),
     );
     return messages;
@@ -84,7 +93,7 @@ class OnboardingChatGuide {
   static String _defaultBlurb(bool isMeal) {
     return isMeal
         ? 'Mix one serving with water or milk as meal support. '
-            'Log your shake in Sunny chat or Ritual each day.'
+            'Log your shake in Sunny chat or Journey each day.'
         : 'Take as directed on the label. '
             'Set a daily reminder so Sunny can check in with you.';
   }
@@ -198,14 +207,71 @@ class OnboardingChatGuide {
             ),
           );
         }
+        if (_wantsProductHelp(lower)) {
+          final done = profile.copyWith(
+            onboardingStep: 'done',
+            onboardingComplete: true,
+            isNewRegistration: false,
+            sunnyIntroSeen: true,
+          );
+          return (
+            profile: done,
+            result: const SunnyIntentResult(
+              reply:
+                  'Perfect — I\'ll stay in product-care mode.\n\n'
+                  'Ask me anytime about how to take your products, '
+                  'timing, or gentle reminders. '
+                  'When you want a full personalized plan later, just say "Get Plan".',
+              intents: ['onboarding_product_help'],
+              actionLabels: ['Go to Journey', 'Browse Mall'],
+            ),
+          );
+        }
+        if (_wantsBrowse(lower)) {
+          final done = profile.copyWith(
+            onboardingStep: 'done',
+            onboardingComplete: true,
+            isNewRegistration: false,
+            sunnyIntroSeen: true,
+          );
+          return (
+            profile: done,
+            result: const SunnyIntentResult(
+              reply:
+                  'Love that — explore first, pressure later.\n\n'
+                  'Browse Mall for curated picks, or open Journey to see your '
+                  'vitality snapshot. I\'m here when you\'re ready for a plan.',
+              intents: ['onboarding_browse'],
+              actionLabels: ['Browse Mall', 'Go to Journey'],
+            ),
+          );
+        }
+        if (_wantsNotNow(lower)) {
+          final done = profile.copyWith(
+            onboardingStep: 'done',
+            onboardingComplete: true,
+            isNewRegistration: false,
+            sunnyIntroSeen: true,
+          );
+          return (
+            profile: done,
+            result: const SunnyIntentResult(
+              reply:
+                  'No problem at all. Take your time.\n\n'
+                  'Whenever you want tips, a plan, or just a check-in, '
+                  'open Sunny chat — I\'ll be right here.',
+              intents: ['onboarding_defer'],
+              actionLabels: ['Go to Journey', 'Browse Mall'],
+            ),
+          );
+        }
         return (
           profile: profile,
           result: const SunnyIntentResult(
             reply:
-                'No rush — tap "Get it now" whenever you are ready, '
-                'or reply "yes" to start your personalized plan.',
+                'Pick one of the options below, or tell me in your own words.',
             intents: ['onboarding_plan_offer'],
-            actionLabels: ['Get it now'],
+            actionLabels: planOfferActions,
           ),
         );
 
@@ -421,7 +487,7 @@ class OnboardingChatGuide {
                     'Start Day 1 Check-in',
                     'Log Water',
                     'Log Meal',
-                    'Go to Ritual',
+                    'Go to Journey',
                   ]
                 : const ['View My Plan', 'Browse Mall'],
           ),
@@ -439,13 +505,37 @@ class OnboardingChatGuide {
   }
 
   static bool _wantsPlan(String lower) {
-    return lower.contains('get it now') ||
+    return lower.contains('get plan') ||
+        lower.contains('get it now') ||
         lower.contains('get now') ||
         lower == 'yes' ||
         lower == 'y' ||
-        lower.contains('ok') ||
-        lower.contains('agree') ||
-        lower.contains('start');
+        lower.contains('personalized plan') ||
+        (lower.contains('plan') &&
+            !lower.contains('product help') &&
+            !lower.contains('not now'));
+  }
+
+  static bool _wantsProductHelp(String lower) {
+    return lower.contains('product help') ||
+        lower.contains('only product') ||
+        lower.contains('product care') ||
+        lower.contains('just help');
+  }
+
+  static bool _wantsBrowse(String lower) {
+    return lower.contains('browsing') ||
+        lower.contains('browse') ||
+        lower.contains('look around') ||
+        lower.contains('explore');
+  }
+
+  static bool _wantsNotNow(String lower) {
+    return lower.contains('not now') ||
+        lower.contains('later') ||
+        lower.contains('nothing') ||
+        lower.contains('skip') ||
+        lower == 'no';
   }
 
   static bool _agrees(String lower) {
@@ -522,7 +612,12 @@ class OnboardingChatGuide {
 
   static List<(String, String)> quickAsksFor(String step) {
     return switch (step) {
-      'plan_offer' => [('✨', 'Get it now')],
+      'plan_offer' => [
+        ('✨', 'Get Plan'),
+        ('🧴', 'Product help only'),
+        ('👀', 'Just browsing'),
+        ('🌙', 'Not now'),
+      ],
       'privacy' => [('✅', 'I agree')],
       'age' => [
         ('🌿', '35-50'),

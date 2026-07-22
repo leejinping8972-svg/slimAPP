@@ -21,7 +21,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool _canSend = false;
 
   static const _quickAsks = [
-    ('☀️', 'Daily Ritual'),
+    ('☀️', 'Daily Journey'),
     ('💧', 'I drank a glass of water'),
     ('🏃', 'I did 45 minutes of yoga'),
     ('🥗', 'I ate a chicken salad for lunch'),
@@ -96,8 +96,14 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onActionTap(String label) {
-    if (label == 'Get it now') {
-      ref.read(appStateProvider.notifier).sendChatMessage('Get it now');
+    if (label == 'Get Plan' || label == 'Get it now') {
+      ref.read(appStateProvider.notifier).sendChatMessage(label);
+      return;
+    }
+    if (label == 'Product help only' ||
+        label == 'Just browsing' ||
+        label == 'Not now') {
+      ref.read(appStateProvider.notifier).sendChatMessage(label);
       return;
     }
     if (label == 'View Detailed Plan' || label == 'View My Plan') {
@@ -108,7 +114,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         label == 'Enter Day 1' ||
         label == 'Start Day 1 Ritual' ||
         label == 'Start Day 1 Check-in' ||
-        label == 'Go to Ritual') {
+        label == 'Go to Ritual' ||
+        label == 'Go to Journey') {
       context.go('/ritual');
     } else if (label == 'Log Water') {
       ref.read(appStateProvider.notifier).sendQuickAction('water');
@@ -189,7 +196,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           : profile.onboardingStep,
                     ),
               onTap: (text) {
-                if (text == 'Daily Ritual') {
+                if (text == 'Daily Journey' || text == 'Daily Ritual') {
                   context.go('/ritual');
                   return;
                 }

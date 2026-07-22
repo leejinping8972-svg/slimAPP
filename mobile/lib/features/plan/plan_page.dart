@@ -1190,7 +1190,7 @@ class _ProductCarePlanView extends StatelessWidget {
         Text('Product Care Plan', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          'Daily reminders for $productName. Log rituals in Sunny chat and track your vitality on Ritual.',
+          'Daily reminders for $productName. Log rituals in Sunny chat and track your vitality on Journey.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
