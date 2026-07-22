@@ -90,7 +90,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                   // Brand row can be a bit wider than body copy so the wordmark
                   // is never clipped by the left copy column.
                   SizedBox(
-                    width: (copyWidth + 36).clamp(220.0, 260.0),
+                    width: (copyWidth + 48).clamp(232.0, 280.0),
                     child: const _WelcomeBrand(),
                   ),
                   const SizedBox(height: 18),
@@ -262,8 +262,8 @@ class _WelcomeBrand extends StatelessWidget {
             const SizedBox(width: 8),
             const BrandAssetImage(
               kSuperSymbolAsset,
-              height: 40,
-              width: 40,
+              height: 56,
+              width: 56,
               knockoutBackground: false,
             ),
           ],
