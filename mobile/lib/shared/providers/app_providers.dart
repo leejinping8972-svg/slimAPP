@@ -572,7 +572,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
         state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
         await _streamReply(
           follow.id,
-          'You can explore Ritual and Mall now. '
+          'You can explore Journey and Mall now. '
           'Link an order or buy Solar Protein to unlock Day 1 check-in — '
           'I will guide you as soon as your plan starts.',
           actionLabels: const ['View My Plan', 'Browse Mall'],
