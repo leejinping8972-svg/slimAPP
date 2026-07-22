@@ -95,6 +95,16 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  bool _hasInlineActions(List<ChatMessage> messages) {
+    for (var i = messages.length - 1; i >= 0; i--) {
+      final msg = messages[i];
+      if (msg.isUser) continue;
+      final labels = msg.actionLabels;
+      return labels != null && labels.isNotEmpty;
+    }
+    return false;
+  }
+
   void _onActionTap(String label) {
     if (label == 'Get Plan' || label == 'Get it now') {
       ref.read(appStateProvider.notifier).sendChatMessage(label);
@@ -187,22 +197,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ],
               ),
             ),
-            _QuickAskRow(
-              items: profile.onboardingComplete
-                  ? _quickAsks
-                  : OnboardingChatGuide.quickAsksFor(
-                      profile.onboardingStep.isEmpty
-                          ? 'privacy'
-                          : profile.onboardingStep,
-                    ),
-              onTap: (text) {
-                if (text == 'Daily Journey' || text == 'Daily Ritual') {
-                  context.go('/ritual');
-                  return;
-                }
-                ref.read(appStateProvider.notifier).sendChatMessage(text);
-              },
-            ),
+            if (!_hasInlineActions(messages))
+              _QuickAskRow(
+                items: profile.onboardingComplete
+                    ? _quickAsks
+                    : OnboardingChatGuide.quickAsksFor(
+                        profile.onboardingStep.isEmpty
+                            ? 'privacy'
+                            : profile.onboardingStep,
+                      ),
+                onTap: (text) {
+                  if (text == 'Daily Journey' || text == 'Daily Ritual') {
+                    context.go('/ritual');
+                    return;
+                  }
+                  ref.read(appStateProvider.notifier).sendChatMessage(text);
+                },
+              ),
             LdChatComposer(
               controller: _controller,
               canSend: _canSend,

@@ -412,41 +412,48 @@ class SunnyBubble extends StatelessWidget {
                           if (actionLabels != null &&
                               actionLabels!.isNotEmpty) ...[
                             const SizedBox(height: LuckdateSpacing.md),
-                            Wrap(
-                              spacing: LuckdateSpacing.sm,
-                              runSpacing: LuckdateSpacing.sm,
-                              children: actionLabels!.map((label) {
-                                return OutlinedButton(
-                                  onPressed: onActionTap == null
-                                      ? null
-                                      : () => onActionTap!(label),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor:
-                                        LuckdateColors.chocolateBrown,
-                                    side: const BorderSide(
-                                      color: LuckdateColors.lineSoft,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    minimumSize: Size.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        LuckdateRadius.pill,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                for (var i = 0; i < actionLabels!.length; i++) ...[
+                                  if (i > 0)
+                                    const SizedBox(height: LuckdateSpacing.sm),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 48,
+                                    child: OutlinedButton(
+                                      onPressed: onActionTap == null
+                                          ? null
+                                          : () => onActionTap!(actionLabels![i]),
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor:
+                                            LuckdateColors.chocolateBrown,
+                                        backgroundColor:
+                                            LuckdateColors.cloudIvory,
+                                        side: const BorderSide(
+                                          color: LuckdateColors.lineSoft,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            LuckdateRadius.pill,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        actionLabels![i],
+                                        textAlign: TextAlign.center,
+                                        style: LuckdateTextStyles.body.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  child: Text(
-                                    label,
-                                    style: LuckdateTextStyles.caption.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
+                                ],
+                              ],
                             ),
                           ],
                         ],
