@@ -303,6 +303,33 @@ class ProfilePage extends ConsumerWidget {
                 ],
               ),
             ),
+            const SizedBox(height: LuckdateSpacing.xl),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: OutlinedButton.icon(
+                onPressed: () => _confirmSignOut(context, ref),
+                icon: const Icon(Icons.logout_rounded, size: 20),
+                label: Text(
+                  'Sign out',
+                  style: LuckdateTextStyles.body.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: LuckdateColors.errorSoft,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: LuckdateColors.errorSoft,
+                  backgroundColor: LuckdateColors.ivoryWhite,
+                  side: const BorderSide(
+                    color: LuckdateColors.errorSoft,
+                    width: 1.5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                  ),
+                ),
+              ),
+            ),
             if (kDebugMode) ...[
               const SizedBox(height: LuckdateSpacing.xl),
               _sectionTitle('Demo Controls'),
@@ -523,5 +550,35 @@ class ProfilePage extends ConsumerWidget {
   int _couponDaysLeft(DateTime expiresAt) {
     final days = expiresAt.difference(DateTime.now()).inDays;
     return days < 0 ? 0 : days;
+  }
+
+  void _confirmSignOut(BuildContext context, WidgetRef ref) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Sign out?'),
+        content: const Text('You can sign back in anytime.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              ref.read(appStateProvider.notifier).clearLoginSession();
+              context.go('/login');
+            },
+            child: Text(
+              'Sign out',
+              style: LuckdateTextStyles.body.copyWith(
+                color: LuckdateColors.errorSoft,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
