@@ -193,7 +193,10 @@ ThemeData buildLuckdateTheme() {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(LuckdateRadius.pill),
         ),
-        textStyle: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+        textStyle: LuckdateTextStyles.body.copyWith(
+          fontWeight: FontWeight.w600,
+          color: LuckdateColors.ivoryWhite,
+        ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(

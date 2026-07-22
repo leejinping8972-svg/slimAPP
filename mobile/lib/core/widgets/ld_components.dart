@@ -163,6 +163,7 @@ class LdPrimaryButton extends StatelessWidget {
               label,
               style: LuckdateTextStyles.body.copyWith(
                 fontWeight: FontWeight.w600,
+                color: LuckdateColors.ivoryWhite,
               ),
             ),
     );
