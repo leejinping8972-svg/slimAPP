@@ -66,6 +66,8 @@ void main() {
     expect(profile.slimPlanStatus, SlimPlanStatus.awaitingReceipt);
     expect(profile.userPlanType, UserPlanType.noProduct);
     expect(profile.isAwaitingReceipt, isTrue);
+    expect(profile.hasActiveSlimPlan, isFalse);
+    expect(container.read(appStateProvider).journey.day, 1);
 
     container.read(appStateProvider.notifier).confirmReceipt();
 
@@ -74,5 +76,39 @@ void main() {
     expect(profile.userPlanType, UserPlanType.mealReplacement);
     expect(profile.hasActiveSlimPlan, isTrue);
     expect(container.read(appStateProvider).journey.day, 1);
+  });
+
+  test('no-product purchase after onboarding stays paused until receipt', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    container.read(appStateProvider.notifier).completeRegistration();
+    container.read(appStateProvider.notifier).skipOrderLink();
+    container.read(appStateProvider.notifier).completeOnboarding(
+          container.read(appStateProvider).profile.copyWith(
+                onboardingComplete: true,
+                onboardingStep: 'done',
+              ),
+        );
+    container.read(appStateProvider.notifier).purchaseSolarProtein();
+
+    expect(
+      container.read(appStateProvider).profile.hasActiveSlimPlan,
+      isFalse,
+    );
+    expect(
+      container.read(appStateProvider).profile.isAwaitingReceipt,
+      isTrue,
+    );
+
+    container.read(appStateProvider.notifier).confirmReceipt();
+
+    final state = container.read(appStateProvider);
+    expect(state.profile.hasActiveSlimPlan, isTrue);
+    expect(state.journey.day, 1);
+    expect(
+      state.chatMessages.any((m) => m.text.contains('Day 1')),
+      isTrue,
+    );
   });
 }

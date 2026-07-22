@@ -14,6 +14,46 @@ class JourneyPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(appStateProvider);
     final profile = state.profile;
+
+    if (profile.isAwaitingReceipt) {
+      return LdScaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(LuckdateSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('Journey', style: LuckdateTextStyles.h1),
+                  ),
+                  _ProfileEntryAvatar(nickname: profile.nickname),
+                ],
+              ),
+              const SizedBox(height: LuckdateSpacing.md),
+              Text(
+                'Your plan is ready — confirm delivery to begin Day 1.',
+                style: LuckdateTextStyles.body,
+              ),
+              const SizedBox(height: LuckdateSpacing.xl),
+              LdAwaitingReceiptPanel(
+                productName: profile.linkedProductName,
+                onConfirmReceipt: () {
+                  ref.read(appStateProvider.notifier).confirmReceipt();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Plan started — welcome to Day 1!'),
+                    ),
+                  );
+                },
+                onViewOverview: () => context.push('/plan/intro'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (profile.userPlanType != UserPlanType.mealReplacement) {
       return LdScaffold(
         body: Padding(

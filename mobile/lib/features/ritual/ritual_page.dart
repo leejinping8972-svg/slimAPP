@@ -61,6 +61,14 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                       journey: journey,
                       onOpenPlan: () => context.push('/plan'),
                       onBrowseMall: () => context.go('/mall'),
+                      onConfirmReceipt: () {
+                        ref.read(appStateProvider.notifier).confirmReceipt();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Plan started — welcome to Day 1!'),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
                     LdSegmentedControl<_VitalityRange>(
@@ -228,37 +236,23 @@ class _JourneyPlanCard extends StatelessWidget {
     required this.journey,
     required this.onOpenPlan,
     required this.onBrowseMall,
+    required this.onConfirmReceipt,
   });
 
   final UserProfile profile;
   final JourneyState journey;
   final VoidCallback onOpenPlan;
   final VoidCallback onBrowseMall;
+  final VoidCallback onConfirmReceipt;
 
   @override
   Widget build(BuildContext context) {
     if (profile.isAwaitingReceipt) {
-      return LdCard(
-        onTap: onOpenPlan,
-        child: Row(
-          children: [
-            const Icon(Icons.inventory_2_outlined, color: LuckdateColors.deepSage),
-            const SizedBox(width: LuckdateSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Waiting for receipt', style: LuckdateTextStyles.title),
-                  Text(
-                    'Confirm when your package arrives to start Day 1.',
-                    style: LuckdateTextStyles.caption,
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right),
-          ],
-        ),
+      return LdAwaitingReceiptPanel(
+        productName: profile.linkedProductName,
+        onConfirmReceipt: onConfirmReceipt,
+        onViewOverview: onOpenPlan,
+        compact: true,
       );
     }
 

@@ -974,14 +974,34 @@ class _MyPlansView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasMealPlan = profile.userPlanType == UserPlanType.mealReplacement;
+    final hasMealPlan = profile.hasActiveSlimPlan;
+    final awaitingReceipt = profile.isAwaitingReceipt;
 
     return ListView(
       padding: const EdgeInsets.all(LuckdateSpacing.lg),
       children: [
         Text('My Plans', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.lg),
-        if (hasMealPlan)
+        if (awaitingReceipt)
+          LdCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  profile.linkedProductName.isEmpty
+                      ? 'Solar Protein™'
+                      : profile.linkedProductName,
+                  style: LuckdateTextStyles.title,
+                ),
+                const SizedBox(height: LuckdateSpacing.sm),
+                Text(
+                  'Pending delivery — confirm receipt to start Day 1.',
+                  style: LuckdateTextStyles.bodySmall,
+                ),
+              ],
+            ),
+          )
+        else if (hasMealPlan)
           LdCard(
             onTap: onOpenDetails,
             child: Row(
@@ -1043,42 +1063,20 @@ class _AwaitingReceiptView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label =
-        productName.isEmpty ? 'Solar Protein™' : productName;
-
     return ListView(
       padding: const EdgeInsets.all(LuckdateSpacing.lg),
       children: [
-        Text('Waiting for delivery', style: LuckdateTextStyles.h1),
+        Text('Plan on hold', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          'You purchased $label. Confirm receipt once your package arrives to unlock your 28-day Slim Journey.',
+          'Your 28-day Slim Journey unlocks after you confirm delivery.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
-        LdCard(
-          accentColor: LuckdateColors.sunGold,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Confirm receipt to start', style: LuckdateTextStyles.title),
-              const SizedBox(height: LuckdateSpacing.sm),
-              Text(
-                'Day 1 rituals, milestones, and Sunny support unlock after you confirm delivery.',
-                style: LuckdateTextStyles.bodySmall,
-              ),
-              const SizedBox(height: LuckdateSpacing.lg),
-              LdPrimaryButton(
-                label: 'Confirm Receipt & Start Plan',
-                onPressed: onConfirmReceipt,
-              ),
-              const SizedBox(height: LuckdateSpacing.sm),
-              LdSecondaryButton(
-                label: 'View Plan Overview',
-                onPressed: onViewOverview,
-              ),
-            ],
-          ),
+        LdAwaitingReceiptPanel(
+          productName: productName,
+          onConfirmReceipt: onConfirmReceipt,
+          onViewOverview: onViewOverview,
         ),
       ],
     );

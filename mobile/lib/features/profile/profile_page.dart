@@ -540,6 +540,12 @@ class ProfilePage extends ConsumerWidget {
   }
 
   String _profileSubtitle(UserProfile profile, JourneyState journey) {
+    if (profile.isAwaitingReceipt) {
+      final name = profile.linkedProductName.isEmpty
+          ? 'Solar Protein™'
+          : profile.linkedProductName;
+      return 'Waiting for $name delivery';
+    }
     return switch (profile.userPlanType) {
       UserPlanType.mealReplacement => 'Day ${journey.day} · Slim Journey',
       UserPlanType.nonMealReplacement => 'Product reminder plan',

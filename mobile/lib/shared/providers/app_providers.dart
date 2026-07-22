@@ -259,15 +259,33 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   void confirmReceipt() {
     if (state.profile.slimPlanStatus != SlimPlanStatus.awaitingReceipt) return;
+    final shouldGuideDay1 = state.profile.onboardingComplete;
     _applySlimJourneyActivation(
       profile: state.profile.copyWith(
-        linkedProductName: 'Solar Protein™',
+        linkedProductName: state.profile.linkedProductName.isEmpty
+            ? 'Solar Protein™'
+            : state.profile.linkedProductName,
         linkedOrderNo: state.profile.linkedOrderNo.isEmpty
             ? 'PURCHASE-DEMO'
             : state.profile.linkedOrderNo,
       ),
-      refreshChat: state.profile.onboardingComplete,
+      refreshChat: false,
     );
+    if (shouldGuideDay1) {
+      final follow = ChatMessage(
+        id: '${DateTime.now().millisecondsSinceEpoch}_day1',
+        isUser: false,
+        text: OnboardingChatGuide.day1RitualGuide(state.profile),
+        timestamp: DateTime.now(),
+        actionLabels: const [
+          'Start Day 1 Check-in',
+          'Log Water',
+          'Log Meal',
+          'Go to Journey',
+        ],
+      );
+      state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
+    }
   }
 
   void activateSlimJourney() {

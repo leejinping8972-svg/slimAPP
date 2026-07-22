@@ -53,24 +53,9 @@ class PlanIntroPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
             if (awaitingReceipt) ...[
-              LdCard(
-                accentColor: LuckdateColors.sunGold,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Confirm receipt to start', style: LuckdateTextStyles.title),
-                    const SizedBox(height: LuckdateSpacing.sm),
-                    Text(
-                      'Your Solar Protein order is on the way. Once you receive the package, confirm receipt here to unlock Day 1 of your 28-day plan.',
-                      style: LuckdateTextStyles.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: LuckdateSpacing.lg),
-              LdPrimaryButton(
-                label: 'Confirm Receipt & Start Plan',
-                onPressed: () {
+              LdAwaitingReceiptPanel(
+                productName: profile.linkedProductName,
+                onConfirmReceipt: () {
                   ref.read(appStateProvider.notifier).confirmReceipt();
                   context.go('/ritual');
                 },

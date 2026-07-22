@@ -151,7 +151,8 @@ class _TodayPageState extends ConsumerState<TodayPage> {
             ],
             const SizedBox(height: LuckdateSpacing.xl),
             if (!profile.hidePurchaseGuideCard &&
-                profile.userPlanType == UserPlanType.noProduct) ...[
+                profile.userPlanType == UserPlanType.noProduct &&
+                !profile.isAwaitingReceipt) ...[
               _purchaseGuideCard(context, ref),
               const SizedBox(height: LuckdateSpacing.lg),
             ],

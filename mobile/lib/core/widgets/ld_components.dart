@@ -208,6 +208,70 @@ class LdSecondaryButton extends StatelessWidget {
   }
 }
 
+/// Shared panel for in-app purchase users waiting to confirm delivery.
+class LdAwaitingReceiptPanel extends StatelessWidget {
+  const LdAwaitingReceiptPanel({
+    super.key,
+    required this.productName,
+    required this.onConfirmReceipt,
+    this.onViewOverview,
+    this.compact = false,
+  });
+
+  final String productName;
+  final VoidCallback onConfirmReceipt;
+  final VoidCallback? onViewOverview;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = productName.isEmpty ? 'Solar Protein™' : productName;
+
+    return LdCard(
+      accentColor: LuckdateColors.sunGold,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.inventory_2_outlined,
+                color: LuckdateColors.deepSage,
+              ),
+              const SizedBox(width: LuckdateSpacing.sm),
+              Expanded(
+                child: Text(
+                  compact ? 'Waiting for receipt' : 'Waiting for delivery',
+                  style: LuckdateTextStyles.title,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Text(
+            compact
+                ? 'Confirm when $label arrives to unlock Day 1.'
+                : 'You purchased $label. Your 28-day plan stays paused until you confirm delivery — then Day 1 begins.',
+            style: LuckdateTextStyles.bodySmall,
+          ),
+          const SizedBox(height: LuckdateSpacing.lg),
+          LdPrimaryButton(
+            label: 'Confirm Receipt & Start Plan',
+            onPressed: onConfirmReceipt,
+          ),
+          if (onViewOverview != null) ...[
+            const SizedBox(height: LuckdateSpacing.sm),
+            LdSecondaryButton(
+              label: 'View Plan Overview',
+              onPressed: onViewOverview,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
 class LdProfileAvatar extends StatelessWidget {
   const LdProfileAvatar({
     super.key,
