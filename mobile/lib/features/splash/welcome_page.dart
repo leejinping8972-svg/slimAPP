@@ -247,7 +247,7 @@ class _WelcomeBrand extends StatelessWidget {
         const Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BrandAssetImage(kBrandLogoAsset, height: 32),
+            BrandAssetImage(kBrandLogoAsset, height: 32, knockoutBackground: false),
             SizedBox(width: 10),
             BrandAssetImage(
               kSuperSymbolAsset,

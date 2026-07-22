@@ -385,7 +385,7 @@ class AuthBrandLogo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const BrandAssetImage(kBrandLogoAsset, height: 26),
+        const BrandAssetImage(kBrandLogoAsset, height: 26, knockoutBackground: false),
         const SizedBox(height: 4),
         Text(
           'The House of Vitality',
