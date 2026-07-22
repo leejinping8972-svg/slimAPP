@@ -572,10 +572,15 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            '${p.orderNo} · ${p.series.isNotEmpty ? p.series : 'Vitality'}',
-                            style: LuckdateTextStyles.caption,
+                          const SizedBox(height: LuckdateSpacing.sm),
+                          _OrderMetaRow(label: 'Order No.', value: p.orderNo),
+                          _OrderMetaRow(
+                            label: 'SKU',
+                            value: p.sku.isNotEmpty ? p.sku : '—',
+                          ),
+                          _OrderMetaRow(
+                            label: 'Ordered at',
+                            value: p.orderedAt.isNotEmpty ? p.orderedAt : '—',
                           ),
                         ],
                       ),
@@ -631,6 +636,37 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             const SizedBox(height: LuckdateSpacing.lg),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _OrderMetaRow extends StatelessWidget {
+  const _OrderMetaRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 88,
+            child: Text(label, style: LuckdateTextStyles.caption),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: LuckdateTextStyles.bodySmall.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

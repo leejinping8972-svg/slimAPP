@@ -7,6 +7,8 @@ class LinkedProductInfo {
     required this.orderNo,
     required this.productName,
     required this.isMealReplacement,
+    this.sku = '',
+    this.orderedAt = '',
     this.series = '',
     this.blurb = '',
   });
@@ -14,6 +16,8 @@ class LinkedProductInfo {
   final String orderNo;
   final String productName;
   final bool isMealReplacement;
+  final String sku;
+  final String orderedAt;
   final String series;
   final String blurb;
 }
@@ -42,6 +46,8 @@ class MockOrderService {
       orderNo: 'ORD-2026-MEAL',
       productName: 'Solar Protein™ 28-Day',
       isMealReplacement: true,
+      sku: 'LD-SLIM-28D',
+      orderedAt: '2026-06-12 14:28',
       series: 'Slim Vitality',
       blurb:
           'Mix one serving with water or milk as meal support. '
@@ -51,6 +57,8 @@ class MockOrderService {
       orderNo: 'ORD-2026-YOUTH',
       productName: 'Youth Solar™',
       isMealReplacement: false,
+      sku: 'LD-BEAU-YTH',
+      orderedAt: '2026-06-18 09:12',
       series: 'Beauty Vitality',
       blurb:
           'Take as directed on the label. '
@@ -60,6 +68,8 @@ class MockOrderService {
       orderNo: 'ORD-2026-VITA',
       productName: 'Vitality Collagen Boost',
       isMealReplacement: false,
+      sku: 'LD-AGE-COL',
+      orderedAt: '2026-06-22 16:45',
       series: 'Healthy Aging',
       blurb:
           'Enjoy daily as part of your vitality ritual. '
@@ -69,6 +79,8 @@ class MockOrderService {
       orderNo: 'ORD-2026-ENERGY',
       productName: 'Daily Energy Solar',
       isMealReplacement: false,
+      sku: 'LD-NRG-DAY',
+      orderedAt: '2026-07-01 11:03',
       series: 'Energy Vitality',
       blurb:
           'Take in the morning with water. '
