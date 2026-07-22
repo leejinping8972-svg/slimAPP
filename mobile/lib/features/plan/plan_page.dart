@@ -8,7 +8,7 @@ import '../../core/widgets/ritual_sheets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
-enum _PlanTab { inProgress, library, myPlans }
+enum _PlanTab { inProgress, myPlans }
 
 class PlanPage extends ConsumerStatefulWidget {
   const PlanPage({super.key});
@@ -44,14 +44,12 @@ class _PlanPageState extends ConsumerState<PlanPage> {
               child: LdSegmentedControl<_PlanTab>(
                 options: const [
                   _PlanTab.inProgress,
-                  _PlanTab.library,
                   _PlanTab.myPlans,
                 ],
                 selected: _tab,
                 onChanged: (v) => setState(() => _tab = v),
                 labelBuilder: (t) => switch (t) {
                   _PlanTab.inProgress => 'In Progress',
-                  _PlanTab.library => 'Plan Library',
                   _PlanTab.myPlans => 'My Plans',
                 },
               ),
@@ -62,11 +60,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                     context,
                     profile: profile,
                     journey: journey,
-                  ),
-                _PlanTab.library => _PlanLibraryView(
-                    onBrowse: () => context.go('/mall'),
-                    onViewPlan: () =>
-                        context.push('/collection/product/solar_protein'),
                   ),
                 _PlanTab.myPlans => _MyPlansView(
                     profile: profile,
@@ -887,80 +880,6 @@ class _ShareBanner extends StatelessWidget {
   }
 }
 
-class _PlanLibraryView extends StatelessWidget {
-  const _PlanLibraryView({
-    required this.onBrowse,
-    required this.onViewPlan,
-  });
-
-  final VoidCallback onBrowse;
-  final VoidCallback onViewPlan;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(LuckdateSpacing.lg),
-      children: [
-        Text('Plan Library', style: LuckdateTextStyles.h2),
-        const SizedBox(height: LuckdateSpacing.sm),
-        Text(
-          'Explore guided programs paired with your vitality rituals.',
-          style: LuckdateTextStyles.bodySmall,
-        ),
-        const SizedBox(height: LuckdateSpacing.lg),
-        LdCard(
-          onTap: onViewPlan,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '28-Day Vitality Kickstart Plan',
-                style: LuckdateTextStyles.title,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Build the habit. Transform your life.',
-                style: LuckdateTextStyles.bodySmall,
-              ),
-              const SizedBox(height: LuckdateSpacing.md),
-              Text(
-                'View Plan →',
-                style: LuckdateTextStyles.caption.copyWith(
-                  color: LuckdateColors.deepSage,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: LuckdateSpacing.md),
-        LdCard(
-          onTap: onBrowse,
-          child: Row(
-            children: [
-              const Icon(Icons.storefront_outlined, color: LuckdateColors.deepSage),
-              const SizedBox(width: LuckdateSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Browse Mall', style: LuckdateTextStyles.title),
-                    Text(
-                      'Find products that unlock full plans.',
-                      style: LuckdateTextStyles.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right_rounded),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _MyPlansView extends StatelessWidget {
   const _MyPlansView({
     required this.profile,
@@ -1041,7 +960,7 @@ class _MyPlansView extends StatelessWidget {
         else
           LdCard(
             child: Text(
-              'No active 28-day plan yet. Browse the Plan Library to get started.',
+              'No active 28-day plan yet. Browse Mall to get started.',
               style: LuckdateTextStyles.bodySmall,
             ),
           ),
