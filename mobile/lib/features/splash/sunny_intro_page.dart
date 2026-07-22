@@ -9,10 +9,12 @@ import '../../shared/providers/app_providers.dart';
 class SunnyIntroPage extends ConsumerWidget {
   const SunnyIntroPage({super.key});
 
-  static const _highlights = [
-    ('☀️', 'Daily rituals & reminders'),
-    ('📋', 'Personalized 28-day plan'),
-    ('🛍️', 'Curated vitality products'),
+  static const _capabilities = [
+    (Icons.wb_sunny_outlined, 'Daily Ritual', 'Build habits that brighten every day'),
+    (Icons.bar_chart_rounded, 'Vitality Dashboard', 'Track your data and see your progress'),
+    (Icons.spa_outlined, 'Scientific Formula', 'Professional formulas, gentle companionship'),
+    (Icons.people_outline_rounded, 'Community Support', 'Support each other and grow together'),
+    (Icons.shopping_bag_outlined, 'Health Mall', 'Curated picks for a healthier lifestyle'),
   ];
 
   void _continue(WidgetRef ref, BuildContext context) {
@@ -68,29 +70,20 @@ class SunnyIntroPage extends ConsumerWidget {
                       style: LuckdateTextStyles.bodySmall.copyWith(height: 1.45),
                     ),
                     const SizedBox(height: LuckdateSpacing.xl),
-                    ..._highlights.map((h) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: LuckdateSpacing.sm,
-                        ),
-                        child: LdCard(
-                          child: Row(
-                            children: [
-                              Text(h.$1, style: const TextStyle(fontSize: 22)),
-                              const SizedBox(width: LuckdateSpacing.md),
-                              Expanded(
-                                child: Text(
-                                  h.$2,
-                                  style: LuckdateTextStyles.body.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
+                    LdCard(
+                      child: Column(
+                        children: [
+                          for (var i = 0; i < _capabilities.length; i++) ...[
+                            if (i > 0) const SizedBox(height: LuckdateSpacing.base),
+                            _CapabilityRow(
+                              icon: _capabilities[i].$1,
+                              title: _capabilities[i].$2,
+                              subtitle: _capabilities[i].$3,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -110,6 +103,53 @@ class SunnyIntroPage extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CapabilityRow extends StatelessWidget {
+  const _CapabilityRow({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: LuckdateColors.ivoryWhite,
+            shape: BoxShape.circle,
+            border: Border.all(color: LuckdateColors.lineSoft),
+          ),
+          child: Icon(icon, size: 20, color: LuckdateColors.chocolateBrown),
+        ),
+        const SizedBox(width: LuckdateSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: LuckdateTextStyles.body.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(subtitle, style: LuckdateTextStyles.caption),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
