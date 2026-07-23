@@ -67,7 +67,12 @@ void main() {
 
     final seeds = OnboardingChatGuide.productIntroSeedMessages(profile);
     expect(seeds.first.text, contains('Hi Alex'));
-    expect(seeds.where((m) => m.id.startsWith('onboard_product_')), hasLength(1));
+    expect(
+      seeds.first.text,
+      contains(OnboardingChatGuide.sunnyGreetingHelp),
+    );
+    expect(seeds.first.text, contains('Solar Protein'));
+    expect(seeds.where((m) => m.id.startsWith('onboard_product_')), isEmpty);
     expect(seeds.last.actionLabels, contains('Get Plan'));
     expect(seeds.last.actionLabels, contains('Product help only'));
   });

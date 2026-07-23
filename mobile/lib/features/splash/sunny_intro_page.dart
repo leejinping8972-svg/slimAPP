@@ -62,13 +62,6 @@ class SunnyIntroPage extends ConsumerWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: LuckdateSpacing.sm),
-                    Text(
-                      'I\'ll help you create an account, link your order, '
-                      'and start a gentle 28-day journey.',
-                      textAlign: TextAlign.center,
-                      style: LuckdateTextStyles.bodySmall.copyWith(height: 1.45),
-                    ),
                     const SizedBox(height: LuckdateSpacing.xl),
                     LdCard(
                       child: Column(

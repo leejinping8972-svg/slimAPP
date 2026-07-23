@@ -21,73 +21,95 @@ class OnboardingChatGuide {
     'Not now',
   ];
 
+  static const sunnyGreetingHelp =
+      'I\'ll help you create an account, link your order, '
+      'and start a gentle 28-day journey.';
+
   static List<ChatMessage> seedMessages() {
     return [
+      ChatMessage(
+        id: 'onboard_greet',
+        isUser: false,
+        text:
+            'Hi! ☀️ I\'m Sunny, your daily vitality partner.\n\n'
+            '$sunnyGreetingHelp',
+        timestamp: DateTime.now(),
+      ),
       ChatMessage(
         id: 'onboard_privacy',
         isUser: false,
         text: privacyPrompt,
-        timestamp: DateTime.now(),
+        timestamp: DateTime.now().add(const Duration(milliseconds: 1)),
       ),
     ];
   }
 
-  /// Greeting + one product card per linked order + plan offer CTA.
+  /// Greeting (with help line + product intros) + plan offer CTA.
   static List<ChatMessage> productIntroSeedMessages(UserProfile profile) {
     final name = profile.recipientName.isNotEmpty
         ? profile.recipientName
         : (profile.nickname.isNotEmpty ? profile.nickname : 'there');
     final products = profile.linkedProducts;
     final now = DateTime.now();
-    final messages = <ChatMessage>[
+
+    final buffer = StringBuffer()
+      ..writeln('Hi $name! ☀️ I\'m Sunny, your daily vitality partner.')
+      ..writeln()
+      ..writeln(sunnyGreetingHelp);
+    if (products.isNotEmpty) {
+      buffer
+        ..writeln()
+        ..writeln(
+          'I found ${products.length} linked '
+          '${products.length == 1 ? 'product' : 'products'} for you — '
+          'here is a quick intro for each one.',
+        );
+      for (final p in products) {
+        final journeyLine = p.isMealReplacement
+            ? '28-Day Slim Journey unlocked'
+            : 'Daily product care plan';
+        buffer
+          ..writeln()
+          ..writeln(p.productName)
+          ..writeln(journeyLine)
+          ..writeln()
+          ..writeln('How to use:')
+          ..writeln(
+            '• ${p.blurb.isNotEmpty ? p.blurb : _defaultBlurb(p.isMealReplacement)}',
+          );
+      }
+    }
+
+    final suggestions = products
+        .map(
+          (p) => ChatSuggestionItem(
+            emoji: p.isMealReplacement ? '🌿' : '✨',
+            title: p.productName,
+            subtitle: p.series.isNotEmpty
+                ? p.series
+                : (p.isMealReplacement
+                    ? '28-Day Slim Journey unlocked'
+                    : 'Daily product care plan'),
+          ),
+        )
+        .toList();
+
+    return [
       ChatMessage(
         id: 'onboard_greet',
         isUser: false,
-        text:
-            'Hi $name! ☀️ I\'m Sunny, your daily vitality partner.\n\n'
-            'I found ${products.length} linked '
-            '${products.length == 1 ? 'product' : 'products'} for you — '
-            'here is a quick intro for each one.',
+        text: buffer.toString().trimRight(),
         timestamp: now,
+        suggestions: suggestions.isEmpty ? null : suggestions,
       ),
-    ];
-
-    for (var i = 0; i < products.length; i++) {
-      final p = products[i];
-      final journeyLine = p.isMealReplacement
-          ? '28-Day Slim Journey unlocked'
-          : 'Daily product care plan';
-      messages.add(
-        ChatMessage(
-          id: 'onboard_product_$i',
-          isUser: false,
-          text:
-              '${p.productName}\n'
-              '$journeyLine\n\n'
-              'How to use:\n'
-              '• ${p.blurb.isNotEmpty ? p.blurb : _defaultBlurb(p.isMealReplacement)}',
-          timestamp: now.add(Duration(milliseconds: i + 1)),
-          suggestions: [
-            ChatSuggestionItem(
-              emoji: p.isMealReplacement ? '🌿' : '✨',
-              title: p.productName,
-              subtitle: p.series.isNotEmpty ? p.series : journeyLine,
-            ),
-          ],
-        ),
-      );
-    }
-
-    messages.add(
       ChatMessage(
         id: 'onboard_plan_offer',
         isUser: false,
         text: planOfferPrompt,
-        timestamp: now.add(Duration(milliseconds: products.length + 2)),
+        timestamp: now.add(const Duration(milliseconds: 1)),
         actionLabels: planOfferActions,
       ),
-    );
-    return messages;
+    ];
   }
 
   static String _defaultBlurb(bool isMeal) {
