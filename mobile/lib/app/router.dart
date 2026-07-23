@@ -60,18 +60,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         }
       }
 
-      // Guests must finish fixed Sunny opening before register.
-      if (!profile.isLoggedIn &&
-          app.launchGuideSeen &&
-          !app.sunnyOpeningSeen &&
-          path == '/register') {
-        return '/sunny/intro';
+      // Guests no longer need a separate Meet Sunny page — intro lives in chat.
+      if (!profile.isLoggedIn && path == '/sunny/intro') {
+        return app.launchGuideSeen ? '/register' : '/';
       }
 
       final isPublicAuth =
           path == '/' ||
           path == '/welcome' ||
-          path == '/sunny/intro' ||
           path == '/login' ||
           path == '/register' ||
           path == '/register-success' ||

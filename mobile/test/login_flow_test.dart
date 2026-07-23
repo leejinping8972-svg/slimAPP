@@ -113,6 +113,8 @@ void main() {
     await tester.tap(find.text('Skip for now'));
     await pumpFrames(tester, 16);
 
+    expect(find.textContaining('daily vitality partner'), findsOneWidget);
+    expect(find.textContaining('Daily Ritual'), findsOneWidget);
     expect(find.textContaining('privacy policy'), findsOneWidget);
     expect(find.textContaining('I agree'), findsWidgets);
   });

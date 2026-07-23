@@ -25,6 +25,14 @@ class OnboardingChatGuide {
       'I\'ll help you create an account, link your order, '
       'and start a gentle 28-day journey.';
 
+  static const sunnyCapabilitiesIntro =
+      'Here\'s what I can help with:\n'
+      '• Daily Ritual — Build habits that brighten every day\n'
+      '• Vitality Dashboard — Track your data and see your progress\n'
+      '• Scientific Formula — Professional formulas, gentle companionship\n'
+      '• Community Support — Support each other and grow together\n'
+      '• Health Mall — Curated picks for a healthier lifestyle';
+
   static List<ChatMessage> seedMessages() {
     return [
       ChatMessage(
@@ -32,19 +40,15 @@ class OnboardingChatGuide {
         isUser: false,
         text:
             'Hi! ☀️ I\'m Sunny, your daily vitality partner.\n\n'
-            '$sunnyGreetingHelp',
+            '$sunnyGreetingHelp\n\n'
+            '$sunnyCapabilitiesIntro\n\n'
+            '$privacyPrompt',
         timestamp: DateTime.now(),
-      ),
-      ChatMessage(
-        id: 'onboard_privacy',
-        isUser: false,
-        text: privacyPrompt,
-        timestamp: DateTime.now().add(const Duration(milliseconds: 1)),
       ),
     ];
   }
 
-  /// Greeting (with help line + product intros) + plan offer CTA.
+  /// Greeting (with Sunny intro + product intros) + plan offer CTA.
   static List<ChatMessage> productIntroSeedMessages(UserProfile profile) {
     final name = profile.recipientName.isNotEmpty
         ? profile.recipientName
@@ -55,7 +59,7 @@ class OnboardingChatGuide {
     final buffer = StringBuffer()
       ..writeln('Hi $name! ☀️ I\'m Sunny, your daily vitality partner.')
       ..writeln()
-      ..writeln(sunnyGreetingHelp);
+      ..writeln(sunnyCapabilitiesIntro);
     if (products.isNotEmpty) {
       buffer
         ..writeln()

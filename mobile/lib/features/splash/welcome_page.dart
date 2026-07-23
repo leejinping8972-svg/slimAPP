@@ -54,7 +54,8 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
 
   void _goRegister() {
     ref.read(appStateProvider.notifier).markLaunchGuideSeen();
-    context.go('/sunny/intro');
+    ref.read(appStateProvider.notifier).markSunnyOpeningSeen();
+    context.go('/register');
   }
 
   void _goLogin() {

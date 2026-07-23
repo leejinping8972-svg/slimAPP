@@ -73,7 +73,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () => context.go('/sunny/intro'),
+                    onPressed: () => context.go('/'),
                     icon: const Icon(Icons.arrow_back_ios_new, size: 20),
                   ),
                   const Spacer(),
@@ -166,8 +166,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     onPressed: _submit,
                   ),
                   const SizedBox(height: LuckdateSpacing.md),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
                         'Already have an account? ',

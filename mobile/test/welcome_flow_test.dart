@@ -8,6 +8,11 @@ import 'package:go_router/go_router.dart';
 void main() {
   testWidgets('Splash stays on / then reveals guide with Start My Journey',
       (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     late GoRouter router;
     await tester.pumpWidget(
       ProviderScope(
@@ -40,7 +45,8 @@ void main() {
     await tester.tap(find.text('Start My Journey'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('Meet Sunny'), findsOneWidget);
-    expect(router.state.uri.path, '/sunny/intro');
+    expect(find.text('Create your account'), findsOneWidget);
+    expect(find.text('Meet Sunny'), findsNothing);
+    expect(router.state.uri.path, '/register');
   });
 }

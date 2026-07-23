@@ -69,7 +69,7 @@ void main() {
     expect(seeds.first.text, contains('Hi Alex'));
     expect(
       seeds.first.text,
-      contains(OnboardingChatGuide.sunnyGreetingHelp),
+      contains(OnboardingChatGuide.sunnyCapabilitiesIntro),
     );
     expect(seeds.first.text, contains('Solar Protein'));
     expect(seeds.where((m) => m.id.startsWith('onboard_product_')), isEmpty);
