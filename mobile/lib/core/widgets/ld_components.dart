@@ -94,7 +94,7 @@ class LdCard extends StatelessWidget {
               color: completed
                   ? LuckdateColors.vitalitySage
                   : LuckdateColors.lineSoft,
-              width: 1,
+              width: completed ? 1 : 0.5,
             ),
             boxShadow: LuckdateShadows.card,
           ),
@@ -145,10 +145,10 @@ class LdPrimaryButton extends StatelessWidget {
         backgroundColor: LuckdateColors.deepSage,
         foregroundColor: LuckdateColors.ivoryWhite,
         minimumSize: const Size(0, 52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-        ),
-        elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
+      ),
+      elevation: 0,
       ),
       child: loading
           ? const SizedBox(
@@ -185,24 +185,30 @@ class LdSecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        backgroundColor: selected
-            ? LuckdateColors.sageSoft
-            : LuckdateColors.ivoryWhite,
-        foregroundColor: LuckdateColors.chocolateBrown,
-        side: BorderSide(
-          color: selected ? LuckdateColors.deepSage : LuckdateColors.lineSoft,
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: selected
+              ? LuckdateColors.sageSoft
+              : LuckdateColors.ivoryWhite,
+          foregroundColor: LuckdateColors.chocolateBrown,
+          side: BorderSide(
+            color: selected
+                ? LuckdateColors.deepSage
+                : LuckdateColors.lineSoft,
+            width: selected ? 1.25 : 0.75,
+          ),
+          minimumSize: const Size(0, 52),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(LuckdateRadius.control),
+          ),
         ),
-        minimumSize: const Size(0, 48),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        child: Text(
+          label,
+          style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
         ),
-      ),
-      child: Text(
-        label,
-        style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -260,9 +266,12 @@ class LdAwaitingReceiptPanel extends StatelessWidget {
           ),
           if (onViewOverview != null) ...[
             const SizedBox(height: LuckdateSpacing.sm),
-            LdSecondaryButton(
-              label: 'View Plan Overview',
-              onPressed: onViewOverview,
+            SizedBox(
+              width: double.infinity,
+              child: LdSecondaryButton(
+                label: 'View Plan Overview',
+                onPressed: onViewOverview,
+              ),
             ),
           ],
         ],
@@ -361,18 +370,19 @@ class LdChoiceChip extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: selected
                 ? LuckdateColors.deepSage
                 : LuckdateColors.ivoryWhite,
-            borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+            borderRadius: BorderRadius.circular(LuckdateRadius.control),
             border: Border.all(
               color: selected
                   ? LuckdateColors.deepSage
                   : LuckdateColors.lineSoft,
+              width: 0.75,
             ),
           ),
           child: Text(
@@ -442,7 +452,7 @@ class SunnyBubble extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(LuckdateSpacing.md),
+                padding: const EdgeInsets.all(LuckdateSpacing.base),
                 decoration: BoxDecoration(
                   color: LuckdateColors.ivoryWhite,
                   borderRadius: const BorderRadius.only(
@@ -451,9 +461,9 @@ class SunnyBubble extends StatelessWidget {
                     bottomRight: Radius.circular(LuckdateRadius.lg),
                   ),
                   border: Border.all(
-                    color: LuckdateColors.lineSoft.withValues(alpha: 0.8),
+                    color: LuckdateColors.lineSoft,
+                    width: 0.5,
                   ),
-                  boxShadow: LuckdateShadows.soft,
                 ),
                 child: isStreaming && text.isEmpty
                     ? Text(
@@ -502,7 +512,7 @@ class SunnyBubble extends StatelessWidget {
                                         ),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
-                                            LuckdateRadius.pill,
+                                            LuckdateRadius.control,
                                           ),
                                         ),
                                       ),
@@ -625,15 +635,14 @@ class UserBubble extends StatelessWidget {
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.sizeOf(context).width * 0.72,
                 ),
-                padding: const EdgeInsets.all(LuckdateSpacing.md),
+                padding: const EdgeInsets.all(LuckdateSpacing.base),
                 decoration: BoxDecoration(
-                  color: LuckdateColors.vitalitySage,
+                  color: LuckdateColors.deepSage,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(LuckdateRadius.lg),
                     bottomLeft: Radius.circular(LuckdateRadius.lg),
                     bottomRight: Radius.circular(LuckdateRadius.lg),
                   ),
-                  boxShadow: LuckdateShadows.soft,
                 ),
                 child: Text(
                   text,

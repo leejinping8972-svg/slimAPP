@@ -44,29 +44,33 @@ class LuckdateSpacing {
   static const xxl = 32.0;
 }
 
+/// Hallmark · genre: editorial · design-system: design.md · designed-as-app
+/// Radius: prefer [control] for CTAs/inputs; reserve [pill] for tiny handles.
 class LuckdateRadius {
   static const sm = 8.0;
   static const md = 12.0;
+  static const control = 14.0;
   static const lg = 16.0;
-  static const xl = 20.0;
-  static const sheet = 28.0;
+  static const xl = 18.0;
+  static const sheet = 24.0;
   static const pill = 999.0;
 }
 
 class LuckdateShadows {
-  static const card = [
-    BoxShadow(
-      color: Color(0x14000000),
-      offset: Offset(0, 4),
-      blurRadius: 20,
-      spreadRadius: 0,
-    ),
-  ];
+  /// Near-flat cards — hairline border does most of the work.
+  static const card = <BoxShadow>[];
   static const soft = [
     BoxShadow(
-      color: Color(0x0A000000),
-      offset: Offset(0, 2),
-      blurRadius: 12,
+      color: Color(0x08000000),
+      offset: Offset(0, 1),
+      blurRadius: 6,
+    ),
+  ];
+  static const float = [
+    BoxShadow(
+      color: Color(0x12000000),
+      offset: Offset(0, 6),
+      blurRadius: 18,
     ),
   ];
 }
@@ -92,24 +96,28 @@ class LuckdateTextStyles {
     fontFamily: fontFamily,
     fontSize: 32,
     height: 40 / 32,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
+    fontStyle: FontStyle.normal,
     color: LuckdateColors.textPrimary,
-    letterSpacing: -0.5,
+    letterSpacing: -0.6,
   );
   static const h1 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 26,
     height: 32 / 26,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
+    fontStyle: FontStyle.normal,
     color: LuckdateColors.textPrimary,
-    letterSpacing: -0.3,
+    letterSpacing: -0.4,
   );
   static const h2 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 20,
     height: 26 / 20,
     fontWeight: FontWeight.w600,
+    fontStyle: FontStyle.normal,
     color: LuckdateColors.textPrimary,
+    letterSpacing: -0.2,
   );
   static const title = TextStyle(
     fontFamily: fontFamily,
@@ -191,7 +199,7 @@ ThemeData buildLuckdateTheme() {
         elevation: 0,
         minimumSize: const Size(0, 52),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+          borderRadius: BorderRadius.circular(LuckdateRadius.control),
         ),
         textStyle: LuckdateTextStyles.body.copyWith(
           fontWeight: FontWeight.w600,
@@ -206,15 +214,15 @@ ThemeData buildLuckdateTheme() {
         color: LuckdateColors.textSecondary.withValues(alpha: 0.55),
       ),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
         borderSide: const BorderSide(color: LuckdateColors.lineSoft),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
         borderSide: const BorderSide(color: LuckdateColors.lineSoft),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
         borderSide: const BorderSide(color: LuckdateColors.deepSage, width: 1.5),
       ),
       contentPadding: const EdgeInsets.symmetric(

@@ -52,13 +52,16 @@ class LdMainBottomNav extends StatelessWidget {
                       children: [
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          width: 40,
-                          height: 40,
+                          curve: Curves.easeOut,
+                          width: 44,
+                          height: 32,
                           decoration: BoxDecoration(
                             color: selected
                                 ? LuckdateColors.navIndicator
                                 : Colors.transparent,
-                            shape: BoxShape.circle,
+                            borderRadius: BorderRadius.circular(
+                              LuckdateRadius.md,
+                            ),
                           ),
                           child: Icon(
                             selected ? item.$2 : item.$1,
@@ -107,12 +110,11 @@ class LdSegmentedControl<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: LuckdateColors.ivoryWhite,
-        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-        border: Border.all(color: LuckdateColors.lineSoft),
-        boxShadow: LuckdateShadows.soft,
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
+        border: Border.all(color: LuckdateColors.lineSoft, width: 0.5),
       ),
       child: Row(
         children: options.map((option) {
@@ -121,11 +123,12 @@ class LdSegmentedControl<T> extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(option),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 180),
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                   color: active ? LuckdateColors.deepSage : Colors.transparent,
-                  borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                  borderRadius: BorderRadius.circular(LuckdateRadius.md),
                 ),
                 child: Text(
                   labelBuilder(option),
@@ -134,7 +137,7 @@ class LdSegmentedControl<T> extends StatelessWidget {
                     color: active
                         ? LuckdateColors.ivoryWhite
                         : LuckdateColors.textSecondary,
-                    fontWeight: active ? FontWeight.w600 : FontWeight.w500,
+                    fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                   ),
                 ),
               ),
@@ -188,9 +191,11 @@ class LdChatComposer extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: LuckdateColors.ivoryWhite,
                       borderRadius:
-                          BorderRadius.circular(LuckdateRadius.pill),
-                      border: Border.all(color: LuckdateColors.lineSoft),
-                      boxShadow: LuckdateShadows.soft,
+                          BorderRadius.circular(LuckdateRadius.control),
+                      border: Border.all(
+                        color: LuckdateColors.lineSoft,
+                        width: 0.5,
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -230,15 +235,15 @@ class LdChatComposer extends StatelessWidget {
                 const SizedBox(width: LuckdateSpacing.sm),
                 Material(
                   color: canSend
-                      ? LuckdateColors.vitalitySage
+                      ? LuckdateColors.deepSage
                       : LuckdateColors.lineSoft,
-                  shape: const CircleBorder(),
+                  borderRadius: BorderRadius.circular(LuckdateRadius.control),
                   child: InkWell(
                     onTap: canSend ? onSend : null,
-                    customBorder: const CircleBorder(),
+                    borderRadius: BorderRadius.circular(LuckdateRadius.control),
                     child: const SizedBox(
-                      width: 44,
-                      height: 44,
+                      width: 48,
+                      height: 48,
                       child: Icon(
                         Icons.send_rounded,
                         color: LuckdateColors.ivoryWhite,

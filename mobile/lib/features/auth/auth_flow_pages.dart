@@ -511,7 +511,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                     width: 1.5,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                    borderRadius: BorderRadius.circular(LuckdateRadius.control),
                   ),
                 ),
                 child: Text(
