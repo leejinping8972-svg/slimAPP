@@ -21,13 +21,40 @@ class UserCoupon {
     required this.scope,
     required this.expiresAt,
     this.status = 'unused',
+    this.usedAt,
+    this.usedOrderId,
   });
 
   final double amount;
   final String currency;
   final String scope;
   final DateTime expiresAt;
+  /// unused | used | expired
   final String status;
+  final DateTime? usedAt;
+  final String? usedOrderId;
+
+  bool get isUnused => status == 'unused' && expiresAt.isAfter(DateTime.now());
+
+  UserCoupon copyWith({
+    double? amount,
+    String? currency,
+    String? scope,
+    DateTime? expiresAt,
+    String? status,
+    DateTime? usedAt,
+    String? usedOrderId,
+  }) {
+    return UserCoupon(
+      amount: amount ?? this.amount,
+      currency: currency ?? this.currency,
+      scope: scope ?? this.scope,
+      expiresAt: expiresAt ?? this.expiresAt,
+      status: status ?? this.status,
+      usedAt: usedAt ?? this.usedAt,
+      usedOrderId: usedOrderId ?? this.usedOrderId,
+    );
+  }
 }
 
 class UserProfile {

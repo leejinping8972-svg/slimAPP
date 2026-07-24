@@ -243,16 +243,42 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
-  void purchaseSolarProtein() {
+  /// Completes an in-app Solar Protein purchase.
+  /// When [applyCoupon] is true and a welcome coupon is unused, marks it used.
+  void purchaseSolarProtein({bool applyCoupon = true}) {
+    var profile = state.profile.copyWith(
+      linkedProductName: 'Solar Protein™',
+      linkedOrderNo: 'PURCHASE-PENDING',
+      membershipPlan: 'Solar Protein 28-Day',
+      orderLinkStatus: OrderLinkStatus.linked,
+      productSource: ProductAcquisitionSource.inAppPurchase,
+      slimPlanStatus: SlimPlanStatus.awaitingReceipt,
+      userPlanType: UserPlanType.noProduct,
+    );
+    final coupon = profile.welcomeCoupon;
+    if (applyCoupon && coupon != null && coupon.isUnused) {
+      profile = profile.copyWith(
+        welcomeCoupon: coupon.copyWith(
+          status: 'used',
+          usedAt: DateTime.now(),
+          usedOrderId: 'PURCHASE-PENDING',
+        ),
+      );
+    }
+    state = state.copyWith(profile: profile);
+  }
+
+  /// Marks welcome coupon used for any eligible checkout (demo).
+  void applyWelcomeCouponToOrder(String orderId) {
+    final coupon = state.profile.welcomeCoupon;
+    if (coupon == null || !coupon.isUnused) return;
     state = state.copyWith(
       profile: state.profile.copyWith(
-        linkedProductName: 'Solar Protein™',
-        linkedOrderNo: 'PURCHASE-PENDING',
-        membershipPlan: 'Solar Protein 28-Day',
-        orderLinkStatus: OrderLinkStatus.linked,
-        productSource: ProductAcquisitionSource.inAppPurchase,
-        slimPlanStatus: SlimPlanStatus.awaitingReceipt,
-        userPlanType: UserPlanType.noProduct,
+        welcomeCoupon: coupon.copyWith(
+          status: 'used',
+          usedAt: DateTime.now(),
+          usedOrderId: orderId,
+        ),
       ),
     );
   }

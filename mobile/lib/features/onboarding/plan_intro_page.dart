@@ -57,13 +57,13 @@ class PlanIntroPage extends ConsumerWidget {
                 productName: profile.linkedProductName,
                 onConfirmReceipt: () {
                   ref.read(appStateProvider.notifier).confirmReceipt();
-                  context.go('/ritual');
+                  context.go('/plan');
                 },
               ),
             ] else
               LdPrimaryButton(
-                label: 'Go to Ritual',
-                onPressed: () => context.go('/ritual'),
+                label: 'Go to Plan',
+                onPressed: () => context.go('/plan'),
               ),
           ],
         ),

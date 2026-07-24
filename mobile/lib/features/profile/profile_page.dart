@@ -130,7 +130,7 @@ class ProfilePage extends ConsumerWidget {
                       _quickMenuItem(
                         Icons.local_offer_outlined,
                         'Coupons',
-                        () {},
+                        () => _showCouponsSheet(context, profile),
                       ),
                     ],
                   ),
@@ -197,6 +197,7 @@ class ProfilePage extends ConsumerWidget {
                             content: Text('Plan started — welcome to Day 1!'),
                           ),
                         );
+                        context.go('/plan');
                       },
                     ),
                   ],
@@ -265,7 +266,8 @@ class ProfilePage extends ConsumerWidget {
                 context,
                 Icons.local_offer_outlined,
                 'Coupons',
-                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} days left',
+                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${profile.welcomeCoupon!.status} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} days left',
+                onTap: () => _showCouponsSheet(context, profile),
               ),
             const SizedBox(height: LuckdateSpacing.lg),
             _sectionTitle('Mall'),
@@ -556,6 +558,65 @@ class ProfilePage extends ConsumerWidget {
   int _couponDaysLeft(DateTime expiresAt) {
     final days = expiresAt.difference(DateTime.now()).inDays;
     return days < 0 ? 0 : days;
+  }
+
+  void _showCouponsSheet(BuildContext context, UserProfile profile) {
+    final coupon = profile.welcomeCoupon;
+    if (coupon == null) return;
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: LuckdateColors.cloudIvory,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(
+            LuckdateSpacing.lg,
+            LuckdateSpacing.lg,
+            LuckdateSpacing.lg,
+            LuckdateSpacing.lg + MediaQuery.paddingOf(ctx).bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('My Coupons', style: LuckdateTextStyles.h2),
+              const SizedBox(height: LuckdateSpacing.md),
+              LdCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '\$${coupon.amount.toStringAsFixed(0)} welcome coupon',
+                      style: LuckdateTextStyles.title,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Status: ${coupon.status} · ${_couponDaysLeft(coupon.expiresAt)} days left',
+                      style: LuckdateTextStyles.bodySmall,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Auto-applied at checkout when eligible. You can cancel before paying.',
+                      style: LuckdateTextStyles.caption,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: LuckdateSpacing.md),
+              LdPrimaryButton(
+                label: 'Shop in Mall',
+                onPressed: () {
+                  Navigator.pop(ctx);
+                  context.go('/mall');
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _confirmSignOut(BuildContext context, WidgetRef ref) {

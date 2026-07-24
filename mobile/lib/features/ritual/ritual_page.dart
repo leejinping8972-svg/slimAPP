@@ -10,6 +10,7 @@ import '../../core/widgets/ritual_sheets.dart';
 import '../../core/widgets/today_widgets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/daily_advice_helper.dart';
 import '../../shared/services/vitality_scorer.dart';
 
 enum _VitalityRange { today, days28, days56, days84 }
@@ -68,9 +69,16 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                             content: Text('Plan started — welcome to Day 1!'),
                           ),
                         );
+                        context.go('/plan');
                       },
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
+                    if (DailyAdviceHelper.hasBasics(profile)) ...[
+                      _DailyAdviceCard(
+                        advice: DailyAdviceHelper.forProfile(profile)!,
+                      ),
+                      const SizedBox(height: LuckdateSpacing.lg),
+                    ],
                     LdSegmentedControl<_VitalityRange>(
                       options: const [
                         _VitalityRange.today,
@@ -228,6 +236,67 @@ class _RitualPageState extends ConsumerState<RitualPage> {
         _VitalityRange.days56 => '56 Days',
         _VitalityRange.days84 => '84 Days',
       };
+}
+
+class _DailyAdviceCard extends StatelessWidget {
+  const _DailyAdviceCard({required this.advice});
+
+  final DailyAdvice advice;
+
+  @override
+  Widget build(BuildContext context) {
+    return LdCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Today\'s recommendations', style: LuckdateTextStyles.title),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Text(
+            'Based on your profile basics',
+            style: LuckdateTextStyles.caption,
+          ),
+          const SizedBox(height: LuckdateSpacing.md),
+          Row(
+            children: [
+              _metric('Calories', '${advice.calorieKcal} kcal'),
+              _metric('Protein', '${advice.proteinG} g'),
+              _metric('Water', '${advice.waterMl} ml'),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.md),
+          ...advice.tips.map(
+            (t) => Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('·  ', style: TextStyle(height: 1.4)),
+                  Expanded(
+                    child: Text(t, style: LuckdateTextStyles.bodySmall),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _metric(String label, String value) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: LuckdateTextStyles.caption),
+          Text(
+            value,
+            style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _JourneyPlanCard extends StatelessWidget {

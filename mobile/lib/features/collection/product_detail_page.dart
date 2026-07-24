@@ -232,13 +232,114 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   }
 
   Future<void> _handlePurchase() async {
-    ref.read(appStateProvider.notifier).purchaseSolarProtein();
+    final profile = ref.read(appStateProvider).profile;
+    final coupon = profile.welcomeCoupon;
+    final eligible = coupon != null && coupon.isUnused && _price >= coupon.amount;
+    var applyCoupon = eligible;
+
+    if (eligible) {
+      final confirmed = await showModalBottomSheet<bool>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: LuckdateColors.cloudIvory,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (ctx) {
+          var localApply = true;
+          return StatefulBuilder(
+            builder: (ctx, setModal) {
+              final discount = localApply ? coupon.amount : 0.0;
+              final total = (_price - discount).clamp(0, _price);
+              return Padding(
+                padding: EdgeInsets.fromLTRB(
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.lg,
+                  LuckdateSpacing.lg + MediaQuery.paddingOf(ctx).bottom,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Checkout', style: LuckdateTextStyles.h2),
+                    const SizedBox(height: LuckdateSpacing.md),
+                    Text(
+                      'Solar Protein · ${_specs[_specIndex].$1}',
+                      style: LuckdateTextStyles.body,
+                    ),
+                    const SizedBox(height: LuckdateSpacing.sm),
+                    Text(
+                      'Subtotal  \$${_price.toStringAsFixed(2)}',
+                      style: LuckdateTextStyles.bodySmall,
+                    ),
+                    const SizedBox(height: LuckdateSpacing.md),
+                    LdCard(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '\$${coupon.amount.toStringAsFixed(0)} welcome coupon',
+                                  style: LuckdateTextStyles.title,
+                                ),
+                                Text(
+                                  localApply
+                                      ? 'Auto-selected · tap to cancel'
+                                      : 'Not applied',
+                                  style: LuckdateTextStyles.caption,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Switch(
+                            value: localApply,
+                            activeThumbColor: LuckdateColors.deepSage,
+                            onChanged: (v) => setModal(() => localApply = v),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.md),
+                    Text(
+                      'Total  \$${total.toStringAsFixed(2)}',
+                      style: LuckdateTextStyles.h2,
+                    ),
+                    const SizedBox(height: LuckdateSpacing.lg),
+                    LdPrimaryButton(
+                      label: 'Confirm purchase',
+                      onPressed: () => Navigator.pop(ctx, localApply),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.sm),
+                    LdSecondaryButton(
+                      label: 'Cancel',
+                      onPressed: () => Navigator.pop(ctx, null),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      );
+      if (confirmed == null) return;
+      applyCoupon = confirmed;
+    }
+
+    ref
+        .read(appStateProvider.notifier)
+        .purchaseSolarProtein(applyCoupon: applyCoupon);
+    if (!mounted) return;
     await showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Purchase successful'),
-        content: const Text(
-          'Purchase successful. Confirm receipt when your package arrives to start your 28-day Slim Journey.',
+        content: Text(
+          applyCoupon && eligible
+              ? 'Coupon applied. Confirm receipt when your package arrives to start your 28-day Slim Journey.'
+              : 'Purchase successful. Confirm receipt when your package arrives to start your 28-day Slim Journey.',
         ),
         actions: [
           TextButton(

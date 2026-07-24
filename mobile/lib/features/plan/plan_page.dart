@@ -87,6 +87,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Plan started — welcome to Day 1!')),
           );
+          context.go('/plan');
         },
         onViewOverview: () => context.push('/plan/intro'),
       );

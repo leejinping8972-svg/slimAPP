@@ -125,24 +125,19 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                         const SizedBox(height: LuckdateSpacing.md),
                         Wrap(
                           spacing: 8,
-                          children:
-                              [
-                                'More Energy',
-                                'Femme Balance',
-                                'Better Sleep',
-                              ].map((d) {
-                                return LdChoiceChip(
-                                  label: d,
-                                  selected: false,
-                                  onTap: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Coming soon'),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }).toList(),
+                          children: [
+                            ('Reorder Solar', 'solar_protein'),
+                            ('Maintain', 'youth_solar'),
+                            ('Energy', 'active_boost'),
+                          ].map((d) {
+                            return LdChoiceChip(
+                              label: d.$1,
+                              selected: false,
+                              onTap: () => context.push(
+                                '/collection/product/${d.$2}',
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ],
                     ),

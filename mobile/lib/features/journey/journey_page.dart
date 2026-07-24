@@ -6,6 +6,7 @@ import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/journey_outcome_helper.dart';
 
 class JourneyPage extends ConsumerWidget {
   const JourneyPage({super.key});
@@ -45,6 +46,7 @@ class JourneyPage extends ConsumerWidget {
                       content: Text('Plan started — welcome to Day 1!'),
                     ),
                   );
+                  context.go('/plan');
                 },
                 onViewOverview: () => context.push('/plan/intro'),
               ),
@@ -79,7 +81,7 @@ class JourneyPage extends ConsumerWidget {
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
                 label: 'Browse products',
-                onPressed: () => context.push('/collection'),
+                onPressed: () => context.go('/mall'),
               ),
             ],
           ),
@@ -296,7 +298,7 @@ class JourneyPage extends ConsumerWidget {
             ],
             const SizedBox(height: LuckdateSpacing.lg),
             LdCard(
-              onTap: () => context.push('/collection'),
+              onTap: () => context.go('/mall'),
               child: Row(
                 children: [
                   const Icon(
@@ -417,6 +419,10 @@ class Day28ReportPage extends ConsumerWidget {
     final state = ref.watch(appStateProvider);
     final journey = state.journey;
     final profile = state.profile;
+    final offer = JourneyOutcomeHelper.resolve(
+      profile: profile,
+      journey: journey,
+    );
     final startVitality = journey.vitalityTrend.isNotEmpty
         ? journey.vitalityTrend.first
         : 0.0;
@@ -471,7 +477,7 @@ class Day28ReportPage extends ConsumerWidget {
                   const LdSunnyAvatar(size: 56),
                   const SizedBox(height: LuckdateSpacing.md),
                   Text(
-                    '${profile.nickname}, 28 days of gentle steps. You did not chase perfection — you built a rhythm. Ready for your next journey?',
+                    '${profile.nickname}, 28 days of gentle steps. You did not chase perfection — you built a rhythm.',
                     style: LuckdateTextStyles.body,
                     textAlign: TextAlign.center,
                   ),
@@ -479,10 +485,31 @@ class Day28ReportPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            LdPrimaryButton(
-              label: 'Explore Next Journey',
-              onPressed: () => context.push('/collection'),
+            LdCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Your next journey', style: LuckdateTextStyles.title),
+                  const SizedBox(height: LuckdateSpacing.sm),
+                  Text(offer.title, style: LuckdateTextStyles.h2),
+                  const SizedBox(height: LuckdateSpacing.sm),
+                  Text(offer.subtitle, style: LuckdateTextStyles.bodySmall),
+                ],
+              ),
             ),
+            const SizedBox(height: LuckdateSpacing.xl),
+            LdPrimaryButton(
+              label: offer.primaryLabel,
+              onPressed: () =>
+                  context.push('/collection/product/${offer.primaryProductId}'),
+            ),
+            if (offer.secondaryProductIds.isNotEmpty) ...[
+              const SizedBox(height: LuckdateSpacing.sm),
+              LdSecondaryButton(
+                label: 'Browse more options',
+                onPressed: () => context.go('/mall'),
+              ),
+            ],
             const SizedBox(height: LuckdateSpacing.sm),
             LdSecondaryButton(
               label: 'Not now',
