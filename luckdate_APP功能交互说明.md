@@ -1,23 +1,24 @@
-# luckdate（ChatViva Slim）APP 功能交互说明（核心流程版）
+# luckdate APP 功能交互说明（核心流程版）
 
-> 以完整产品交互为准；Demo 仅模拟数据与支付。  
-> 更新日期：2026-07-24 · 对齐 PRD V1.2
+> 版本 V2.0 · 2026-07-24 · 完整细节见《全功能交互说明（完整版）》
 
----
+## 闭环
 
-## 1. 核心闭环
+注册 → 关联（姓名+后四位）或 Skip → Sunny 介绍+建档 → 有产品则方案进行中 → 每日 Journey/Sunny/Plan → Day28 A/B/C 复购。
 
-注册 →（姓名+后四位关联 或 Skip）→ Sunny 介绍+建档 → 有产品则 28 天方案 → 每日 Journey/Sunny → Day28 A/B/C 复购。
+## 导航
 
-## 2. 导航
+底栏：Sunny · Journey · Mall · Me。**Plan 不进底栏。**
 
-Sunny · Journey · Mall · Me（底栏）。**Plan 不进底栏。**
+## 新用户主路径
 
-## 3. 开通
+开屏 → 引导 → 注册（发 $5 券）→ 关联订单 → Sunny 首次（介绍+建档）→ 主壳。
 
-- 关联代餐 → 立即 Day1  
-- 内购 → Checkout 自动用券（可取消）→ 待收货 → Confirm → **Plan**
+## 开通
 
-## 4. 验收
+- 关联代餐 → 立即 Day 1  
+- Mall 内购 → Checkout 自动用券（可取消）→ 确认收货 → **Plan**
 
-A 订单绑定 · B 内购确认收货 · C 回访 · D Day28 复购 · E Journey 建议（需建档）
+## 验收
+
+A 订单绑定 · B 内购确认 · C 回访 · D Day28 · E 建档前后建议显隐
