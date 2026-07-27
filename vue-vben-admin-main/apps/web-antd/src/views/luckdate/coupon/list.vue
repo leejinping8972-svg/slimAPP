@@ -59,9 +59,13 @@ const rules: Record<string, Rule[]> = {
   name: [{ required: true, message: '请输入优惠券名称' }],
   type: [{ required: true, message: '请选择优惠券类型' }],
   discountValue: [{ required: true, type: 'number', min: 0, message: '请输入优惠值' }],
-  totalQuantity: [{ required: true, type: 'number', min: 1, message: '发放总量至少为 1' }],
+  totalQuantity: [{ required: true, type: 'number', min: 0, message: '发放总量不能小于 0（0 表示不限）' }],
   perUserLimit: [{ required: true, type: 'number', min: 1, message: '单人限领至少为 1' }],
 };
+
+function needsProductSelection(scope: CouponRecord['productScope']) {
+  return scope === 'specified' || scope === 'include_specified_order';
+}
 
 function createEmptyForm(): CouponForm {
   return {
@@ -143,7 +147,7 @@ async function submit() {
     message.error('请选择固定有效期');
     return;
   }
-  if (form.productScope === 'specified' && form.productIds.length === 0) {
+  if (needsProductSelection(form.productScope) && form.productIds.length === 0) {
     message.error('请选择适用商品');
     return;
   }
@@ -154,7 +158,9 @@ async function submit() {
     await saveCoupon({
       ...coupon,
       id: coupon.id || `c${Date.now()}`,
-      productIds: coupon.productScope === 'specified' ? [...coupon.productIds] : [],
+      productIds: needsProductSelection(coupon.productScope)
+        ? [...coupon.productIds]
+        : [],
       startAt: dateRange?.[0]?.startOf('day').toISOString(),
       endAt: dateRange?.[1]?.endOf('day').toISOString(),
       daysAfterClaim:
@@ -260,7 +266,12 @@ onMounted(() => void loadData());
           <InputNumber v-model:value="form.daysAfterClaim" :min="1" :precision="0" />
         </Form.Item>
         <Form.Item label="发放总量" name="totalQuantity">
-          <InputNumber v-model:value="form.totalQuantity" :min="1" :precision="0" />
+          <InputNumber
+            v-model:value="form.totalQuantity"
+            :min="0"
+            :precision="0"
+            placeholder="0 表示不限"
+          />
         </Form.Item>
         <Form.Item label="单人限领" name="perUserLimit">
           <InputNumber v-model:value="form.perUserLimit" :min="1" :precision="0" />
@@ -269,9 +280,10 @@ onMounted(() => void loadData());
           <Radio.Group v-model:value="form.productScope">
             <Radio value="all">全部商品</Radio>
             <Radio value="specified">指定商品</Radio>
+            <Radio value="include_specified_order">包含指定商品后整单计算</Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item v-if="form.productScope === 'specified'" label="适用商品">
+        <Form.Item v-if="needsProductSelection(form.productScope)" label="适用商品">
           <Select
             v-model:value="form.productIds"
             allow-clear
