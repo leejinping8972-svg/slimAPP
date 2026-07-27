@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { maskPhone, queryOrders, ORDER_STATUS_LABEL } from './store';
+import {
+  LOGISTICS_STATUS_LABEL,
+  maskPhone,
+  ORDER_STATUS_LABEL,
+  queryOrders,
+} from './store';
 
 describe('maskPhone', () => {
   it('masks middle digits', () => {
@@ -15,11 +20,21 @@ describe('queryOrders', () => {
     expect(items.every((o) => o.orderStatus === 'paid')).toBe(true);
   });
 
-  it('exposes logistics labels for all five statuses', () => {
+  it('exposes order labels for all three statuses', () => {
     expect(Object.keys(ORDER_STATUS_LABEL)).toEqual([
       'unpaid',
       'paid',
       'cancelled',
+    ]);
+  });
+
+  it('exposes logistics labels for all five statuses', () => {
+    expect(Object.keys(LOGISTICS_STATUS_LABEL)).toEqual([
+      'placed',
+      'shipped',
+      'arrived',
+      'received',
+      'problem',
     ]);
   });
 });

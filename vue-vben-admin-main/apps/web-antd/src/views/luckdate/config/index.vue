@@ -49,11 +49,12 @@ async function loadData() {
     const { items } = await queryConfigs();
     const order = new Map(REQUIRED_CODES.map((code, index) => [code, index]));
     configs.value = items
-      .filter((item) => order.has(item.code as (typeof REQUIRED_CODES)[number]))
       .sort(
         (a, b) =>
-          (order.get(a.code as (typeof REQUIRED_CODES)[number]) ?? 0) -
-          (order.get(b.code as (typeof REQUIRED_CODES)[number]) ?? 0),
+          (order.get(a.code as (typeof REQUIRED_CODES)[number]) ??
+            REQUIRED_CODES.length) -
+          (order.get(b.code as (typeof REQUIRED_CODES)[number]) ??
+            REQUIRED_CODES.length),
       );
   } finally {
     loading.value = false;

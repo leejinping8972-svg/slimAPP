@@ -36,3 +36,16 @@
 
 - 编辑器诊断：admin/list、api、store 无 lint 报错。
 - 未运行 `pnpm typecheck` / 浏览器点验（依赖未安装）。
+
+---
+
+## Final review fixes
+
+- C1：将 backend mock 全部用户的 `homePath` 及 Web Antd 默认首页统一为 `/dashboard`，避免登录后跳转到已移除的 dashboard 子路由。
+- C2：恢复隐藏菜单的 `/profile` 路由，指向现有个人中心页面。
+- I2：订单客户名称和地区筛选改为大小写不敏感的包含匹配。
+- I3：补正物流状态标签测试，校验 `placed`、`shipped`、`arrived`、`received`、`problem` 五个键，并保留订单状态标签断言。
+- I4：配置列表保留所有配置；三项必需配置优先显示。
+- 统计：`getDashboardStats` 使用运行时 ISO 日期（`YYYY-MM-DD`），不再硬编码日期。
+- `.gitignore` 已覆盖 `node_modules`、`dist`、`.turbo`，无需修改。
+- C3：`vue-vben-admin-main` 仍为未跟踪的上游框架目录；按要求未将整个 monorepo 加入本次提交，需由人工决定纳入策略。

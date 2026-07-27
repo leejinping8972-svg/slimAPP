@@ -317,13 +317,19 @@ export function queryOrders(params: QueryOrdersParams = {}) {
     items = items.filter((o) => o.logisticsStatus === params.logisticsStatus);
   }
   if (params.region) {
-    items = items.filter((o) => o.region === params.region);
+    items = items.filter((o) =>
+      o.region.toLowerCase().includes(params.region!.toLowerCase()),
+    );
   }
   if (params.orderNo) {
     items = items.filter((o) => o.orderNo.includes(params.orderNo!));
   }
   if (params.customerName) {
-    items = items.filter((o) => o.customerName === params.customerName);
+    items = items.filter((o) =>
+      o.customerName
+        .toLowerCase()
+        .includes(params.customerName!.toLowerCase()),
+    );
   }
   if (params.phoneLast4) {
     items = items.filter((o) => o.phone.endsWith(params.phoneLast4!));
@@ -427,7 +433,7 @@ export function setAdminEnabled(id: string, enabled: boolean): AdminRecord | und
 }
 
 export function getDashboardStats() {
-  const today = '2026-07-27';
+  const today = new Date().toISOString().slice(0, 10);
   const todayRegister = users.filter((u) =>
     u.registeredAt.startsWith(today),
   ).length;
