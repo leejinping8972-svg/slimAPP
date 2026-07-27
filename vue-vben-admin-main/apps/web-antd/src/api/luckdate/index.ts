@@ -14,6 +14,7 @@ import {
   linkOrderToUser as linkOrderToUserStore,
   previewOrdersForLink as previewOrdersForLinkStore,
   queryAdmins as queryAdminsStore,
+  setAdminEnabled as setAdminEnabledStore,
   queryConfigs as queryConfigsStore,
   queryCouponBatches as queryCouponBatchesStore,
   queryCoupons as queryCouponsStore,
@@ -91,6 +92,10 @@ export async function updateConfig(code: string, value: string) {
 
 export async function queryAdmins() {
   return queryAdminsStore();
+}
+
+export async function setAdminEnabled(id: string, enabled: boolean) {
+  return setAdminEnabledStore(id, enabled);
 }
 
 export async function getDashboardStats() {

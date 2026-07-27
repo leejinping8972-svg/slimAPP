@@ -417,6 +417,15 @@ export function queryAdmins() {
   return { items: [...admins], total: admins.length };
 }
 
+export function setAdminEnabled(id: string, enabled: boolean): AdminRecord | undefined {
+  const admin = admins.find((a) => a.id === id);
+  if (!admin) {
+    return undefined;
+  }
+  admin.enabled = enabled;
+  return admin;
+}
+
 export function getDashboardStats() {
   const today = '2026-07-27';
   const todayRegister = users.filter((u) =>
