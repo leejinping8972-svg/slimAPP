@@ -23,6 +23,7 @@ import {
   saveCoupon as saveCouponStore,
   saveProduct as saveProductStore,
   updateConfig as updateConfigStore,
+  updateUserRemark as updateUserRemarkStore,
   type QueryOrdersParams,
   type QueryProductsParams,
   type QueryUsersParams,
@@ -34,6 +35,10 @@ export async function queryUsers(params?: QueryUsersParams) {
 
 export async function getUserById(id: string) {
   return getUserByIdStore(id);
+}
+
+export async function updateUserRemark(id: string, remark: string) {
+  return updateUserRemarkStore(id, remark);
 }
 
 export async function linkOrderToUser(userId: string, orderId: string) {

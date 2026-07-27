@@ -274,6 +274,18 @@ export function getUserById(id: string): UserRecord | undefined {
   return users.find((u) => u.id === id);
 }
 
+export function updateUserRemark(
+  id: string,
+  remark: string,
+): UserRecord | undefined {
+  const user = users.find((u) => u.id === id);
+  if (!user) {
+    return undefined;
+  }
+  user.remark = remark;
+  return user;
+}
+
 export function linkOrderToUser(userId: string, orderId: string): boolean {
   const user = users.find((u) => u.id === userId);
   if (!user) {
