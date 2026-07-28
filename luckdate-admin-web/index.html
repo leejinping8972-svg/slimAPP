@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>luckdate 管理后台</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>L</text></svg>" />
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue-router@4.5.0/dist/vue-router.global.prod.js"></script>
+    <script src="https://unpkg.com/dayjs@1.11.13/dayjs.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ant-design-vue@4.2.6/dist/reset.css" />
+    <script src="https://unpkg.com/ant-design-vue@4.2.6/dist/antd.min.js"></script>
+    <style>
+      :root {
+        --bg: #f5f7f6;
+        --side: #1f2a24;
+        --accent: #3d6b5a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: var(--bg);
+        color: #1a1a1a;
+      }
+      #app { min-height: 100vh; }
+      .layout { display: flex; min-height: 100vh; }
+      .sider {
+        width: 220px;
+        background: linear-gradient(180deg, #1f2a24 0%, #2a3b32 100%);
+        color: #fff;
+        padding: 20px 0;
+        flex-shrink: 0;
+      }
+      .brand {
+        padding: 0 20px 24px;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .brand span { opacity: 0.7; font-size: 12px; font-weight: 400; display: block; margin-top: 4px; }
+      .menu a {
+        display: block;
+        padding: 12px 20px;
+        color: rgba(255,255,255,0.78);
+        text-decoration: none;
+        border-left: 3px solid transparent;
+      }
+      .menu a:hover, .menu a.active {
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        border-left-color: #7cbc9a;
+      }
+      .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+      .topbar {
+        height: 56px;
+        background: #fff;
+        border-bottom: 1px solid #e8ece9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+      }
+      .content { padding: 24px; }
+      .card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        margin-bottom: 16px;
+      }
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+      .stat {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        border: 1px solid #e8ece9;
+        transition: box-shadow .15s;
+      }
+      .stat:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+      .stat .n { font-size: 28px; font-weight: 700; color: var(--accent); }
+      .stat .l { color: #667; margin-top: 6px; font-size: 13px; }
+      table { width: 100%; border-collapse: collapse; font-size: 14px; }
+      th, td { padding: 10px 12px; border-bottom: 1px solid #eef1ef; text-align: left; }
+      th { color: #667; font-weight: 600; background: #fafbfa; }
+      .btn {
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .btn.ghost { background: #eef3f0; color: #234; }
+      .btn.danger { background: #c45c4a; }
+      .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+      .filters input, .filters select {
+        padding: 8px 10px;
+        border: 1px solid #d9e0db;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+      .tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: #eef3f0;
+      }
+      .tag.ok { background: #e4f5ea; color: #1f6b3a; }
+      .tag.warn { background: #fff3df; color: #8a5a00; }
+      .modal-mask {
+        position: fixed; inset: 0; background: rgba(0,0,0,.4);
+        display: flex; align-items: center; justify-content: center; z-index: 50;
+      }
+      .modal {
+        background: #fff; border-radius: 12px; padding: 20px; width: min(520px, 92vw);
+        max-height: 86vh; overflow: auto;
+      }
+      .modal h3 { margin: 0 0 16px; }
+      .form-row { margin-bottom: 12px; }
+      .form-row label { display: block; font-size: 12px; color: #667; margin-bottom: 4px; }
+      .form-row input, .form-row select, .form-row textarea {
+        width: 100%; padding: 8px 10px; border: 1px solid #d9e0db; border-radius: 8px;
+      }
+      .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+      .empty { color: #889; padding: 24px; text-align: center; }
+      @media (max-width: 900px) {
+        .stats { grid-template-columns: 1fr 1fr; }
+        .sider { width: 180px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
