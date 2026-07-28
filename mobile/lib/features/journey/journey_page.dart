@@ -112,7 +112,7 @@ class ViajePage extends ConsumerWidget {
               child: LdProgresoRing(
                 percent: journey.completionPercent.toDouble(),
                 centerLabel: '${journey.completionPercent}%',
-                subLabel: 'Day ${journey.day} / ${journey.totalDays}',
+                subLabel: 'Día ${journey.day} / ${journey.totalDays}',
               ),
             ),
             const SizedBox(height: LuckdateSpacing.sm),
@@ -127,7 +127,7 @@ class ViajePage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Days',
+                    label: 'Días',
                     value: '${journey.day}',
                     subtitle: 'Actual',
                   ),
@@ -135,7 +135,7 @@ class ViajePage extends ConsumerWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Vitality',
+                    label: 'Vitalidad',
                     value: '${scores.dailyVitality}',
                     subtitle: 'Hoy',
                   ),
@@ -159,18 +159,18 @@ class ViajePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.md),
-            _phaseCard('Inicio', 'Days 1-7', journey.day <= 7),
+            _phaseCard('Inicio', 'Días 1–7', journey.day <= 7),
             _phaseCard(
               'Adaptación',
-              'Days 8-14',
+              'Días 8–14',
               journey.day > 7 && journey.day <= 14,
             ),
             _phaseCard(
               'Estabilidad',
-              'Days 15-21',
+              'Días 15–21',
               journey.day > 14 && journey.day <= 21,
             ),
-            _phaseCard('Completion', 'Days 22-28', journey.day > 21),
+            _phaseCard('Finalización', 'Días 22–28', journey.day > 21),
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
@@ -194,14 +194,14 @@ class ViajePage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Vitality Dashboard', style: LuckdateTextStyles.h2),
+              child: Text('Panel de vitalidad', style: LuckdateTextStyles.h2),
             ),
             const SizedBox(height: LuckdateSpacing.md),
             Row(
               children: [
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Hydration',
+                    label: 'Hidratación',
                     value: '${scores.hydrationScore}%',
                     subtitle: 'Progreso',
                   ),
@@ -209,7 +209,7 @@ class ViajePage extends ConsumerWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Sleep',
+                    label: 'Sueño',
                     value: '${scores.sleepScore}',
                     subtitle: 'Recuperación',
                   ),
@@ -221,7 +221,7 @@ class ViajePage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Mood',
+                    label: 'Ánimo',
                     value: '${scores.moodCheckScore}',
                     subtitle: 'Comentarios nocturnos',
                   ),
@@ -229,9 +229,9 @@ class ViajePage extends ConsumerWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Consistency',
+                    label: 'Constancia',
                     value: '${scores.consistencyScore}%',
-                    subtitle: '5-day',
+                    subtitle: '5 días',
                   ),
                 ),
               ],
@@ -456,19 +456,19 @@ class Day28ReportPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             VitalityMetricCard(
-              label: 'Completion',
+              label: 'Completitud',
               value: '${journey.completionPercent}%',
               subtitle: 'Tasa de finalización de rituales',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
-              label: 'Days activos',
+              label: 'Días activos',
               value: '$activeDays',
-              subtitle: 'Days con registros',
+              subtitle: 'Días con registros',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
-              label: 'Vitality change',
+              label: 'Cambio de vitalidad',
               value: '${vitalityChange >= 0 ? '+' : ''}$vitalityChange',
               subtitle: 'Del día 1 al día ${journey.day}',
             ),
@@ -479,7 +479,7 @@ class Day28ReportPage extends ConsumerWidget {
                   const LdSunnyAvatar(size: 56),
                   const SizedBox(height: LuckdateSpacing.md),
                   Text(
-                    '${profile.nickname}, 28 days of gentle steps. You did not chase perfection — you built a rhythm.',
+                    '${profile.nickname}, 28 días de pasos suaves. No buscaste la perfección — construiste un ritmo.',
                     style: LuckdateTextStyles.body,
                     textAlign: TextAlign.center,
                   ),

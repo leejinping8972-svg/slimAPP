@@ -25,12 +25,12 @@ class DailyAdviceHelper {
 
     final tips = <String>[
       if (profile.userPlanType == UserPlanType.mealReemplazament)
-        'Reemplaza ${profile.mealSlot} with your Solar Protein shake today.'
+        'Reemplaza ${profile.mealSlot} con tu batido Solar Protein hoy.'
       else if (profile.userPlanType == UserPlanType.nonMealReemplazament)
         'Toma tu producto vinculado a las ${profile.reminderTime}.'
       else
         'Registra comidas y agua; Sunny ajustará tu plan después de vincular un producto.',
-      'Procura beber aproximadamente $water ml  ml de agua durante el día.',
+      'Procura beber aproximadamente $water ml de agua durante el día.',
       'Horario de sueño recomendado: $sleepHours horas esta noche.',
     ];
 

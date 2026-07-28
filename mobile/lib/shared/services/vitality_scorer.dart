@@ -207,13 +207,13 @@ class VitalityScorer {
     return [
       VitalityDimension(
         key: 'nutrition',
-        label: 'Nutrition',
+        label: 'Nutrición',
         score: scores.nutritionScore,
         icon: Icons.apple_outlined,
       ),
       VitalityDimension(
         key: 'exercise',
-        label: 'Exercise',
+        label: 'Ejercicio',
         score: scores.exerciseScore,
         icon: Icons.directions_run_outlined,
       ),
@@ -225,19 +225,19 @@ class VitalityScorer {
       ),
       VitalityDimension(
         key: 'sleep',
-        label: 'Sleep',
+        label: 'Sueño',
         score: scores.sleepScore,
         icon: Icons.bedtime_outlined,
       ),
       VitalityDimension(
         key: 'hydration',
-        label: 'Hydration',
+        label: 'Hidratación',
         score: scores.hydrationScore,
         icon: Icons.water_drop_outlined,
       ),
       VitalityDimension(
         key: 'habits',
-        label: 'Habits',
+        label: 'Hábitos',
         score: scores.consistencyScore,
         icon: Icons.wb_sunny_outlined,
         highlighted:

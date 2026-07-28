@@ -65,16 +65,16 @@ class ViajeOutcomeHelper {
         path: ViajeRepurchasePath.continueActual,
         title: 'Estás avanzando',
         subtitle:
-            'Great rhythm — keep going with another Solar Protein cycle to close the gap to your target.',
+            'Buen ritmo — sigue con otro ciclo de Solar Protein para acercarte a tu meta.',
         primaryProductoId: 'solar_protein',
-        primaryLabel: 'Reorder Solar Protein',
+        primaryLabel: 'Volver a pedir Solar Protein',
         secondaryProductoIds: [],
       );
     }
 
     return const ViajeRepurchaseOffer(
       path: ViajeRepurchasePath.tryAlternative,
-      title: 'Let\'s try a different path',
+      title: 'Probemos otro camino',
       subtitle:
           'Los resultados fueron limitados en este ciclo. Explora una fórmula alternativa que pueda adaptarse mejor a tu cuerpo.',
       primaryProductoId: 'active_boost',

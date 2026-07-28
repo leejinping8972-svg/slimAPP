@@ -55,7 +55,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     ref.listen(appStateProvider, (_, __) => _scrollToBottom());
 
     return LdScaffold(
-      title: 'Viva',
+      title: 'Sunny',
       showBack: true,
       actions: [
         Padding(
@@ -94,7 +94,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                   borderRadius: BorderRadius.circular(LuckdateRadius.lg),
                 ),
                 child: Text(
-                  'Evening check-in: how are you feeling tonight?',
+                  'Registro nocturno: ¿cómo te sientes esta noche?',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ),
@@ -102,7 +102,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: LuckdateSpacing.lg),
             child: Text(
-              'Viva provides lifestyle companionship — not medical advice.',
+              'Sunny ofrece acompañamiento de estilo de vida, no consejo médico.',
               style: LuckdateTextStyles.caption,
               textAlign: TextAlign.center,
             ),
@@ -131,9 +131,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _quickBtn('Water', 'water'),
-                  _quickBtn('Meal', 'meal'),
-                  _quickBtn('Adjust', 'adjust'),
+                  _quickBtn('Agua', 'water'),
+                  _quickBtn('Comida', 'meal'),
+                  _quickBtn('Ajustar', 'adjust'),
                 ],
               ),
             ),
@@ -151,7 +151,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               child: TextField(
                 controller: _controller,
                 decoration: InputDecoration(
-                  hintText: 'Ask Viva anything...',
+                  hintText: 'Pregúntale a Sunny lo que quieras...',
                   suffixIcon: IconButton(
                     icon: Icon(
                       Icons.send_rounded,
@@ -223,10 +223,10 @@ class _TodayMiniCard extends ConsumerWidget {
               const SizedBox(width: LuckdateSpacing.sm),
               Expanded(
                 child: Text(
-                  'Today: ${record.hydrationMl} ml water'
+                  'Hoy: ${record.hydrationMl} ml de agua'
                   '${record.weightRecorded ? ' · ${record.weightValueKg.toStringAsFixed(1)} kg' : ''}'
-                  '${record.productTaken == ProductTakenStatus.taken ? ' · product logged' : ''}'
-                  '${record.moodTag.isNotEmpty ? ' · mood: ${record.moodTag}' : ''}',
+                  '${record.productTaken == ProductTakenStatus.taken ? ' · producto registrado' : ''}'
+                  '${record.moodTag.isNotEmpty ? ' · ánimo: ${record.moodTag}' : ''}',
                   style: LuckdateTextStyles.caption,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -240,7 +240,7 @@ class _TodayMiniCard extends ConsumerWidget {
             runSpacing: LuckdateSpacing.sm,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Text('Mood', style: LuckdateTextStyles.caption),
+              Text('Ánimo', style: LuckdateTextStyles.caption),
               ..._moods.map((mood) {
                 final selected = record.moodTag == mood.$1;
                 return Material(

@@ -113,7 +113,7 @@ class CheckInEstimator {
     }
     return MealLogEntry(
       meal: 'Meal',
-      name: _titleFrom(lower, fallback: 'Logged meal'),
+      name: _titleFrom(lower, fallback: 'Comida registrada'),
       time: time,
       kcal: 360,
       protein: 22,

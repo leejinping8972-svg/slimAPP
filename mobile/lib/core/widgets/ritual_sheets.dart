@@ -165,7 +165,7 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('Hydration', style: LuckdateTextStyles.h2),
+        Text('Hidratación', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.base),
         ScaleTransition(
           scale: _pulse,
@@ -332,7 +332,7 @@ class MealCheckInSheet extends ConsumerWidget {
         Text(
           alreadyLogged
               ? 'La proteína matutina ya está registrada hoy.'
-              : 'Registra rápidamente tu Solar Protein o comida matutina. La IA estimará las calorías en el Record diario.',
+              : 'Registra rápidamente tu Solar Protein o comida matutina. La IA estimará las calorías en el registro diario.',
           style: LuckdateTextStyles.bodySmall,
         ),
         const SizedBox(height: LuckdateSpacing.lg),
@@ -382,13 +382,13 @@ List<RitualLogItem> ritualItemsForPlan({
       add(
         'Peso',
         record.weightRecorded
-            ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+            ? '${record.weightValueKg.toStringAsFixed(1)} kg registrado'
             : 'Registrar hoy',
         Icons.monitor_weight_outlined,
         record.weightRecorded,
       );
       add(
-        'Hydration',
+        'Hidratación',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -405,7 +405,7 @@ List<RitualLogItem> ritualItemsForPlan({
         record.productTaken == ProductoTakenStatus.taken,
       );
       add(
-        'Hydration',
+        'Hidratación',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -413,7 +413,7 @@ List<RitualLogItem> ritualItemsForPlan({
       add(
         'Peso',
         record.weightRecorded
-            ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+            ? '${record.weightValueKg.toStringAsFixed(1)} kg registrado'
             : 'Registrar hoy',
         Icons.monitor_weight_outlined,
         record.weightRecorded,
@@ -428,7 +428,7 @@ List<RitualLogItem> ritualItemsForPlan({
         record.productTaken == ProductoTakenStatus.taken,
       );
       add(
-        'Hydration',
+        'Hidratación',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -436,15 +436,15 @@ List<RitualLogItem> ritualItemsForPlan({
       add(
         'Peso',
         record.weightRecorded
-            ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+            ? '${record.weightValueKg.toStringAsFixed(1)} kg registrado'
             : 'Registrar hoy',
         Icons.monitor_weight_outlined,
         record.weightRecorded,
       );
       add(
-        'Sleep',
+        'Sueño',
         record.sleepHours > 0
-            ? '${record.sleepHours.toStringAsFixed(1)}h logged'
+            ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
             : '¿Cuánto dormiste?',
         Icons.bedtime_outlined,
         record.sleepHours > 0,

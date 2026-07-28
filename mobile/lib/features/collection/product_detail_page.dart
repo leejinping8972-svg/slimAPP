@@ -36,7 +36,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   ];
 
   static const _services = [
-    (Icons.verified_outlined, 'Original'),
+    (Icons.verified_outlined, 'Auténtico'),
     (Icons.public_outlined, 'Envío global'),
     (Icons.replay_outlined, 'Devolución de 7 días'),
     (Icons.lock_outline, 'Pago seguro'),

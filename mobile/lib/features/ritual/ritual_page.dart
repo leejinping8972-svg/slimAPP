@@ -144,7 +144,7 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Record diario',
+                                  'Registro diario',
                                   style: LuckdateTextStyles.title,
                                 ),
                                 Text(
@@ -252,7 +252,7 @@ class _DailyAdviceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('De hoy recommendations', style: LuckdateTextStyles.title),
+          Text('Recomendaciones de hoy', style: LuckdateTextStyles.title),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
             'Según los datos básicos de tu perfil',
@@ -261,8 +261,8 @@ class _DailyAdviceCard extends StatelessWidget {
           const SizedBox(height: LuckdateSpacing.md),
           Row(
             children: [
-              _metric('Calories', '${advice.calorieKcal} kcal'),
-              _metric('Protein', '${advice.proteinG} g'),
+              _metric('Calorías', '${advice.calorieKcal} kcal'),
+              _metric('Proteína', '${advice.proteinG} g'),
               _metric('Agua', '${advice.waterMl} ml'),
             ],
           ),
@@ -347,7 +347,7 @@ class _ViajePlanCard extends StatelessWidget {
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Viaje Slim de 28 días · Day ${journey.day}/${journey.totalDays}',
+              'Viaje Slim de 28 días · Día ${journey.day}/${journey.totalDays}',
               style: LuckdateTextStyles.body.copyWith(fontPeso: FontPeso.w600),
             ),
             const SizedBox(height: LuckdateSpacing.sm),
@@ -936,7 +936,7 @@ class _FocusCarousel extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'De hoy Focus',
+                          'Enfoque de hoy',
                           style: LuckdateTextStyles.caption.copyWith(
                             color: LuckdateColors.sunGold,
                             fontPeso: FontPeso.w700,

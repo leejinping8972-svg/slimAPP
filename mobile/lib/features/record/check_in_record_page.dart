@@ -200,7 +200,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                     quality: live.sleepQuality,
                   ),
                   const SizedBox(height: LuckdateSpacing.xl),
-                  Text('De hoy Meals', style: LuckdateTextStyles.h2),
+                  Text('Comidas de hoy', style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.md),
                   if (live.meals.isEmpty)
                     LdCard(
@@ -232,7 +232,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                     ),
                   ),
                   const SizedBox(height: LuckdateSpacing.md),
-                  Text('De hoy Agua', style: LuckdateTextStyles.h2),
+                  Text('Agua de hoy', style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.md),
                   _AguaCard(
                     filledCups: filledCups,
@@ -288,7 +288,7 @@ class _SourceBanner extends StatelessWidget {
             const SizedBox(width: LuckdateSpacing.sm),
             Expanded(
               child: Text(
-                'Diet, exercise, sleep & water sync from Sunny chat and quick check-ins. AI estimates intake & burn.',
+                'La dieta, el ejercicio, el sueño y el agua se sincronizan desde el chat con Sunny y los registros rápidos. La IA estima consumo y gasto calórico.',
                 style: LuckdateTextStyles.caption.copyWith(
                   color: LuckdateColors.textPrimary,
                 ),
@@ -325,7 +325,7 @@ class _Header extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'Record diario',
+              'Registro diario',
               textAlign: TextAlign.center,
               style: LuckdateTextStyles.title,
             ),
@@ -410,10 +410,10 @@ class _IntakeOverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final macros = [
-      ('Protein', protein, 120, 'Recomendado 80–120g', LuckdateColors.deepSage),
-      ('Carbs', carbs, 160, 'Recomendado 120–180g', const Color(0xFFD4A373)),
-      ('Fat', fat, 60, 'Recomendado 40–65g', const Color(0xFF9A8BB5)),
-      ('Fiber', fiber, 25, 'Recomendado 20–30g', const Color(0xFF7BA3C4)),
+      ('Proteína', protein, 120, 'Recomendado 80–120g', LuckdateColors.deepSage),
+      ('Carbohidratos', carbs, 160, 'Recomendado 120–180g', const Color(0xFFD4A373)),
+      ('Grasas', fat, 60, 'Recomendado 40–65g', const Color(0xFF9A8BB5)),
+      ('Fibra', fiber, 25, 'Recomendado 20–30g', const Color(0xFF7BA3C4)),
     ];
 
     return LdCard(
@@ -670,7 +670,7 @@ class _ExerciseCard extends StatelessWidget {
               Expanded(
                 child: _MiniStat(
                   icon: Icons.schedule_rounded,
-                  label: 'Duration',
+                  label: 'Duración',
                   value: '$minutes min',
                 ),
               ),
@@ -757,7 +757,7 @@ class _SleepCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Record de sueño', style: LuckdateTextStyles.title),
+                Text('Registro de sueño', style: LuckdateTextStyles.title),
                 Text(
                   hasData
                       ? '${hours.toStringAsFixed(hours % 1 == 0 ? 0 : 1)}h · ${quality.isEmpty ? 'Registrado' : quality}'
@@ -947,8 +947,8 @@ class _NutritionAnalysisSection extends StatelessWidget {
                 centerLabel: meals.isEmpty ? '—' : 'Excelente',
                 sections: const [
                   (0.6, LuckdateColors.deepSage, 'Animal 60%'),
-                  (0.3, LuckdateColors.vitalitySage, 'Plant 30%'),
-                  (0.1, LuckdateColors.sunGold, 'Other 10%'),
+                  (0.3, LuckdateColors.vitalitySage, 'Vegetal 30%'),
+                  (0.1, LuckdateColors.sunGold, 'Otro 10%'),
                 ],
               ),
             ),
@@ -958,9 +958,9 @@ class _NutritionAnalysisSection extends StatelessWidget {
                 title: 'Equilibrio de la dieta',
                 centerLabel: meals.isEmpty ? '—' : 'Bien',
                 sections: const [
-                  (0.45, LuckdateColors.vitalitySage, 'Produce 45%'),
-                  (0.30, LuckdateColors.sunGold, 'Grains 30%'),
-                  (0.25, LuckdateColors.deepSage, 'Protein 25%'),
+                  (0.45, LuckdateColors.vitalitySage, 'Verduras 45%'),
+                  (0.30, LuckdateColors.sunGold, 'Granos 30%'),
+                  (0.25, LuckdateColors.deepSage, 'Proteína 25%'),
                 ],
               ),
             ),

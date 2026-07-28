@@ -190,7 +190,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
         const SizedBox(height: LuckdateSpacing.xl),
         Row(
           children: [
-            Text('De hoy Tasks', style: LuckdateTextStyles.h2),
+            Text('Tareas de hoy', style: LuckdateTextStyles.h2),
             const Spacer(),
             Text(
               '$doneCount/${tasks.length} Completado',
@@ -261,7 +261,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
       _PlanTask(
         icon: Icons.monitor_weight_outlined,
         color: const Color(0xFF8FA86E),
-        title: 'Record de peso',
+        title: 'Registro de peso',
         subtitle: 'Ritual matutino',
         time: '07:30',
         done: record.weightRecorded,
@@ -274,7 +274,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
         icon: Icons.local_cafe_outlined,
         color: const Color(0xFFC4A484),
         title: 'Comida nutritiva',
-        subtitle: 'Protein matutina',
+        subtitle: 'Proteína matutina',
         time: '08:00',
         done: mealListo,
         valueText: _mealValueText(record),
@@ -618,10 +618,10 @@ class _FasesRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final phases = const [
-      (1, 'Inicio', 'Day 1-7', Icons.spa_outlined, 1, 7),
-      (2, 'Adaptación', 'Day 8-14', Icons.eco_outlined, 8, 14),
-      (3, 'Mejora', 'Day 15-21', Icons.park_outlined, 15, 21),
-      (4, 'Consolidación', 'Day 22-28', Icons.landscape_outlined, 22, 28),
+      (1, 'Inicio', 'Día 1–7', Icons.spa_outlined, 1, 7),
+      (2, 'Adaptación', 'Día 8–14', Icons.eco_outlined, 8, 14),
+      (3, 'Mejora', 'Día 15–21', Icons.park_outlined, 15, 21),
+      (4, 'Consolidación', 'Día 22–28', Icons.landscape_outlined, 22, 28),
     ];
 
     return SingleChildScrollView(

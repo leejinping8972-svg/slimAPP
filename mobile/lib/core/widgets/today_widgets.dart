@@ -22,7 +22,7 @@ class TopMetricsRow extends StatelessWidget {
       children: [
         Expanded(
           child: _MetricRing(
-            label: 'Vitality',
+            label: 'Vitalidad',
             value: '$vitality',
             subtitle: VitalityScorer.vitalityLabel(vitality),
             progress: vitality / 100,
@@ -167,7 +167,7 @@ class Consistency5DayStrip extends StatelessWidget {
       items.insert(0, false);
     }
     final week = items.length > 5 ? items.sublist(items.length - 5) : items;
-    const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    const weekdays = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
     return Row(
       children: List.generate(5, (i) {
@@ -275,7 +275,7 @@ class ConsistencyCalendarCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text('Consistency', style: LuckdateTextStyles.title),
+                child: Text('Constancia', style: LuckdateTextStyles.title),
               ),
               Text(
                 '$consistencyScore%',
@@ -371,18 +371,18 @@ class DayCheckInSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasData = dayCheckInHasData(record, planType);
     final monthNames = [
-      'Jan',
+      'Ene',
       'Feb',
       'Mar',
-      'Apr',
+      'Abr',
       'May',
       'Jun',
       'Jul',
-      'Aug',
+      'Ago',
       'Sep',
       'Oct',
       'Nov',
-      'Dec',
+      'Dic',
     ];
     final dateLabel = '${monthNames[date.month - 1]} ${date.day}, ${date.year}';
     final ritualPercent = VitalityScorer.ritualCompletion(record, planType);
@@ -390,7 +390,7 @@ class DayCheckInSheet extends StatelessWidget {
     return LdBottomSheetBody(
       children: [
         Text(
-          isHoy ? 'De hoy check-in' : 'Record diario',
+          isHoy ? 'Registro de hoy' : 'Registro diario',
           style: LuckdateTextStyles.h2,
         ),
         const SizedBox(height: LuckdateSpacing.xs),
@@ -398,7 +398,7 @@ class DayCheckInSheet extends StatelessWidget {
         if (journeyDay != null && journeyDay! > 0) ...[
           const SizedBox(height: 4),
           Text(
-            'Viaje Day $journeyDay',
+            'Día $journeyDay del viaje',
             style: LuckdateTextStyles.caption.copyWith(
               color: LuckdateColors.deepSage,
             ),
@@ -424,7 +424,7 @@ class DayCheckInSheet extends StatelessWidget {
           ),
           _CheckInRow(
             icon: Icons.water_drop_outlined,
-            label: 'Hydration',
+            label: 'Hidratación',
             value: record.hydrationMl > 0
                 ? '${record.hydrationMl} ml'
                 : 'No registrado',
@@ -441,7 +441,7 @@ class DayCheckInSheet extends StatelessWidget {
           if (planType == UserPlanType.mealReemplazament) ...[
             _CheckInRow(
               icon: Icons.bedtime_outlined,
-              label: 'Sleep',
+              label: 'Sueño',
               value: record.sleepHours > 0
                   ? '${record.sleepHours.toStringAsFixed(1)} h'
                   : 'No registrado',
@@ -449,7 +449,7 @@ class DayCheckInSheet extends StatelessWidget {
             ),
             _CheckInRow(
               icon: Icons.mood_outlined,
-              label: 'Mood',
+              label: 'Ánimo',
               value: record.moodTag.isNotEmpty
                   ? record.moodTag[0].toUpperCase() +
                         record.moodTag.substring(1)
@@ -468,11 +468,11 @@ class DayCheckInSheet extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Completion de rituales',
+                        'Completitud de rituales',
                         style: LuckdateTextStyles.title,
                       ),
                       Text(
-                        '$ritualPercent% of today\'s rituals',
+                        '$ritualPercent% de los rituales de hoy',
                         style: LuckdateTextStyles.caption,
                       ),
                     ],

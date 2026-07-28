@@ -112,7 +112,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
                       if (profile.userPlanType ==
                           UserPlanType.mealReemplazament)
                         Text(
-                          'Day ${journey.day} · Crece hacia la luz',
+                          'Día ${journey.day} · Crece hacia la luz',
                           style: LuckdateTextStyles.caption,
                         ),
                     ],
@@ -162,14 +162,14 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             ],
             Text(
               profile.userPlanType == UserPlanType.mealReemplazament
-                  ? 'De hoy Ritual'
-                  : 'Record rápido',
+                  ? 'Ritual de hoy'
+                  : 'Registro rápido',
               style: LuckdateTextStyles.h2,
             ),
             if (profile.userPlanType == UserPlanType.mealReemplazament) ...[
               const SizedBox(height: LuckdateSpacing.sm),
               Text(
-                'Viaje Slim de 28 días · Day ${journey.day}',
+                'Viaje Slim de 28 días · Día ${journey.day}',
                 style: LuckdateTextStyles.caption,
               ),
             ],
@@ -186,7 +186,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Viva dice', style: LuckdateTextStyles.caption),
+                        Text('Sunny dice', style: LuckdateTextStyles.caption),
                         Text(
                           journey.sunnyCardMessage,
                           style: LuckdateTextStyles.body,
@@ -241,14 +241,14 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         add(
           'Peso',
           record.weightRecorded
-              ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+              ? '${record.weightValueKg.toStringAsFixed(1)} kg registrado'
               : 'Registrar hoy',
           Icons.monitor_weight_outlined,
           record.weightRecorded,
           () => _showPesoSheet(context, ref, record, profile),
         );
         add(
-          'Hydration',
+          'Hidratación',
           '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
           Icons.water_drop_outlined,
           record.hydrationMl > 0,
@@ -272,7 +272,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
           () => _completadoProducto(ref, record),
         );
         add(
-          'Hydration',
+          'Hidratación',
           '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
           Icons.water_drop_outlined,
           record.hydrationMl > 0,
@@ -286,7 +286,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         add(
           'Peso',
           record.weightRecorded
-              ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+              ? '${record.weightValueKg.toStringAsFixed(1)} kg registrado'
               : 'Registrar hoy',
           Icons.monitor_weight_outlined,
           record.weightRecorded,
@@ -303,7 +303,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
           () => _completadoProducto(ref, record),
         );
         add(
-          'Hydration',
+          'Hidratación',
           '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
           Icons.water_drop_outlined,
           record.hydrationMl > 0,
@@ -317,16 +317,16 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         add(
           'Peso',
           record.weightRecorded
-              ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
+              ? '${record.weightValueKg.toStringAsFixed(1)} kg registrado'
               : 'Registrar hoy',
           Icons.monitor_weight_outlined,
           record.weightRecorded,
           () => _showPesoSheet(context, ref, record, profile),
         );
         add(
-          'Sleep',
+          'Sueño',
           record.sleepHours > 0
-              ? '${record.sleepHours.toStringAsFixed(1)}h logged'
+              ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
               : '¿Cuánto dormiste?',
           Icons.bedtime_outlined,
           record.sleepHours > 0,
@@ -419,7 +419,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nutrition adicional', style: LuckdateTextStyles.title),
+                Text('Nutrición adicional', style: LuckdateTextStyles.title),
                 Text(
                   'Explora más productos de nutrición para complementar tu ritmo diario.',
                   style: LuckdateTextStyles.bodySmall,
@@ -617,7 +617,7 @@ class _HydrationSheetState extends State<_HydrationSheet>
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('Hydration', style: LuckdateTextStyles.h2),
+        Text('Hidratación', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.base),
         ScaleTransition(
           scale: _pulse,
