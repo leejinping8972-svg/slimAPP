@@ -1,6 +1,6 @@
 # ChatViva Slim — Flutter Static Demo
 
-Luckdate × ChatViva 30-day Slim Journey static demo app.
+luckdate × ChatViva 30-day Slim Journey static demo app.
 
 支持 **H5（浏览器）**、Chrome 开发预览。
 

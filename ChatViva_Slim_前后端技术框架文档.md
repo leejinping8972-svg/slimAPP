@@ -10,7 +10,7 @@
 
 ### 1.1 产品定位摘要
 
-ChatViva 是 Luckdate 品牌体系下的 AI 生命力陪伴系统。Slim Journey 是首期围绕代餐产品 Solar Protein 的 30/90 天减脂陪伴旅程。产品不是普通健康工具 App，而是通过 Sunny AI 伙伴完成陪伴、计划、记录、反馈、成长看板与复购承接。
+ChatViva 是 luckdate 品牌体系下的 AI 生命力陪伴系统。Slim Journey 是首期围绕代餐产品 Solar Protein 的 30/90 天减脂陪伴旅程。产品不是普通健康工具 App，而是通过 Sunny AI 伙伴完成陪伴、计划、记录、反馈、成长看板与复购承接。
 
 核心体验包括：
 

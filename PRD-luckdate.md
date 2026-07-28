@@ -1,4 +1,4 @@
-#PRD — luckdate
+# PRD — luckdate
 
 > **Versión:** V2.0
 > **Fecha:** 2026-07-24
