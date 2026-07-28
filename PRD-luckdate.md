@@ -1,254 +1,254 @@
-# PRD — luckdate
+#PRD — luckdate
 
-> **版本：** V2.0  
-> **日期：** 2026-07-24  
-> **状态：** 待团队评审  
-> **产品名：** luckdate  
-> **范围：** 功能交互与业务需求（不含技术实现）  
-> **配套：** 见 `文档索引.md`
-
----
-
-## 1. Summary
-
-luckdate 是一款以 AI 助手 **Sunny** 陪伴用户建立健康习惯的 App。用户通过「客户姓名 + 手机后四位」关联已购订单，或在商城购买并确认收货后，开启 **28 天代餐 Slim Journey**。日常在 Journey 查看建议与进度入口，在 Sunny 对话中完成记录与引导；第 28 天按效果分流引导复购。
+> **Versión:** V2.0
+> **Fecha:** 2026-07-24
+> **Estado:** Pendiente de revisión del equipo
+> **Nombre del producto:** luckdate
+> **Alcance:** Interacción funcional y requisitos comerciales (excluida la implementación técnica)
+> **Paquete:** Ver `文档索引.md`
 
 ---
 
-## 2. Contacts
+## 1. Resumen
 
-| Name | Role | Comment |
+luckdate es una aplicación que utiliza el asistente de inteligencia artificial **Sunny** para acompañar a los usuarios a establecer hábitos saludables. Los usuarios pueden asociar el pedido comprado a través de "nombre del cliente + últimos cuatro dígitos del teléfono móvil", o después de comprar en el centro comercial y confirmar el recibo, iniciar el **Slim Journey de reemplazo de comida de 28 días**. Consulte el portal de sugerencias y progreso en Journey todos los días y complete la grabación y la orientación en el diálogo Sunny; el día 28, la orientación de recompra se dividirá según el efecto.
+
+---
+
+## 2. Contactos
+
+| Nombre | Rol | Comentar |
 |------|------|---------|
-| （待填） | 产品 | 需求拍板与验收 |
-| （待填） | 设计 | 界面与 Sunny 话术体验 |
-| （待填） | 研发 | 按业务文档实现 |
-| （待填） | 运营 | 券、商品、复购规则配置 |
-| （待填） | 客服 | 关联失败协助、用户安抚 |
-| （待填） | 合规 | 健康声明与高风险边界 |
+| (A completar) | Productos | Exige toma de decisiones y aceptación |
+| (A completar) | Diseño | Interfaz y experiencia de conversación Sunny |
+| (para completar) | I+D | Implementado según documentos comerciales |
+| (para completar) | Operaciones | Configuración de cupones, commodities y reglas de recompra |
+| (A completar) | Servicio al cliente | Asistencia en caso de fallo de asociación, comodidad del usuario |
+| (para completar) | Cumplimiento | Reclamaciones de Salud y Límites de Alto Riesgo |
 
 ---
 
-## 3. Background
+## 3. Antecedentes
 
-### 3.1 这是什么
+### 3.1 ¿Qué es esto?
 
-luckdate 把「买了保健/代餐产品」和「每天怎么用、怎么坚持」连成一条体验：先确认产品资格，再进入可执行的 28 天旅程，用 Sunny 降低坚持成本，并在结束时自然导向下一程购买。
+luckdate conecta "productos de reemplazo de comidas/salud comprados" y "cómo usarlos y persistir todos los días" en una sola experiencia: primero confirme las calificaciones del producto, luego ingrese un viaje ejecutable de 28 días, use Sunny para reducir los costos de persistencia y, al final, naturalmente conducirá a la siguiente compra.
 
-### 3.2 为什么现在做
+### 3.2 ¿Por qué hacerlo ahora?
 
-- 外渠与私域已有成交，但用户缺少统一的使用与陪伴入口。  
-- 需要把注册、关联订单、日常打卡、结束复购做成可验收的闭环。  
-- 演示版已验证主路径可走通；正式需求必须以完整业务交互为准，不能按 Demo 省略步骤。
+- Se han completado transacciones entre canales externos y dominios privados, pero los usuarios carecen de una entrada unificada de uso y acompañamiento.
+- Es necesario realizar el registro, los pedidos asociados, el check-in diario y el final de la recompra en un circuito cerrado que pueda ser aceptado.
+- La versión demo ha verificado que la ruta principal es accesible; Los requisitos formales deben basarse en una interacción comercial completa y los pasos no se pueden omitir según la demostración.
 
-### 3.3 已拍板的产品形态
+### 3.3 Formularios de productos finalizados
 
-- 底栏四项：**Sunny · Journey · Mall · Me**；**Plan 不进入底栏**（从 Journey / Me / Sunny 进入）。  
-- Sunny 的产品介绍放在 **首次进入聊天**，不做独立介绍页主路径。  
-- 旅程天数：**28 天**（非 30 天）。  
-- 市场：美国首发，墨西哥同步（单位与文案按地区）。
+- Cuatro elementos en la columna inferior: **Sunny · Journey · Mall · Me**; **El plan no ingresa en la columna inferior** (ingrese desde Journey / Me / Sunny).
+- La introducción del producto de Sunny se coloca en **Primera vez que ingresa al chat** y no hay una introducción independiente a la ruta principal de la página.
+- Días de viaje: **28 días** (no 30 días).
+- Mercado: Primer lanzamiento en Estados Unidos, sincronizado en México (las unidades y redacción son por región).
 
 ---
 
-## 4. Objective
+## 4.Objetivo
 
-### 4.1 目标
+### 4.1 Metas
 
-让已购代餐用户在 28 天内形成「每日记录 + Sunny 陪伴」的习惯，并在结束后被清晰引导到合适的下一程复购；让未购用户能先体验基础能力，再完成首次购买并开通方案。
+Permitir que los usuarios que hayan comprado sustitutos de comidas adquieran el hábito de "grabar diariamente + compañía Sunny" dentro de los 28 días, y ser guiados claramente al siguiente paso apropiado de recompra una vez finalizado; permita a los usuarios que no han comprado experimentar las capacidades básicas primero y luego completar la primera compra y activar el plan.
 
-### 4.2 对公司与用户的价值
+### 4.2 Valor para la empresa y los usuarios
 
-- **用户：** 知道今天做什么、被温柔提醒、结束后不迷茫。  
-- **公司：** 订单资格可核验、旅程可运营、复购有规则可配置。
+- **Usuario:** Sepa qué hacer hoy, recuérdelo suavemente y no se confunda después del final.
+- **Empresa:** Se pueden verificar las calificaciones de los pedidos, se pueden operar viajes y se pueden configurar reglas de recompra.
 
-### 4.3 Key Results（建议，基线上线后校准）
+### 4.3 Resultados clave (recomendado, calibrar después de que la línea de base esté en línea)
 
-| KR | 指标 | 目标建议 |
+| KR | Métricas | Recomendaciones de objetivos |
 |----|------|----------|
-| KR1 | 新注册用户完成「关联订单」或「内购并确认收货」 | ≥ 40%（上线后 30 天） |
-| KR2 | 代餐用户第 7 天前至少有 4 天完成 Ritual | ≥ 50% |
-| KR3 | 到达 Day28 的用户点击复购主按钮 | ≥ 25% |
-| KR4 | 欢迎券在 30 天有效期内被使用 | ≥ 15% |
+| KR1 | Los usuarios recién registrados completan "pedidos asociados" o "compras dentro de la aplicación y confirman el recibo" | ≥ 40% (30 días después de conectarse) |
+| KR2 | Los usuarios de sustitutos de comidas han completado el Ritual al menos 4 días antes del día 7 | ≥ 50% |
+| KR3 | Los usuarios que llegan al Día 28 hacen clic en el botón principal de recompra | ≥ 25% |
+| KR4 | El cupón de bienvenida se utiliza dentro de los 30 días posteriores a su validez | ≥ 15% |
 
 ---
 
-## 5. Market Segment(s)
+## 5. Segmento(s) de mercado
 
-按要完成的任务划分，不按单纯人口统计。
+Divida por tareas a realizar, no por datos demográficos puros.
 
-| 分群 | 要完成的事 | 产品形态 |
+| Agrupación | Cosas por lograr | Formulario de producto |
 |------|------------|----------|
-| 外渠已购代餐 | 证明买过并马上开始 | 关联成功 → 立即进入 28 天方案 |
-| App 内首次购买代餐 | 买完等到货再开始 | 支付成功 → 待确认收货 → 确认后 Day 1 |
-| 外渠已购非代餐 | 每天记得用产品 | 产品护理提醒（无完整 28 天里程碑） |
-| 尚未购买 | 先了解、先记录，再决定买 | 基础聊天与记录 + 购买引导 |
-| 未成年 / 高风险人群 | 被安全告知不适合本方案 | 拦截开通，不给激进减重建议 |
+| Sustitutivos de comidas adquiridos en canales externos | Probar compra y empezar inmediatamente | Asociación exitosa → Ingrese al plan de 28 días inmediatamente |
+| Primera compra de sustituto de comida en la aplicación | Espere hasta que llegue la mercancía antes de comenzar | Pago exitoso → Pendiente de confirmación de recibo → Día 1 después de la confirmación |
+| Productos sustitutivos distintos de las comidas adquiridos | Recuerda usar productos todos los días | Recordatorio de cuidado del producto (sin hito completo de 28 días) |
+| Aún no comprado | Comprenda primero, registre primero y luego decida comprar | Chat básico y grabación + orientación de compra |
+| Menores/grupos de alto riesgo | Seguridad le dijo que no son aptos para este programa | Interceptado y no dado consejos radicales sobre pérdida de peso |
 
-**约束：** 生活方式建议，不做医疗诊断；美国/墨西哥单位与合规文案分区。
+**Restricciones:** Consejos sobre estilo de vida, sin diagnóstico médico; Unidades de Estados Unidos/México y particiones de redacción de cumplimiento.
 
 ---
 
-## 6. Value Proposition(s)
+## 6. Propuesta(s) de valor
 
-| 用户得到 | 避免的痛苦 |
+| Ganancias de usuario | Dolor evitado |
 |----------|------------|
-| 订单与方案资格绑定，买了就知道怎么用 | 「买了不会用、不知道从哪天开始」 |
-| Sunny 一个入口完成介绍、建档、日常记录 | 多 App、多表单切换 |
-| Journey 有基于个人资料的每日建议 | 「今天该吃多少、喝多少没人说」 |
-| Day28 按效果给不同复购方向 | 结束后空窗、乱推商品 |
-| 注册送 $5 券，下单时自动带上（可取消） | 优惠难找、忘记用 |
+| El pedido está sujeto a las calificaciones del plan. Una vez que lo compres, sabrás cómo usarlo | "No sé cómo usarlo después de comprarlo. No sé cuándo empezar". |
+| Sunny completa la introducción, la creación de archivos y los registros diarios con una sola entrada | Cambiar entre múltiples aplicaciones y múltiples formularios |
+| Journey tiene sugerencias diarias basadas en datos personales | "Nadie puede decir cuánto debes comer o beber hoy" |
+| Day28 da diferentes direcciones de recompra según el efecto | Después del final, la ventana está vacía y los productos se envían aleatoriamente |
+| Regístrese para obtener un cupón de $5, que se entregará automáticamente al realizar un pedido (se puede cancelar) | Los descuentos son difíciles de encontrar y se olvidan de utilizarlos |
 
-相对「纯商城」或「纯聊天机器人」：luckdate 强调 **资格 → 旅程 → 记录 → 复购** 一条业务链。
+En relación con "centro comercial puro" o "robot de chat puro": luckdate enfatiza una cadena comercial de **calificación → viaje → registro → recompra**.
 
 ---
 
-## 7. Solution
+## 7.Solución
 
-### 7.1 主导航与信息架构
+### 7.1 Arquitectura principal de navegación y información
 
-| 入口 | 类型 | 用户在这里做什么 |
+| Entrada | Tipo | Qué hace el usuario aquí |
 |------|------|------------------|
-| **Sunny** | 底栏进入后全屏聊天（不显示底栏） | 认识 Sunny、建档、日常对话记录、点行动按钮跳转 |
-| **Journey** | 底栏 | 看今日活力与趋势、看每日建议、进打卡、从卡片进 Plan |
-| **Mall** | 底栏 | 浏览系列商品、进详情、下单 |
-| **Me** | 底栏 | 订单、优惠券、提醒、待确认收货、快捷进 Plan |
-| **Plan** | **二级页，不进底栏** | 看方案状态：未开通 / 待收货 / 进行中 / 非代餐护理 |
+| **Sunny** | Chat en pantalla completa después de ingresar a la barra inferior (no se muestra la barra inferior) | Conozca a Sunny, cree archivos, grabe conversaciones diarias, haga clic en el botón de acción para saltar |
+| **Viaje** | Barra inferior | Vea la vitalidad y las tendencias actuales, vea sugerencias diarias, ingrese tarjetas perforadas e ingrese Planificar desde tarjetas |
+| **Centro comercial** | Barra inferior | Explore series de productos, ingrese detalles y realice pedidos |
+| **Yo** | Barra inferior | Pedidos, cupones, recordatorios, recibo pendiente, acceso rápido al Plan |
+| **Planificar** | **Página de segundo nivel, no ingrese a la columna inferior** | Verifique el estado del plan: no activado / pendiente de recibo / en curso / atención de reemplazo no alimentario |
 
-### 7.2 新用户主路径（必须闭环）
+### 7.2 Ruta principal del nuevo usuario (debe ser de circuito cerrado)
 
 ```
-开屏（约 2 秒）
-  → 引导页
-      →「登录」→ 登录成功 → Journey（回访用户）
-      →「开始旅程」→ 注册
-  → 注册成功：发放 $5 欢迎券（30 天）
-  → 关联订单（客户姓名 + 手机后四位；可跳过）
-  → 首次进入 Sunny：
-      · Sunny 自我介绍与能力说明
-      · 若已关联：产品介绍 + 是否获取方案
-      · 建档问答：隐私同意 → 年龄 → 身高 → 体重 → 目标体重 → 餐次 → 提醒时间
-  → 建档完成 → 可使用主功能
-      · 若代餐方案已开通：Sunny 引导第 1 天打卡
+Pantalla de inicio (~2 segundos)
+  → Pantalla de bienvenida
+      → «Iniciar sesión» → acceso correcto → Journey (usuario recurrente)
+      → «Comenzar mi Journey» → Registro
+  → Registro correcto: otorgar cupón de bienvenida de $5 (30 días)
+  → Asociar pedido (nombre del cliente + últimos 4 dígitos del teléfono; opcional)
+  → Primera entrada a Sunny:
+      · Presentación y capacidades de Sunny
+      · Si hay pedido asociado: presentación del producto + invitación al plan
+      · Perfil: consentimiento de privacidad → edad → estatura → peso → peso objetivo → comidas → hora de recordatorio
+  → Perfil completado → funciones principales disponibles
+      · Si el plan de sustituto de comida está activo: Sunny guía el Ritual del Día 1
 ```
 
-| 步骤 | 成功结果 | 失败或旁路 |
+| Paso | Resultado exitoso | Fallo o derivación |
 |------|----------|------------|
-| 注册 | 已登录、券已发放、进入关联订单 | 校验失败留在注册页 |
-| 关联代餐成功 | 立即进入 28 天方案 Day 1，再进 Sunny 介绍与建档 | — |
-| 关联非代餐成功 | 进入产品护理提醒模式，再进 Sunny 建档 | — |
-| 关联失败 | 提示联系客服；可重试或跳过，不阻断 | — |
-| 跳过关联 | 无产品模式；Plan 显示购买引导 | — |
-| 建档完成 | Journey 可显示每日建议 | 未满 18 岁不可开通减重方案 |
-| 内购代餐 | 支付成功进入「待确认收货」；确认后进 Day 1 并进入 Plan | 用户可在确认支付前取消用券或放弃 |
+| Registrarse | Inicie sesión, se han emitido cupones, ingrese el pedido asociado | Si la verificación falla, permanezca en la página de registro |
+| Vinculado con éxito al reemplazo de comidas | Ingrese inmediatamente al plan de 28 días, Día 1, y luego continúe con la introducción de Sunny y la creación del perfil | — |
+| Asociación exitosa con sustitutos no alimentarios | Ingrese al modo de recordatorio de cuidado del producto, luego ingrese a Creación de archivos Sunny | — |
+| Asociación fracasó | Solicitud de contacto con el servicio de atención al cliente; se puede volver a intentar u omitir sin bloquear | — |
+| Saltar asociación | Sin modo de producto; Plan muestra orientación de compra | — |
+| Creación de archivo completada | Journey puede mostrar sugerencias diarias | Los menores de 18 años no pueden activar el plan de adelgazamiento |
+| Reemplazo de comida de compra desde la aplicación | Después del pago exitoso, ingrese "Confirmación de recibo pendiente"; después de la confirmación, continúe con el Día 1 e ingrese Plan | Los usuarios pueden cancelar el cupón o darse por vencido antes de confirmar el pago |
 
-**明确不做：** 把独立「Sunny 三页介绍」作为主路径必经页。
+**No lo hagas explícitamente:** Utilice la "introducción de tres páginas de Sunny" independiente como página obligatoria para la ruta principal.
 
-### 7.3 回访用户
+### 7.3 Usuarios recurrentes
 
-引导页 → 登录 → 直接进入 Journey，沿用上次产品态与进度。
+Página de orientación → Iniciar sesión → Ingrese a Journey directamente y mantenga el último estado y progreso del producto.
 
-### 7.4 方案开通两条业务链路
+### 7.4 Solución para abrir dos enlaces de servicio
 
-| 链路 | 适用 | 何时算「开始 Day 1」 |
+| Enlace | Aplicable | ¿Cuándo es el "Día de inicio 1"?
 |------|------|----------------------|
-| **关联订单** | 已在外渠购买 | 识别为代餐产品后 **立即开始** |
-| **App 内购买** | 在 Mall 购买代餐 | **确认收货之后** 才开始（购买成功 ≠ 开始） |
+| **Pedidos asociados** | Comprado a canales externos | Después de identificarlo como un producto de reemplazo de comidas **Empiece ahora** |
+| **Compra desde la aplicación** | Compra de sustitutos de comida en el Centro Comercial | **Comienza después de la confirmación de recepción** (Compra exitosa ≠ Inicio) |
 
-确认收货入口：Plan、Me、Journey 待收货提示、方案介绍页。确认成功后 **进入 Plan 进行中页**。
+Portal de confirmación de entrega: Plan, Yo, Viaje, aviso de entrega y página de introducción del plan. Después de una confirmación exitosa, **ingrese a la página Plan en progreso**.
 
-细则见 `规则-开通复购与优惠券.md`。
+Consulte `规则-开通复购与优惠券.md` para obtener más detalles.
 
-### 7.5 优惠券（业务摘要）
+### Cupón 7.5 (Resumen comercial)
 
-- 注册成功发放 $5，默认全店可用（部分商品除外，由运营配置），30 天有效。  
-- **核销：** 仅在商品下单确认页；系统自动选中合适券，用户可取消；支付成功后视为已使用。  
-- Me 可查看券状态与剩余天数。
+- Se emitirán $5 tras el registro exitoso, que está disponible en toda la tienda de forma predeterminada (excepto algunos productos, configurados por la operación), y tiene una validez de 30 días.
+- **Cancelación:** Solo en la página de confirmación del pedido del producto; el sistema selecciona automáticamente el cupón apropiado y el usuario puede cancelarlo; se considera que ha sido utilizado después del pago exitoso.
+- Puedo consultar el estado del cupón y los días restantes.
 
-### 7.6 Journey 每日建议
+### 7.6 Sugerencias diarias de viaje
 
-- **已完成建档**（有基础身体与目标信息）：展示建议热量、蛋白质、饮水量，以及 1～3 条习惯建议（随产品态变化）。  
-- **未完成建档：不展示建议模块。**
+- **Creación de perfil completada** (con información básica sobre el cuerpo y los objetivos): muestra las calorías recomendadas, las proteínas, la ingesta de agua y de 1 a 3 sugerencias de hábitos (cambios según el estado del producto).
+- **Creación de perfil no completada: los módulos de sugerencias no se mostrarán. **
 
-### 7.7 Plan 三种核心状态
+### 7.7 Planificar tres estados centrales
 
-1. **未开通：** 引导购买或提供订单信息。  
-2. **待确认收货：** 引导确认收货以开始计划。  
-3. **进行中：** 显示 Day x / 28、今日任务、阶段说明。  
+1. **No activado:** Guiar compras o proporcionar información del pedido.
+2. **Pendiente de confirmación de recibo:** Guía de confirmación de recibo para comenzar a planificar.
+3. **En progreso:** Muestra el día x/28, las tareas de hoy y las descripciones de las etapas.
 
-非代餐用户：产品护理（每日服用提醒），无完整 28 天里程碑；可引导升级购买代餐。
+Usuarios que no reemplazan comidas: cuidado del producto (recordatorio de toma diaria), sin hito completo de 28 días; se le puede guiar para que actualice y compre un reemplazo de comida.
 
-### 7.8 Sunny（业务摘要）
+### 7.8 Sunny (Resumen comercial)
 
-- 首次进入：介绍能力；有订单则介绍产品；完成建档。  
-- 日常：记录产品使用、饮水、体重、睡眠/状态、饮食等；解释进度；回答产品使用问题；引导购物或设置。  
-- 高风险场景：不继续普通减重建议，见 `规则-Sunny对话与意图路由.md`。  
-- Day 28：提示旅程完成 → 进入报告与复购引导。
+- Entrada por primera vez: introducir capacidades; introducir productos si hay pedidos; creación completa de archivos.
+- Diariamente: registre el uso de productos, agua potable, peso, sueño/estado, dieta, etc.; explicar el progreso; responder preguntas sobre el uso del producto; guía de compras o configuración.
+- Escenario de alto riesgo: no continúe con los consejos normales de pérdida de peso, consulte `规则-Sunny对话与意图路由.md`.
+- Día 28: Avisar que el viaje se completó → Ingrese el informe y recompra la guía.
 
-### 7.9 Day 28 复购分流（业务摘要）
+### 7.9 Desvío de recompra del día 28 (resumen comercial)
 
-| 分支 | 条件（业务语言） | 引导 |
+| Sucursales | Condiciones (lenguaje comercial) | Arranque |
 |------|------------------|------|
-| **A** | 有减重效果，但未达目标 | 继续购买当前代餐产品 |
-| **B** | 有减重效果，且已达目标 | 购买下一阶段维稳/防护类产品 |
-| **C** | 基本无效果或反弹 | 引导尝试替代产品 |
+| **A** | Hay efecto de pérdida de peso, pero no se consigue el objetivo | Continuar comprando el producto sustitutivo de comida actual |
+| **B** | Hay efecto de pérdida de peso y se ha logrado el objetivo | Compra la siguiente etapa de productos de estabilidad/protección |
+| **C** | Básicamente ningún efecto o rebote | Guía para probar productos alternativos |
 
-报告主按钮直达对应商品；可另提供「逛商城看更多」。
+El botón principal del informe conduce directamente al producto correspondiente; También se puede proporcionar "Visite el centro comercial para ver más".
 
-### 7.10 每日记录与评分（业务摘要）
+### 7.10 Registros y calificaciones diarios (Resumen comercial)
 
-用户通过 Journey / Sunny 记录产品、饮水、体重是否记录、状态、睡眠等。  
-**Vitality（生命力）分**奖励「坚持记录与仪式」，**不因体重数字升降加减分**。  
-细则见 `规则-每日记录与评分.md`。
+Los usuarios registran productos, agua potable, peso, estado, sueño, etc. a través de Journey/Sunny.
+**Los puntos de vitalidad** se otorgan por "registros y rituales persistentes", y **no se sumarán ni restarán puntos debido al aumento o disminución de las cifras de peso**.
+Consulte `规则-每日记录与评分.md` para obtener más detalles.
 
-### 7.11 合规与安全边界
+### 7.11 Límites de cumplimiento y seguridad
 
-- 未满 18 岁：不可进入减重方案。  
-- 孕期/哺乳、严重慢病用药、进食障碍倾向、自伤危机等：停止普通方案推荐，提示寻求专业帮助。  
-- 不对产品做「治疗/治愈疾病」承诺；不承诺具体减重数字效果。
+- Menores de 18 años: no se permite el ingreso al programa de adelgazamiento.
+- Embarazo/lactancia, medicación para enfermedades crónicas graves, tendencias a trastornos alimentarios, crisis de autolesiones, etc.: dejar de recomendar planes habituales y animarse a buscar ayuda profesional.
+- El producto no promete "tratar/curar enfermedades"; no promete resultados específicos de pérdida de peso.
 
-### 7.12 Assumptions（待验证假设）
+### 7.12 Supuestos (supuestos a verificar)
 
-1. 短期内以 Solar Protein（或等价代餐 SKU）作为 28 天方案的资格产品。  
-2. 物流系统完善前，允许用户手动「确认收货」。  
-3. 欢迎券排除商品清单、美墨订单规则可由运营配置。  
-4. Day28 分流以体重趋势相对目标为主（后续可叠加完成率）。
+1. A corto plazo, Solar Protein (o SKU de reemplazo de comidas equivalente) es un producto calificado para el plan de 28 días.
+2. Antes de mejorar el sistema logístico, los usuarios podrán "confirmar recibo" manualmente.
+3. La lista de productos excluidos del cupón de bienvenida y las reglas de pedido entre EE. UU. y México se pueden configurar por operaciones.
+4. La clasificación del día 28 se basa principalmente en la tendencia de peso en relación con el objetivo (la tasa de finalización se puede superponer en el futuro).
 
 ---
 
-## 8. Release
+## 8. Liberación
 
-相对阶段（不锁死日历）：
+Fase relativa (calendario no bloqueado):
 
-| 阶段 | 业务范围 |
+| Etapa | Ámbito empresarial |
 |------|----------|
-| **V1 必达** | 注册发券、姓名+后四位关联、内购待收货与确认→Plan、Sunny 建档与日常记录、Journey 建议、Plan 三态、Day28 A/B/C、未成年拦截 |
-| **随后** | 完整高风险分层话术、退款退券、更多下一程商品内容、后台规则可配置验收 |
-| **不做（本阶段）** | 私域聊天历史同步、社交动态、Plan 进入底栏、独立 Sunny 三页介绍主路径 |
+| **V1 Bida** | Regístrese para emitir cupones, nombre + asociación de los últimos cuatro dígitos, compras dentro de la aplicación que se recibirán y confirmarán →Plan, perfil Sunny y registros diarios, sugerencias de viaje, plan de tres estados, día 28 A/B/C, interceptación de menores |
+| **Más tarde** | Se pueden configurar para su aceptación habilidades completas de capas de alto riesgo, reembolsos y cupones, más contenido de productos del siguiente nivel y reglas de backend |
+| **No se debe hacer (en este momento)** | Sincronización del historial de chat de dominio privado, dinámica social, entrada del plan en la barra inferior, ruta principal de introducción independiente de tres páginas de Sunny |
 
 ---
 
-## 9. 闭环自检清单
+## 9. Lista de autoverificación de circuito cerrado
 
-| # | 路径 | 期望终态 |
+| # | Camino | Estado final deseado |
 |---|------|----------|
-| 1 | 注册 → 关联代餐 → Sunny 建档 | Day 1 已开通，可打卡 |
-| 2 | 注册 → 跳过 → 建档 → Mall 下单（用券）→ 确认收货 | 进入 Plan 进行中 |
-| 3 | 注册 → 关联失败 → 继续 | 无产品，可逛可聊 |
-| 4 | 回访登录 | 进入 Journey |
-| 5 | Day28 | 报告 + A/B/C 主按钮到商品 |
-| 6 | 未建档 | Journey 无每日建议 |
-| 7 | 已建档 | Journey 有每日建议 |
+| 1 | Registrarse → Conectar sustituto de comida → Perfil Sunny | El día 1 ha sido activado y puede registrarse |
+| 2 | Registrarse → Saltar → Crear perfil → Realizar pedido en el Centro Comercial (usar cupón) → Confirmar recepción | Ingresar Plan en progreso |
+| 3 | Registro → Asociación fallida → Continuar | Sin productos, solo comprando y charlando |
+| 4 | Volver a visitar iniciar sesión | Ingrese al viaje |
+| 5 | Día 28 | Informe + Botón principal A/B/C al producto |
+| 6 | No perfilado | Viaje Sin sugerencias diarias |
+| 7 | Archivado | Journey tiene sugerencias diarias |
 
 ---
 
-## 10. 关联文档
+## 10. Documentos asociados
 
-- `文档索引.md`  
-- `luckdate_APP功能交互说明（完整版）.md`  
-- `规则-开通复购与优惠券.md`  
-- `规则-Sunny对话与意图路由.md`  
-- `规则-每日记录与评分.md`  
-- `规则-管理后台.md`  
+- `文档索引.md`
+- `luckdate_APP功能交互说明（完整版）.md`
+- `规则-开通复购与优惠券.md`
+- `规则-Sunny对话与意图路由.md`
+- `规则-每日记录与评分.md`
+- `规则-管理后台.md`
 
 ---
 
-*PRD luckdate V2.0 · 纯业务 · 2026-07-24*
+*PRD luckdate V2.0 · Puro negocio · 2026-07-24*

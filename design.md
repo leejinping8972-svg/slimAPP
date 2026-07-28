@@ -1,117 +1,117 @@
-# Design — luckdate / ChatViva Slim
+# Diseño — luckdate / ChatViva Slim
 
-A locked design system for this Flutter app. Every visual redesign reads this
-file before emitting UI changes. Do not regenerate a new theme per page —
-extend or amend this file when the system needs to grow.
+Un sistema de diseño bloqueado para esta aplicación Flutter. Cada rediseño visual lee esto
+archivo antes de emitir cambios en la interfaz de usuario. No regenerar un nuevo tema por página.
+amplíe o modifique este archivo cuando el sistema necesite crecer.
 
-/* Hallmark · genre: editorial · design-system: design.md · designed-as-app
- * locked: brand colors · logo · super symbol · Sunny avatar · interaction flows
+/* Hallmark · género: editorial · sistema-de-diseño: design.md · diseñado-como-aplicación
+* bloqueado: colores de la marca · logotipo · supersímbolo · Avatar de Sunny · flujos de interacción
  */
 
-## Locked (do not change)
+## Bloqueado (no cambiar)
 
-- **Brand colors** — all `LuckdateColors` hex values in `mobile/lib/app/theme/luckdate_theme.dart`
-- **Logo** — `assets/images/logo.png` / brand wordmark usage
-- **Super symbol** — project super-symbol asset usage
-- **Sunny IP** — `LdSunnyAvatar` / sunny mood assets and character behavior
-- **Functional interaction** — routes, taps, auth/order/plan/chat flows, copy intent
+- **Colores de marca**: todos los `LuckdateColors` valores hexadecimales en `mobile/lib/app/theme/luckdate_theme.dart`
+- **Logotipo** — `assets/images/logo.png` / uso de la marca denominativa
+- **Supersímbolo**: uso de activos de supersímbolo del proyecto
+- **IP Sunny** — `LdSunnyAvatar` / recursos de humor Sunny y comportamiento de los personajes
+- **Interacción funcional**: rutas, toques, flujos de autenticación/pedido/plan/chat, intención de copia
 
-## Genre
+## Género
 
-editorial (soft vitality brand — paper-led, restrained accent)
+editorial (marca de vitalidad suave: acento sobrio en papel)
 
-## Macrostructure family
+## Familia de macroestructuras
 
-- Marketing / launch pages: Letter-leaning asymmetric copy column (Welcome already)
-- App shell pages: Workbench — header → primary surface → secondary lists
-- Chat: Conversational — avatar + bubble stack, actions as full-width controls
+- Páginas de marketing/lanzamiento: columna de texto asimétrico inclinada a letras (Bienvenidos ya)
+- Páginas de shell de la aplicación: Workbench — encabezado → superficie primaria → listas secundarias
+- Chat: conversacional: avatar + pila de burbujas, acciones como controles de ancho completo
 
-## Theme (locked colour map)
+## Tema (mapa de color bloqueado)
 
-Paper / ink / accent map onto existing Flutter tokens — **values must not drift**:
+Mapa de papel/tinta/acento en tokens Flutter existentes: **los valores no deben variar**:
 
-| Role | Flutter token |
+| Rol | Ficha de aleteo |
 |------|----------------|
-| paper | `cloudIvory` `#FFF9F5` |
-| paper-2 / surface | `ivoryWhite` `#FFFFFF` |
-| ink | `textPrimary` `#2C3A2E` |
-| ink-2 | `textSecondary` `#7A6E62` |
-| rule | `lineSoft` `#E8DFD4` |
-| accent | `deepSage` `#5E6B45` |
-| accent soft | `sageSoft` `#E8EFE0` |
-| secondary accent | `sunGold` `#D4A853` (≤ 5% viewport) |
+| papel | `cloudIvory` `#FFF9F5` |
+| papel-2 / superficie | `ivoryWhite` `#FFFFFF` |
+| tinta | `textPrimary` `#2C3A2E` |
+| tinta-2 | `textSecondary` `#7A6E62` |
+| regla | `lineSoft` `#E8DFD4` |
+| acento | `deepSage` `#5E6B45` |
+| acento suave | `sageSoft` `#E8EFE0` |
+| acento secundario | `sunGold` `#D4A853` (≤ 5% de ventana gráfica) |
 
-## Typography
+## Tipografía
 
-- Family: **Montserrat** only (project font — locked)
-- Display / H1: w600–w700, tighter tracking (−0.3 to −0.6)
-- Body: w400, 15 / 22
-- Caption / tab: w500–w600, slight +tracking
-- **No italic headers**
+- Familia: **Montserrat** únicamente (fuente del proyecto: bloqueada)
+- Pantalla / H1: w600–w700, seguimiento más estrecho (−0,3 a −0,6)
+- Cuerpo: w400, 15/22
+- Título/pestaña: w500–w600, ligero +seguimiento
+- **Sin encabezados en cursiva**
 
-## Spacing
+## Espaciado
 
-4-point scale via `LuckdateSpacing` (xs 4 → xxl 32). Prefer named tokens; avoid magic numbers in new UI.
+Escala de 4 puntos vía `LuckdateSpacing` (xs 4 → xxl 32). Prefiere tokens con nombre; Evite los números mágicos en la nueva interfaz de usuario.
 
-## Radius (redesigned)
+## Radio (rediseñado)
 
-| Token | Value | Use |
+| Ficha | Valor | Uso |
 |-------|-------|-----|
-| control | 14 | buttons, inputs, chips |
-| md | 12 | small surfaces |
-| lg | 16 | bubbles, medium cards |
-| xl | 18 | primary cards (was 20+) |
-| sheet | 24 | bottom sheets |
-| pill | 999 | handles / true pills only (rare) |
+| controlar | 14 | botones, entradas, chips |
+| médico | 12 | pequeñas superficies |
+| LG | 16 | burbujas, tarjetas medianas |
+| XL | 18 | tarjetas primarias (antes 20+) |
+| hoja | 24 | sábanas bajeras |
+| pastilla | 999 | mangos / pastillas verdaderas solamente (raro) |
 
-Prefer **control** over full pill for primary CTAs.
+Prefiera **control** a la píldora completa para CTA principales.
 
-## Depth
+## Profundidad
 
-- Default cards: hairline border + **no** heavy drop shadow (or soft 0/1px only)
-- Elevate only for floating sheets / composers
-- No glassmorphism, no multi-layer glow
+- Tarjetas predeterminadas: borde fino + **sin** sombra paralela intensa (o solo 0/1px suave)
+- Elevar solo para hojas flotantes/compositores
+- Sin morfismo de vidrio, sin brillo multicapa
 
-## Motion
+## Movimiento
 
-- Short: 200–220ms; ease soft out
-- Nav selection: opacity / colour crossfade only
-- Respect reduced-motion where available
+- Corto: 200–220 ms; suavizar
+- Selección de navegación: solo opacidad/fundido cruzado de color
+- Respetar el movimiento reducido cuando esté disponible.
 
-## CTA voice
+## voz de llamada a la acción
 
-- Primary: fill `deepSage`, label white, radius **control**, height 52
-- Secondary: ivory fill, soft rule border, ink label, same radius/height rhythm
-- Selected chips: sage fill + white label (same family)
+- Primario: relleno `deepSage`, etiqueta blanca, radio **control**, altura 52
+- Secundario: relleno de marfil, borde de regla suave, etiqueta de tinta, mismo ritmo de radio/altura
+- Chips seleccionados: relleno de salvia + etiqueta blanca (misma familia)
 
-## Microinteractions
+## Microinteracciones
 
-- Silent success preferred (SnackBar only when needed)
-- Focus: sage ring / border 1.5 on inputs
-- Chat action buttons: full-width, stacked, easy tap targets (≥ 48)
+- Se prefiere el éxito silencioso (SnackBar solo cuando es necesario)
+- Enfoque: anillo de salvia / borde 1.5 en entradas
+- Botones de acción de chat: objetivos de ancho completo, apilados y fáciles de tocar (≥ 48)
 
-## Per-page allowances
+## Asignaciones por página
 
-- Marketing (Welcome): may keep lifestyle photo + brand lockups
-- App pages: no decorative enrichment; function carries the page
-- Chat: Sunny avatar unchanged; bubble chrome may refine
+- Marketing (Bienvenido): puede conservar foto de estilo de vida + bloqueos de marca
+- Páginas de aplicaciones: sin enriquecimiento decorativo; La función lleva la página.
+- Chat: avatar de Sunny sin cambios; El cromo burbuja puede refinar
 
-## What pages MUST share
+## ¿Qué páginas DEBEN compartir?
 
-- Colour tokens above
-- Montserrat
-- Logo / super symbol / Sunny assets
-- CTA voice (control radius + sage primary)
-- Bottom nav destinations and labels
+- Fichas de colores arriba
+-Montserrat
+- Logotipo/súper símbolo/activos Sunny
+- Voz CTA (radio de control + sabio primario)
+- Etiquetas y destinos de navegación inferiores
 
-## What pages MAY differ on
+## ¿En qué páginas PUEDEN diferir?
 
-- Section padding and list density
-- Card vs flush rows
-- Header alignment within shell
-- Local illustration placement (not replacing Sunny)
+- Relleno de sección y densidad de lista.
+- Filas de cartas vs color
+- Alineación del encabezado dentro del shell
+- Ubicación de ilustración local (no reemplaza a Sunny)
 
-## Flutter mapping
+## Mapeo de aleteo
 
-- Tokens live in `mobile/lib/app/theme/luckdate_theme.dart`
-- Shared chrome in `mobile/lib/core/widgets/ld_components.dart` + `ld_shell.dart`
+- Los tokens viven en `mobile/lib/app/theme/luckdate_theme.dart`
+- Chrome compartido en `mobile/lib/core/widgets/ld_components.dart` + `ld_shell.dart`
