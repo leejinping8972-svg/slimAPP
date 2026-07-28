@@ -1,6 +1,6 @@
 {
-    "name": "ChatViva Slim",
-    "short_name": "ChatViva",
+    "name": "luckdate",
+    "short_name": "luckdate",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F7F5F1",

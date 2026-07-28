@@ -48,10 +48,10 @@ class MockOrderService {
       isMealReplacement: true,
       sku: 'LD-SLIM-28D',
       orderedAt: '2026-06-12 14:28',
-      series: 'Slim Vitality',
+      series: 'Vitalidad Slim',
       blurb:
-          'Mix one serving with water or milk as meal support. '
-          'Pair with hydration, sleep, and gentle movement for your 28-day journey.',
+          'Mezcla una porción con agua o leche como apoyo para tus comidas. '
+          'Acompáñala con hidratación, sueño y movimiento suave durante tu viaje de 28 días.',
     ),
     LinkedProductInfo(
       orderNo: 'ORD-2026-YOUTH',
@@ -59,10 +59,10 @@ class MockOrderService {
       isMealReplacement: false,
       sku: 'LD-BEAU-YTH',
       orderedAt: '2026-06-18 09:12',
-      series: 'Beauty Vitality',
+      series: 'Vitalidad y belleza',
       blurb:
-          'Take as directed on the label. '
-          'Log each serving in Sunny chat to build your streak.',
+          'Tómalo según las indicaciones de la etiqueta. '
+          'Registra cada porción en el chat de Sunny para mantener tu racha.',
     ),
     LinkedProductInfo(
       orderNo: 'ORD-2026-VITA',
@@ -70,10 +70,10 @@ class MockOrderService {
       isMealReplacement: false,
       sku: 'LD-AGE-COL',
       orderedAt: '2026-06-22 16:45',
-      series: 'Healthy Aging',
+      series: 'Envejecimiento saludable',
       blurb:
-          'Enjoy daily as part of your vitality ritual. '
-          'Sunny will remind you and track consistency.',
+          'Disfrútalo diariamente como parte de tu ritual de vitalidad. '
+          'Sunny te lo recordará y llevará el control de tu constancia.',
     ),
     LinkedProductInfo(
       orderNo: 'ORD-2026-ENERGY',
@@ -81,10 +81,10 @@ class MockOrderService {
       isMealReplacement: false,
       sku: 'LD-NRG-DAY',
       orderedAt: '2026-07-01 11:03',
-      series: 'Energy Vitality',
+      series: 'Vitalidad energética',
       blurb:
-          'Take in the morning with water. '
-          'Sunny can nudge you when it is time for your next serving.',
+          'Tómalo por la mañana con agua. '
+          'Sunny puede avisarte cuando sea momento de tu siguiente porción.',
     ),
   ];
 
@@ -103,14 +103,14 @@ class MockOrderService {
     if (name.isEmpty) {
       return const OrderLinkResult(
         success: false,
-        message: 'Please enter the recipient name on your order.',
+        message: 'Ingresa el nombre del destinatario que aparece en tu pedido.',
       );
     }
 
     if (phone.length != 4 || !RegExp(r'^\d{4}$').hasMatch(phone)) {
       return const OrderLinkResult(
         success: false,
-        message: 'Please enter the last 4 digits of your phone number.',
+        message: 'Ingresa los últimos 4 dígitos de tu número de teléfono.',
       );
     }
 
@@ -118,7 +118,8 @@ class MockOrderService {
       return OrderLinkResult(
         success: false,
         recipientName: name,
-        message: 'No linked orders found for this name and phone ending.',
+        message:
+            'No se encontraron pedidos vinculados para este nombre y terminación de teléfono.',
       );
     }
 

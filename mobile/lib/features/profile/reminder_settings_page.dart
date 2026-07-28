@@ -28,11 +28,11 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage> {
   String _copyFor(UserPlanType planType) {
     return switch (planType) {
       UserPlanType.mealReplacement =>
-        'We will remind you at your chosen times to use your meal replacement and log your food, weight, and how you feel.',
+        'Te recordaremos en los horarios que elegiste usar tu reemplazo de comida y registrar tus alimentos, peso y cómo te sientes.',
       UserPlanType.nonMealReplacement =>
-        'We will remind you at your chosen time to take your product and log how you feel.',
+        'Te recordaremos a la hora que elegiste tomar tu producto y registrar cómo te sientes.',
       UserPlanType.noProduct =>
-        'We will remind you at your chosen time to log your food, weight, and daily state.',
+        'Te recordaremos a la hora que elegiste registrar tus alimentos, peso y estado diario.',
     };
   }
 
@@ -72,7 +72,7 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage> {
     final dualReminder = planType == UserPlanType.mealReplacement;
 
     return LdScaffold(
-      title: 'Reminders',
+      title: 'Recordatorios',
       showBack: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -87,7 +87,7 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    dualReminder ? 'Morning reminder' : 'Daily reminder',
+                    dualReminder ? 'Recordatorio de la mañana' : 'Recordatorio diario',
                     style: LuckdateTextStyles.body,
                   ),
                   Text(_reminderTime, style: LuckdateTextStyles.title),
@@ -101,14 +101,14 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Evening reminder', style: LuckdateTextStyles.body),
+                    Text('Recordatorio de la noche', style: LuckdateTextStyles.body),
                     Text(_reminderTime2, style: LuckdateTextStyles.title),
                   ],
                 ),
               ),
             ],
             const SizedBox(height: LuckdateSpacing.xl),
-            LdPrimaryButton(label: 'Save reminders', onPressed: _save),
+            LdPrimaryButton(label: 'Guardar recordatorios', onPressed: _save),
           ],
         ),
       ),

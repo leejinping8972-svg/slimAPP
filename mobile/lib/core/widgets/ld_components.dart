@@ -246,7 +246,7 @@ class LdAwaitingReceiptPanel extends StatelessWidget {
               const SizedBox(width: LuckdateSpacing.sm),
               Expanded(
                 child: Text(
-                  compact ? 'Waiting for receipt' : 'Waiting for delivery',
+                  compact ? 'Esperando recepción' : 'Esperando entrega',
                   style: LuckdateTextStyles.title,
                 ),
               ),
@@ -255,13 +255,13 @@ class LdAwaitingReceiptPanel extends StatelessWidget {
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
             compact
-                ? 'Confirm when $label arrives to unlock Day 1.'
-                : 'You purchased $label. Your 28-day plan stays paused until you confirm delivery — then Day 1 begins.',
+                ? 'Confirma cuando llegue $label para desbloquear el día 1.'
+                : 'Compraste $label. Tu plan de 28 días seguirá en pausa hasta que confirmes la entrega; entonces comenzará el día 1.',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
-            label: 'Confirm Receipt & Start Plan',
+            label: 'Confirmar recepción e iniciar plan',
             onPressed: onConfirmReceipt,
           ),
           if (onViewOverview != null) ...[
@@ -269,7 +269,7 @@ class LdAwaitingReceiptPanel extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: LdSecondaryButton(
-                label: 'View Plan Overview',
+                label: 'Ver resumen del plan',
                 onPressed: onViewOverview,
               ),
             ),
@@ -559,7 +559,7 @@ class _SuggestionPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '🌱 My Suggestions',
+            '🌱 Mis sugerencias',
             style: LuckdateTextStyles.title.copyWith(fontSize: 14),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
@@ -600,7 +600,7 @@ class UserBubble extends StatelessWidget {
     super.key,
     required this.text,
     this.timestamp,
-    this.nickname = 'Me',
+    this.nickname = 'Yo',
   });
 
   final String text;
@@ -627,7 +627,7 @@ class UserBubble extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 4, bottom: 4),
                 child: Text(
-                  'Me ${_formatTime(timestamp)}',
+                  'Yo ${_formatTime(timestamp)}',
                   style: LuckdateTextStyles.caption.copyWith(fontSize: 11),
                 ),
               ),
@@ -929,7 +929,7 @@ class BadgeCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Day $day', style: LuckdateTextStyles.caption),
+                Text('Día $day', style: LuckdateTextStyles.caption),
                 Text(title, style: LuckdateTextStyles.title),
                 Text(description, style: LuckdateTextStyles.bodySmall),
               ],
@@ -960,25 +960,25 @@ class StatePlaceholder extends StatelessWidget {
     final (icon, defaultTitle, defaultMessage) = switch (type) {
       'loading' => (
         Icons.hourglass_top_rounded,
-        'Loading',
-        'Preparing your journey...',
+        'Cargando',
+        'Preparando tu recorrido...',
       ),
       'empty' => (
         Icons.inbox_outlined,
-        'Nothing here yet',
-        'Your records will appear as you grow.',
+        'Aún no hay nada aquí',
+        'Tus registros aparecerán conforme avances.',
       ),
       'error' => (
         Icons.cloud_off_outlined,
-        'Something went quiet',
-        'A small pause — tap to try again.',
+        'Algo dejó de responder',
+        'Hubo una pausa; toca para intentarlo de nuevo.',
       ),
       'network' => (
         Icons.wifi_off_rounded,
-        'Weak connection',
-        'We saved your last state. Retry when ready.',
+        'Conexión débil',
+        'Guardamos tu último estado. Inténtalo de nuevo cuando estés lista.',
       ),
-      _ => (Icons.info_outline, 'Notice', ''),
+      _ => (Icons.info_outline, 'Aviso', ''),
     };
     final displayTitle = title ?? defaultTitle;
     final displayMessage = message ?? defaultMessage;
@@ -1010,7 +1010,7 @@ class StatePlaceholder extends StatelessWidget {
             if (onRetry != null) ...[
               const SizedBox(height: LuckdateSpacing.base),
               LdPrimaryButton(
-                label: 'Try again',
+                label: 'Intentar de nuevo',
                 onPressed: onRetry,
                 expanded: false,
               ),

@@ -12,6 +12,7 @@ class ChatVivaApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'luckdate',
       debugShowCheckedModeBanner: false,
+      locale: const Locale('es', 'MX'),
       theme: buildLuckdateTheme(),
       routerConfig: router,
     );

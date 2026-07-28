@@ -1,6 +1,6 @@
 [
-  { "day": 7, "title": "Week One Done!", "description": "You completed your first week. A beautiful beginning.", "unlocked": true },
-  { "day": 14, "title": "Two Weeks Strong", "description": "Your rhythm is becoming natural.", "unlocked": true },
-  { "day": 21, "title": "Three Weeks of Light", "description": "Consistency is your quiet strength.", "unlocked": false },
-  { "day": 28, "title": "Graduation", "description": "28 days of growing toward the light.", "unlocked": false }
+  { "day": 7, "title": "¡Primera semana completada!", "description": "Completaste tu primera semana. Un hermoso comienzo.", "unlocked": true },
+  { "day": 14, "title": "Dos semanas con fuerza", "description": "Tu ritmo se está volviendo natural.", "unlocked": true },
+  { "day": 21, "title": "Tres semanas de luz", "description": "La constancia es tu fuerza silenciosa.", "unlocked": false },
+  { "day": 28, "title": "Graduación", "description": "28 días creciendo hacia la luz.", "unlocked": false }
 ]

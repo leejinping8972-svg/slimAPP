@@ -22,24 +22,24 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   int _heroPage = 0;
 
   static const _specs = [
-    ('28 sticks', 56.0),
-    ('56 sticks', 98.0),
-    ('Trial 7 sticks', 16.0),
+    ('28 sobres', 56.0),
+    ('56 sobres', 98.0),
+    ('Prueba de 7 sobres', 16.0),
   ];
 
   static const _ingredients = [
-    ('Whey Protein', 'Complete amino profile'),
-    ('Soy Protein', 'Plant-based support'),
-    ('Chia Seeds', 'Omega-3 & fiber'),
-    ('Dietary Fiber', 'Digestive comfort'),
-    ('Multi-vitamins', 'Daily micronutrients'),
+    ('Proteína de suero', 'Perfil completo de aminoácidos'),
+    ('Proteína de soya', 'Apoyo de origen vegetal'),
+    ('Semillas de chía', 'Omega-3 y fibra'),
+    ('Fibra dietética', 'Confort digestivo'),
+    ('Multivitamínicos', 'Micronutrientes diarios'),
   ];
 
   static const _services = [
-    (Icons.verified_outlined, 'Authentic'),
-    (Icons.public_outlined, 'Global Ship'),
-    (Icons.replay_outlined, '7-Day Return'),
-    (Icons.lock_outline, 'Secure Pay'),
+    (Icons.verified_outlined, 'Original'),
+    (Icons.public_outlined, 'Envío global'),
+    (Icons.replay_outlined, 'Devolución de 7 días'),
+    (Icons.lock_outline, 'Pago seguro'),
   ];
 
   double get _price => _specs[_specIndex].$2;
@@ -132,12 +132,12 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               Text(
                                 product.shortDescription.isNotEmpty
                                     ? product.shortDescription
-                                    : 'High protein · High satiety · Balanced nutrition',
+                                    : 'Alta proteína · Gran saciedad · Nutrición equilibrada',
                                 style: LuckdateTextStyles.caption,
                               ),
                               const SizedBox(height: LuckdateSpacing.xl),
                               Text(
-                                'Select SKU',
+                                'Selecciona una opción',
                                 style: LuckdateTextStyles.title,
                               ),
                               const SizedBox(height: LuckdateSpacing.sm),
@@ -151,21 +151,21 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               const _ServiceBar(items: _services),
                               const SizedBox(height: LuckdateSpacing.xl),
                               Text(
-                                'Product Details',
+                                'Detalles del producto',
                                 style: LuckdateTextStyles.title,
                               ),
                               const SizedBox(height: LuckdateSpacing.sm),
                               Text(
                                 product.benefits.isNotEmpty
                                     ? product.benefits
-                                    : 'Crafted for gentle satiety and daily vitality. Blend with water or milk for a smooth shake anytime.',
+                                    : 'Formulado para una saciedad suave y vitalidad diaria. Mézclalo con agua o leche para disfrutar un batido cremoso cuando quieras.',
                                 style: LuckdateTextStyles.bodySmall,
                               ),
                               const SizedBox(height: LuckdateSpacing.md),
                               _DetailVisual(color: color),
                               if (product.usage.isNotEmpty) ...[
                                 const SizedBox(height: LuckdateSpacing.lg),
-                                Text('Usage', style: LuckdateTextStyles.title),
+                                Text('Uso', style: LuckdateTextStyles.title),
                                 const SizedBox(height: LuckdateSpacing.sm),
                                 Text(
                                   product.usage,
@@ -174,7 +174,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               ],
                               const SizedBox(height: LuckdateSpacing.xl),
                               Text(
-                                'Ingredient Highlights',
+                                'Ingredientes destacados',
                                 style: LuckdateTextStyles.title,
                               ),
                               const SizedBox(height: LuckdateSpacing.md),
@@ -182,7 +182,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               if (product.warnings.isNotEmpty) ...[
                                 const SizedBox(height: LuckdateSpacing.xl),
                                 Text(
-                                  'Warnings',
+                                  'Advertencias',
                                   style: LuckdateTextStyles.title,
                                 ),
                                 const SizedBox(height: LuckdateSpacing.sm),
@@ -204,7 +204,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   onAddCart: () {
                     setState(() => _cartCount += 1);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added to cart')),
+                      const SnackBar(content: Text('Agregado al carrito')),
                     );
                   },
                   onBuyNow: () {
@@ -218,7 +218,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     }
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Order flow — demo placeholder'),
+                        content: Text('Flujo de pedido: marcador de posición de demostración'),
                       ),
                     );
                   },
@@ -262,7 +262,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Checkout', style: LuckdateTextStyles.h2),
+                    Text('Pagar', style: LuckdateTextStyles.h2),
                     const SizedBox(height: LuckdateSpacing.md),
                     Text(
                       'Solar Protein · ${_specs[_specIndex].$1}',
@@ -282,13 +282,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '\$${coupon.amount.toStringAsFixed(0)} welcome coupon',
+                                  'Cupón de bienvenida de \$${coupon.amount.toStringAsFixed(0)}',
                                   style: LuckdateTextStyles.title,
                                 ),
                                 Text(
                                   localApply
-                                      ? 'Auto-selected · tap to cancel'
-                                      : 'Not applied',
+                                      ? 'Seleccionado automáticamente · toca para cancelar'
+                                      : 'No aplicado',
                                   style: LuckdateTextStyles.caption,
                                 ),
                               ],
@@ -309,12 +309,12 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
                     LdPrimaryButton(
-                      label: 'Confirm purchase',
+                      label: 'Confirmar compra',
                       onPressed: () => Navigator.pop(ctx, localApply),
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     LdSecondaryButton(
-                      label: 'Cancel',
+                      label: 'Cancelar',
                       onPressed: () => Navigator.pop(ctx, null),
                     ),
                   ],
@@ -335,16 +335,16 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     await showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Purchase successful'),
+        title: const Text('Compra realizada'),
         content: Text(
           applyCoupon && eligible
-              ? 'Coupon applied. Confirm receipt when your package arrives to start your 28-day Slim Journey.'
-              : 'Purchase successful. Confirm receipt when your package arrives to start your 28-day Slim Journey.',
+              ? 'Cupón aplicado. Confirma la recepción cuando llegue tu paquete para comenzar tu viaje Slim de 28 días.'
+              : 'Compra realizada. Confirma la recepción cuando llegue tu paquete para comenzar tu viaje Slim de 28 días.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Continue'),
+            child: const Text('Continuar'),
           ),
         ],
       ),
@@ -375,7 +375,7 @@ class _DetailHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'Product Details',
+              'Detalles del producto',
               textAlign: TextAlign.center,
               style: LuckdateTextStyles.title,
             ),
@@ -473,7 +473,7 @@ class _HeroBanner extends StatelessWidget {
                     Text(
                       product.shortDescription.isNotEmpty
                           ? product.shortDescription
-                          : 'Protein Nutritional Meal Replacement',
+                          : 'Sustituto de comida nutricional con proteína',
                       style: LuckdateTextStyles.bodySmall.copyWith(
                         color: LuckdateColors.ivoryWhite.withValues(alpha: 0.9),
                       ),
@@ -547,7 +547,7 @@ class _PriceRow extends StatelessWidget {
                     : LuckdateColors.textSecondary,
                 size: 22,
               ),
-              Text('Save', style: LuckdateTextStyles.caption),
+              Text('Guardar', style: LuckdateTextStyles.caption),
             ],
           ),
         ),
@@ -676,7 +676,7 @@ class _DetailVisual extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Smooth shake texture with balanced macros for your daily ritual.',
+              'Textura suave de batido con macronutrientes equilibrados para tu ritual diario.',
               style: LuckdateTextStyles.bodySmall.copyWith(
                 color: LuckdateColors.textPrimary,
               ),
@@ -780,12 +780,12 @@ class _BottomBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _bottomIcon(Icons.support_agent_outlined, 'Support'),
+          _bottomIcon(Icons.support_agent_outlined, 'Soporte'),
           const SizedBox(width: 8),
           Stack(
             clipBehavior: Clip.none,
             children: [
-              _bottomIcon(Icons.shopping_bag_outlined, 'Cart'),
+              _bottomIcon(Icons.shopping_bag_outlined, 'Carrito'),
               if (cartCount > 0)
                 Positioned(
                   right: 0,
@@ -824,7 +824,7 @@ class _BottomBar extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Add to Cart',
+                'Agregar al carrito',
                 style: LuckdateTextStyles.caption.copyWith(
                   fontWeight: FontWeight.w700,
                   color: LuckdateColors.textPrimary,
@@ -847,7 +847,7 @@ class _BottomBar extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Buy Now',
+                'Comprar ahora',
                 style: LuckdateTextStyles.caption.copyWith(
                   color: LuckdateColors.ivoryWhite,
                   fontWeight: FontWeight.w700,

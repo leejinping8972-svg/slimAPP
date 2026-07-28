@@ -21,7 +21,7 @@ class _SunnySuggestionPageState extends ConsumerState<SunnySuggestionPage> {
   Widget build(BuildContext context) {
     final journey = ref.watch(appStateProvider).journey;
     final now = DateTime.now();
-    final dateLabel = DateFormat('EEEE, MMMM d, y').format(now);
+    final dateLabel = DateFormat('EEEE, d \'de\' MMMM \'de\' y', 'es_MX').format(now);
 
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
@@ -64,7 +64,7 @@ class _SunnySuggestionPageState extends ConsumerState<SunnySuggestionPage> {
                   const _QuoteCard(),
                   const SizedBox(height: LuckdateSpacing.xl),
                   Text(
-                    'Was this suggestion helpful?',
+                    '¿Te resultó útil esta sugerencia?',
                     style: LuckdateTextStyles.title,
                     textAlign: TextAlign.center,
                   ),
@@ -75,7 +75,7 @@ class _SunnySuggestionPageState extends ConsumerState<SunnySuggestionPage> {
                   ),
                   const SizedBox(height: LuckdateSpacing.lg),
                   Text(
-                    'Suggestions are generated based on your data and goals, for reference only.',
+                    'Las sugerencias se generan según tus datos y objetivos, y son solo de referencia.',
                     style: LuckdateTextStyles.caption,
                     textAlign: TextAlign.center,
                   ),
@@ -112,7 +112,7 @@ class _Header extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'Sunny Suggestion Card',
+              'Tarjeta de sugerencias de Sunny',
               textAlign: TextAlign.center,
               style: LuckdateTextStyles.title,
             ),
@@ -146,12 +146,12 @@ class _IntroRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Recommended for you by Sunny',
+                'Recomendado para ti por Sunny',
                 style: LuckdateTextStyles.title,
               ),
               const SizedBox(height: 4),
               Text(
-                'Scientific · Personalized · Growth Companion',
+                'Científico · Personalizado · Compañera de crecimiento',
                 style: LuckdateTextStyles.caption,
               ),
             ],
@@ -164,7 +164,7 @@ class _IntroRow extends StatelessWidget {
             Text(dateLabel, style: LuckdateTextStyles.caption),
             const SizedBox(height: 4),
             Text(
-              'Day $day',
+              'Día $day',
               style: LuckdateTextStyles.caption.copyWith(
                 color: LuckdateColors.deepSage,
                 fontWeight: FontWeight.w600,
@@ -211,14 +211,14 @@ class _ThemeBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Today\'s Theme: Stability · Enhance Focus',
+                  'Tema de hoy: estabilidad · mejora el enfoque',
                   style: LuckdateTextStyles.title.copyWith(
                     color: LuckdateColors.ivoryWhite,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Focus is the amplifier of vitality — let\'s stay clear and efficient today ✨',
+                  'El enfoque amplifica la vitalidad; mantengámonos claras y eficientes hoy ✨',
                   style: LuckdateTextStyles.bodySmall.copyWith(
                     color: LuckdateColors.ivoryWhite.withValues(alpha: 0.9),
                   ),
@@ -240,32 +240,32 @@ class _PlanCard extends StatelessWidget {
   static const _tasks = [
     (
       Icons.wb_sunny_outlined,
-      'Daily Ritual Check-in',
-      'Log hydration, sleep, and product rituals to keep your vitality streak.',
+      'Registro diario de rituales',
+      'Registra hidratación, sueño y rituales del producto para mantener tu racha de vitalidad.',
       '/ritual',
     ),
     (
       Icons.schedule_rounded,
-      '10-Minute Morning Meditation',
-      'Clear your mind, stabilize emotions, and set a focus mode for your brain.',
+      'Meditación matutina de 10 minutos',
+      'Despeja tu mente, estabiliza tus emociones y activa un modo de enfoque.',
       null,
     ),
     (
       Icons.psychology_outlined,
-      'Omega-3 Supplement',
-      'Supports brain health and helps improve attention and memory.',
+      'Suplemento de omega-3',
+      'Favorece la salud cerebral y ayuda a mejorar la atención y la memoria.',
       null,
     ),
     (
       Icons.water_drop_outlined,
-      'Drink 2 Cups of Water',
-      'Stay hydrated to improve brain efficiency.',
+      'Toma 2 tazas de agua',
+      'Mantente hidratada para mejorar la eficiencia cerebral.',
       '/ritual',
     ),
     (
       Icons.directions_run_rounded,
-      '30-Minute Moderate Exercise',
-      'Boosts dopamine, enhancing focus and mood.',
+      'Ejercicio moderado de 30 minutos',
+      'Aumenta la dopamina y mejora el enfoque y el ánimo.',
       null,
     ),
   ];
@@ -284,12 +284,12 @@ class _PlanCard extends StatelessWidget {
                 size: 22,
               ),
               const SizedBox(width: LuckdateSpacing.sm),
-              Text('Focus Enhancement Plan', style: LuckdateTextStyles.title),
+              Text('Plan para mejorar el enfoque', style: LuckdateTextStyles.title),
             ],
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            'Improving focus needs science and good habits. Try these suggestions!',
+            'Mejorar el enfoque requiere ciencia y buenos hábitos. ¡Prueba estas sugerencias!',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.md),
@@ -346,7 +346,7 @@ class _PlanCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Complete',
+                      'Completar',
                       style: LuckdateTextStyles.caption.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -382,12 +382,12 @@ class _TipCard extends StatelessWidget {
                       color: LuckdateColors.sunGold,
                     ),
                     const SizedBox(width: LuckdateSpacing.sm),
-                    Text('Today\'s Tip', style: LuckdateTextStyles.title),
+                    Text('Consejo de hoy', style: LuckdateTextStyles.title),
                   ],
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(
-                  'Pomodoro Technique: 25 mins focus + 5 mins rest to finish tasks efficiently and avoid fatigue.',
+                  'Técnica Pomodoro: 25 min de enfoque + 5 min de descanso para terminar tareas con eficiencia y evitar la fatiga.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],
@@ -442,7 +442,7 @@ class _QuoteCard extends StatelessWidget {
             ),
           ),
           Text(
-            'Focus on every step of the present; your future self will thank you.',
+            'Enfócate en cada paso del presente; tu yo del futuro te lo agradecerá.',
             style: LuckdateTextStyles.title.copyWith(
               fontWeight: FontWeight.w500,
               height: 1.45,
@@ -461,11 +461,11 @@ class _FeedbackRow extends StatelessWidget {
   final ValueChanged<int> onSelect;
 
   static const _items = [
-    ('😣', 'Not at all'),
-    ('😕', 'Not helpful'),
+    ('😣', 'Nada'),
+    ('😕', 'Poco útil'),
     ('😐', 'Neutral'),
-    ('🙂', 'Helpful'),
-    ('🤗', 'Very helpful'),
+    ('🙂', 'Útil'),
+    ('🤗', 'Muy útil'),
   ];
 
   @override

@@ -44,14 +44,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   void _submit() {
     if (_channel == AuthChannel.phone) {
-      final digits =
-          _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+      final digits = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
       if (digits.length < 8) {
-        setState(() => _error = 'Please enter a valid phone number.');
+        setState(() => _error = 'Ingresa un número de teléfono válido.');
         return;
       }
     } else if (!AuthChannelToggle.looksLikeEmail(_emailController.text)) {
-      setState(() => _error = 'Please enter a valid email address.');
+      setState(
+        () => _error = 'Ingresa una dirección de correo electrónico válida.',
+      );
       return;
     }
 
@@ -94,33 +95,33 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     const LdSunnyAvatar(size: 72),
                     const SizedBox(height: LuckdateSpacing.base),
                     Text(
-                      'Create your account',
+                      'Crea tu cuenta',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.h1,
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      'Just your phone or email to get started.',
+                      'Solo necesitas tu teléfono o correo electrónico para empezar.',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.bodySmall,
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
-                    AuthChannelToggle(
-                      value: _channel,
-                      onChanged: _setChannel,
-                    ),
+                    AuthChannelToggle(value: _channel, onChanged: _setChannel),
                     const SizedBox(height: LuckdateSpacing.lg),
                     LdCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            isPhone ? 'Phone number' : 'Email',
+                            isPhone
+                                ? 'Número de teléfono'
+                                : 'Correo electrónico',
                             style: LuckdateTextStyles.caption,
                           ),
                           TextField(
-                            controller:
-                                isPhone ? _phoneController : _emailController,
+                            controller: isPhone
+                                ? _phoneController
+                                : _emailController,
                             keyboardType: isPhone
                                 ? TextInputType.phone
                                 : TextInputType.emailAddress,
@@ -128,8 +129,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 ? const [AutofillHints.telephoneNumber]
                                 : const [AutofillHints.email],
                             decoration: InputDecoration(
-                              hintText:
-                                  isPhone ? '+1 555 0100' : 'you@email.com',
+                              hintText: isPhone
+                                  ? '+1 555 0100'
+                                  : 'you@email.com',
                               border: InputBorder.none,
                             ),
                             onChanged: (_) => _clearError(),
@@ -161,23 +163,20 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
               child: Column(
                 children: [
-                  LdPrimaryButton(
-                    label: 'Create account',
-                    onPressed: _submit,
-                  ),
+                  LdPrimaryButton(label: 'Crear cuenta', onPressed: _submit),
                   const SizedBox(height: LuckdateSpacing.md),
                   Wrap(
                     alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        'Already have an account? ',
+                        '¿Ya tienes una cuenta? ',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                       GestureDetector(
                         onTap: () => context.go('/login'),
                         child: Text(
-                          'Sign in',
+                          'Iniciar sesión',
                           style: LuckdateTextStyles.bodySmall.copyWith(
                             color: LuckdateColors.deepSage,
                             fontWeight: FontWeight.w600,
@@ -216,9 +215,15 @@ class RegisterSuccessPage extends ConsumerWidget {
           children: [
             const Center(child: SymbolHero(size: 96)),
             const SizedBox(height: LuckdateSpacing.xl),
-            Text('Welcome to luckdate', style: LuckdateTextStyles.h1),
+            Text(
+              'Te damos la bienvenida a luckdate',
+              style: LuckdateTextStyles.h1,
+            ),
             const SizedBox(height: LuckdateSpacing.sm),
-            Text('We prepared a gift for you.', style: LuckdateTextStyles.body),
+            Text(
+              'Preparamos un regalo para ti.',
+              style: LuckdateTextStyles.body,
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
               child: Column(
@@ -230,17 +235,17 @@ class RegisterSuccessPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    'Storewide coupon (some items excluded)',
+                    'Cupón para toda la tienda (excepto algunos artículos)',
                     style: LuckdateTextStyles.bodySmall,
                   ),
                   const SizedBox(height: LuckdateSpacing.sm),
-                  Text('Valid for 30 days', style: LuckdateTextStyles.caption),
+                  Text('Válido por 30 días', style: LuckdateTextStyles.caption),
                 ],
               ),
             ),
             const Spacer(),
             LdPrimaryButton(
-              label: 'Continue to link order',
+              label: 'Continuar para vincular pedido',
               onPressed: () {
                 ref.read(appStateProvider.notifier).acknowledgeCouponReward();
                 context.go('/link-order');
@@ -285,7 +290,9 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
   }
 
   void _query() {
-    final result = ref.read(mockOrderServiceProvider).linkOrder(
+    final result = ref
+        .read(mockOrderServiceProvider)
+        .linkOrder(
           recipientName: _nameController.text,
           phoneLast4: _phoneController.text,
         );
@@ -302,7 +309,9 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
 
   void _getProductInfo() {
     if (!_hasOrders) return;
-    final result = ref.read(appStateProvider.notifier).linkOrder(
+    final result = ref
+        .read(appStateProvider.notifier)
+        .linkOrder(
           recipientName: _nameController.text,
           phoneLast4: _phoneController.text,
         );
@@ -346,10 +355,10 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
           children: [
             const Center(child: LdSunnyAvatar(size: 88)),
             const SizedBox(height: LuckdateSpacing.lg),
-            Text('Link your order', style: LuckdateTextStyles.h1),
+            Text('Vincula tu pedido', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Search with recipient name and the last 4 phone digits.',
+              'Busca con el nombre del destinatario y los últimos 4 dígitos del teléfono.',
               style: LuckdateTextStyles.bodySmall,
             ),
             if (coupon != null) ...[
@@ -367,13 +376,13 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$${coupon.amount.toStringAsFixed(0)} welcome coupon',
+                            'Cupón de bienvenida de \$${coupon.amount.toStringAsFixed(0)}',
                             style: LuckdateTextStyles.body.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           Text(
-                            'Valid for 30 days · storewide',
+                            'Válido por 30 días · toda la tienda',
                             style: LuckdateTextStyles.caption,
                           ),
                         ],
@@ -388,8 +397,8 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               controller: _nameController,
               textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
-                labelText: 'Recipient name',
-                hintText: 'Name on the order',
+                labelText: 'Nombre del destinatario',
+                hintText: 'Nombre en el pedido',
               ),
               onChanged: (_) {
                 if (_queried) {
@@ -406,7 +415,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               keyboardType: TextInputType.number,
               maxLength: 4,
               decoration: const InputDecoration(
-                labelText: 'Last 4 digits of phone',
+                labelText: 'Últimos 4 dígitos del teléfono',
                 hintText: '1234',
               ),
               onChanged: (_) {
@@ -419,16 +428,13 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               },
             ),
             const SizedBox(height: LuckdateSpacing.base),
-            LdPrimaryButton(
-              label: 'Query',
-              onPressed: _query,
-            ),
+            LdPrimaryButton(label: 'Buscar', onPressed: _query),
             if (_queried) ...[
               const SizedBox(height: LuckdateSpacing.lg),
               if (_hasOrders) ...[
                 Text(
-                  'Found ${_queryResult!.products.length} '
-                  '${_queryResult!.products.length == 1 ? 'order' : 'orders'}',
+                  'Se encontraron ${_queryResult!.products.length} '
+                  '${_queryResult!.products.length == 1 ? 'pedido' : 'pedidos'}',
                   style: LuckdateTextStyles.title,
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
@@ -446,9 +452,12 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                             ),
                           ),
                           const SizedBox(height: LuckdateSpacing.sm),
-                          _OrderMetaRow(label: 'Order No.', value: p.orderNo),
                           _OrderMetaRow(
-                            label: 'Ordered at',
+                            label: 'Núm. de pedido',
+                            value: p.orderNo,
+                          ),
+                          _OrderMetaRow(
+                            label: 'Fecha de pedido',
                             value: p.orderedAt.isNotEmpty ? p.orderedAt : '—',
                           ),
                         ],
@@ -461,7 +470,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                   child: Text(
                     _queryResult?.message.isNotEmpty == true
                         ? _queryResult!.message
-                        : 'No linked orders found.',
+                        : 'No se encontraron pedidos vinculados.',
                     style: LuckdateTextStyles.bodySmall,
                   ),
                 ),
@@ -471,22 +480,22 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Demo guide', style: LuckdateTextStyles.title),
+                  Text('Guía de demostración', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    '• Any name + 4 digits → 1–3 demo orders',
+                    '• Cualquier nombre + 4 dígitos → 1 a 3 pedidos de demostración',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Phone ending 0000 → no linked orders',
+                    '• Teléfono terminado en 0000 → sin pedidos vinculados',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Name "meal" → Solar Protein 28-Day only',
+                    '• Nombre "meal" → solo Solar Protein 28-Day',
                     style: LuckdateTextStyles.caption,
                   ),
                   Text(
-                    '• Skip → explore with Sunny first',
+                    '• Omitir → explora primero con Sunny',
                     style: LuckdateTextStyles.caption,
                   ),
                 ],
@@ -494,7 +503,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
             LdPrimaryButton(
-              label: 'Get product info',
+              label: 'Ver información del producto',
               onPressed: _hasOrders ? _getProductInfo : null,
             ),
             const SizedBox(height: LuckdateSpacing.md),
@@ -515,7 +524,7 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
                   ),
                 ),
                 child: Text(
-                  'Skip for now',
+                  'Omitir por ahora',
                   style: LuckdateTextStyles.body.copyWith(
                     fontWeight: FontWeight.w600,
                     color: LuckdateColors.deepSage,

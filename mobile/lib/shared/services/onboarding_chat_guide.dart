@@ -3,35 +3,35 @@ import '../models/models.dart';
 /// Guides new users through product intro + core questions inside Sunny chat.
 class OnboardingChatGuide {
   static const privacyPrompt =
-      'Before we personalize your journey, please confirm:\n\n'
-      'Do you agree to our privacy policy and health disclaimer?\n'
-      'Reply "I agree" to continue.';
+      'Antes de personalizar tu viaje, confirma lo siguiente:\n\n'
+      '¿Aceptas nuestra Política de privacidad y Aviso de salud?\n'
+      'Responde "Acepto" para continuar.';
 
   static const planOfferPrompt =
-      'I can personalize your next step. What would you like to do?\n\n'
-      '• Get Plan — answer a few questions for a tailored vitality plan\n'
-      '• Product help only — tips for the products you already have\n'
-      '• Just browsing — explore Mall and Journey at your pace\n'
-      '• Not now — hang out with me anytime later';
+      'Puedo personalizar tu siguiente paso. ¿Qué te gustaría hacer?\n\n'
+      '• Obtener un plan — responde unas preguntas para recibir un plan de vitalidad a tu medida\n'
+      '• Solo ayuda con productos — consejos sobre los productos que ya tienes\n'
+      '• Solo explorar — descubre la tienda y tu viaje a tu ritmo\n'
+      '• Ahora no — podemos platicar cuando quieras';
 
   static const planOfferActions = [
-    'Get Plan',
-    'Product help only',
-    'Just browsing',
-    'Not now',
+    'Obtener un plan',
+    'Solo ayuda con productos',
+    'Solo explorar',
+    'Ahora no',
   ];
 
   static const sunnyGreetingHelp =
-      'I\'ll help you create an account, link your order, '
-      'and start a gentle 28-day journey.';
+      'Te ayudaré a crear una cuenta, vincular tu pedido '
+      'y comenzar un viaje suave de 28 días.';
 
   static const sunnyCapabilitiesIntro =
-      'Here\'s what I can help with:\n'
-      '• Daily Ritual — Build habits that brighten every day\n'
-      '• Vitality Dashboard — Track your data and see your progress\n'
-      '• Scientific Formula — Professional formulas, gentle companionship\n'
-      '• Community Support — Support each other and grow together\n'
-      '• Health Mall — Curated picks for a healthier lifestyle';
+      'Esto es lo que puedo hacer por ti:\n'
+      '• Ritual diario — Crea hábitos que iluminen cada día\n'
+      '• Panel de vitalidad — Registra tus datos y observa tu progreso\n'
+      '• Fórmula científica — Fórmulas profesionales y acompañamiento suave\n'
+      '• Apoyo de la comunidad — Apóyense y crezcan juntas\n'
+      '• Tienda de salud — Productos seleccionados para un estilo de vida más saludable';
 
   static List<ChatMessage> seedMessages() {
     return [
@@ -39,7 +39,7 @@ class OnboardingChatGuide {
         id: 'onboard_greet',
         isUser: false,
         text:
-            'Hi! ☀️ I\'m Sunny, your daily vitality partner.\n\n'
+            '¡Hola! ☀️ Soy Sunny, tu compañera diaria de vitalidad.\n\n'
             '$sunnyGreetingHelp\n\n'
             '$sunnyCapabilitiesIntro\n\n'
             '$privacyPrompt',
@@ -52,32 +52,32 @@ class OnboardingChatGuide {
   static List<ChatMessage> productIntroSeedMessages(UserProfile profile) {
     final name = profile.recipientName.isNotEmpty
         ? profile.recipientName
-        : (profile.nickname.isNotEmpty ? profile.nickname : 'there');
+        : (profile.nickname.isNotEmpty ? profile.nickname : 'amiga');
     final products = profile.linkedProducts;
     final now = DateTime.now();
 
     final buffer = StringBuffer()
-      ..writeln('Hi $name! ☀️ I\'m Sunny, your daily vitality partner.')
+      ..writeln('¡Hola, $name! ☀️ Soy Sunny, tu compañera diaria de vitalidad.')
       ..writeln()
       ..writeln(sunnyCapabilitiesIntro);
     if (products.isNotEmpty) {
       buffer
         ..writeln()
         ..writeln(
-          'I found ${products.length} linked '
-          '${products.length == 1 ? 'product' : 'products'} for you — '
-          'here is a quick intro for each one.',
+          'Encontré ${products.length} '
+          '${products.length == 1 ? 'producto vinculado' : 'productos vinculados'} para ti. '
+          'Aquí tienes una breve introducción a cada uno.',
         );
       for (final p in products) {
         final journeyLine = p.isMealReplacement
-            ? '28-Day Slim Journey unlocked'
-            : 'Daily product care plan';
+            ? 'Viaje Slim de 28 días desbloqueado'
+            : 'Plan diario de cuidado del producto';
         buffer
           ..writeln()
           ..writeln(p.productName)
           ..writeln(journeyLine)
           ..writeln()
-          ..writeln('How to use:')
+          ..writeln('Cómo usarlo:')
           ..writeln(
             '• ${p.blurb.isNotEmpty ? p.blurb : _defaultBlurb(p.isMealReplacement)}',
           );
@@ -92,8 +92,8 @@ class OnboardingChatGuide {
             subtitle: p.series.isNotEmpty
                 ? p.series
                 : (p.isMealReplacement
-                    ? '28-Day Slim Journey unlocked'
-                    : 'Daily product care plan'),
+                    ? 'Viaje Slim de 28 días desbloqueado'
+                    : 'Plan diario de cuidado del producto'),
           ),
         )
         .toList();
@@ -118,10 +118,10 @@ class OnboardingChatGuide {
 
   static String _defaultBlurb(bool isMeal) {
     return isMeal
-        ? 'Mix one serving with water or milk as meal support. '
-            'Log your shake in Sunny chat or Journey each day.'
-        : 'Take as directed on the label. '
-            'Set a daily reminder so Sunny can check in with you.';
+        ? 'Mezcla una porción con agua o leche como apoyo para tus comidas. '
+            'Registra tu batido en el chat de Sunny o en tu viaje cada día.'
+        : 'Tómalo según las indicaciones de la etiqueta. '
+            'Configura un recordatorio diario para que Sunny pueda acompañarte.';
   }
 
   static List<ChatSuggestionItem> planCardItems(UserProfile profile) {
@@ -131,44 +131,44 @@ class OnboardingChatGuide {
     return [
       ChatSuggestionItem(
         emoji: '🌱',
-        title: 'Days 1–7 · Launch',
-        subtitle: 'Build your daily ritual with $product',
+        title: 'Días 1–7 · Inicio',
+        subtitle: 'Crea tu ritual diario con $product',
       ),
       const ChatSuggestionItem(
         emoji: '🌿',
-        title: 'Days 8–14 · Adaptation',
-        subtitle: 'Track hydration, weight, and meal rhythm',
+        title: 'Días 8–14 · Adaptación',
+        subtitle: 'Registra hidratación, peso y ritmo de comidas',
       ),
       const ChatSuggestionItem(
         emoji: '✨',
-        title: 'Days 15–21 · Stability',
-        subtitle: 'Optimize meals, sleep, and movement',
+        title: 'Días 15–21 · Estabilidad',
+        subtitle: 'Optimiza comidas, sueño y movimiento',
       ),
       const ChatSuggestionItem(
         emoji: '🏁',
-        title: 'Days 22–28 · Completion',
-        subtitle: 'Celebrate progress and plan your next chapter',
+        title: 'Días 22–28 · Finalización',
+        subtitle: 'Celebra tu avance y planea tu próximo capítulo',
       ),
     ];
   }
 
   static String planBasisExplanation(UserProfile profile) {
     final productLine = profile.linkedProducts.isNotEmpty
-        ? 'Linked products: ${profile.linkedProducts.map((p) => p.productName).join(', ')}.'
+        ? 'Productos vinculados: ${profile.linkedProducts.map((p) => p.productName).join(', ')}.'
         : profile.linkedProductName.isNotEmpty
-            ? 'Linked product: ${profile.linkedProductName}.'
-            : 'No product linked yet — plan starts in explore mode.';
-    return 'Your 28-Day Slim Journey is ready.\n\n'
-        'How this plan was shaped:\n'
-        '• Age range: ${profile.ageRange}\n'
-        '• Body profile: ${profile.heightCm.toStringAsFixed(0)} cm · '
+            ? 'Producto vinculado: ${profile.linkedProductName}.'
+            : 'Aún no hay ningún producto vinculado; el plan comienza en modo de exploración.';
+    return 'Tu viaje Slim de 28 días está listo.\n\n'
+        'Cómo se creó este plan:\n'
+        '• Rango de edad: ${profile.ageRange}\n'
+        '• Perfil corporal: ${profile.heightCm.toStringAsFixed(0)} cm · '
         '${profile.currentWeightKg.toStringAsFixed(1)} → '
         '${profile.targetWeightKg.toStringAsFixed(0)} kg\n'
-        '• Meal focus: ${profile.mealSlot}\n'
-        '• Morning reminder: ${profile.reminderTime}\n'
+        '• Comida principal: ${profile.mealSlot}\n'
+        '• Recordatorio matutino: ${profile.reminderTime}\n'
         '• $productLine\n\n'
-        'We combine your profile, product cycle, and gentle habit science — '
-        'not perfection, but a rhythm you can grow with.';
+        'Combinamos tu perfil, ciclo de producto y la ciencia de hábitos suaves: '
+        'no se trata de perfección, sino de un ritmo con el que puedes crecer.';
   }
 
   static String day1RitualGuide(UserProfile profile) {
@@ -176,38 +176,38 @@ class OnboardingChatGuide {
     final meal = profile.mealSlot;
     final name = profile.recipientName.isNotEmpty
         ? profile.recipientName
-        : (profile.nickname.isNotEmpty ? profile.nickname : 'there');
-    return 'Nice work, $name — your plan is ready.\n\n'
-        'I will walk you through Day 1 check-in now. '
-        'Complete these four rituals today:\n\n'
-        '1. Morning check-in (around $morning)\n'
-        '2. Your $meal support meal / Solar Protein\n'
-        '3. Drink at least 2 cups of water\n'
-        '4. Sleep wind-down tonight\n\n'
-        'Start with any action below — I will log it and cheer you on.';
+        : (profile.nickname.isNotEmpty ? profile.nickname : 'amiga');
+    return 'Muy bien, $name: tu plan está listo.\n\n'
+        'Ahora te guiaré en el registro del Día 1. '
+        'Completa estos cuatro rituales hoy:\n\n'
+        '1. Registro matutino (alrededor de las $morning)\n'
+        '2. Tu comida de apoyo de $meal / Solar Protein\n'
+        '3. Bebe al menos 2 vasos de agua\n'
+        '4. Relájate antes de dormir esta noche\n\n'
+        'Comienza con cualquiera de las acciones siguientes: las registraré y te animaré.';
   }
 
   static List<ChatSuggestionItem> day1RitualItems(UserProfile profile) {
     return [
       const ChatSuggestionItem(
         emoji: '✅',
-        title: 'Start Day 1 check-in',
-        subtitle: 'Open Ritual and mark your first wins',
+        title: 'Comenzar el registro del Día 1',
+        subtitle: 'Abre Ritual y marca tus primeros logros',
       ),
       const ChatSuggestionItem(
         emoji: '💧',
-        title: 'Log water now',
-        subtitle: 'One glass counts — keep the streak going',
+        title: 'Registrar agua ahora',
+        subtitle: 'Cada vaso cuenta: mantén tu racha',
       ),
       ChatSuggestionItem(
         emoji: '🥗',
-        title: 'Log your ${profile.mealSlot} meal',
-        subtitle: 'Tell me what you had and I will record it',
+        title: 'Registrar tu comida de ${profile.mealSlot}',
+        subtitle: 'Dime qué comiste y lo registraré',
       ),
       const ChatSuggestionItem(
         emoji: '🌙',
-        title: 'Log sleep later',
-        subtitle: 'Close Day 1 with a calm wind-down',
+        title: 'Registrar sueño más tarde',
+        subtitle: 'Termina el Día 1 con una relajación tranquila',
       ),
     ];
   }
@@ -244,12 +244,12 @@ class OnboardingChatGuide {
             profile: done,
             result: const SunnyIntentResult(
               reply:
-                  'Perfect — I\'ll stay in product-care mode.\n\n'
-                  'Ask me anytime about how to take your products, '
-                  'timing, or gentle reminders. '
-                  'When you want a full personalized plan later, just say "Get Plan".',
+                  'Perfecto, permaneceré en modo de cuidado de productos.\n\n'
+                  'Pregúntame cuando quieras cómo tomar tus productos, '
+                  'sobre horarios o recordatorios suaves. '
+                  'Cuando quieras un plan personalizado completo, solo di "Obtener un plan".',
               intents: ['onboarding_product_help'],
-              actionLabels: ['Go to Journey', 'Browse Mall'],
+              actionLabels: ['Ir al viaje', 'Explorar la tienda'],
             ),
           );
         }
@@ -264,11 +264,11 @@ class OnboardingChatGuide {
             profile: done,
             result: const SunnyIntentResult(
               reply:
-                  'Love that — explore first, pressure later.\n\n'
-                  'Browse Mall for curated picks, or open Journey to see your '
-                  'vitality snapshot. I\'m here when you\'re ready for a plan.',
+                  'Me encanta: explora primero y sin presión.\n\n'
+                  'Explora la tienda para ver productos seleccionados o abre tu viaje '
+                  'para consultar tu resumen de vitalidad. Aquí estaré cuando quieras un plan.',
               intents: ['onboarding_browse'],
-              actionLabels: ['Browse Mall', 'Go to Journey'],
+              actionLabels: ['Explorar la tienda', 'Ir al viaje'],
             ),
           );
         }
@@ -283,11 +283,11 @@ class OnboardingChatGuide {
             profile: done,
             result: const SunnyIntentResult(
               reply:
-                  'No problem at all. Take your time.\n\n'
-                  'Whenever you want tips, a plan, or just a check-in, '
-                  'open Sunny chat — I\'ll be right here.',
+                  'No hay problema. Tómate tu tiempo.\n\n'
+                  'Cuando quieras consejos, un plan o simplemente registrarte, '
+                  'abre el chat de Sunny: aquí estaré.',
               intents: ['onboarding_defer'],
-              actionLabels: ['Go to Journey', 'Browse Mall'],
+              actionLabels: ['Ir al viaje', 'Explorar la tienda'],
             ),
           );
         }
@@ -295,7 +295,7 @@ class OnboardingChatGuide {
           profile: profile,
           result: const SunnyIntentResult(
             reply:
-                'Pick one of the options below, or tell me in your own words.',
+                'Elige una de las opciones siguientes o cuéntame con tus propias palabras.',
             intents: ['onboarding_plan_offer'],
             actionLabels: planOfferActions,
           ),
@@ -308,8 +308,8 @@ class OnboardingChatGuide {
             profile: next,
             result: const SunnyIntentResult(
               reply:
-                  'Thank you. Which age range fits you best?\n\n'
-                  '• 18-34\n• 35-50\n• 51-64\n• 65+\n• Under 18',
+                  'Gracias. ¿Qué rango de edad te corresponde mejor?\n\n'
+                  '• 18-34\n• 35-50\n• 51-64\n• 65+\n• Menor de 18',
               intents: ['onboarding_privacy'],
             ),
           );
@@ -318,8 +318,8 @@ class OnboardingChatGuide {
           profile: profile,
           result: const SunnyIntentResult(
             reply:
-                'Please reply "I agree" to continue. Your data stays private '
-                'and is only used to guide your vitality ritual.',
+                'Responde "Acepto" para continuar. Tus datos se mantienen privados '
+                'y solo se usan para guiar tu ritual de vitalidad.',
             intents: ['onboarding_privacy'],
           ),
         );
@@ -331,7 +331,7 @@ class OnboardingChatGuide {
             profile: profile,
             result: const SunnyIntentResult(
               reply:
-                  'Please choose one: 18-34, 35-50, 51-64, 65+, or Under 18.',
+                  'Elige una opción: 18-34, 35-50, 51-64, 65+ o menor de 18.',
               intents: ['onboarding_age'],
             ),
           );
@@ -345,9 +345,9 @@ class OnboardingChatGuide {
             ),
             result: const SunnyIntentResult(
               reply:
-                  'Based on your answer, a standard Slim Journey may not be '
-                  'right for you right now. Please consult a healthcare '
-                  'professional, then reply with another age range if needed.',
+                  'Según tu respuesta, es posible que un viaje Slim estándar no sea '
+                  'adecuado para ti ahora. Consulta a un profesional de la salud '
+                  'y, si es necesario, responde con otro rango de edad.',
               intents: ['onboarding_age'],
               riskLevel: RiskLevel.p0,
               disableActions: true,
@@ -363,8 +363,8 @@ class OnboardingChatGuide {
           ),
           result: SunnyIntentResult(
             reply:
-                'Got it — $age. What is your height in cm?\n'
-                '(For example: 165)',
+                'Entendido: $age. ¿Cuál es tu estatura en cm?\n'
+                '(Por ejemplo: 165)',
             intents: const ['onboarding_age'],
             riskLevel: risk,
           ),
@@ -376,7 +376,7 @@ class OnboardingChatGuide {
           return (
             profile: profile,
             result: const SunnyIntentResult(
-              reply: 'Please share your height in cm, like 165.',
+              reply: 'Comparte tu estatura en cm, por ejemplo: 165.',
               intents: ['onboarding_height'],
             ),
           );
@@ -388,8 +388,8 @@ class OnboardingChatGuide {
           ),
           result: SunnyIntentResult(
             reply:
-                'Noted — ${height.toStringAsFixed(0)} cm. '
-                'What is your current weight in kg?\n(For example: 68)',
+                'Anotado: ${height.toStringAsFixed(0)} cm. '
+                '¿Cuál es tu peso actual en kg?\n(Por ejemplo: 68)',
             intents: const ['onboarding_height'],
           ),
         );
@@ -400,7 +400,7 @@ class OnboardingChatGuide {
           return (
             profile: profile,
             result: const SunnyIntentResult(
-              reply: 'Please share your weight in kg, like 68.',
+              reply: 'Comparte tu peso en kg, por ejemplo: 68.',
               intents: ['onboarding_weight'],
             ),
           );
@@ -415,16 +415,19 @@ class OnboardingChatGuide {
           ),
           result: SunnyIntentResult(
             reply:
-                'Logged ${weight.toStringAsFixed(1)} kg. '
-                'A gentle target could be ${recommended.toStringAsFixed(0)} kg.\n\n'
-                'Reply with your goal weight in kg, or say "use recommended".',
+                'Registré ${weight.toStringAsFixed(1)} kg. '
+                'Una meta suave podría ser ${recommended.toStringAsFixed(0)} kg.\n\n'
+                'Responde con tu peso objetivo en kg o di "usar el recomendado".',
             intents: const ['onboarding_weight'],
           ),
         );
 
       case 'target':
         double target;
-        if (lower.contains('recommend') || lower.contains('use')) {
+        if (lower.contains('recommend') ||
+            lower.contains('use') ||
+            lower.contains('recomend') ||
+            lower.contains('usar')) {
           target = profile.targetWeightKg;
         } else {
           final parsed = _parseWeight(lower);
@@ -433,7 +436,7 @@ class OnboardingChatGuide {
               profile: profile,
               result: const SunnyIntentResult(
                 reply:
-                    'Send a goal weight in kg, or reply "use recommended".',
+                    'Envía un peso objetivo en kg o responde "usar el recomendado".',
                 intents: ['onboarding_target'],
               ),
             );
@@ -447,9 +450,9 @@ class OnboardingChatGuide {
           ),
           result: SunnyIntentResult(
             reply:
-                'Target set to ${target.toStringAsFixed(0)} kg.\n\n'
-                'Which meal would you most like support with?\n'
-                '• breakfast\n• lunch\n• dinner\n• not sure',
+                'Meta establecida en ${target.toStringAsFixed(0)} kg.\n\n'
+                '¿Con qué comida te gustaría recibir más apoyo?\n'
+                '• desayuno\n• comida\n• cena\n• no estoy segura',
             intents: const ['onboarding_target'],
           ),
         );
@@ -461,7 +464,7 @@ class OnboardingChatGuide {
             profile: profile,
             result: const SunnyIntentResult(
               reply:
-                  'Please choose breakfast, lunch, dinner, or not sure.',
+                  'Elige desayuno, comida, cena o no estoy segura.',
               intents: ['onboarding_meal'],
             ),
           );
@@ -473,9 +476,9 @@ class OnboardingChatGuide {
           ),
           result: SunnyIntentResult(
             reply:
-                'Great — focusing on $meal.\n\n'
-                'What time should I remind you for your morning ritual?\n'
-                '(For example: 08:00 or 8am)',
+                'Perfecto: nos enfocaremos en $meal.\n\n'
+                '¿A qué hora te recuerdo tu ritual matutino?\n'
+                '(Por ejemplo: 08:00 u 8 a. m.)',
             intents: const ['onboarding_meal'],
           ),
         );
@@ -486,7 +489,7 @@ class OnboardingChatGuide {
           return (
             profile: profile,
             result: const SunnyIntentResult(
-              reply: 'Please share a time like 08:00 or 8am.',
+              reply: 'Comparte una hora como 08:00 u 8 a. m.',
               intents: ['onboarding_reminder'],
             ),
           );
@@ -510,12 +513,12 @@ class OnboardingChatGuide {
             suggestions: planCardItems(done),
             actionLabels: done.hasActiveSlimPlan
                 ? const [
-                    'Start Day 1 Check-in',
-                    'Log Water',
-                    'Log Meal',
-                    'Go to Journey',
+                    'Comenzar el registro del Día 1',
+                    'Registrar agua',
+                    'Registrar comida',
+                    'Ir al viaje',
                   ]
-                : const ['View My Plan', 'Browse Mall'],
+                : const ['Ver mi plan', 'Explorar la tienda'],
           ),
         );
 
@@ -531,7 +534,10 @@ class OnboardingChatGuide {
   }
 
   static bool _wantsPlan(String lower) {
-    return lower.contains('get plan') ||
+    return lower.contains('obtener un plan') ||
+        lower.contains('quiero un plan') ||
+        lower.contains('plan personalizado') ||
+        lower.contains('get plan') ||
         lower.contains('get it now') ||
         lower.contains('get now') ||
         lower == 'yes' ||
@@ -543,21 +549,30 @@ class OnboardingChatGuide {
   }
 
   static bool _wantsProductHelp(String lower) {
-    return lower.contains('product help') ||
+    return lower.contains('ayuda con productos') ||
+        lower.contains('solo productos') ||
+        lower.contains('cuidado de productos') ||
+        lower.contains('product help') ||
         lower.contains('only product') ||
         lower.contains('product care') ||
         lower.contains('just help');
   }
 
   static bool _wantsBrowse(String lower) {
-    return lower.contains('browsing') ||
+    return lower.contains('solo explorar') ||
+        lower.contains('explorar') ||
+        lower.contains('ver productos') ||
+        lower.contains('browsing') ||
         lower.contains('browse') ||
         lower.contains('look around') ||
         lower.contains('explore');
   }
 
   static bool _wantsNotNow(String lower) {
-    return lower.contains('not now') ||
+    return lower.contains('ahora no') ||
+        lower.contains('más tarde') ||
+        lower.contains('después') ||
+        lower.contains('not now') ||
         lower.contains('later') ||
         lower.contains('nothing') ||
         lower.contains('skip') ||
@@ -565,14 +580,21 @@ class OnboardingChatGuide {
   }
 
   static bool _agrees(String lower) {
-    return lower.contains('agree') ||
+    return lower.contains('acepto') ||
+        lower.contains('estoy de acuerdo') ||
+        lower.contains('de acuerdo') ||
+        lower.contains('agree') ||
         lower == 'yes' ||
         lower == 'y' ||
         lower.contains('ok');
   }
 
   static String? _parseAge(String lower) {
-    if (lower.contains('under 18') || lower.contains('under18') || lower == '<18') {
+    if (lower.contains('menor de 18') ||
+        lower.contains('menor18') ||
+        lower.contains('under 18') ||
+        lower.contains('under18') ||
+        lower == '<18') {
       return 'Under 18';
     }
     if (lower.contains('65')) return '65+';
@@ -605,10 +627,17 @@ class OnboardingChatGuide {
   }
 
   static String? _parseMeal(String lower) {
-    if (lower.contains('breakfast')) return 'breakfast';
-    if (lower.contains('lunch')) return 'lunch';
-    if (lower.contains('dinner')) return 'dinner';
-    if (lower.contains('not sure') || lower.contains('unsure')) {
+    if (lower.contains('desayuno') || lower.contains('breakfast')) {
+      return 'breakfast';
+    }
+    if (lower.contains('comida') || lower.contains('almuerzo') || lower.contains('lunch')) {
+      return 'lunch';
+    }
+    if (lower.contains('cena') || lower.contains('dinner')) return 'dinner';
+    if (lower.contains('no estoy segura') ||
+        lower.contains('no estoy seguro') ||
+        lower.contains('not sure') ||
+        lower.contains('unsure')) {
       return 'not sure';
     }
     return null;
@@ -620,10 +649,10 @@ class OnboardingChatGuide {
       final h = int.parse(colon.group(1)!).toString().padLeft(2, '0');
       return '$h:${colon.group(2)}';
     }
-    final ampm = RegExp(r'\b(\d{1,2})\s*(am|pm)\b').firstMatch(lower);
+    final ampm = RegExp(r'\b(\d{1,2})\s*(am|pm|a\.?\s*m\.?|p\.?\s*m\.?)\b').firstMatch(lower);
     if (ampm != null) {
       var h = int.parse(ampm.group(1)!);
-      final isPm = ampm.group(2) == 'pm';
+      final isPm = ampm.group(2)!.replaceAll(RegExp(r'[\s.]'), '') == 'pm';
       if (isPm && h < 12) h += 12;
       if (!isPm && h == 12) h = 0;
       return '${h.toString().padLeft(2, '0')}:00';
@@ -639,12 +668,12 @@ class OnboardingChatGuide {
   static List<(String, String)> quickAsksFor(String step) {
     return switch (step) {
       'plan_offer' => [
-        ('✨', 'Get Plan'),
-        ('🧴', 'Product help only'),
-        ('👀', 'Just browsing'),
-        ('🌙', 'Not now'),
+        ('✨', 'Obtener un plan'),
+        ('🧴', 'Solo ayuda con productos'),
+        ('👀', 'Solo explorar'),
+        ('🌙', 'Ahora no'),
       ],
-      'privacy' => [('✅', 'I agree')],
+      'privacy' => [('✅', 'Acepto')],
       'age' => [
         ('🌿', '35-50'),
         ('☀️', '18-34'),
@@ -652,13 +681,13 @@ class OnboardingChatGuide {
       ],
       'height' => [('📏', '165 cm')],
       'weight' => [('⚖️', '68 kg')],
-      'target' => [('🎯', 'use recommended'), ('⚖️', '62 kg')],
+      'target' => [('🎯', 'usar el recomendado'), ('⚖️', '62 kg')],
       'meal' => [
-        ('🌅', 'breakfast'),
-        ('🥗', 'lunch'),
-        ('🌙', 'dinner'),
+        ('🌅', 'desayuno'),
+        ('🥗', 'comida'),
+        ('🌙', 'cena'),
       ],
-      'reminder' => [('⏰', '08:00'), ('☀️', '7am')],
+      'reminder' => [('⏰', '08:00'), ('☀️', '7 a. m.')],
       _ => const [],
     };
   }

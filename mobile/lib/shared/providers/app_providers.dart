@@ -119,7 +119,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
             orderNo: 'LD-DEMO-001',
             productName: 'Solar Protein 28-Day',
             isMealReplacement: true,
-            series: 'Slim Vitality',
+            series: 'Vitalidad Slim',
           ),
         ],
       ),
@@ -304,10 +304,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
         text: OnboardingChatGuide.day1RitualGuide(state.profile),
         timestamp: DateTime.now(),
         actionLabels: const [
-          'Start Day 1 Check-in',
-          'Log Water',
-          'Log Meal',
-          'Go to Journey',
+          'Comenzar el registro del Día 1',
+          'Registrar agua',
+          'Registrar comida',
+          'Ir al viaje',
         ],
       );
       state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
@@ -403,17 +403,17 @@ class AppStateNotifier extends StateNotifier<AppState> {
     final moodMsg = ChatMessage(
       id: '${DateTime.now().millisecondsSinceEpoch}_mood',
       isUser: true,
-      text: 'I feel $moodTag today',
+      text: 'Hoy me siento $moodTag',
       timestamp: DateTime.now(),
     );
     final reply = ChatMessage(
       id: '${moodMsg.id}_reply',
       isUser: false,
       text: switch (moodTag) {
-        'great' => 'Love that energy. Keep the rhythm gentle tonight.',
-        'okay' => 'Okay is still a win. Rest when you need it.',
-        'tired' => 'Thank you for sharing. A lighter evening might help.',
-        _ => 'Thanks for checking in. I am here if you want to talk.',
+        'great' => 'Me encanta esa energía. Mantén un ritmo suave esta noche.',
+        'okay' => 'Estar bien también cuenta como un logro. Descansa cuando lo necesites.',
+        'tired' => 'Gracias por compartirlo. Una noche más ligera puede ayudarte.',
+        _ => 'Gracias por registrarte. Estoy aquí si quieres platicar.',
       },
       timestamp: DateTime.now(),
     );
@@ -454,15 +454,15 @@ class AppStateNotifier extends StateNotifier<AppState> {
       totalDays: 28,
       completionPercent: 0,
       phase: profile.userPlanType == UserPlanType.nonMealReplacement
-          ? 'Product Care'
-          : 'Basic Mode',
+          ? 'Cuidado del producto'
+          : 'Modo básico',
       themeEn: profile.userPlanType == UserPlanType.nonMealReplacement
-          ? 'Daily Reminder'
-          : 'Track & Chat',
+          ? 'Recordatorio diario'
+          : 'Registra y chatea',
       themeZh: '',
       encouragement: profile.userPlanType == UserPlanType.nonMealReplacement
-          ? 'We will remind you to use your product each day.'
-          : 'Track your habits and chat with Sunny while you explore products.',
+          ? 'Te recordaremos usar tu producto cada día.'
+          : 'Registra tus hábitos y chatea con Sunny mientras exploras productos.',
       vitalityTrend: const [],
       weightTrend: const [],
       consistency5d: const [false, false, false, false, false],
@@ -471,8 +471,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
       todayRecord: const TodayRecord(),
       vitalityScores: const VitalityScores(),
       sunnyCardMessage: profile.userPlanType == UserPlanType.noProduct
-          ? 'You do not have a dedicated plan yet, but you can keep chatting with me. Tell me your goals and I will recommend the right products.'
-          : 'Remember to take your product today.',
+          ? 'Aún no tienes un plan específico, pero puedes seguir chateando conmigo. Cuéntame tus metas y te recomendaré los productos adecuados.'
+          : 'Recuerda tomar tu producto hoy.',
     );
   }
 
@@ -583,10 +583,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
           OnboardingChatGuide.day1RitualGuide(state.profile),
           suggestions: OnboardingChatGuide.day1RitualItems(state.profile),
           actionLabels: const [
-            'Start Day 1 Check-in',
-            'Log Water',
-            'Log Meal',
-            'Log Sleep',
+            'Comenzar el registro del Día 1',
+            'Registrar agua',
+            'Registrar comida',
+            'Registrar sueño',
           ],
         );
       } else if (state.profile.isAwaitingReceipt) {
@@ -600,10 +600,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
         state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
         await _streamReply(
           follow.id,
-          'Your Solar Protein is on the way. '
-          'Confirm receipt in Plan or Me when it arrives — '
-          'then I will guide your Day 1 check-in.',
-          actionLabels: const ['View My Plan'],
+          'Tu Solar Protein está en camino. '
+          'Confirma la recepción en Plan o Perfil cuando llegue; '
+          'después te guiaré en tu registro del Día 1.',
+          actionLabels: const ['Ver mi plan'],
         );
       } else {
         final follow = ChatMessage(
@@ -616,10 +616,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
         state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
         await _streamReply(
           follow.id,
-          'You can explore Journey and Mall now. '
-          'Link an order or buy Solar Protein to unlock Day 1 check-in — '
-          'I will guide you as soon as your plan starts.',
-          actionLabels: const ['View My Plan', 'Browse Mall'],
+          'Ahora puedes explorar tu viaje y la tienda. '
+          'Vincula un pedido o compra Solar Protein para desbloquear el registro del Día 1; '
+          'te guiaré en cuanto comience tu plan.',
+          actionLabels: const ['Ver mi plan', 'Explorar la tienda'],
         );
       }
     }
@@ -628,17 +628,17 @@ class AppStateNotifier extends StateNotifier<AppState> {
   Future<void> sendQuickAction(String action) async {
     switch (action) {
       case 'water':
-        await sendChatMessage('I drank a glass of water');
+        await sendChatMessage('Tomé un vaso de agua');
       case 'meal':
-        await sendChatMessage('I had my Solar Protein shake');
+        await sendChatMessage('Tomé mi batido Solar Protein');
       case 'mood':
-        await sendChatMessage('I feel a bit tired today');
+        await sendChatMessage('Hoy me siento un poco cansada');
       case 'adjust':
-        await sendChatMessage('I have a dinner party tonight, can we adjust?');
+        await sendChatMessage('Tengo una cena con amigos esta noche, ¿podemos ajustar el plan?');
       case 'exercise':
-        await sendChatMessage('I did 45 minutes of yoga');
+        await sendChatMessage('Hice 45 minutos de yoga');
       case 'sleep':
-        await sendChatMessage('I slept 7 hours last night');
+        await sendChatMessage('Dormí 7 horas anoche');
     }
   }
 

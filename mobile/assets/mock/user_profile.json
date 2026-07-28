@@ -6,11 +6,11 @@
   "targetWeightKg": 62,
   "weightUnit": "kg",
   "heightUnit": "cm",
-  "language": "en-US",
-  "region": "US",
+  "language": "es-MX",
+  "region": "MX",
   "reminderTime": "08:00",
   "mealSlot": "breakfast",
   "hydrationTargetMl": 2000,
-  "membershipPlan": "Solar Protein 30-Day",
+  "membershipPlan": "Solar Protein 30 días",
   "membershipExpires": "2026-09-18"
 }

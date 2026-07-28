@@ -25,6 +25,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
 
   static const _olive = Color(0xFF5E6550);
   static const _gold = Color(0xFFC4A06E);
+
   /// Light brown for primary copy / CTAs (replaces white on this screen).
   static const _lightBrown = Color(0xFFD4B896);
 
@@ -98,7 +99,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                   SizedBox(
                     width: copyWidth,
                     child: Text(
-                      'Feel Alive.\nMeet luckdate.',
+                      'Siéntete viva.\nConoce luckdate.',
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 29,
@@ -110,16 +111,9 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    width: 38,
-                    height: 1.5,
-                    color: _gold,
-                  ),
+                  Container(width: 38, height: 1.5, color: _gold),
                   const SizedBox(height: 22),
-                  SizedBox(
-                    width: cardWidth,
-                    child: const _RitualGlassCard(),
-                  ),
+                  SizedBox(width: cardWidth, child: const _RitualGlassCard()),
                   const Spacer(),
                   _BreathingButton(
                     breath: _breathe,
@@ -144,7 +138,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Start My Journey',
+                                  'Comenzar mi viaje',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
@@ -187,7 +181,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                         ),
                         onPressed: _goLogin,
                         child: const Text(
-                          'Log in',
+                          'Iniciar sesión',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 15,
@@ -271,7 +265,7 @@ class _WelcomeBrand extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          'YOUR DAILY VITALITY COMPANION',
+          'TU ACOMPAÑANTE DIARIO DE VITALIDAD',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 8.5,
@@ -340,9 +334,9 @@ class _RitualCopy extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         children: [
-          const TextSpan(text: 'Every Great Day Starts with '),
+          const TextSpan(text: 'Todo gran día comienza con '),
           TextSpan(
-            text: 'One Small Ritual.',
+            text: 'un pequeño ritual.',
             style: TextStyle(
               fontFamily: 'Caveat',
               fontSize: 16,

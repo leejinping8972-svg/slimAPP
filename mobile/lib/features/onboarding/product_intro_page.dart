@@ -29,12 +29,12 @@ class ProductIntroPage extends ConsumerWidget {
           children: [
             const Center(child: LdSunnyAvatar(size: 88)),
             const SizedBox(height: LuckdateSpacing.lg),
-            Text('Meet your product', style: LuckdateTextStyles.h1),
+            Text('Conoce tu producto', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
               isMeal
-                  ? 'Your order is linked. Here is how $productName powers your 28-day Slim Journey.'
-                  : 'Your order is linked. Here is how $productName fits into your daily vitality ritual.',
+                  ? 'Tu pedido está vinculado. Así es como $productName impulsa tu viaje Slim de 28 días.'
+                  : 'Tu pedido está vinculado. Así es como $productName se integra a tu ritual diario de vitalidad.',
               style: LuckdateTextStyles.bodySmall,
             ),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -64,8 +64,8 @@ class ProductIntroPage extends ConsumerWidget {
                         const SizedBox(height: 4),
                         Text(
                           isMeal
-                              ? '28-Day Slim Journey unlocked'
-                              : 'Daily product care plan',
+                              ? 'Viaje Slim de 28 días desbloqueado'
+                              : 'Plan diario de cuidado del producto',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],
@@ -75,41 +75,41 @@ class ProductIntroPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.lg),
-            Text('How to use', style: LuckdateTextStyles.title),
+            Text('Cómo usarlo', style: LuckdateTextStyles.title),
             const SizedBox(height: LuckdateSpacing.sm),
             ..._bullets(
               isMeal
                   ? const [
-                      'Mix one serving with water or milk as your meal support.',
-                      'Log your shake in Sunny chat or Ritual each day.',
-                      'Pair with hydration, sleep, and gentle movement.',
-                      'Stay consistent — Day 1 starts after a few quick questions.',
+                      'Mezcla una porción con agua o leche como apoyo para tus comidas.',
+                      'Registra tu batido en el chat de Sunny o en Ritual cada día.',
+                      'Acompáñalo con hidratación, sueño y movimiento suave.',
+                      'Mantén la constancia: el Día 1 comienza después de unas preguntas breves.',
                     ]
                   : const [
-                      'Take as directed on your product label.',
-                      'Set a daily reminder so Sunny can check in with you.',
-                      'Log each serving in Sunny chat to build your streak.',
-                      'Upgrade anytime with Solar Protein for the full 28-day plan.',
+                      'Tómalo según las indicaciones de la etiqueta.',
+                      'Configura un recordatorio diario para que Sunny pueda acompañarte.',
+                      'Registra cada porción en el chat de Sunny para mantener tu racha.',
+                      'Cambia a Solar Protein cuando quieras para disfrutar el plan completo de 28 días.',
                     ],
             ),
             const SizedBox(height: LuckdateSpacing.lg),
-            Text('What happens next', style: LuckdateTextStyles.title),
+            Text('Qué sigue', style: LuckdateTextStyles.title),
             const SizedBox(height: LuckdateSpacing.sm),
             ..._bullets(
               isMeal
                   ? const [
-                      'Sunny asks a few core questions to personalize your plan.',
-                      'Then she guides you through your Day 1 check-in.',
-                      'Your Ritual dashboard tracks vitality as you go.',
+                      'Sunny te hará algunas preguntas clave para personalizar tu plan.',
+                      'Después te guiará en tu registro del Día 1.',
+                      'Tu panel de Ritual registra tu vitalidad mientras avanzas.',
                     ]
                   : const [
-                      'Sunny asks a few core questions for your profile.',
-                      'You can browse Mall anytime to unlock the full Slim Journey.',
+                      'Sunny te hará algunas preguntas clave para crear tu perfil.',
+                      'Puedes explorar la tienda cuando quieras para desbloquear el viaje Slim completo.',
                     ],
             ),
             const SizedBox(height: LuckdateSpacing.xxl),
             LdPrimaryButton(
-              label: 'Continue with Sunny',
+              label: 'Continuar con Sunny',
               onPressed: () {
                 final onboarded =
                     ref.read(appStateProvider).profile.onboardingComplete;
@@ -147,7 +147,7 @@ class ProductIntroPage extends ConsumerWidget {
                     context.go('/home');
                   }
                 },
-                child: const Text('Skip for now'),
+                child: const Text('Omitir por ahora'),
               ),
             ),
           ],

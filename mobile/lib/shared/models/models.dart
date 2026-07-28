@@ -29,6 +29,7 @@ class UserCoupon {
   final String currency;
   final String scope;
   final DateTime expiresAt;
+
   /// unused | used | expired
   final String status;
   final DateTime? usedAt;
@@ -66,8 +67,8 @@ class UserProfile {
     this.targetWeightKg = 62,
     this.weightUnit = 'lb',
     this.heightUnit = 'ft/in',
-    this.language = 'en-US',
-    this.region = 'US',
+    this.language = 'es-MX',
+    this.region = 'MX',
     this.reminderTime = '08:00',
     this.reminderTime2 = '20:00',
     this.mealSlot = 'breakfast',
@@ -117,10 +118,12 @@ class UserProfile {
   final bool isLoggedIn;
   final bool isNewRegistration;
   final bool couponRewardSeen;
+
   /// Recipient name used to look up linked orders.
   final String recipientName;
   final String linkedOrderNo;
   final String linkedProductName;
+
   /// All products found for the recipient (may be multiple).
   final List<LinkedProductRef> linkedProducts;
   final OrderLinkStatus orderLinkStatus;
@@ -130,6 +133,7 @@ class UserProfile {
   final bool hidePurchaseGuideCard;
   final bool journeyCompleteSeen;
   final bool sunnyIntroSeen;
+
   /// Chat onboarding step:
   /// plan_offer → privacy → age → height → weight → target → meal → reminder → done
   final String onboardingStep;
@@ -205,7 +209,8 @@ class UserProfile {
       productSource: productSource ?? this.productSource,
       slimPlanStatus: slimPlanStatus ?? this.slimPlanStatus,
       userPlanType: userPlanType ?? this.userPlanType,
-      hidePurchaseGuideCard: hidePurchaseGuideCard ?? this.hidePurchaseGuideCard,
+      hidePurchaseGuideCard:
+          hidePurchaseGuideCard ?? this.hidePurchaseGuideCard,
       journeyCompleteSeen: journeyCompleteSeen ?? this.journeyCompleteSeen,
       sunnyIntroSeen: sunnyIntroSeen ?? this.sunnyIntroSeen,
       onboardingStep: onboardingStep ?? this.onboardingStep,
@@ -218,7 +223,8 @@ class UserProfile {
 }
 
 extension UserProfilePlanX on UserProfile {
-  bool get isAwaitingReceipt => slimPlanStatus == SlimPlanStatus.awaitingReceipt;
+  bool get isAwaitingReceipt =>
+      slimPlanStatus == SlimPlanStatus.awaitingReceipt;
 
   bool get hasActiveSlimPlan =>
       slimPlanStatus == SlimPlanStatus.active &&

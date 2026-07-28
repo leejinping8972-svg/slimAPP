@@ -8,15 +8,15 @@ class LdMainBottomNav extends StatelessWidget {
     required this.onTap,
   });
 
-  /// Visual tab index: 0 Sunny, 1 Journey, 2 Mall, 3 Me.
+  /// Índice visual de pestañas: 0 Sunny, 1 Recorrido, 2 Tienda, 3 Yo.
   final int currentIndex;
   final ValueChanged<int> onTap;
 
   static const _items = [
     (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded, 'Sunny'),
-    (Icons.local_florist_outlined, Icons.local_florist_rounded, 'Journey'),
-    (Icons.storefront_outlined, Icons.storefront_rounded, 'Mall'),
-    (Icons.person_outline_rounded, Icons.person_rounded, 'Me'),
+    (Icons.local_florist_outlined, Icons.local_florist_rounded, 'Recorrido'),
+    (Icons.storefront_outlined, Icons.storefront_rounded, 'Tienda'),
+    (Icons.person_outline_rounded, Icons.person_rounded, 'Yo'),
   ];
 
   @override
@@ -155,7 +155,7 @@ class LdChatComposer extends StatelessWidget {
     required this.controller,
     required this.canSend,
     required this.onSend,
-    this.hintText = 'Chat with Sunny...',
+    this.hintText = 'Chatea con Sunny...',
     this.showMic = true,
     this.disclaimer,
   });

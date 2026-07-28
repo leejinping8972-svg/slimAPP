@@ -23,29 +23,29 @@ class PlanIntroPage extends ConsumerWidget {
           children: [
             const Center(child: LdSunnyAvatar(size: 72)),
             const SizedBox(height: LuckdateSpacing.xl),
-            Text('Your 28-Day Slim Journey', style: LuckdateTextStyles.h1),
+            Text('Tu viaje Slim de 28 días', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Solar Protein powers a gentle, structured plan — not perfection, but rhythm.',
+              'Solar Protein impulsa un plan suave y estructurado: no se trata de perfección, sino de ritmo.',
               style: LuckdateTextStyles.bodySmall,
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            _phaseRow('Days 1–7', 'Launch', 'Build your daily ritual habit'),
-            _phaseRow('Days 8–14', 'Adaptation', 'Track hydration and weight trends'),
-            _phaseRow('Days 15–21', 'Stability', 'Optimize meals and sleep'),
-            _phaseRow('Days 22–28', 'Completion', 'Celebrate progress and next steps'),
+            _phaseRow('Días 1–7', 'Inicio', 'Crea el hábito de tu ritual diario'),
+            _phaseRow('Días 8–14', 'Adaptación', 'Registra tu hidratación y tendencia de peso'),
+            _phaseRow('Días 15–21', 'Estabilidad', 'Optimiza tus comidas y tu sueño'),
+            _phaseRow('Días 22–28', 'Finalización', 'Celebra tu avance y tus próximos pasos'),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('What you will do daily', style: LuckdateTextStyles.title),
+                  Text('Lo que harás cada día', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
-                    '• Log Solar Protein\n'
-                    '• Track hydration and weight\n'
-                    '• Record sleep\n'
-                    '• Chat with Sunny anytime',
+                    '• Registra Solar Protein\n'
+                    '• Lleva el control de hidratación y peso\n'
+                    '• Registra tu sueño\n'
+                    '• Chatea con Sunny cuando quieras',
                     style: LuckdateTextStyles.bodySmall,
                   ),
                 ],
@@ -62,7 +62,7 @@ class PlanIntroPage extends ConsumerWidget {
               ),
             ] else
               LdPrimaryButton(
-                label: 'Go to Plan',
+                label: 'Ir al plan',
                 onPressed: () => context.go('/plan'),
               ),
           ],

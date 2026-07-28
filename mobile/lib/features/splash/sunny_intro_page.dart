@@ -10,11 +10,31 @@ class SunnyIntroPage extends ConsumerWidget {
   const SunnyIntroPage({super.key});
 
   static const _capabilities = [
-    (Icons.wb_sunny_outlined, 'Daily Ritual', 'Build habits that brighten every day'),
-    (Icons.bar_chart_rounded, 'Vitality Dashboard', 'Track your data and see your progress'),
-    (Icons.spa_outlined, 'Scientific Formula', 'Professional formulas, gentle companionship'),
-    (Icons.people_outline_rounded, 'Community Support', 'Support each other and grow together'),
-    (Icons.shopping_bag_outlined, 'Health Mall', 'Curated picks for a healthier lifestyle'),
+    (
+      Icons.wb_sunny_outlined,
+      'Ritual diario',
+      'Crea hábitos que iluminen cada día',
+    ),
+    (
+      Icons.bar_chart_rounded,
+      'Panel de vitalidad',
+      'Registra tus datos y observa tu progreso',
+    ),
+    (
+      Icons.spa_outlined,
+      'Fórmula científica',
+      'Fórmulas profesionales y acompañamiento amable',
+    ),
+    (
+      Icons.people_outline_rounded,
+      'Apoyo de la comunidad',
+      'Apóyense y crezcan juntos',
+    ),
+    (
+      Icons.shopping_bag_outlined,
+      'Tienda de bienestar',
+      'Selecciones para un estilo de vida más saludable',
+    ),
   ];
 
   void _continue(WidgetRef ref, BuildContext context) {
@@ -32,7 +52,7 @@ class SunnyIntroPage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
               child: Text(
-                'Meet Sunny',
+                'Conoce a Sunny',
                 textAlign: TextAlign.center,
                 style: LuckdateTextStyles.title,
               ),
@@ -50,13 +70,13 @@ class SunnyIntroPage extends ConsumerWidget {
                     const LdSunnyAvatar(size: 110),
                     const SizedBox(height: LuckdateSpacing.lg),
                     Text(
-                      'Hi, I\'m Sunny',
+                      'Hola, soy Sunny',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.h1,
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      'Your daily vitality ritual partner.',
+                      'Tu acompañante de rituales diarios de vitalidad.',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.body.copyWith(
                         fontWeight: FontWeight.w600,
@@ -67,7 +87,8 @@ class SunnyIntroPage extends ConsumerWidget {
                       child: Column(
                         children: [
                           for (var i = 0; i < _capabilities.length; i++) ...[
-                            if (i > 0) const SizedBox(height: LuckdateSpacing.base),
+                            if (i > 0)
+                              const SizedBox(height: LuckdateSpacing.base),
                             _CapabilityRow(
                               icon: _capabilities[i].$1,
                               title: _capabilities[i].$2,
@@ -89,7 +110,7 @@ class SunnyIntroPage extends ConsumerWidget {
                 LuckdateSpacing.lg,
               ),
               child: LdPrimaryButton(
-                label: 'Create my account',
+                label: 'Crear mi cuenta',
                 onPressed: () => _continue(ref, context),
               ),
             ),

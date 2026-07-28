@@ -16,7 +16,7 @@ class CollectionPage extends ConsumerStatefulWidget {
 }
 
 class _CollectionPageState extends ConsumerState<CollectionPage> {
-  String _filter = 'All';
+  String _filter = 'Todo';
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
       showBack: !widget.rootTab,
       body: productsAsync.when(
         data: (products) {
-          final filtered = _filter == 'All'
+          final filtered = _filter == 'Todo'
               ? products
               : products.where((p) => p.series == _filter).toList();
           return SingleChildScrollView(
@@ -51,17 +51,17 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Mall', style: LuckdateTextStyles.h1),
+                      Text('Tienda', style: LuckdateTextStyles.h1),
                       const SizedBox(height: LuckdateSpacing.xs),
                       Text(
-                        'The House of Vitality — curated for your next chapter.',
+                        'La casa de la vitalidad: seleccionada para tu próximo capítulo.',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                       const SizedBox(height: LuckdateSpacing.md),
                       TextField(
                         readOnly: true,
                         decoration: InputDecoration(
-                          hintText: 'Search products...',
+                          hintText: 'Buscar productos...',
                           prefixIcon: const Icon(
                             Icons.search,
                             color: LuckdateColors.textSecondary,
@@ -91,13 +91,13 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '\$${coupon.amount.toStringAsFixed(0)} coupon applied at checkout',
+                                'Cupón de \$${coupon.amount.toStringAsFixed(0)} aplicado al pagar',
                                 style: LuckdateTextStyles.body.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Text(
-                                'Storewide · valid for 30 days',
+                                'Toda la tienda · válido por 30 días',
                                 style: LuckdateTextStyles.caption,
                               ),
                             ],
@@ -114,21 +114,21 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Your Next Journey',
+                          'Tu próximo viaje',
                           style: LuckdateTextStyles.title,
                         ),
                         const SizedBox(height: LuckdateSpacing.sm),
                         Text(
-                          'Ready for more energy, feminine balance, or deeper sleep? Choose your direction.',
+                          '¿Lista para más energía, equilibrio femenino o un sueño más profundo? Elige tu camino.',
                           style: LuckdateTextStyles.bodySmall,
                         ),
                         const SizedBox(height: LuckdateSpacing.md),
                         Wrap(
                           spacing: 8,
                           children: [
-                            ('Reorder Solar', 'solar_protein'),
-                            ('Maintain', 'youth_solar'),
-                            ('Energy', 'active_boost'),
+                            ('Pedir Solar de nuevo', 'solar_protein'),
+                            ('Mantener', 'youth_solar'),
+                            ('Energía', 'active_boost'),
                           ].map((d) {
                             return LdChoiceChip(
                               label: d.$1,
@@ -149,14 +149,14 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   child: Row(
                     children:
                         [
-                          'All',
-                          'Slim Vitality',
-                          'Beauty Vitality',
-                          'Healthy Aging',
-                          "Women's Vitality",
-                          'Mind Vitality',
-                          'Energy Vitality',
-                          'Daily Vitality',
+                          'Todo',
+                          'Vitalidad Slim',
+                          'Vitalidad de belleza',
+                          'Envejecimiento saludable',
+                          'Vitalidad femenina',
+                          'Vitalidad mental',
+                          'Vitalidad energética',
+                          'Vitalidad diaria',
                         ].map((s) {
                           return Padding(
                             padding: const EdgeInsets.only(right: 8),
@@ -174,8 +174,8 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                 if (filtered.isEmpty)
                   const StatePlaceholder(
                     type: 'empty',
-                    title: 'No products found',
-                    message: 'Try another category to explore more options.',
+                    title: 'No se encontraron productos',
+                    message: 'Prueba otra categoría para explorar más opciones.',
                   )
                 else
                   GridView.builder(
@@ -209,13 +209,13 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
 
   Color? _seriesColor(String series) {
     return switch (series) {
-      'Slim Vitality' => LuckdateColors.slimVitality,
-      'Beauty Vitality' => LuckdateColors.beautyVitality,
-      'Healthy Aging' => LuckdateColors.healthyAging,
-      "Women's Vitality" => LuckdateColors.womensVitality,
-      'Mind Vitality' => LuckdateColors.mindVitality,
-      'Energy Vitality' => LuckdateColors.energyVitality,
-      'Daily Vitality' => LuckdateColors.dailyVitality,
+      'Vitalidad Slim' => LuckdateColors.slimVitality,
+      'Vitalidad de belleza' => LuckdateColors.beautyVitality,
+      'Envejecimiento saludable' => LuckdateColors.healthyAging,
+      'Vitalidad femenina' => LuckdateColors.womensVitality,
+      'Vitalidad mental' => LuckdateColors.mindVitality,
+      'Vitalidad energética' => LuckdateColors.energyVitality,
+      'Vitalidad diaria' => LuckdateColors.dailyVitality,
       _ => null,
     };
   }

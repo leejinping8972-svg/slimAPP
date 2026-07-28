@@ -13,16 +13,19 @@ class RegionPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return LdScaffold(
-      title: 'Region & Language',
+      title: 'Región e idioma',
       body: Padding(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Welcome to luckdate', style: LuckdateTextStyles.h1),
+            Text(
+              'Te damos la bienvenida a luckdate',
+              style: LuckdateTextStyles.h1,
+            ),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Choose your region and language. Spanish (Mexico) coming soon.',
+              'Elige tu región e idioma.',
               style: LuckdateTextStyles.bodySmall,
             ),
             const SizedBox(height: LuckdateSpacing.xl),
@@ -35,9 +38,12 @@ class RegionPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('English (US)', style: LuckdateTextStyles.title),
                         Text(
-                          'Default units: lb, ft/in, fl oz',
+                          'Español (México)',
+                          style: LuckdateTextStyles.title,
+                        ),
+                        Text(
+                          'Unidades predeterminadas: kg, cm, ml',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],
@@ -50,35 +56,9 @@ class RegionPage extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: LuckdateSpacing.md),
-            LdCard(
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.language,
-                    color: LuckdateColors.textSecondary.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(width: LuckdateSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Español (México)',
-                          style: LuckdateTextStyles.title.copyWith(
-                            color: LuckdateColors.textSecondary,
-                          ),
-                        ),
-                        Text('Coming soon', style: LuckdateTextStyles.caption),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
             const Spacer(),
             LdPrimaryButton(
-              label: 'Continue',
+              label: 'Continuar',
               onPressed: () {
                 ref
                     .read(appStateProvider.notifier)
@@ -86,7 +66,7 @@ class RegionPage extends ConsumerWidget {
                       ref
                           .read(appStateProvider)
                           .profile
-                          .copyWith(region: 'US', language: 'en-US'),
+                          .copyWith(region: 'MX', language: 'es-MX'),
                     );
                 context.go('/activation');
               },
@@ -117,7 +97,7 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
   @override
   Widget build(BuildContext context) {
     return LdScaffold(
-      title: 'Activate',
+      title: 'Activar',
       showBack: true,
       body: Padding(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -126,16 +106,18 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
           children: [
             const LdSunnyAvatar(size: 56),
             const SizedBox(height: LuckdateSpacing.base),
-            Text('Activate your Solar Protein', style: LuckdateTextStyles.h1),
+            Text('Activa tu Solar Protein', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Enter the code from your product package to unlock your 28-day Slim Journey.',
+              'Ingresa el código de tu producto para desbloquear tu recorrido Slim de 28 días.',
               style: LuckdateTextStyles.bodySmall,
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             TextField(
               controller: _codeController,
-              decoration: const InputDecoration(labelText: 'Activation code'),
+              decoration: const InputDecoration(
+                labelText: 'Código de activación',
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.base),
             LdCard(
@@ -155,7 +137,7 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
                           style: LuckdateTextStyles.title,
                         ),
                         Text(
-                          'Membership + Sunny companion',
+                          'Membresía + acompañamiento de Sunny',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],
@@ -166,7 +148,7 @@ class _ActivationPageState extends ConsumerState<ActivationPage> {
             ),
             const Spacer(),
             LdPrimaryButton(
-              label: 'Activate & Continue',
+              label: 'Activar y continuar',
               onPressed: () => context.go('/link-order'),
             ),
           ],
@@ -203,14 +185,14 @@ class AuthChannelToggle extends StatelessWidget {
         _AuthIconButton(
           icon: Icons.phone_iphone_rounded,
           selected: value == AuthChannel.phone,
-          semanticLabel: 'Phone',
+          semanticLabel: 'Teléfono',
           onTap: () => onChanged(AuthChannel.phone),
         ),
         const SizedBox(width: LuckdateSpacing.md),
         _AuthIconButton(
           icon: Icons.mail_outline_rounded,
           selected: value == AuthChannel.email,
-          semanticLabel: 'Email',
+          semanticLabel: 'Correo electrónico',
           onTap: () => onChanged(AuthChannel.email),
         ),
       ],
@@ -323,14 +305,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   bool _validateAccount() {
     if (_channel == AuthChannel.phone) {
-      final digits =
-          _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+      final digits = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
       if (digits.length < 8) {
-        setState(() => _error = 'Please enter a valid phone number.');
+        setState(() => _error = 'Ingresa un número de teléfono válido.');
         return false;
       }
     } else if (!AuthChannelToggle.looksLikeEmail(_emailController.text)) {
-      setState(() => _error = 'Please enter a valid email address.');
+      setState(
+        () => _error = 'Ingresa una dirección de correo electrónico válida.',
+      );
       return false;
     }
     return true;
@@ -343,7 +326,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       _error = null;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Demo code sent — enter any 4+ digits')),
+      const SnackBar(
+        content: Text(
+          'Código de demostración enviado: ingresa 4 o más dígitos',
+        ),
+      ),
     );
   }
 
@@ -352,17 +339,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     if (_mode == AuthLoginMode.password) {
       if (_passwordController.text.length < 6) {
-        setState(() => _error = 'Password needs at least 6 characters.');
+        setState(
+          () => _error = 'La contraseña debe tener al menos 6 caracteres.',
+        );
         return;
       }
     } else {
       if (!_codeSent) {
-        setState(() => _error = 'Tap Send code first.');
+        setState(() => _error = 'Primero toca Enviar código.');
         return;
       }
       final code = _codeController.text.trim();
       if (code.length < 4 || !RegExp(r'^\d+$').hasMatch(code)) {
-        setState(() => _error = 'Enter the verification code (4+ digits).');
+        setState(
+          () => _error = 'Ingresa el código de verificación (4 o más dígitos).',
+        );
         return;
       }
     }
@@ -413,33 +404,33 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const LdSunnyAvatar(size: 72),
                     const SizedBox(height: LuckdateSpacing.base),
                     Text(
-                      'Welcome back',
+                      'Qué bueno verte de nuevo',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.h1,
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      'Sign in with password or a verification code.',
+                      'Inicia sesión con contraseña o código de verificación.',
                       textAlign: TextAlign.center,
                       style: LuckdateTextStyles.bodySmall,
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
-                    AuthChannelToggle(
-                      value: _channel,
-                      onChanged: _setChannel,
-                    ),
+                    AuthChannelToggle(value: _channel, onChanged: _setChannel),
                     const SizedBox(height: LuckdateSpacing.lg),
                     LdCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            isPhone ? 'Phone number' : 'Email',
+                            isPhone
+                                ? 'Número de teléfono'
+                                : 'Correo electrónico',
                             style: LuckdateTextStyles.caption,
                           ),
                           TextField(
-                            controller:
-                                isPhone ? _phoneController : _emailController,
+                            controller: isPhone
+                                ? _phoneController
+                                : _emailController,
                             keyboardType: isPhone
                                 ? TextInputType.phone
                                 : TextInputType.emailAddress,
@@ -447,8 +438,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ? const [AutofillHints.telephoneNumber]
                                 : const [AutofillHints.email],
                             decoration: InputDecoration(
-                              hintText:
-                                  isPhone ? '+1 555 0100' : 'you@email.com',
+                              hintText: isPhone
+                                  ? '+1 555 0100'
+                                  : 'you@email.com',
                               border: InputBorder.none,
                             ),
                             onChanged: (_) => _clearError(),
@@ -459,8 +451,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               Expanded(
                                 child: Text(
                                   usePassword
-                                      ? 'Password'
-                                      : 'Verification code',
+                                      ? 'Contraseña'
+                                      : 'Código de verificación',
                                   style: LuckdateTextStyles.caption,
                                 ),
                               ),
@@ -468,11 +460,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 TextButton(
                                   onPressed: _sendCode,
                                   child: Text(
-                                    _codeSent ? 'Resend' : 'Send code',
-                                    style: LuckdateTextStyles.bodySmall.copyWith(
-                                      color: LuckdateColors.deepSage,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    _codeSent ? 'Reenviar' : 'Enviar código',
+                                    style: LuckdateTextStyles.bodySmall
+                                        .copyWith(
+                                          color: LuckdateColors.deepSage,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                   ),
                                 ),
                             ],
@@ -488,7 +481,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             maxLength: usePassword ? null : 6,
                             decoration: InputDecoration(
                               hintText: usePassword
-                                  ? 'At least 6 characters'
+                                  ? 'Al menos 6 caracteres'
                                   : '1234',
                               border: InputBorder.none,
                               counterText: '',
@@ -500,10 +493,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           Row(
                             children: [
                               GestureDetector(
-                                onTap: () =>
-                                    _setMode(AuthLoginMode.password),
+                                onTap: () => _setMode(AuthLoginMode.password),
                                 child: Text(
-                                  'Password',
+                                  'Contraseña',
                                   style: LuckdateTextStyles.bodySmall.copyWith(
                                     color: usePassword
                                         ? LuckdateColors.deepSage
@@ -523,7 +515,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               GestureDetector(
                                 onTap: () => _setMode(AuthLoginMode.code),
                                 child: Text(
-                                  'Verification code',
+                                  'Código de verificación',
                                   style: LuckdateTextStyles.bodySmall.copyWith(
                                     color: !usePassword
                                         ? LuckdateColors.deepSage
@@ -562,22 +554,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               child: Column(
                 children: [
-                  LdPrimaryButton(
-                    label: 'Sign in',
-                    onPressed: _submit,
-                  ),
+                  LdPrimaryButton(label: 'Iniciar sesión', onPressed: _submit),
                   const SizedBox(height: LuckdateSpacing.md),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Create account? ',
+                        '¿No tienes una cuenta? ',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                       GestureDetector(
                         onTap: () => context.go('/register'),
                         child: Text(
-                          'Sign up',
+                          'Regístrate',
                           style: LuckdateTextStyles.bodySmall.copyWith(
                             color: LuckdateColors.deepSage,
                             fontWeight: FontWeight.w600,
@@ -721,10 +710,14 @@ class AuthBrandLogo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const BrandAssetImage(kBrandLogoAsset, height: 26, knockoutBackground: false),
+        const BrandAssetImage(
+          kBrandLogoAsset,
+          height: 26,
+          knockoutBackground: false,
+        ),
         const SizedBox(height: 4),
         Text(
-          'The House of Vitality',
+          'La casa de la vitalidad',
           style: LuckdateTextStyles.caption.copyWith(
             color: LuckdateColors.textSecondary,
             letterSpacing: 0.5,
@@ -778,13 +771,13 @@ class AuthFormCard extends StatelessWidget {
             Text(title, style: LuckdateTextStyles.h2),
             const SizedBox(height: LuckdateSpacing.xl),
             AuthUnderlineField(
-              label: 'Email',
+              label: 'Correo electrónico',
               hint: 'you@email.com',
               controller: emailController,
             ),
             const SizedBox(height: LuckdateSpacing.lg),
             AuthUnderlineField(
-              label: 'Password',
+              label: 'Contraseña',
               hint: '••••••••',
               obscure: true,
               controller: passwordController,

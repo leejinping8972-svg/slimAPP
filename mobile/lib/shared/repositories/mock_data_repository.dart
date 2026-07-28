@@ -76,21 +76,21 @@ class MockDataRepository {
         return _buildJourney(
           day: 1,
           completionPercent: 4,
-          phase: 'Launch',
-          themeEn: 'Action',
-          encouragement: 'Start today — perfection is not the goal.',
+          phase: 'Inicio',
+          themeEn: 'Acción',
+          encouragement: 'Comienza hoy: la perfección no es la meta.',
           todayRecord: const TodayRecord(consistency7d: 0),
           consistency7d: 0,
           unlockedMilestones: [],
-          sunnyCard: 'Welcome to Day 1. One gentle step is enough.',
+          sunnyCard: 'Bienvenida al Día 1. Un paso suave es suficiente.',
         );
       case DemoDay.day12:
         return _buildJourney(
           day: 12,
           completionPercent: 43,
-          phase: 'Adaptation',
-          themeEn: 'Keep Going',
-          encouragement: 'You do not need to push hard — just continue.',
+          phase: 'Adaptación',
+          themeEn: 'Sigue adelante',
+          encouragement: 'No tienes que exigirte de más: solo continúa.',
           todayRecord: TodayRecord(
             productTaken: ProductTakenStatus.taken,
             hydrationMl: 1500,
@@ -110,8 +110,8 @@ class MockDataRepository {
             exerciseSessions: 1,
             meals: const [
               MealLogEntry(
-                meal: 'Breakfast',
-                name: 'Blueberry Chia Yogurt Bowl',
+                meal: 'Desayuno',
+                name: 'Tazón de yogur con chía y arándanos',
                 time: '08:30',
                 kcal: 320,
                 protein: 18,
@@ -120,8 +120,8 @@ class MockDataRepository {
                 source: 'chat',
               ),
               MealLogEntry(
-                meal: 'Lunch',
-                name: 'Quinoa Chicken Breast Salad',
+                meal: 'Comida',
+                name: 'Ensalada de quinoa con pechuga de pollo',
                 time: '12:30',
                 kcal: 520,
                 protein: 42,
@@ -130,8 +130,8 @@ class MockDataRepository {
                 source: 'chat',
               ),
               MealLogEntry(
-                meal: 'Dinner',
-                name: 'Pan-fried Salmon with Vegetables',
+                meal: 'Cena',
+                name: 'Salmón a la plancha con verduras',
                 time: '18:30',
                 kcal: 440,
                 protein: 36,
@@ -144,15 +144,15 @@ class MockDataRepository {
           consistency7d: 0.71,
           unlockedMilestones: [7],
           sunnyCard:
-              'Day 12 is open. A small glass of water can help your rhythm.',
+              'El Día 12 está abierto. Un vaso pequeño de agua puede ayudarte a mantener tu ritmo.',
         );
       case DemoDay.day28:
         return _buildJourney(
           day: 28,
           completionPercent: 100,
-          phase: 'Completion',
-          themeEn: 'Graduation',
-          encouragement: 'You grew toward the light for 28 days.',
+          phase: 'Finalización',
+          themeEn: 'Graduación',
+          encouragement: 'Creciste hacia la luz durante 28 días.',
           todayRecord: TodayRecord(
             productTaken: ProductTakenStatus.taken,
             hydrationMl: 2000,
@@ -172,8 +172,8 @@ class MockDataRepository {
             exerciseSessions: 2,
             meals: const [
               MealLogEntry(
-                meal: 'Breakfast',
-                name: 'Solar Protein Shake',
+                meal: 'Desayuno',
+                name: 'Batido Solar Protein',
                 time: '08:00',
                 kcal: 280,
                 protein: 28,
@@ -182,8 +182,8 @@ class MockDataRepository {
                 source: 'chat',
               ),
               MealLogEntry(
-                meal: 'Lunch',
-                name: 'Grain bowl with greens',
+                meal: 'Comida',
+                name: 'Tazón de granos con verduras',
                 time: '12:40',
                 kcal: 480,
                 protein: 30,
@@ -192,8 +192,8 @@ class MockDataRepository {
                 source: 'chat',
               ),
               MealLogEntry(
-                meal: 'Dinner',
-                name: 'Light vegetable dinner',
+                meal: 'Cena',
+                name: 'Cena ligera de verduras',
                 time: '18:20',
                 kcal: 380,
                 protein: 24,
@@ -205,7 +205,7 @@ class MockDataRepository {
           ),
           consistency7d: 0.87,
           unlockedMilestones: [7, 14, 21, 28],
-          sunnyCard: 'Day 28 — you made it. Ready for your next journey?',
+          sunnyCard: 'Día 28: lo lograste. ¿Lista para tu próximo viaje?',
         );
     }
   }
@@ -249,48 +249,48 @@ class MockDataRepository {
         id: 'demo_user_1',
         isUser: true,
         text:
-            'I\'ve been staying up late lately and can\'t wake up in the morning. My energy is low. How should I adjust?',
+            'Últimamente me desvelo y no puedo despertar por la mañana. Tengo poca energía. ¿Cómo debería ajustarme?',
         timestamp: t1,
       ),
       ChatMessage(
         id: 'demo_sunny_1',
         isUser: false,
         text:
-            'Staying up late disrupts your circadian rhythm, affecting hormones, mood, and metabolism. We can start with three areas: Sleep Rhythm + Energy Management + Gentle Habits — to gradually regain your pace and vitality ✨',
+            'Desvelarte altera tu ritmo circadiano y afecta tus hormonas, estado de ánimo y metabolismo. Podemos comenzar con tres áreas: ritmo de sueño + manejo de energía + hábitos suaves, para recuperar poco a poco tu ritmo y vitalidad ✨',
         timestamp: t1,
         suggestions: const [
           ChatSuggestionItem(
             emoji: '🌙',
-            title: 'Establish a Regular Routine',
+            title: 'Establece una rutina regular',
             subtitle:
-                'Aim to sleep by 11:00 PM and wake up at a fixed time every morning.',
+                'Intenta dormir antes de las 11:00 p. m. y despertar a la misma hora cada mañana.',
           ),
           ChatSuggestionItem(
             emoji: '☀️',
-            title: 'Morning Wake-up Ritual',
+            title: 'Ritual matutino para despertar',
             subtitle:
-                '10 minutes of sunlight + warm water + light stretching to energize your body.',
+                '10 minutos de luz solar + agua tibia + estiramientos suaves para activar tu cuerpo.',
           ),
           ChatSuggestionItem(
             emoji: '🤎',
-            title: 'Evening Relaxation Routine',
+            title: 'Rutina nocturna de relajación',
             subtitle:
-                'Foot soak / Yoga / Meditation for 10 minutes to help you unwind.',
+                'Baño de pies / yoga / meditación durante 10 minutos para relajarte.',
           ),
         ],
-        actionLabels: const ['View Detailed Plan', 'Set Sleep Goal'],
+        actionLabels: const ['Ver plan detallado', 'Definir meta de sueño'],
       ),
       ChatMessage(
         id: 'demo_user_2',
         isUser: true,
-        text: 'OK, I\'ll start trying tonight!',
+        text: '¡Está bien, empezaré a intentarlo esta noche!',
         timestamp: t2,
       ),
       ChatMessage(
         id: 'demo_sunny_2',
         isUser: false,
         text:
-            'Great job, Freya! Every small start leads to significant changes 🌿 I\'ll be here with you, witnessing your growth and transformation!',
+            '¡Excelente, Freya! Cada pequeño comienzo lleva a grandes cambios 🌿 Estaré aquí contigo para acompañar tu crecimiento y transformación.',
         timestamp: t2,
       ),
     ];

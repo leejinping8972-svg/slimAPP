@@ -55,7 +55,7 @@ class ProfilePage extends ConsumerWidget {
                                 BorderRadius.circular(LuckdateRadius.pill),
                           ),
                           child: Text(
-                            'Vitality Member',
+                            'Miembro Vitalidad',
                             style: LuckdateTextStyles.caption.copyWith(
                               color: LuckdateColors.deepSage,
                               fontWeight: FontWeight.w600,
@@ -89,10 +89,10 @@ class ProfilePage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Vitality Score', style: LuckdateTextStyles.title),
+                        Text('Puntuación de vitalidad', style: LuckdateTextStyles.title),
                         const SizedBox(height: 4),
                         Text(
-                          'Ritual ${journey.vitalityScores.ritualCompletion}% · Consistency ${journey.vitalityScores.consistencyScore}%',
+                          'Rituales ${journey.vitalityScores.ritualCompletion}% · Constancia ${journey.vitalityScores.consistencyScore}%',
                           style: LuckdateTextStyles.bodySmall,
                         ),
                         const SizedBox(height: LuckdateSpacing.sm),
@@ -107,7 +107,7 @@ class ProfilePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('Quick Menu'),
+            _sectionTitle('Menú rápido'),
             LdCard(
               padding: const EdgeInsets.symmetric(
                 vertical: LuckdateSpacing.xs,
@@ -119,17 +119,17 @@ class ProfilePage extends ConsumerWidget {
                     children: [
                       _quickMenuItem(
                         Icons.restaurant_menu_outlined,
-                        'Check-in',
+                        'Registro',
                         () => context.push('/record'),
                       ),
                       _quickMenuItem(
                         Icons.shopping_bag_outlined,
-                        'Orders',
+                        'Pedidos',
                         () => context.push('/link-order'),
                       ),
                       _quickMenuItem(
                         Icons.local_offer_outlined,
-                        'Coupons',
+                        'Cupones',
                         () => _showCouponsSheet(context, profile),
                       ),
                     ],
@@ -143,12 +143,12 @@ class ProfilePage extends ConsumerWidget {
                     children: [
                       _quickMenuItem(
                         Icons.notifications_outlined,
-                        'Reminders',
+                        'Recordatorios',
                         () => context.push('/profile/reminders'),
                       ),
                       _quickMenuItem(
                         Icons.storefront_outlined,
-                        'Mall',
+                        'Tienda',
                         () => context.go('/mall'),
                       ),
                       _quickMenuItem(
@@ -162,7 +162,7 @@ class ProfilePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            _sectionTitle('Membership'),
+            _sectionTitle('Membresía'),
             _tile(
               Icons.card_membership,
               profile.membershipPlan,
@@ -170,7 +170,7 @@ class ProfilePage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.lg),
             if (profile.isAwaitingReceipt) ...[
-              _sectionTitle('Pending Delivery'),
+              _sectionTitle('Entrega pendiente'),
               LdCard(
                 accentColor: LuckdateColors.sunGold,
                 child: Column(
@@ -184,17 +184,17 @@ class ProfilePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: LuckdateSpacing.sm),
                     Text(
-                      'Confirm receipt to start your 28-day Slim Journey.',
+                      'Confirma la recepción para iniciar tu recorrido Slim de 28 días.',
                       style: LuckdateTextStyles.bodySmall,
                     ),
                     const SizedBox(height: LuckdateSpacing.md),
                     LdPrimaryButton(
-                      label: 'Confirm Receipt',
+                      label: 'Confirmar recepción',
                       onPressed: () {
                         ref.read(appStateProvider.notifier).confirmReceipt();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Plan started — welcome to Day 1!'),
+                            content: Text('¡El plan comenzó: bienvenida al día 1!'),
                           ),
                         );
                         context.go('/plan');
@@ -206,33 +206,33 @@ class ProfilePage extends ConsumerWidget {
               const SizedBox(height: LuckdateSpacing.lg),
             ],
             if (profile.userPlanType == UserPlanType.mealReplacement) ...[
-              _sectionTitle('My Journey'),
+              _sectionTitle('Mi recorrido'),
               _tile(
                 Icons.explore_outlined,
-                'Slim Journey 28 Days',
-                'Phase: ${journey.phase} · Day ${journey.day}',
+                'Recorrido Slim de 28 días',
+                'Fase: ${journey.phase} · Día ${journey.day}',
               ),
               const SizedBox(height: LuckdateSpacing.lg),
             ],
-            _sectionTitle('Settings'),
+            _sectionTitle('Ajustes'),
             _settingsTile(
               context,
               Icons.straighten,
-              'Units',
+              'Unidades',
               '${profile.weightUnit} / ${profile.heightUnit}',
               showChevron: false,
             ),
             _settingsTile(
               context,
               Icons.language,
-              'Language',
-              'English (US)',
+              'Idioma',
+              'Español (México)',
               showChevron: false,
             ),
             _settingsTile(
               context,
               Icons.notifications_outlined,
-              'Reminders',
+              'Recordatorios',
               profile.userPlanType == UserPlanType.mealReplacement
                   ? '${profile.reminderTime} / ${profile.reminderTime2}'
                   : profile.reminderTime,
@@ -241,36 +241,36 @@ class ProfilePage extends ConsumerWidget {
             _settingsTile(
               context,
               Icons.privacy_tip_outlined,
-              'Privacy & Health Disclaimer',
-              'View',
+              'Privacidad y aviso de salud',
+              'Ver',
             ),
             const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('Orders & Achievements'),
+            _sectionTitle('Pedidos y logros'),
             _settingsTile(
               context,
               Icons.shopping_bag_outlined,
-              'Orders',
+              'Pedidos',
               profile.linkedOrderNo.isEmpty
-                  ? 'No linked order'
+                  ? 'Sin pedido vinculado'
                   : profile.linkedOrderNo,
               onTap: () => context.push('/link-order'),
             ),
             _settingsTile(
               context,
               Icons.emoji_events_outlined,
-              'Achievements',
-              '${journey.unlockedMilestones.length} badges',
+              'Logros',
+              '${journey.unlockedMilestones.length} insignias',
             ),
             if (profile.welcomeCoupon != null)
               _settingsTile(
                 context,
                 Icons.local_offer_outlined,
-                'Coupons',
-                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${profile.welcomeCoupon!.status} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} days left',
+                'Cupones',
+                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${profile.welcomeCoupon!.status} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} días restantes',
                 onTap: () => _showCouponsSheet(context, profile),
               ),
             const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('Mall'),
+            _sectionTitle('Tienda'),
             LdCard(
               onTap: () => context.go('/mall'),
               child: Row(
@@ -285,13 +285,13 @@ class ProfilePage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Additional Nutrition',
+                          'Nutrición adicional',
                           style: LuckdateTextStyles.body.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          'Enter Mall to view all nutrition plans.',
+                          'Entra a la tienda para ver todos los planes de nutrición.',
                           style: LuckdateTextStyles.caption,
                         ),
                       ],
@@ -313,7 +313,7 @@ class ProfilePage extends ConsumerWidget {
                 onPressed: () => _confirmSignOut(context, ref),
                 icon: const Icon(Icons.logout_rounded, size: 20),
                 label: Text(
-                  'Sign out',
+                  'Cerrar sesión',
                   style: LuckdateTextStyles.body.copyWith(
                     fontWeight: FontWeight.w600,
                     color: LuckdateColors.errorSoft,
@@ -334,24 +334,24 @@ class ProfilePage extends ConsumerWidget {
             ),
             if (kDebugMode) ...[
               const SizedBox(height: LuckdateSpacing.xl),
-              _sectionTitle('Demo Controls'),
+              _sectionTitle('Controles de demostración'),
               Text(
-                'Switch journey day for presentations',
+                'Cambia el día del recorrido para presentaciones',
                 style: LuckdateTextStyles.bodySmall,
               ),
               const SizedBox(height: LuckdateSpacing.md),
               Row(
                 children: [
                   Expanded(
-                    child: _dayBtn(ref, DemoDay.day1, 'Day 1', state.demoDay),
+                    child: _dayBtn(ref, DemoDay.day1, 'Día 1', state.demoDay),
                   ),
                   const SizedBox(width: LuckdateSpacing.sm),
                   Expanded(
-                    child: _dayBtn(ref, DemoDay.day12, 'Day 12', state.demoDay),
+                    child: _dayBtn(ref, DemoDay.day12, 'Día 12', state.demoDay),
                   ),
                   const SizedBox(width: LuckdateSpacing.sm),
                   Expanded(
-                    child: _dayBtn(ref, DemoDay.day28, 'Day 28', state.demoDay),
+                    child: _dayBtn(ref, DemoDay.day28, 'Día 28', state.demoDay),
                   ),
                 ],
               ),
@@ -360,7 +360,7 @@ class ProfilePage extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: LdSecondaryButton(
-                      label: 'Show Loading',
+                      label: 'Mostrar carga',
                       onPressed: () => ref
                           .read(appStateProvider.notifier)
                           .toggleLoadingDemo(true),
@@ -369,7 +369,7 @@ class ProfilePage extends ConsumerWidget {
                   const SizedBox(width: LuckdateSpacing.sm),
                   Expanded(
                     child: LdSecondaryButton(
-                      label: 'Show Error',
+                      label: 'Mostrar error',
                       onPressed: () => ref
                           .read(appStateProvider.notifier)
                           .toggleErrorDemo(true),
@@ -379,7 +379,7 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdSecondaryButton(
-                label: 'Restart Onboarding',
+                label: 'Reiniciar bienvenida',
                 onPressed: () {
                   ref
                       .read(appStateProvider.notifier)
@@ -408,7 +408,7 @@ class ProfilePage extends ConsumerWidget {
                   LuckdateSpacing.md,
                 ),
                 child: Center(
-                  child: Text('Me', style: LuckdateTextStyles.title),
+                  child: Text('Yo', style: LuckdateTextStyles.title),
                 ),
               ),
               Expanded(child: page),
@@ -419,7 +419,7 @@ class ProfilePage extends ConsumerWidget {
     }
 
     return LdScaffold(
-      title: 'Me',
+      title: 'Yo',
       showBack: true,
       body: page,
     );
@@ -497,18 +497,18 @@ class ProfilePage extends ConsumerWidget {
         onTap:
             onTap ??
             () {
-              if (title.contains('Disclaimer')) {
+              if (title.contains('aviso')) {
                 showDialog<void>(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: const Text('Health Disclaimer'),
+                    title: const Text('Aviso de salud'),
                     content: const Text(
-                      'luckdate provides lifestyle and product-use companionship. It does not provide medical diagnosis or treatment. Consult a professional if you have health conditions, are pregnant, or take medication.',
+                      'luckdate brinda acompañamiento para el estilo de vida y el uso de productos. No proporciona diagnósticos ni tratamientos médicos. Consulta a un profesional si tienes alguna condición de salud, estás embarazada o tomas medicamentos.',
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx),
-                        child: const Text('OK'),
+                        child: const Text('Aceptar'),
                       ),
                     ],
                   ),
@@ -546,12 +546,12 @@ class ProfilePage extends ConsumerWidget {
       final name = profile.linkedProductName.isEmpty
           ? 'Solar Protein™'
           : profile.linkedProductName;
-      return 'Waiting for $name delivery';
+      return 'Esperando la entrega de $name';
     }
     return switch (profile.userPlanType) {
-      UserPlanType.mealReplacement => 'Day ${journey.day} · Slim Journey',
-      UserPlanType.nonMealReplacement => 'Product reminder plan',
-      UserPlanType.noProduct => 'Basic tracking mode',
+      UserPlanType.mealReplacement => 'Día ${journey.day} · Recorrido Slim',
+      UserPlanType.nonMealReplacement => 'Plan de recordatorios del producto',
+      UserPlanType.noProduct => 'Modo de seguimiento básico',
     };
   }
 
@@ -581,24 +581,24 @@ class ProfilePage extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('My Coupons', style: LuckdateTextStyles.h2),
+              Text('Mis cupones', style: LuckdateTextStyles.h2),
               const SizedBox(height: LuckdateSpacing.md),
               LdCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '\$${coupon.amount.toStringAsFixed(0)} welcome coupon',
+                      'Cupón de bienvenida de \$${coupon.amount.toStringAsFixed(0)}',
                       style: LuckdateTextStyles.title,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Status: ${coupon.status} · ${_couponDaysLeft(coupon.expiresAt)} days left',
+                      'Estado: ${coupon.status} · ${_couponDaysLeft(coupon.expiresAt)} días restantes',
                       style: LuckdateTextStyles.bodySmall,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Auto-applied at checkout when eligible. You can cancel before paying.',
+                      'Se aplica automáticamente al pagar si cumples los requisitos. Puedes cancelar antes de pagar.',
                       style: LuckdateTextStyles.caption,
                     ),
                   ],
@@ -606,7 +606,7 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: LuckdateSpacing.md),
               LdPrimaryButton(
-                label: 'Shop in Mall',
+                label: 'Comprar en la tienda',
                 onPressed: () {
                   Navigator.pop(ctx);
                   context.go('/mall');
@@ -623,12 +623,12 @@ class ProfilePage extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Sign out?'),
-        content: const Text('You can sign back in anytime.'),
+        title: const Text('¿Cerrar sesión?'),
+        content: const Text('Puedes volver a iniciar sesión cuando quieras.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
@@ -637,7 +637,7 @@ class ProfilePage extends ConsumerWidget {
               context.go('/login');
             },
             child: Text(
-              'Sign out',
+              'Cerrar sesión',
               style: LuckdateTextStyles.body.copyWith(
                 color: LuckdateColors.errorSoft,
                 fontWeight: FontWeight.w600,

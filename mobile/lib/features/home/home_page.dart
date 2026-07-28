@@ -21,11 +21,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool _canSend = false;
 
   static const _quickAsks = [
-    ('☀️', 'Daily Journey'),
-    ('💧', 'I drank a glass of water'),
-    ('🏃', 'I did 45 minutes of yoga'),
-    ('🥗', 'I ate a chicken salad for lunch'),
-    ('😴', 'I slept 7 hours last night'),
+    ('☀️', 'Recorrido diario'),
+    ('💧', 'Tomé un vaso de agua'),
+    ('🏃', 'Hice 45 minutos de yoga'),
+    ('🥗', 'Comí una ensalada de pollo en el almuerzo'),
+    ('😴', 'Dormí 7 horas anoche'),
   ];
 
   @override
@@ -51,9 +51,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: const Text('Journey Complete'),
+        title: const Text('Recorrido completado'),
         content: const Text(
-          'You grew toward the light for 28 days. View your completion report and explore your next journey.',
+          'Avanzaste hacia la luz durante 28 días. Consulta tu reporte final y explora tu próximo recorrido.',
         ),
         actions: [
           TextButton(
@@ -61,7 +61,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ref.read(appStateProvider.notifier).markJourneyCompleteSeen();
               Navigator.pop(ctx);
             },
-            child: const Text('Not now'),
+            child: const Text('Ahora no'),
           ),
           TextButton(
             onPressed: () {
@@ -69,7 +69,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               Navigator.pop(ctx);
               context.push('/journey/report');
             },
-            child: const Text('View report'),
+            child: const Text('Ver reporte'),
           ),
         ],
       ),
@@ -106,32 +106,32 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onActionTap(String label) {
-    if (label == 'Get Plan' || label == 'Get it now') {
+    if (label == 'Obtener plan' || label == 'Obtenerlo ahora') {
       ref.read(appStateProvider.notifier).sendChatMessage(label);
       return;
     }
-    if (label == 'Product help only' ||
-        label == 'Just browsing' ||
-        label == 'Not now') {
+    if (label == 'Solo ayuda con productos' ||
+        label == 'Solo estoy explorando' ||
+        label == 'Ahora no') {
       ref.read(appStateProvider.notifier).sendChatMessage(label);
       return;
     }
-    if (label == 'View Detailed Plan' || label == 'View My Plan') {
+    if (label == 'Ver plan detallado' || label == 'Ver mi plan') {
       context.push('/plan');
-    } else if (label == 'Browse Mall') {
+    } else if (label == 'Explorar tienda') {
       context.go('/mall');
-    } else if (label == 'Set Sleep Goal' ||
-        label == 'Enter Day 1' ||
-        label == 'Start Day 1 Ritual' ||
-        label == 'Start Day 1 Check-in' ||
-        label == 'Go to Ritual' ||
-        label == 'Go to Journey') {
+    } else if (label == 'Establecer meta de sueño' ||
+        label == 'Entrar al día 1' ||
+        label == 'Iniciar ritual del día 1' ||
+        label == 'Iniciar registro del día 1' ||
+        label == 'Ir al ritual' ||
+        label == 'Ir al recorrido') {
       context.go('/ritual');
-    } else if (label == 'Log Water') {
+    } else if (label == 'Registrar agua') {
       ref.read(appStateProvider.notifier).sendQuickAction('water');
-    } else if (label == 'Log Meal') {
+    } else if (label == 'Registrar comida') {
       ref.read(appStateProvider.notifier).sendQuickAction('meal');
-    } else if (label == 'Log Sleep') {
+    } else if (label == 'Registrar sueño') {
       ref.read(appStateProvider.notifier).sendQuickAction('sleep');
     }
   }
@@ -207,7 +207,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             : profile.onboardingStep,
                       ),
                 onTap: (text) {
-                  if (text == 'Daily Journey' || text == 'Daily Ritual') {
+                  if (text == 'Recorrido diario' || text == 'Ritual diario') {
                     context.go('/ritual');
                     return;
                   }
@@ -218,9 +218,9 @@ class _HomePageState extends ConsumerState<HomePage> {
               controller: _controller,
               canSend: _canSend,
               onSend: _send,
-              hintText: 'Chat with Sunny...',
+              hintText: 'Chatea con Sunny...',
               disclaimer:
-                  'Sunny may make mistakes. Please use for reference based on your own situation.',
+                  'Sunny puede equivocarse. Úsalo solo como referencia según tu situación.',
             ),
           ],
         ),
@@ -268,13 +268,13 @@ class _HomeHeader extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Sunny AI Chat',
+                  'Chat con Sunny AI',
                   style: LuckdateTextStyles.title.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  'Your Vitality Companion',
+                  'Tu compañera de vitalidad',
                   style: LuckdateTextStyles.caption,
                 ),
               ],
@@ -338,7 +338,7 @@ class _SunnyIntroCard extends StatelessWidget {
                         border: Border.all(color: LuckdateColors.lineSoft),
                       ),
                       child: Text(
-                        'AI Companion',
+                        'Compañera de IA',
                         style: LuckdateTextStyles.caption.copyWith(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -349,7 +349,7 @@ class _SunnyIntroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Hi $nickname, I\'m Sunny. What would you like to chat about today?',
+                  'Hola, $nickname. Soy Sunny. ¿Sobre qué te gustaría platicar hoy?',
                   style: LuckdateTextStyles.bodySmall,
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
@@ -372,7 +372,7 @@ class _SunnyIntroCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Learn about Sunny >',
+                      'Conoce a Sunny >',
                       style: LuckdateTextStyles.caption.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
@@ -407,7 +407,7 @@ class _QuickAskRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('You might want to ask', style: LuckdateTextStyles.caption),
+          Text('Quizá quieras preguntar', style: LuckdateTextStyles.caption),
           const SizedBox(height: LuckdateSpacing.sm),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
