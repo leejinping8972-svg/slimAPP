@@ -65,11 +65,11 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
           int.parse(product.colorHex.replaceFirst('#', '0xFF')),
         );
         final isSolarProtein = product.id == 'solar_protein';
-        final showPurchaseFlow = profile.userPlanType == UserPlanType.noProduct &&
+        final showPurchaseFlow =
+            profile.userPlanType == UserPlanType.noProduct &&
             !profile.isAwaitingReceipt &&
             isSolarProtein;
-        final showReceiptFlow =
-            profile.isAwaitingReceipt && isSolarProtein;
+        final showReceiptFlow = profile.isAwaitingReceipt && isSolarProtein;
 
         return Scaffold(
           backgroundColor: LuckdateColors.cloudIvory,
@@ -144,8 +144,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                               _SpecSelector(
                                 specs: _specs,
                                 selected: _specIndex,
-                                onSelect: (i) =>
-                                    setState(() => _specIndex = i),
+                                onSelect: (i) => setState(() => _specIndex = i),
                               ),
                               const SizedBox(height: LuckdateSpacing.lg),
                               const _ServiceBar(items: _services),
@@ -218,7 +217,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     }
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Flujo de pedido: marcador de posición de demostración'),
+                        content: Text(
+                          'Flujo de pedido: marcador de posición de demostración',
+                        ),
                       ),
                     );
                   },
@@ -234,7 +235,8 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   Future<void> _handlePurchase() async {
     final profile = ref.read(appStateProvider).profile;
     final coupon = profile.welcomeCoupon;
-    final eligible = coupon != null && coupon.isUnused && _price >= coupon.amount;
+    final eligible =
+        coupon != null && coupon.isUnused && _price >= coupon.amount;
     var applyCoupon = eligible;
 
     if (eligible) {
@@ -355,10 +357,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 }
 
 class _DetailHeader extends StatelessWidget {
-  const _DetailHeader({
-    required this.cartCount,
-    required this.onBack,
-  });
+  const _DetailHeader({required this.cartCount, required this.onBack});
 
   final int cartCount;
   final VoidCallback onBack;
@@ -663,10 +662,7 @@ class _DetailVisual extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(LuckdateRadius.lg),
         gradient: LinearGradient(
-          colors: [
-            color.withValues(alpha: 0.25),
-            LuckdateColors.sageSoft,
-          ],
+          colors: [color.withValues(alpha: 0.25), LuckdateColors.sageSoft],
         ),
       ),
       child: Row(

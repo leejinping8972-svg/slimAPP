@@ -252,9 +252,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(
-            child: LdSunnyAvatar(size: 160),
-          ),
+          const Center(child: LdSunnyAvatar(size: 160)),
           const SizedBox(height: LuckdateSpacing.xl),
           Text('Hola, soy Sunny', style: LuckdateTextStyles.h1),
           const SizedBox(height: LuckdateSpacing.md),
@@ -553,7 +551,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               if (linkedProduct.isNotEmpty)
                 _summaryRow('Producto', linkedProduct),
               if (planType != UserPlanType.noProduct)
-                _summaryRow('Comida', _mealSlots.map(_mealSlotLabel).join(', ')),
+                _summaryRow(
+                  'Comida',
+                  _mealSlots.map(_mealSlotLabel).join(', '),
+                ),
               if (_showTargetWeight)
                 _summaryRow(
                   'Peso objetivo',

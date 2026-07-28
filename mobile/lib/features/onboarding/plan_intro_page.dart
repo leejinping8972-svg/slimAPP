@@ -30,16 +30,35 @@ class PlanIntroPage extends ConsumerWidget {
               style: LuckdateTextStyles.bodySmall,
             ),
             const SizedBox(height: LuckdateSpacing.xl),
-            _phaseRow('Días 1–7', 'Inicio', 'Crea el hábito de tu ritual diario'),
-            _phaseRow('Días 8–14', 'Adaptación', 'Registra tu hidratación y tendencia de peso'),
-            _phaseRow('Días 15–21', 'Estabilidad', 'Optimiza tus comidas y tu sueño'),
-            _phaseRow('Días 22–28', 'Finalización', 'Celebra tu avance y tus próximos pasos'),
+            _phaseRow(
+              'Días 1–7',
+              'Inicio',
+              'Crea el hábito de tu ritual diario',
+            ),
+            _phaseRow(
+              'Días 8–14',
+              'Adaptación',
+              'Registra tu hidratación y tendencia de peso',
+            ),
+            _phaseRow(
+              'Días 15–21',
+              'Estabilidad',
+              'Optimiza tus comidas y tu sueño',
+            ),
+            _phaseRow(
+              'Días 22–28',
+              'Finalización',
+              'Celebra tu avance y tus próximos pasos',
+            ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Lo que harás cada día', style: LuckdateTextStyles.title),
+                  Text(
+                    'Lo que harás cada día',
+                    style: LuckdateTextStyles.title,
+                  ),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(
                     '• Registra Solar Protein\n'

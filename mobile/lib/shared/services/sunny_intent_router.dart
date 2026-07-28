@@ -11,7 +11,14 @@ class SunnyIntentRouter {
   }) {
     final lower = input.toLowerCase();
 
-    if (_matches(lower, ['embarazada', 'embarazo', 'lactancia', 'pregnant', 'pregnancy', 'breastfeeding'])) {
+    if (_matches(lower, [
+      'embarazada',
+      'embarazo',
+      'lactancia',
+      'pregnant',
+      'pregnancy',
+      'breastfeeding',
+    ])) {
       return const SunnyIntentResult(
         reply:
             'Gracias por compartirlo. Un viaje Slim estándar no está diseñado para el embarazo ni la lactancia. Habla con un profesional de la salud antes de hacer cambios en tu alimentación.',
@@ -21,7 +28,14 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['quiero morir', 'hacerme daño', 'suicidarme', 'kill myself', 'want to die', 'hurt myself'])) {
+    if (_matches(lower, [
+      'quiero morir',
+      'hacerme daño',
+      'suicidarme',
+      'kill myself',
+      'want to die',
+      'hurt myself',
+    ])) {
       return const SunnyIntentResult(
         reply:
             'Escucho el dolor que estás cargando en este momento. Mereces apoyo real más allá de esta app. Comunícate de inmediato con una persona de confianza o una línea local de ayuda en crisis.',
@@ -31,7 +45,14 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['cena con amigos', 'fiesta', 'ajustar el plan', 'dinner party', 'party', 'adjust plan'])) {
+    if (_matches(lower, [
+      'cena con amigos',
+      'fiesta',
+      'ajustar el plan',
+      'dinner party',
+      'party',
+      'adjust plan',
+    ])) {
       return SunnyIntentResult(
         reply:
             'Una cena social no deshace tu viaje. Disfrútala con calma, mantente bien hidratada y mañana seguiremos con ligereza y constancia.',
@@ -69,8 +90,26 @@ class SunnyIntentRouter {
     }
 
     if (_matches(lower, [
-      'comí', 'desayuno', 'comida', 'almuerzo', 'cena', 'colación', 'ensalada', 'yogur', 'salmón', 'avena',
-      'ate', 'eaten', 'breakfast', 'lunch', 'dinner', 'snack', 'salad', 'yogurt', 'salmon', 'oatmeal',
+      'comí',
+      'desayuno',
+      'comida',
+      'almuerzo',
+      'cena',
+      'colación',
+      'ensalada',
+      'yogur',
+      'salmón',
+      'avena',
+      'ate',
+      'eaten',
+      'breakfast',
+      'lunch',
+      'dinner',
+      'snack',
+      'salad',
+      'yogurt',
+      'salmon',
+      'oatmeal',
     ])) {
       final updated = CheckInEstimator.applyMealFromText(today, lower);
       final meal = updated.meals.last;
@@ -82,7 +121,14 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['dormí', 'sueño', 'horas de sueño', 'slept', 'sleep', 'hours of sleep'])) {
+    if (_matches(lower, [
+      'dormí',
+      'sueño',
+      'horas de sueño',
+      'slept',
+      'sleep',
+      'hours of sleep',
+    ])) {
       final updated = CheckInEstimator.applySleepFromText(today, lower);
       return SunnyIntentResult(
         reply:
@@ -92,7 +138,15 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['hambre', 'no he tomado suficiente agua', 'poca agua', 'hungry', 'haven\'t had enough water', 'not enough water', 'a bit hungry'])) {
+    if (_matches(lower, [
+      'hambre',
+      'no he tomado suficiente agua',
+      'poca agua',
+      'hungry',
+      'haven\'t had enough water',
+      'not enough water',
+      'a bit hungry',
+    ])) {
       return SunnyIntentResult(
         reply:
             'Sentir un poco de hambre es normal mientras tu cuerpo se adapta, $nickname. Llevas ${today.hydrationMl} ml registrados: te faltan aproximadamente ${hydrationTargetMl - today.hydrationMl} ml. Un vaso pequeño después de cenar puede ayudarte a mantener tu ritmo.',
@@ -101,7 +155,16 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['tomé', 'batido', 'proteína', 'sustituto de comida', 'drank', 'shake', 'protein', 'meal replacement'])) {
+    if (_matches(lower, [
+      'tomé',
+      'batido',
+      'proteína',
+      'sustituto de comida',
+      'drank',
+      'shake',
+      'protein',
+      'meal replacement',
+    ])) {
       final updated = CheckInEstimator.applyProductShake(today);
       return SunnyIntentResult(
         reply:
@@ -111,7 +174,16 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['agua', 'ml', 'vaso', 'water', 'cup', 'glass', '1500', '2000'])) {
+    if (_matches(lower, [
+      'agua',
+      'ml',
+      'vaso',
+      'water',
+      'cup',
+      'glass',
+      '1500',
+      '2000',
+    ])) {
       final amount = _extractMl(lower) ?? 250;
       final newMl = today.hydrationMl + amount;
       return SunnyIntentResult(
@@ -131,7 +203,16 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['cansada', 'estresada', 'triste', 'abrumada', 'tired', 'stressed', 'sad', 'overwhelmed'])) {
+    if (_matches(lower, [
+      'cansada',
+      'estresada',
+      'triste',
+      'abrumada',
+      'tired',
+      'stressed',
+      'sad',
+      'overwhelmed',
+    ])) {
       return SunnyIntentResult(
         reply:
             'Gracias por contarme cómo te sientes. Mantengamos hoy algo simple: un pequeño ritual es suficiente. Mañana continuamos desde aquí.',
@@ -140,7 +221,17 @@ class SunnyIntentRouter {
       );
     }
 
-    if (_matches(lower, ['cuándo', 'cómo', 'producto', 'solar', 'tomar', 'when', 'how', 'product', 'drink'])) {
+    if (_matches(lower, [
+      'cuándo',
+      'cómo',
+      'producto',
+      'solar',
+      'tomar',
+      'when',
+      'how',
+      'product',
+      'drink',
+    ])) {
       return const SunnyIntentResult(
         reply:
             'Solar Protein funciona mejor como una comida que normalmente omitirías; muchas personas eligen el desayuno o la comida. La constancia importa más que el horario perfecto.',
@@ -163,7 +254,9 @@ class SunnyIntentRouter {
   int? _extractMl(String input) {
     final match = RegExp(r'(\d{3,4})\s*(ml)?').firstMatch(input);
     if (match != null) return int.tryParse(match.group(1)!);
-    if (input.contains('vaso') || input.contains('cup') || input.contains('glass')) {
+    if (input.contains('vaso') ||
+        input.contains('cup') ||
+        input.contains('glass')) {
       return 250;
     }
     return null;

@@ -15,7 +15,7 @@ void main() {
       profile = guided.profile;
     }
 
-    step('I agree');
+    step('Acepto');
     expect(profile.onboardingStep, 'age');
 
     step('35-50');
@@ -30,10 +30,10 @@ void main() {
     expect(profile.currentWeightKg, 68);
     expect(profile.onboardingStep, 'target');
 
-    step('use recommended');
+    step('usar el recomendado');
     expect(profile.onboardingStep, 'meal');
 
-    step('breakfast');
+    step('desayuno');
     expect(profile.mealSlot, 'breakfast');
     expect(profile.onboardingStep, 'reminder');
 
@@ -43,7 +43,7 @@ void main() {
     expect(profile.onboardingStep, 'done');
   });
 
-  test('Product intro offer starts privacy Q&A on Get Plan', () {
+  test('Product intro offer starts privacy Q&A on Obtener un plan', () {
     var profile = const UserProfile(
       isLoggedIn: true,
       onboardingComplete: false,
@@ -59,36 +59,39 @@ void main() {
     );
 
     final guided = OnboardingChatGuide.handle(
-      input: 'Get Plan',
+      input: 'Obtener un plan',
       profile: profile,
     );
     expect(guided.profile.onboardingStep, 'privacy');
-    expect(guided.result.reply, contains('privacy policy'));
+    expect(guided.result.reply, contains('Política de privacidad'));
 
     final seeds = OnboardingChatGuide.productIntroSeedMessages(profile);
-    expect(seeds.first.text, contains('Hi Alex'));
+    expect(seeds.first.text, contains('¡Hola, Alex!'));
     expect(
       seeds.first.text,
       contains(OnboardingChatGuide.sunnyCapabilitiesIntro),
     );
     expect(seeds.first.text, contains('Solar Protein'));
     expect(seeds.where((m) => m.id.startsWith('onboard_product_')), isEmpty);
-    expect(seeds.last.actionLabels, contains('Get Plan'));
-    expect(seeds.last.actionLabels, contains('Product help only'));
+    expect(seeds.last.actionLabels, contains('Obtener un plan'));
+    expect(seeds.last.actionLabels, contains('Solo ayuda con productos'));
   });
 
-  test('Product help only completes onboarding without plan Q&A', () {
-    var profile = const UserProfile(
-      isLoggedIn: true,
-      onboardingComplete: false,
-      onboardingStep: 'plan_offer',
-    );
+  test(
+    'Solo ayuda con productos completa el registro sin preguntas del plan',
+    () {
+      var profile = const UserProfile(
+        isLoggedIn: true,
+        onboardingComplete: false,
+        onboardingStep: 'plan_offer',
+      );
 
-    final guided = OnboardingChatGuide.handle(
-      input: 'Product help only',
-      profile: profile,
-    );
-    expect(guided.profile.onboardingComplete, isTrue);
-    expect(guided.result.reply, contains('product-care'));
-  });
+      final guided = OnboardingChatGuide.handle(
+        input: 'Solo ayuda con productos',
+        profile: profile,
+      );
+      expect(guided.profile.onboardingComplete, isTrue);
+      expect(guided.result.reply, contains('cuidado de productos'));
+    },
+  );
 }

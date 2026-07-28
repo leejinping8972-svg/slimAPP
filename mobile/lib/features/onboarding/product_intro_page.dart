@@ -16,7 +16,8 @@ class ProductIntroPage extends ConsumerWidget {
     final productName = profile.linkedProductName.isNotEmpty
         ? profile.linkedProductName
         : 'Solar Protein™';
-    final isMeal = profile.userPlanType == UserPlanType.mealReplacement ||
+    final isMeal =
+        profile.userPlanType == UserPlanType.mealReplacement ||
         profile.hasActiveSlimPlan;
 
     return LdScaffold(
@@ -111,8 +112,10 @@ class ProductIntroPage extends ConsumerWidget {
             LdPrimaryButton(
               label: 'Continuar con Sunny',
               onPressed: () {
-                final onboarded =
-                    ref.read(appStateProvider).profile.onboardingComplete;
+                final onboarded = ref
+                    .read(appStateProvider)
+                    .profile
+                    .onboardingComplete;
                 if (onboarded) {
                   if (context.canPop()) {
                     context.pop();
@@ -138,8 +141,10 @@ class ProductIntroPage extends ConsumerWidget {
             Center(
               child: TextButton(
                 onPressed: () {
-                  final onboarded =
-                      ref.read(appStateProvider).profile.onboardingComplete;
+                  final onboarded = ref
+                      .read(appStateProvider)
+                      .profile
+                      .onboardingComplete;
                   if (onboarded) {
                     context.go('/ritual');
                   } else {
@@ -165,9 +170,7 @@ class ProductIntroPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('•  ', style: TextStyle(height: 1.4)),
-                Expanded(
-                  child: Text(t, style: LuckdateTextStyles.bodySmall),
-                ),
+                Expanded(child: Text(t, style: LuckdateTextStyles.bodySmall)),
               ],
             ),
           ),

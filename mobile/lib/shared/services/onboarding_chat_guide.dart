@@ -92,8 +92,8 @@ class OnboardingChatGuide {
             subtitle: p.series.isNotEmpty
                 ? p.series
                 : (p.isMealReplacement
-                    ? 'Viaje Slim de 28 días desbloqueado'
-                    : 'Plan diario de cuidado del producto'),
+                      ? 'Viaje Slim de 28 días desbloqueado'
+                      : 'Plan diario de cuidado del producto'),
           ),
         )
         .toList();
@@ -119,9 +119,9 @@ class OnboardingChatGuide {
   static String _defaultBlurb(bool isMeal) {
     return isMeal
         ? 'Mezcla una porción con agua o leche como apoyo para tus comidas. '
-            'Registra tu batido en el chat de Sunny o en tu viaje cada día.'
+              'Registra tu batido en el chat de Sunny o en tu viaje cada día.'
         : 'Tómalo según las indicaciones de la etiqueta. '
-            'Configura un recordatorio diario para que Sunny pueda acompañarte.';
+              'Configura un recordatorio diario para que Sunny pueda acompañarte.';
   }
 
   static List<ChatSuggestionItem> planCardItems(UserProfile profile) {
@@ -156,8 +156,8 @@ class OnboardingChatGuide {
     final productLine = profile.linkedProducts.isNotEmpty
         ? 'Productos vinculados: ${profile.linkedProducts.map((p) => p.productName).join(', ')}.'
         : profile.linkedProductName.isNotEmpty
-            ? 'Producto vinculado: ${profile.linkedProductName}.'
-            : 'Aún no hay ningún producto vinculado; el plan comienza en modo de exploración.';
+        ? 'Producto vinculado: ${profile.linkedProductName}.'
+        : 'Aún no hay ningún producto vinculado; el plan comienza en modo de exploración.';
     return 'Tu viaje Slim de 28 días está listo.\n\n'
         'Cómo se creó este plan:\n'
         '• Rango de edad: ${profile.ageRange}\n'
@@ -382,10 +382,7 @@ class OnboardingChatGuide {
           );
         }
         return (
-          profile: profile.copyWith(
-            heightCm: height,
-            onboardingStep: 'weight',
-          ),
+          profile: profile.copyWith(heightCm: height, onboardingStep: 'weight'),
           result: SunnyIntentResult(
             reply:
                 'Anotado: ${height.toStringAsFixed(0)} cm. '
@@ -405,8 +402,7 @@ class OnboardingChatGuide {
             ),
           );
         }
-        final recommended =
-            (weight - 5).clamp(40.0, weight).toDouble();
+        final recommended = (weight - 5).clamp(40.0, weight).toDouble();
         return (
           profile: profile.copyWith(
             currentWeightKg: weight,
@@ -463,17 +459,13 @@ class OnboardingChatGuide {
           return (
             profile: profile,
             result: const SunnyIntentResult(
-              reply:
-                  'Elige desayuno, comida, cena o no estoy segura.',
+              reply: 'Elige desayuno, comida, cena o no estoy segura.',
               intents: ['onboarding_meal'],
             ),
           );
         }
         return (
-          profile: profile.copyWith(
-            mealSlot: meal,
-            onboardingStep: 'reminder',
-          ),
+          profile: profile.copyWith(mealSlot: meal, onboardingStep: 'reminder'),
           result: SunnyIntentResult(
             reply:
                 'Perfecto: nos enfocaremos en $meal.\n\n'
@@ -630,7 +622,9 @@ class OnboardingChatGuide {
     if (lower.contains('desayuno') || lower.contains('breakfast')) {
       return 'breakfast';
     }
-    if (lower.contains('comida') || lower.contains('almuerzo') || lower.contains('lunch')) {
+    if (lower.contains('comida') ||
+        lower.contains('almuerzo') ||
+        lower.contains('lunch')) {
       return 'lunch';
     }
     if (lower.contains('cena') || lower.contains('dinner')) return 'dinner';
@@ -649,7 +643,9 @@ class OnboardingChatGuide {
       final h = int.parse(colon.group(1)!).toString().padLeft(2, '0');
       return '$h:${colon.group(2)}';
     }
-    final ampm = RegExp(r'\b(\d{1,2})\s*(am|pm|a\.?\s*m\.?|p\.?\s*m\.?)\b').firstMatch(lower);
+    final ampm = RegExp(
+      r'\b(\d{1,2})\s*(am|pm|a\.?\s*m\.?|p\.?\s*m\.?)\b',
+    ).firstMatch(lower);
     if (ampm != null) {
       var h = int.parse(ampm.group(1)!);
       final isPm = ampm.group(2)!.replaceAll(RegExp(r'[\s.]'), '') == 'pm';
@@ -674,19 +670,11 @@ class OnboardingChatGuide {
         ('🌙', 'Ahora no'),
       ],
       'privacy' => [('✅', 'Acepto')],
-      'age' => [
-        ('🌿', '35-50'),
-        ('☀️', '18-34'),
-        ('🌙', '51-64'),
-      ],
+      'age' => [('🌿', '35-50'), ('☀️', '18-34'), ('🌙', '51-64')],
       'height' => [('📏', '165 cm')],
       'weight' => [('⚖️', '68 kg')],
       'target' => [('🎯', 'usar el recomendado'), ('⚖️', '62 kg')],
-      'meal' => [
-        ('🌅', 'desayuno'),
-        ('🥗', 'comida'),
-        ('🌙', 'cena'),
-      ],
+      'meal' => [('🌅', 'desayuno'), ('🥗', 'comida'), ('🌙', 'cena')],
       'reminder' => [('⏰', '08:00'), ('☀️', '7 a. m.')],
       _ => const [],
     };

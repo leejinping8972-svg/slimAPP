@@ -125,19 +125,20 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                         const SizedBox(height: LuckdateSpacing.md),
                         Wrap(
                           spacing: 8,
-                          children: [
-                            ('Pedir Solar de nuevo', 'solar_protein'),
-                            ('Mantener', 'youth_solar'),
-                            ('Energía', 'active_boost'),
-                          ].map((d) {
-                            return LdChoiceChip(
-                              label: d.$1,
-                              selected: false,
-                              onTap: () => context.push(
-                                '/collection/product/${d.$2}',
-                              ),
-                            );
-                          }).toList(),
+                          children:
+                              [
+                                ('Pedir Solar de nuevo', 'solar_protein'),
+                                ('Mantener', 'youth_solar'),
+                                ('Energía', 'active_boost'),
+                              ].map((d) {
+                                return LdChoiceChip(
+                                  label: d.$1,
+                                  selected: false,
+                                  onTap: () => context.push(
+                                    '/collection/product/${d.$2}',
+                                  ),
+                                );
+                              }).toList(),
                         ),
                       ],
                     ),
@@ -151,7 +152,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                         [
                           'Todo',
                           'Vitalidad Slim',
-                          'Vitalidad de belleza',
+                          'Vitalidad y belleza',
                           'Envejecimiento saludable',
                           'Vitalidad femenina',
                           'Vitalidad mental',
@@ -175,28 +176,30 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   const StatePlaceholder(
                     type: 'empty',
                     title: 'No se encontraron productos',
-                    message: 'Prueba otra categoría para explorar más opciones.',
+                    message:
+                        'Prueba otra categoría para explorar más opciones.',
                   )
                 else
                   GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.66,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 0.66,
+                        ),
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final product = filtered[index];
+                      return ProductCard(
+                        product: product,
+                        onTap: () =>
+                            context.push('/collection/product/${product.id}'),
+                      );
+                    },
                   ),
-                  itemCount: filtered.length,
-                  itemBuilder: (context, index) {
-                    final product = filtered[index];
-                    return ProductCard(
-                      product: product,
-                      onTap: () =>
-                          context.push('/collection/product/${product.id}'),
-                    );
-                  },
-                ),
               ],
             ),
           );
@@ -210,7 +213,7 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
   Color? _seriesColor(String series) {
     return switch (series) {
       'Vitalidad Slim' => LuckdateColors.slimVitality,
-      'Vitalidad de belleza' => LuckdateColors.beautyVitality,
+      'Vitalidad y belleza' => LuckdateColors.beautyVitality,
       'Envejecimiento saludable' => LuckdateColors.healthyAging,
       'Vitalidad femenina' => LuckdateColors.womensVitality,
       'Vitalidad mental' => LuckdateColors.mindVitality,

@@ -36,8 +36,10 @@ class AppState {
   final List<ChatMessage> chatMessages;
   final bool showLoading;
   final bool showError;
+
   /// Session flag: guest must finish launch guide before /login or /register.
   final bool launchGuideSeen;
+
   /// Session flag: guest must finish fixed Sunny opening before /register.
   final bool sunnyOpeningSeen;
 
@@ -390,9 +392,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   void updateCalorieTarget(int kcal) {
     state = state.copyWith(
-      profile: state.profile.copyWith(
-        calorieTargetKcal: kcal.clamp(800, 4000),
-      ),
+      profile: state.profile.copyWith(calorieTargetKcal: kcal.clamp(800, 4000)),
     );
     updateTodayRecord(state.journey.todayRecord);
   }
@@ -411,13 +411,17 @@ class AppStateNotifier extends StateNotifier<AppState> {
       isUser: false,
       text: switch (moodTag) {
         'great' => 'Me encanta esa energía. Mantén un ritmo suave esta noche.',
-        'okay' => 'Estar bien también cuenta como un logro. Descansa cuando lo necesites.',
-        'tired' => 'Gracias por compartirlo. Una noche más ligera puede ayudarte.',
+        'okay' =>
+          'Estar bien también cuenta como un logro. Descansa cuando lo necesites.',
+        'tired' =>
+          'Gracias por compartirlo. Una noche más ligera puede ayudarte.',
         _ => 'Gracias por registrarte. Estoy aquí si quieres platicar.',
       },
       timestamp: DateTime.now(),
     );
-    state = state.copyWith(chatMessages: [...state.chatMessages, moodMsg, reply]);
+    state = state.copyWith(
+      chatMessages: [...state.chatMessages, moodMsg, reply],
+    );
   }
 
   void updateProfile(UserProfile profile) {
@@ -634,7 +638,9 @@ class AppStateNotifier extends StateNotifier<AppState> {
       case 'mood':
         await sendChatMessage('Hoy me siento un poco cansada');
       case 'adjust':
-        await sendChatMessage('Tengo una cena con amigos esta noche, ¿podemos ajustar el plan?');
+        await sendChatMessage(
+          'Tengo una cena con amigos esta noche, ¿podemos ajustar el plan?',
+        );
       case 'exercise':
         await sendChatMessage('Hice 45 minutos de yoga');
       case 'sleep':
