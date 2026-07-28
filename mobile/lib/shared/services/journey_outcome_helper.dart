@@ -1,85 +1,87 @@
-import '../models/models.dart';
+﻿import '../models/models.dart';
 
 /// Day-28 repurchase guidance branches.
-enum ViajeRepurchasePath {
-  /// A — progress, but target not reached → repurchase current product.
+enum JourneyRepurchasePath {
+  /// A: progress, but target not reached -> repurchase current product.
   continueActual,
 
-  /// B — progress and goal reached → next-stage maintain / protect.
+  /// B: progress and goal reached -> next-stage maintain/protect.
   maintainNext,
 
-  /// C — little or no progress → alternative products.
+  /// C: little or no progress -> alternative products.
   tryAlternative,
 }
 
-class ViajeRepurchaseOffer {
-  const ViajeRepurchaseOffer({
+class JourneyRepurchaseOffer {
+  const JourneyRepurchaseOffer({
     required this.path,
     required this.title,
     required this.subtitle,
-    required this.primaryProductoId,
+    required this.primaryProductId,
     required this.primaryLabel,
-    this.secondaryProductoIds = const [],
+    this.secondaryProductIds = const [],
   });
 
-  final ViajeRepurchasePath path;
+  final JourneyRepurchasePath path;
   final String title;
   final String subtitle;
-  final String primaryProductoId;
+  final String primaryProductId;
   final String primaryLabel;
-  final List<String> secondaryProductoIds;
+  final List<String> secondaryProductIds;
 }
 
-class ViajeOutcomeHelper {
-  /// Uses weight trend (start → end) vs target weight.
-  static ViajeRepurchaseOffer resolve({
+class JourneyOutcomeHelper {
+  /// Uses weight trend (start -> end) vs target weight.
+  static JourneyRepurchaseOffer resolve({
     required UserProfile profile,
-    required ViajeState journey,
+    required JourneyState journey,
   }) {
     final trend = journey.weightTrend;
     final end = trend.isNotEmpty
         ? trend.last
         : (journey.todayRecord.weightValueKg > 0
               ? journey.todayRecord.weightValueKg
-              : profile.currentPesoKg);
+              : profile.currentWeightKg);
     final start = trend.isNotEmpty ? trend.first : end + 2;
     final lost = start - end;
-    final target = profile.targetPesoKg;
-    final reachedMeta = end <= target + 0.5;
+    final target = profile.targetWeightKg;
+    final reachedGoal = end <= target + 0.5;
     final effective = lost >= 0.5;
 
     if (effective && reachedGoal) {
-      return const ViajeRepurchaseOffer(
-        path: ViajeRepurchasePath.maintainNext,
+      return const JourneyRepurchaseOffer(
+        path: JourneyRepurchasePath.maintainNext,
         title: 'Alcanzaste tu meta',
         subtitle:
-            'Consolida tu logro con una etapa de mantenimiento y protección: apoyo suave, no otra restricción intensa.',
-        primaryProductoId: 'youth_solar',
+            'Consolida tu logro con una etapa de mantenimiento y protecci贸n: apoyo suave, no otra restricci贸n intensa.',
+        primaryProductId: 'youth_solar',
         primaryLabel: 'Iniciar etapa de mantenimiento',
-        secondaryProductoIds: ['aging_solar', 'recovery_night', 'daily_vital'],
+        secondaryProductIds: ['aging_solar', 'recovery_night', 'daily_vital'],
       );
     }
 
     if (effective && !reachedGoal) {
-      return const ViajeRepurchaseOffer(
-        path: ViajeRepurchasePath.continueActual,
-        title: 'Estás avanzando',
+      return const JourneyRepurchaseOffer(
+        path: JourneyRepurchasePath.continueActual,
+        title: 'Est谩s avanzando',
         subtitle:
-            'Buen ritmo — sigue con otro ciclo de Solar Protein para acercarte a tu meta.',
-        primaryProductoId: 'solar_protein',
+            'Buen ritmo; sigue con otro ciclo de Solar Protein para acercarte a tu meta.',
+        primaryProductId: 'solar_protein',
         primaryLabel: 'Volver a pedir Solar Protein',
-        secondaryProductoIds: [],
+        secondaryProductIds: [],
       );
     }
 
-    return const ViajeRepurchaseOffer(
-      path: ViajeRepurchasePath.tryAlternative,
+    return const JourneyRepurchaseOffer(
+      path: JourneyRepurchasePath.tryAlternative,
       title: 'Probemos otro camino',
       subtitle:
-          'Los resultados fueron limitados en este ciclo. Explora una fórmula alternativa que pueda adaptarse mejor a tu cuerpo.',
-      primaryProductoId: 'active_boost',
+          'Los resultados fueron limitados en este ciclo. Explora una f贸rmula alternativa que pueda adaptarse mejor a tu cuerpo.',
+      primaryProductId: 'active_boost',
       primaryLabel: 'Explorar alternativas',
-      secondaryProductoIds: ['sun_femme', 'recovery_night', 'aging_solar'],
+      secondaryProductIds: ['sun_femme', 'recovery_night', 'aging_solar'],
     );
   }
 }
+
+

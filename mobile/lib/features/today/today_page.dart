@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
@@ -28,7 +28,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
     final profile = state.profile;
     final journey = state.journey;
     if (!mounted) return;
-    if (profile.userPlanType != UserPlanType.mealReemplazament) return;
+    if (profile.userPlanType != UserPlanType.mealReplacement) return;
     if (journey.day < 28 || profile.journeyCompleteSeen) return;
 
     showDialog<void>(
@@ -38,7 +38,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: const Text('Viaje completado'),
         content: const Text(
-          'Creciste hacia la luz durante 28 días. Consulta tu informe de finalización y explora tu próximo viaje.',
+          'Creciste hacia la luz durante 28 d铆as. Consulta tu informe de finalizaci贸n y explora tu pr贸ximo viaje.',
         ),
         actions: [
           TextButton(
@@ -106,13 +106,13 @@ class _HoyPageState extends ConsumerState<HoyPage> {
                     children: [
                       Text(_greeting(), style: LuckdateTextStyles.h1),
                       Text(
-                        '${profile.nickname} ☀️',
+                        '${profile.nickname} 鈽€锔?,
                         style: LuckdateTextStyles.title,
                       ),
                       if (profile.userPlanType ==
-                          UserPlanType.mealReemplazament)
+                          UserPlanType.mealReplacement)
                         Text(
-                          'Día ${journey.day} · Crece hacia la luz',
+                          'D铆a ${journey.day} 路 Crece hacia la luz',
                           style: LuckdateTextStyles.caption,
                         ),
                     ],
@@ -150,26 +150,26 @@ class _HoyPageState extends ConsumerState<HoyPage> {
               const SizedBox(height: LuckdateSpacing.lg),
               PesoTrendCard(
                 weights: journey.weightTrend,
-                targetKg: profile.targetPesoKg,
+                targetKg: profile.targetWeightKg,
               ),
             ],
             const SizedBox(height: LuckdateSpacing.xl),
             if (!profile.hidePurchaseGuideCard &&
-                profile.userPlanType == UserPlanType.noProducto &&
+                profile.userPlanType == UserPlanType.noProduct &&
                 !profile.isAwaitingReceipt) ...[
               _purchaseGuideCard(context, ref),
               const SizedBox(height: LuckdateSpacing.lg),
             ],
             Text(
-              profile.userPlanType == UserPlanType.mealReemplazament
+              profile.userPlanType == UserPlanType.mealReplacement
                   ? 'Ritual de hoy'
-                  : 'Registro rápido',
+                  : 'Registro r谩pido',
               style: LuckdateTextStyles.h2,
             ),
-            if (profile.userPlanType == UserPlanType.mealReemplazament) ...[
+            if (profile.userPlanType == UserPlanType.mealReplacement) ...[
               const SizedBox(height: LuckdateSpacing.sm),
               Text(
-                'Viaje Slim de 28 días · Día ${journey.day}',
+                'Viaje Slim de 28 d铆as 路 D铆a ${journey.day}',
                 style: LuckdateTextStyles.caption,
               ),
             ],
@@ -214,7 +214,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
     BuildContext context,
     WidgetRef ref,
     UserProfile profile,
-    ViajeState journey,
+    JourneyState journey,
     TodayRecord record,
   ) {
     final items = <_RitualItem>[];
@@ -237,7 +237,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
     }
 
     switch (profile.userPlanType) {
-      case UserPlanType.noProducto:
+      case UserPlanType.noProduct:
         add(
           'Peso',
           record.weightRecorded
@@ -248,7 +248,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
           () => _showPesoSheet(context, ref, record, profile),
         );
         add(
-          'Hidratación',
+          'Hidrataci贸n',
           '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
           Icons.water_drop_outlined,
           record.hydrationMl > 0,
@@ -259,20 +259,20 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             profile.hydrationTargetMl,
           ),
         );
-      case UserPlanType.nonMealReemplazament:
+      case UserPlanType.nonMealReplacement:
         add(
-          profile.linkedProductoName.isEmpty
+          profile.linkedProductName.isEmpty
               ? 'Tu producto'
-              : profile.linkedProductoName,
-          record.productTaken == ProductoTakenStatus.taken
+              : profile.linkedProductName,
+          record.productTaken == ProductTakenStatus.taken
               ? 'Tomado hoy'
               : 'Recuerda tomar tu producto',
           Icons.medication_outlined,
-          record.productTaken == ProductoTakenStatus.taken,
+          record.productTaken == ProductTakenStatus.taken,
           () => _completadoProducto(ref, record),
         );
         add(
-          'Hidratación',
+          'Hidrataci贸n',
           '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
           Icons.water_drop_outlined,
           record.hydrationMl > 0,
@@ -292,18 +292,18 @@ class _HoyPageState extends ConsumerState<HoyPage> {
           record.weightRecorded,
           () => _showPesoSheet(context, ref, record, profile),
         );
-      case UserPlanType.mealReemplazament:
+      case UserPlanType.mealReplacement:
         add(
-          'Solar Protein™',
-          record.productTaken == ProductoTakenStatus.taken
+          'Solar Protein鈩?,
+          record.productTaken == ProductTakenStatus.taken
               ? 'Completado'
               : 'Toca para registrar',
           Icons.local_drink_outlined,
-          record.productTaken == ProductoTakenStatus.taken,
+          record.productTaken == ProductTakenStatus.taken,
           () => _completadoProducto(ref, record),
         );
         add(
-          'Hidratación',
+          'Hidrataci贸n',
           '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
           Icons.water_drop_outlined,
           record.hydrationMl > 0,
@@ -324,10 +324,10 @@ class _HoyPageState extends ConsumerState<HoyPage> {
           () => _showPesoSheet(context, ref, record, profile),
         );
         add(
-          'Sueño',
+          'Sue帽o',
           record.sleepHours > 0
               ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
-              : '¿Cuánto dormiste?',
+              : '驴Cu谩nto dormiste?',
           Icons.bedtime_outlined,
           record.sleepHours > 0,
           () => _showSleepSheet(context, ref, record),
@@ -368,12 +368,12 @@ class _HoyPageState extends ConsumerState<HoyPage> {
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            'Obtén Solar Protein para iniciar tu recorrido Slim de 28 días; toca para ver el plan.',
+            'Obt茅n Solar Protein para iniciar tu recorrido Slim de 28 d铆as; toca para ver el plan.',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
-            label: 'Ver plan de 28 días',
+            label: 'Ver plan de 28 d铆as',
             onPressed: () => context.push('/collection/product/solar_protein'),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
@@ -419,9 +419,9 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nutrición adicional', style: LuckdateTextStyles.title),
+                Text('Nutrici贸n adicional', style: LuckdateTextStyles.title),
                 Text(
-                  'Explora más productos de nutrición para complementar tu ritmo diario.',
+                  'Explora m谩s productos de nutrici贸n para complementar tu ritmo diario.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],
@@ -435,7 +435,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
 
   String _greeting() {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Buenos días';
+    if (hour < 12) return 'Buenos d铆as';
     if (hour < 17) return 'Buenas tardes';
     return 'Buenas noches';
   }
@@ -444,7 +444,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
     ref
         .read(appStateProvider.notifier)
         .updateTodayRecord(
-          record.copyWith(productTaken: ProductoTakenStatus.taken),
+          record.copyWith(productTaken: ProductTakenStatus.taken),
         );
   }
 
@@ -475,7 +475,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
   ) {
     final baseline = record.weightValueKg > 0
         ? record.weightValueKg
-        : (profile.currentPesoKg > 0 ? profile.currentPesoKg : 68.0);
+        : (profile.currentWeightKg > 0 ? profile.currentWeightKg : 68.0);
     showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
@@ -600,8 +600,8 @@ class _HydrationSheetState extends State<_HydrationSheet>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
-          title: const Text('Meta de hidratación alcanzada'),
-          content: const Text('Meta diaria de hidratación alcanzada ✓'),
+          title: const Text('Meta de hidrataci贸n alcanzada'),
+          content: const Text('Meta diaria de hidratacion alcanzada.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
@@ -617,7 +617,7 @@ class _HydrationSheetState extends State<_HydrationSheet>
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('Hidratación', style: LuckdateTextStyles.h2),
+        Text('Hidrataci贸n', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.base),
         ScaleTransition(
           scale: _pulse,
@@ -678,7 +678,7 @@ class _PesoSheetState extends State<_PesoSheet> {
       children: [
         Text('Peso', style: LuckdateTextStyles.h2),
         Text(
-          'Rango predeterminado ±3 kg. Arrastra hasta el borde para ampliarlo.',
+          'Rango predeterminado 卤3 kg. Arrastra hasta el borde para ampliarlo.',
           style: LuckdateTextStyles.bodySmall,
         ),
         Slider(
@@ -739,7 +739,7 @@ class _SleepSheetState extends State<_SleepSheet> {
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('¿Cuánto dormiste?', style: LuckdateTextStyles.h2),
+        Text('驴Cu谩nto dormiste?', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
         Text(
           '${_hours.toStringAsFixed(1)} hours',
@@ -771,3 +771,4 @@ class _SleepSheetState extends State<_SleepSheet> {
     );
   }
 }
+

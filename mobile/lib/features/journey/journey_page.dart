@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,18 +31,18 @@ class ViajePage extends ConsumerWidget {
               ),
               const SizedBox(height: LuckdateSpacing.md),
               Text(
-                'Tu plan está listo: confirma la entrega para iniciar el día 1.',
+                'Tu plan est谩 listo: confirma la entrega para iniciar el d铆a 1.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdAwaitingReceiptPanel(
-                productName: profile.linkedProductoName,
+                productName: profile.linkedProductName,
                 onConfirmReceipt: () {
                   ref.read(appStateProvider.notifier).confirmReceipt();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                        '¡Plan iniciado! Te damos la bienvenida al día 1.',
+                        '隆Plan iniciado! Te damos la bienvenida al d铆a 1.',
                       ),
                     ),
                   );
@@ -56,7 +56,7 @@ class ViajePage extends ConsumerWidget {
       );
     }
 
-    if (profile.userPlanType != UserPlanType.mealReemplazament) {
+    if (profile.userPlanType != UserPlanType.mealReplacement) {
       return LdScaffold(
         body: Padding(
           padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -71,9 +71,9 @@ class ViajePage extends ConsumerWidget {
               ),
               const SizedBox(height: LuckdateSpacing.md),
               Text(
-                profile.userPlanType == UserPlanType.noProducto
-                    ? 'Aún no tienes un plan de 28 días. Explora productos en la tienda o sigue registrando en Ritual.'
-                    : 'Tu plan de recordatorios del producto está activo. Hay un recorrido Slim completo de 28 días disponible con productos de reemplazo de comida.',
+                profile.userPlanType == UserPlanType.noProduct
+                    ? 'A煤n no tienes un plan de 28 d铆as. Explora productos en la tienda o sigue registrando en Ritual.'
+                    : 'Tu plan de recordatorios del producto est谩 activo. Hay un recorrido Slim completo de 28 d铆as disponible con productos de reemplazo de comida.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
@@ -100,7 +100,7 @@ class ViajePage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Recorrido de 28 días',
+                    'Recorrido de 28 d铆as',
                     style: LuckdateTextStyles.h1,
                   ),
                 ),
@@ -109,10 +109,10 @@ class ViajePage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             Center(
-              child: LdProgresoRing(
+              child: LdProgressRing(
                 percent: journey.completionPercent.toDouble(),
                 centerLabel: '${journey.completionPercent}%',
-                subLabel: 'Día ${journey.day} / ${journey.totalDays}',
+                subLabel: 'D铆a ${journey.day} / ${journey.totalDays}',
               ),
             ),
             const SizedBox(height: LuckdateSpacing.sm),
@@ -127,7 +127,7 @@ class ViajePage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Días',
+                    label: 'D铆as',
                     value: '${journey.day}',
                     subtitle: 'Actual',
                   ),
@@ -159,22 +159,22 @@ class ViajePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LuckdateSpacing.md),
-            _phaseCard('Inicio', 'Días 1–7', journey.day <= 7),
+            _phaseCard('Inicio', 'Dias 1-7', journey.day <= 7),
             _phaseCard(
-              'Adaptación',
-              'Días 8–14',
+              'Adaptaci贸n',
+              'Dias 8-14',
               journey.day > 7 && journey.day <= 14,
             ),
             _phaseCard(
               'Estabilidad',
-              'Días 15–21',
+              'Dias 15-21',
               journey.day > 14 && journey.day <= 21,
             ),
-            _phaseCard('Finalización', 'Días 22–28', journey.day > 21),
+            _phaseCard('Finalizacion', 'Dias 22-28', journey.day > 21),
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Mapa de días', style: LuckdateTextStyles.h2),
+              child: Text('Mapa de d铆as', style: LuckdateTextStyles.h2),
             ),
             const SizedBox(height: LuckdateSpacing.md),
             _dayMap(journey),
@@ -187,7 +187,7 @@ class ViajePage extends ConsumerWidget {
                 const SizedBox(width: LuckdateSpacing.md),
                 _legendDot(
                   LuckdateColors.lineSoft.withValues(alpha: 0.8),
-                  'Próximamente',
+                  'Pr贸ximamente',
                 ),
               ],
             ),
@@ -201,7 +201,7 @@ class ViajePage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Hidratación',
+                    label: 'Hidrataci贸n',
                     value: '${scores.hydrationScore}%',
                     subtitle: 'Progreso',
                   ),
@@ -209,9 +209,9 @@ class ViajePage extends ConsumerWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Sueño',
+                    label: 'Sue帽o',
                     value: '${scores.sleepScore}',
-                    subtitle: 'Recuperación',
+                    subtitle: 'Recuperaci贸n',
                   ),
                 ),
               ],
@@ -221,7 +221,7 @@ class ViajePage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: VitalityMetricCard(
-                    label: 'Ánimo',
+                    label: '脕nimo',
                     value: '${scores.moodCheckScore}',
                     subtitle: 'Comentarios nocturnos',
                   ),
@@ -231,7 +231,7 @@ class ViajePage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Constancia',
                     value: '${scores.consistencyScore}%',
-                    subtitle: '5 días',
+                    subtitle: '5 d铆as',
                   ),
                 ),
               ],
@@ -293,7 +293,7 @@ class ViajePage extends ConsumerWidget {
             if (journey.day >= 28) ...[
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
-                label: 'Ver informe del día 28',
+                label: 'Ver informe del d铆a 28',
                 onPressed: () => context.push('/journey/report'),
               ),
             ],
@@ -317,7 +317,7 @@ class ViajePage extends ConsumerWidget {
                           style: LuckdateTextStyles.title,
                         ),
                         Text(
-                          'Nutrition picks tailored to your rhythm—keep building momentum.',
+                          'Nutrition picks tailored to your rhythm鈥攌eep building momentum.',
                           style: LuckdateTextStyles.bodySmall,
                         ),
                       ],
@@ -420,7 +420,7 @@ class Day28ReportPage extends ConsumerWidget {
     final state = ref.watch(appStateProvider);
     final journey = state.journey;
     final profile = state.profile;
-    final offer = ViajeOutcomeHelper.resolve(
+    final offer = JourneyOutcomeHelper.resolve(
       profile: profile,
       journey: journey,
     );
@@ -437,7 +437,7 @@ class Day28ReportPage extends ConsumerWidget {
         .length;
 
     return LdScaffold(
-      title: 'Informe del día 28',
+      title: 'Informe del d铆a 28',
       showBack: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -458,19 +458,19 @@ class Day28ReportPage extends ConsumerWidget {
             VitalityMetricCard(
               label: 'Completitud',
               value: '${journey.completionPercent}%',
-              subtitle: 'Tasa de finalización de rituales',
+              subtitle: 'Tasa de finalizaci贸n de rituales',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
-              label: 'Días activos',
+              label: 'D铆as activos',
               value: '$activeDays',
-              subtitle: 'Días con registros',
+              subtitle: 'D铆as con registros',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
               label: 'Cambio de vitalidad',
               value: '${vitalityChange >= 0 ? '+' : ''}$vitalityChange',
-              subtitle: 'Del día 1 al día ${journey.day}',
+              subtitle: 'Del d铆a 1 al d铆a ${journey.day}',
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
@@ -479,7 +479,7 @@ class Day28ReportPage extends ConsumerWidget {
                   const LdSunnyAvatar(size: 56),
                   const SizedBox(height: LuckdateSpacing.md),
                   Text(
-                    '${profile.nickname}, 28 días de pasos suaves. No buscaste la perfección — construiste un ritmo.',
+                    '${profile.nickname}, 28 dias de pasos suaves. No buscaste la perfeccion; construiste un ritmo.',
                     style: LuckdateTextStyles.body,
                     textAlign: TextAlign.center,
                   ),
@@ -491,7 +491,7 @@ class Day28ReportPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Tu próximo viaje', style: LuckdateTextStyles.title),
+                  Text('Tu pr贸ximo viaje', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(offer.title, style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.sm),
@@ -503,13 +503,13 @@ class Day28ReportPage extends ConsumerWidget {
             LdPrimaryButton(
               label: offer.primaryLabel,
               onPressed: () => context.push(
-                '/collection/product/${offer.primaryProductoId}',
+                '/collection/product/${offer.primaryProductId}',
               ),
             ),
-            if (offer.secondaryProductoIds.isNotEmpty) ...[
+            if (offer.secondaryProductIds.isNotEmpty) ...[
               const SizedBox(height: LuckdateSpacing.sm),
               LdSecondaryButton(
-                label: 'Explorar más opciones',
+                label: 'Explorar m谩s opciones',
                 onPressed: () => context.go('/mall'),
               ),
             ],
@@ -554,3 +554,4 @@ Widget _legendDot(Color color, String label) {
     ],
   );
 }
+

@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -78,7 +78,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(LuckdateRadius.xl),
         ),
-        title: const Text('Editar meta de calorías'),
+        title: const Text('Editar meta de calor铆as'),
         content: TextField(
           controller: controller,
           keyboardType: TextInputType.number,
@@ -129,10 +129,10 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
     );
     final intakePct = calorieMeta <= 0
         ? 0
-        : ((live.intakeKcal / calorieGoal) * 100).round().clamp(0, 999);
+        : ((live.intakeKcal / calorieMeta) * 100).round().clamp(0, 999);
     final exercisePct = exerciseMeta <= 0
         ? 0
-        : ((live.exerciseKcal / exerciseGoal) * 100).round().clamp(0, 999);
+        : ((live.exerciseKcal / exerciseMeta) * 100).round().clamp(0, 999);
 
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
@@ -177,22 +177,22 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                   const SizedBox(height: LuckdateSpacing.lg),
                   _IntakeOverviewCard(
                     intakeKcal: live.intakeKcal,
-                    goalKcal: calorieGoal,
+                    goalKcal: calorieMeta,
                     percent: intakePct,
                     protein: live.proteinG,
                     carbs: live.carbsG,
                     fat: live.fatG,
                     fiber: live.fiberG,
-                    onEditGoal: () => _editCalorieGoal(calorieGoal),
+                    onEditGoal: () => _editCalorieGoal(calorieMeta),
                   ),
                   const SizedBox(height: LuckdateSpacing.lg),
                   _ExerciseCard(
                     burnedKcal: live.exerciseKcal,
-                    goalKcal: exerciseGoal,
+                    goalKcal: exerciseMeta,
                     percent: exercisePct,
                     minutes: live.exerciseMinutes,
-                    sessions: live.exerciseSesiones,
-                    onEditGoal: () => _editExerciseGoal(exerciseGoal),
+                    sessions: live.exerciseSessions,
+                    onEditGoal: () => _editExerciseGoal(exerciseMeta),
                   ),
                   const SizedBox(height: LuckdateSpacing.lg),
                   _SleepCard(
@@ -205,7 +205,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                   if (live.meals.isEmpty)
                     LdCard(
                       child: Text(
-                        'Aún no has registrado comidas. Dile a Sunny qué comiste o usa un registro rápido: las calorías se estiman automáticamente.',
+                        'A煤n no has registrado comidas. Dile a Sunny qu茅 comiste o usa un registro r谩pido: las calor铆as se estiman autom谩ticamente.',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                     )
@@ -225,7 +225,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                       label: Text(
                         'Registrar con Sunny',
                         style: LuckdateTextStyles.caption.copyWith(
-                          fontPeso: FontPeso.w600,
+                          fontWeight: FontWeight.w600,
                           color: LuckdateColors.deepSage,
                         ),
                       ),
@@ -241,7 +241,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                     targetMl: waterTarget,
                   ),
                   const SizedBox(height: LuckdateSpacing.xl),
-                  Text('Análisis de nutrición', style: LuckdateTextStyles.h2),
+                  Text('An谩lisis de nutrici贸n', style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.md),
                   _NutritionAnalysisSection(meals: live.meals),
                   const SizedBox(height: LuckdateSpacing.lg),
@@ -288,7 +288,7 @@ class _SourceBanner extends StatelessWidget {
             const SizedBox(width: LuckdateSpacing.sm),
             Expanded(
               child: Text(
-                'La dieta, el ejercicio, el sueño y el agua se sincronizan desde el chat con Sunny y los registros rápidos. La IA estima consumo y gasto calórico.',
+                'La dieta, el ejercicio, el sue帽o y el agua se sincronizan desde el chat con Sunny y los registros r谩pidos. La IA estima consumo y gasto cal贸rico.',
                 style: LuckdateTextStyles.caption.copyWith(
                   color: LuckdateColors.textPrimary,
                 ),
@@ -371,9 +371,9 @@ class _DateSwitcher extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              isHoy ? '$label · Hoy' : label,
+              isHoy ? '$label 路 Hoy' : label,
               textAlign: TextAlign.center,
-              style: LuckdateTextStyles.body.copyWith(fontPeso: FontPeso.w600),
+              style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
           IconButton(
@@ -410,10 +410,10 @@ class _IntakeOverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final macros = [
-      ('Proteína', protein, 120, 'Recomendado 80–120g', LuckdateColors.deepSage),
-      ('Carbohidratos', carbs, 160, 'Recomendado 120–180g', const Color(0xFFD4A373)),
-      ('Grasas', fat, 60, 'Recomendado 40–65g', const Color(0xFF9A8BB5)),
-      ('Fibra', fiber, 25, 'Recomendado 20–30g', const Color(0xFF7BA3C4)),
+      ('Prote铆na', protein, 120, 'Recomendado 80-120g', LuckdateColors.deepSage),
+      ('Carbohidratos', carbs, 160, 'Recomendado 120-180g', const Color(0xFFD4A373)),
+      ('Grasas', fat, 60, 'Recomendado 40-75g', const Color(0xFF9A8BB5)),
+      ('Fibra', fiber, 25, 'Recomendado 20-30g', const Color(0xFF7BA3C4)),
     ];
 
     return LdCard(
@@ -462,7 +462,7 @@ class _IntakeOverviewCard extends StatelessWidget {
                     SizedBox(
                       width: 84,
                       height: 84,
-                      child: CircularProgresoIndicator(
+                      child: CircularProgressIndicator(
                         value: (percent / 100).clamp(0.0, 1.0),
                         strokeWidth: 8,
                         backgroundColor: LuckdateColors.lineSoft.withValues(
@@ -507,7 +507,7 @@ class _IntakeOverviewCard extends StatelessWidget {
                       Text(
                         m.$1,
                         style: LuckdateTextStyles.bodySmall.copyWith(
-                          fontPeso: FontPeso.w600,
+                          fontWeight: FontWeight.w600,
                           color: LuckdateColors.textPrimary,
                         ),
                       ),
@@ -521,7 +521,7 @@ class _IntakeOverviewCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(LuckdateRadius.pill),
-                    child: LinearProgresoIndicator(
+                    child: LinearProgressIndicator(
                       value: progress,
                       minHeight: 8,
                       backgroundColor: LuckdateColors.lineSoft,
@@ -632,7 +632,7 @@ class _ExerciseCard extends StatelessWidget {
                     SizedBox(
                       width: 88,
                       height: 88,
-                      child: CircularProgresoIndicator(
+                      child: CircularProgressIndicator(
                         value: (percent / 100).clamp(0.0, 1.0),
                         strokeWidth: 8,
                         backgroundColor: LuckdateColors.lineSoft.withValues(
@@ -670,7 +670,7 @@ class _ExerciseCard extends StatelessWidget {
               Expanded(
                 child: _MiniStat(
                   icon: Icons.schedule_rounded,
-                  label: 'Duración',
+                  label: 'Duraci贸n',
                   value: '$minutes min',
                 ),
               ),
@@ -757,11 +757,11 @@ class _SleepCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Registro de sueño', style: LuckdateTextStyles.title),
+                Text('Registro de sue帽o', style: LuckdateTextStyles.title),
                 Text(
                   hasData
-                      ? '${hours.toStringAsFixed(hours % 1 == 0 ? 0 : 1)}h · ${quality.isEmpty ? 'Registrado' : quality}'
-                      : 'Dile a Sunny cómo dormiste: se sincroniza aquí automáticamente.',
+                      ? '${hours.toStringAsFixed(hours % 1 == 0 ? 0 : 1)}h 路 ${quality.isEmpty ? 'Registrado' : quality}'
+                      : 'Dile a Sunny c贸mo dormiste: se sincroniza aqu铆 autom谩ticamente.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],
@@ -816,7 +816,7 @@ class _MealCard extends StatelessWidget {
                     Text(
                       meal.meal,
                       style: LuckdateTextStyles.caption.copyWith(
-                        fontPeso: FontPeso.w700,
+                        fontWeight: FontWeight.w700,
                         color: LuckdateColors.deepSage,
                       ),
                     ),
@@ -826,7 +826,7 @@ class _MealCard extends StatelessWidget {
                     Text(
                       '${meal.kcal} kcal',
                       style: LuckdateTextStyles.bodySmall.copyWith(
-                        fontPeso: FontPeso.w700,
+                        fontWeight: FontWeight.w700,
                         color: LuckdateColors.textPrimary,
                       ),
                     ),
@@ -836,12 +836,12 @@ class _MealCard extends StatelessWidget {
                 Text(
                   meal.name,
                   style: LuckdateTextStyles.body.copyWith(
-                    fontPeso: FontPeso.w600,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'P ${meal.protein}g · C ${meal.carbs}g · F ${meal.fat}g · via ${meal.source}',
+                  'P ${meal.protein}g 路 C ${meal.carbs}g 路 F ${meal.fat}g 路 via ${meal.source}',
                   style: LuckdateTextStyles.caption,
                 ),
               ],
@@ -880,14 +880,14 @@ class _AguaCard extends StatelessWidget {
                     ? '$filledCups / $totalCups goal reached'
                     : '$filledCups / $totalCups cups',
                 style: LuckdateTextStyles.body.copyWith(
-                  fontPeso: FontPeso.w600,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const Spacer(),
               Text(
                 '$ml ml',
                 style: LuckdateTextStyles.caption.copyWith(
-                  fontPeso: FontPeso.w700,
+                  fontWeight: FontWeight.w700,
                   color: LuckdateColors.deepSage,
                 ),
               ),
@@ -943,8 +943,8 @@ class _NutritionAnalysisSection extends StatelessWidget {
           children: [
             Expanded(
               child: _DonutCard(
-                title: 'Fuente de proteína',
-                centerLabel: meals.isEmpty ? '—' : 'Excelente',
+                title: 'Fuente de prote铆na',
+                centerLabel: meals.isEmpty ? '--' : 'Excelente',
                 sections: const [
                   (0.6, LuckdateColors.deepSage, 'Animal 60%'),
                   (0.3, LuckdateColors.vitalitySage, 'Vegetal 30%'),
@@ -956,11 +956,11 @@ class _NutritionAnalysisSection extends StatelessWidget {
             Expanded(
               child: _DonutCard(
                 title: 'Equilibrio de la dieta',
-                centerLabel: meals.isEmpty ? '—' : 'Bien',
+                centerLabel: meals.isEmpty ? '--' : 'Bien',
                 sections: const [
                   (0.45, LuckdateColors.vitalitySage, 'Verduras 45%'),
                   (0.30, LuckdateColors.sunGold, 'Granos 30%'),
-                  (0.25, LuckdateColors.deepSage, 'Proteína 25%'),
+                  (0.25, LuckdateColors.deepSage, 'Prote铆na 25%'),
                 ],
               ),
             ),
@@ -972,15 +972,15 @@ class _NutritionAnalysisSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Distribución de calorías',
+                'Distribuci贸n de calor铆as',
                 style: LuckdateTextStyles.caption.copyWith(
-                  fontPeso: FontPeso.w700,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: LuckdateSpacing.md),
               if (meals.isEmpty)
                 Text(
-                  'La distribución aparece después de registrar comidas en el chat.',
+                  'La distribuci贸n aparece despu茅s de registrar comidas en el chat.',
                   style: LuckdateTextStyles.caption,
                 )
               else
@@ -998,7 +998,7 @@ class _NutritionAnalysisSection extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                               LuckdateRadius.pill,
                             ),
-                            child: LinearProgresoIndicator(
+                            child: LinearProgressIndicator(
                               value: b.$2,
                               minHeight: 10,
                               backgroundColor: LuckdateColors.lineSoft,
@@ -1010,7 +1010,7 @@ class _NutritionAnalysisSection extends StatelessWidget {
                         Text(
                           '${(b.$2 * 100).round()}%',
                           style: LuckdateTextStyles.caption.copyWith(
-                            fontPeso: FontPeso.w600,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -1045,7 +1045,7 @@ class _DonutCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: LuckdateTextStyles.caption.copyWith(fontPeso: FontPeso.w700),
+            style: LuckdateTextStyles.caption.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           SizedBox(
@@ -1071,7 +1071,7 @@ class _DonutCard extends StatelessWidget {
                 Text(
                   centerLabel,
                   style: LuckdateTextStyles.caption.copyWith(
-                    fontPeso: FontPeso.w700,
+                    fontWeight: FontWeight.w700,
                     fontSize: 10,
                   ),
                 ),
@@ -1136,7 +1136,7 @@ class _TipBanner extends StatelessWidget {
           const SizedBox(width: LuckdateSpacing.md),
           Expanded(
             child: Text(
-              'Consejo: acompaña la cena con verduras para favorecer un mejor sueño.',
+              'Consejo: acompa帽a la cena con verduras para favorecer un mejor sue帽o.',
               style: LuckdateTextStyles.bodySmall,
             ),
           ),
@@ -1151,7 +1151,7 @@ class _TipBanner extends StatelessWidget {
             child: Text(
               'Ver consejos',
               style: LuckdateTextStyles.caption.copyWith(
-                fontPeso: FontPeso.w700,
+                fontWeight: FontWeight.w700,
                 color: LuckdateColors.deepSage,
               ),
             ),
@@ -1161,3 +1161,4 @@ class _TipBanner extends StatelessWidget {
     );
   }
 }
+

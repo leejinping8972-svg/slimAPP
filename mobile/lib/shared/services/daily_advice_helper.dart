@@ -1,7 +1,7 @@
-import '../models/models.dart';
+﻿import '../models/models.dart';
 
 /// Personalized daily intake + habit tips from onboarding basics.
-/// Returns null when basics are missing — UI should hide the block.
+/// Returns null when basics are missing; UI should hide the block.
 class DailyAdviceHelper {
   static bool hasBasics(UserProfile profile) => profile.onboardingComplete;
 
@@ -16,22 +16,22 @@ class DailyAdviceHelper {
         : 2000;
     final proteinG = (kcal * 0.28 / 4).round().clamp(60, 140);
     final sleepHours = switch (profile.ageRange) {
-      '18-34' => '7–9',
-      '35-50' => '7–8',
-      '51-64' => '7–8',
-      '65+' => '7–8',
-      _ => '7–8',
+      '18-34' => '7-8',
+      '35-50' => '7-8',
+      '51-64' => '7-8',
+      '65+' => '7-8',
+      _ => '7-8',
     };
 
     final tips = <String>[
-      if (profile.userPlanType == UserPlanType.mealReemplazament)
+      if (profile.userPlanType == UserPlanType.mealReplacement)
         'Reemplaza ${profile.mealSlot} con tu batido Solar Protein hoy.'
-      else if (profile.userPlanType == UserPlanType.nonMealReemplazament)
+      else if (profile.userPlanType == UserPlanType.nonMealReplacement)
         'Toma tu producto vinculado a las ${profile.reminderTime}.'
       else
-        'Registra comidas y agua; Sunny ajustará tu plan después de vincular un producto.',
-      'Procura beber aproximadamente $water ml de agua durante el día.',
-      'Horario de sueño recomendado: $sleepHours horas esta noche.',
+        'Registra comidas y agua; Sunny ajustar谩 tu plan despu茅s de vincular un producto.',
+      'Procura beber aproximadamente $water ml de agua durante el d铆a.',
+      'Horario de sue帽o recomendado: $sleepHours horas esta noche.',
     ];
 
     return DailyAdvice(
@@ -43,7 +43,7 @@ class DailyAdviceHelper {
   }
 
   static int _estimateKcal(UserProfile profile) {
-    // Mifflin-style rough resting need × 1.3 activity, capped for slim journey.
+    // Mifflin-style rough resting need 脳 1.3 activity, capped for slim journey.
     final ageMid = switch (profile.ageRange) {
       '18-34' => 28,
       '35-50' => 42,
@@ -52,7 +52,7 @@ class DailyAdviceHelper {
       _ => 40,
     };
     final bmr =
-        10 * profile.currentPesoKg + 6.25 * profile.heightCm - 5 * ageMid - 161;
+        10 * profile.currentWeightKg + 6.25 * profile.heightCm - 5 * ageMid - 161;
     return (bmr * 1.3).round().clamp(1200, 2000);
   }
 }
@@ -70,3 +70,4 @@ class DailyAdvice {
   final int waterMl;
   final List<String> tips;
 }
+

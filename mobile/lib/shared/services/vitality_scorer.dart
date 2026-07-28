@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class VitalityScorer {
-  static int productScore(ProductoTakenStatus status) {
+  static int productScore(ProductTakenStatus status) {
     switch (status) {
-      case ProductoTakenStatus.taken:
+      case ProductTakenStatus.taken:
         return 100;
-      case ProductoTakenStatus.partial:
+      case ProductTakenStatus.partial:
         return 60;
-      case ProductoTakenStatus.skippedWithReason:
+      case ProductTakenStatus.skippedWithReason:
         return 30;
-      case ProductoTakenStatus.notRecorded:
+      case ProductTakenStatus.notRecorded:
         return 0;
     }
   }
@@ -92,7 +92,7 @@ class VitalityScorer {
 
     final fromMinutes = ((record.exerciseMinutes / 30).clamp(0.0, 1.0) * 100)
         .round();
-    final sessionBonus = (record.exerciseSesiones * 15).clamp(0, 30);
+    final sessionBonus = (record.exerciseSessions * 15).clamp(0, 30);
     return (fromMinutes + sessionBonus).clamp(0, 100);
   }
 
@@ -104,7 +104,7 @@ class VitalityScorer {
   ) {
     final checks = <bool>[
       record.weightRecorded,
-      record.productTaken != ProductoTakenStatus.notRecorded ||
+      record.productTaken != ProductTakenStatus.notRecorded ||
           record.meals.isNotEmpty ||
           record.intakeKcal > 0,
       record.hydrationMl > 0,
@@ -121,20 +121,20 @@ class VitalityScorer {
 
   static int ritualCompletion(TodayRecord record, UserPlanType planType) {
     final checks = switch (planType) {
-      UserPlanType.mealReemplazament => [
-        record.productTaken != ProductoTakenStatus.notRecorded ||
+      UserPlanType.mealReplacement => [
+        record.productTaken != ProductTakenStatus.notRecorded ||
             record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
         record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
       ],
-      UserPlanType.nonMealReemplazament => [
-        record.productTaken != ProductoTakenStatus.notRecorded ||
+      UserPlanType.nonMealReplacement => [
+        record.productTaken != ProductTakenStatus.notRecorded ||
             record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
       ],
-      UserPlanType.noProducto => [
+      UserPlanType.noProduct => [
         record.hydrationMl > 0,
         record.weightRecorded || record.meals.isNotEmpty,
       ],
@@ -168,7 +168,7 @@ class VitalityScorer {
     );
     final cScore = habitsScore(record, planType, consistency7d);
 
-    // Daily score mirrors Desglose de puntuación (six dimensions from live check-ins).
+    // Daily score mirrors Desglose de puntuaci贸n (six dimensions from live check-ins).
     final daily = ((nScore + eScore + mScore + sScore + hScore + cScore) / 6)
         .round();
 
@@ -191,15 +191,15 @@ class VitalityScorer {
     if (score >= 80) return 'Bien';
     if (score >= 75) return 'Bien y estable';
     if (score >= 50) return 'Ve con calma';
-    if (score >= 1) return 'Cada pequeño paso cuenta';
-    return 'Sin presión: puedes retomar cuando quieras';
+    if (score >= 1) return 'Cada peque帽o paso cuenta';
+    return 'Sin presi贸n: puedes retomar cuando quieras';
   }
 
   static String scoreRating(int score) {
     if (score >= 90) return 'Excelente';
     if (score >= 80) return 'Bien';
     if (score >= 60) return 'Regular';
-    if (score > 0) return 'Necesita atención';
+    if (score > 0) return 'Necesita atenci贸n';
     return 'No registrado';
   }
 
@@ -207,7 +207,7 @@ class VitalityScorer {
     return [
       VitalityDimension(
         key: 'nutrition',
-        label: 'Nutrición',
+        label: 'Nutrici贸n',
         score: scores.nutritionScore,
         icon: Icons.apple_outlined,
       ),
@@ -219,25 +219,25 @@ class VitalityScorer {
       ),
       VitalityDimension(
         key: 'body_mind',
-        label: 'Atención plena',
+        label: 'Atenci贸n plena',
         score: scores.moodCheckScore,
         icon: Icons.spa_outlined,
       ),
       VitalityDimension(
         key: 'sleep',
-        label: 'Sueño',
+        label: 'Sue帽o',
         score: scores.sleepScore,
         icon: Icons.bedtime_outlined,
       ),
       VitalityDimension(
         key: 'hydration',
-        label: 'Hidratación',
+        label: 'Hidrataci贸n',
         score: scores.hydrationScore,
         icon: Icons.water_drop_outlined,
       ),
       VitalityDimension(
         key: 'habits',
-        label: 'Hábitos',
+        label: 'H谩bitos',
         score: scores.consistencyScore,
         icon: Icons.wb_sunny_outlined,
         highlighted:
@@ -262,3 +262,4 @@ class VitalityDimension {
   final IconData icon;
   final bool highlighted;
 }
+

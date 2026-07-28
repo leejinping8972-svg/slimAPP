@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
@@ -33,7 +33,7 @@ void showPesoSheet(
 ) {
   final baseline = record.weightValueKg > 0
       ? record.weightValueKg
-      : (profile.currentPesoKg > 0 ? profile.currentPesoKg : 68.0);
+      : (profile.currentWeightKg > 0 ? profile.currentWeightKg : 68.0);
   showModalBottomSheet<void>(
     context: context,
     useRootNavigator: true,
@@ -148,8 +148,8 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
-          title: const Text('Meta de hidratación alcanzada'),
-          content: const Text('Meta diaria de hidratación alcanzada ✓'),
+          title: const Text('Meta de hidrataci贸n alcanzada'),
+          content: const Text('Meta diaria de hidratacion alcanzada.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
@@ -165,7 +165,7 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('Hidratación', style: LuckdateTextStyles.h2),
+        Text('Hidrataci贸n', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.base),
         ScaleTransition(
           scale: _pulse,
@@ -221,7 +221,7 @@ class _PesoSheetState extends ConsumerState<PesoSheet> {
       children: [
         Text('Peso', style: LuckdateTextStyles.h2),
         Text(
-          'Rango predeterminado ±3 kg. Arrastra hasta el borde para ampliarlo.',
+          'Rango predeterminado 卤3 kg. Arrastra hasta el borde para ampliarlo.',
           style: LuckdateTextStyles.bodySmall,
         ),
         Slider(
@@ -281,7 +281,7 @@ class _SleepSheetState extends ConsumerState<SleepSheet> {
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('¿Cuánto dormiste?', style: LuckdateTextStyles.h2),
+        Text('驴Cu谩nto dormiste?', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
         Text(
           '${_hours.toStringAsFixed(1)} hours',
@@ -322,8 +322,8 @@ class MealCheckInSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final alreadyLogged =
-        record.productTaken == ProductoTakenStatus.taken ||
-        record.productTaken == ProductoTakenStatus.partial;
+        record.productTaken == ProductTakenStatus.taken ||
+        record.productTaken == ProductTakenStatus.partial;
 
     return LdBottomSheetBody(
       children: [
@@ -331,17 +331,17 @@ class MealCheckInSheet extends ConsumerWidget {
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
           alreadyLogged
-              ? 'La proteína matutina ya está registrada hoy.'
-              : 'Registra rápidamente tu Solar Protein o comida matutina. La IA estimará las calorías en el registro diario.',
+              ? 'La prote铆na matutina ya est谩 registrada hoy.'
+              : 'Registra r谩pidamente tu Solar Protein o comida matutina. La IA estimar谩 las calor铆as en el registro diario.',
           style: LuckdateTextStyles.bodySmall,
         ),
         const SizedBox(height: LuckdateSpacing.lg),
         LdPrimaryButton(
-          label: alreadyLogged ? 'Registrado ✓' : 'Registrar Solar Protein',
+          label: alreadyLogged ? 'Registrado' : 'Registrar Solar Protein',
           onPressed: alreadyLogged
               ? () => Navigator.pop(context)
               : () {
-                  final updated = CheckInEstimator.applyProductoShake(record);
+                  final updated = CheckInEstimator.applyProductShake(record);
                   ref
                       .read(appStateProvider.notifier)
                       .updateTodayRecord(updated);
@@ -378,7 +378,7 @@ List<RitualLogItem> ritualItemsForPlan({
   }
 
   switch (profile.userPlanType) {
-    case UserPlanType.noProducto:
+    case UserPlanType.noProduct:
       add(
         'Peso',
         record.weightRecorded
@@ -388,24 +388,24 @@ List<RitualLogItem> ritualItemsForPlan({
         record.weightRecorded,
       );
       add(
-        'Hidratación',
+        'Hidrataci贸n',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
       );
-    case UserPlanType.nonMealReemplazament:
+    case UserPlanType.nonMealReplacement:
       add(
-        profile.linkedProductoName.isEmpty
+        profile.linkedProductName.isEmpty
             ? 'Tu producto'
-            : profile.linkedProductoName,
-        record.productTaken == ProductoTakenStatus.taken
+            : profile.linkedProductName,
+        record.productTaken == ProductTakenStatus.taken
             ? 'Tomado hoy'
             : 'Recuerda tomar tu producto',
         Icons.medication_outlined,
-        record.productTaken == ProductoTakenStatus.taken,
+        record.productTaken == ProductTakenStatus.taken,
       );
       add(
-        'Hidratación',
+        'Hidrataci贸n',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -418,17 +418,17 @@ List<RitualLogItem> ritualItemsForPlan({
         Icons.monitor_weight_outlined,
         record.weightRecorded,
       );
-    case UserPlanType.mealReemplazament:
+    case UserPlanType.mealReplacement:
       add(
-        'Solar Protein™',
-        record.productTaken == ProductoTakenStatus.taken
+        'Solar Protein',
+        record.productTaken == ProductTakenStatus.taken
             ? 'Completado'
             : 'Toca para registrar',
         Icons.local_drink_outlined,
-        record.productTaken == ProductoTakenStatus.taken,
+        record.productTaken == ProductTakenStatus.taken,
       );
       add(
-        'Hidratación',
+        'Hidrataci贸n',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -442,10 +442,10 @@ List<RitualLogItem> ritualItemsForPlan({
         record.weightRecorded,
       );
       add(
-        'Sueño',
+        'Sue帽o',
         record.sleepHours > 0
             ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
-            : '¿Cuánto dormiste?',
+            : '驴Cu谩nto dormiste?',
         Icons.bedtime_outlined,
         record.sleepHours > 0,
       );
@@ -468,3 +468,4 @@ class RitualLogItem {
   final bool completed;
   final VoidCallback onTap;
 }
+

@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
@@ -65,7 +65,7 @@ class _MetricRing extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              CircularProgresoIndicator(
+              CircularProgressIndicator(
                 value: progress.clamp(0, 1),
                 strokeWidth: 6,
                 backgroundColor: LuckdateColors.lineSoft,
@@ -200,9 +200,9 @@ class Consistency5DayStrip extends StatelessWidget {
                         '${day.day}',
                         style: LuckdateTextStyles.caption.copyWith(
                           fontSize: 12,
-                          fontPeso: isHoy && highlightHoy
-                              ? FontPeso.w700
-                              : FontPeso.w500,
+                          fontWeight: isHoy && highlightHoy
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           color: isHoy && highlightHoy
                               ? LuckdateColors.chocolateBrown
                               : LuckdateColors.textSecondary,
@@ -287,7 +287,7 @@ class ConsistencyCalendarCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Últimos 5 días · Toca un día para ver sus detalles',
+            '脷ltimos 5 d铆as 路 Toca un d铆a para ver sus detalles',
             style: LuckdateTextStyles.caption,
           ),
           const SizedBox(height: LuckdateSpacing.md),
@@ -328,7 +328,7 @@ TodayRecord resolveDayCheckInRecord({
       : 0.0;
   final moods = ['okay', 'good', 'great'];
   return TodayRecord(
-    productTaken: ProductoTakenStatus.taken,
+    productTaken: ProductTakenStatus.taken,
     hydrationMl: 1200 + (targetViajeDay * 137) % 800,
     weightRecorded: weight > 0,
     weightValueKg: weight > 0 ? weight : 68 - targetViajeDay * 0.12,
@@ -339,13 +339,13 @@ TodayRecord resolveDayCheckInRecord({
 }
 
 bool dayCheckInHasData(TodayRecord record, UserPlanType planType) {
-  if (record.productTaken == ProductoTakenStatus.taken) return true;
+  if (record.productTaken == ProductTakenStatus.taken) return true;
   if (record.hydrationMl > 0) return true;
   if (record.weightRecorded) return true;
   if (record.sleepHours > 0) return true;
   if (record.moodTag.isNotEmpty) return true;
-  if (planType == UserPlanType.nonMealReemplazament &&
-      record.productTaken != ProductoTakenStatus.notRecorded) {
+  if (planType == UserPlanType.nonMealReplacement &&
+      record.productTaken != ProductTakenStatus.notRecorded) {
     return true;
   }
   return false;
@@ -398,7 +398,7 @@ class DayCheckInSheet extends StatelessWidget {
         if (journeyDay != null && journeyDay! > 0) ...[
           const SizedBox(height: 4),
           Text(
-            'Día $journeyDay del viaje',
+            'D铆a $journeyDay del viaje',
             style: LuckdateTextStyles.caption.copyWith(
               color: LuckdateColors.deepSage,
             ),
@@ -408,23 +408,23 @@ class DayCheckInSheet extends StatelessWidget {
         if (!hasData)
           const StatePlaceholder(
             type: 'empty',
-            title: 'Aún no hay registro',
-            message: 'No se registraron rituales este día.',
+            title: 'A煤n no hay registro',
+            message: 'No se registraron rituales este d铆a.',
           )
         else ...[
           _CheckInRow(
             icon: Icons.local_drink_outlined,
-            label: planType == UserPlanType.mealReemplazament
+            label: planType == UserPlanType.mealReplacement
                 ? 'Solar Protein'
                 : 'Producto',
-            value: record.productTaken == ProductoTakenStatus.taken
+            value: record.productTaken == ProductTakenStatus.taken
                 ? 'Completado'
                 : 'No registrado',
-            done: record.productTaken == ProductoTakenStatus.taken,
+            done: record.productTaken == ProductTakenStatus.taken,
           ),
           _CheckInRow(
             icon: Icons.water_drop_outlined,
-            label: 'Hidratación',
+            label: 'Hidrataci贸n',
             value: record.hydrationMl > 0
                 ? '${record.hydrationMl} ml'
                 : 'No registrado',
@@ -438,10 +438,10 @@ class DayCheckInSheet extends StatelessWidget {
                 : 'No registrado',
             done: record.weightRecorded,
           ),
-          if (planType == UserPlanType.mealReemplazament) ...[
+          if (planType == UserPlanType.mealReplacement) ...[
             _CheckInRow(
               icon: Icons.bedtime_outlined,
-              label: 'Sueño',
+              label: 'Sue帽o',
               value: record.sleepHours > 0
                   ? '${record.sleepHours.toStringAsFixed(1)} h'
                   : 'No registrado',
@@ -449,7 +449,7 @@ class DayCheckInSheet extends StatelessWidget {
             ),
             _CheckInRow(
               icon: Icons.mood_outlined,
-              label: 'Ánimo',
+              label: '脕nimo',
               value: record.moodTag.isNotEmpty
                   ? record.moodTag[0].toUpperCase() +
                         record.moodTag.substring(1)
@@ -565,7 +565,7 @@ class PesoTrendCard extends StatelessWidget {
           Text('Tendencia de peso', style: LuckdateTextStyles.title),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            '${weights.last.toStringAsFixed(1)} kg · Target ${targetKg.toStringAsFixed(1)} kg',
+            '${weights.last.toStringAsFixed(1)} kg 路 Target ${targetKg.toStringAsFixed(1)} kg',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.md),
@@ -622,7 +622,7 @@ class PesoTrendCard extends StatelessWidget {
                           '${spot.y.toStringAsFixed(1)} kg',
                           LuckdateTextStyles.caption.copyWith(
                             color: LuckdateColors.ivoryWhite,
-                            fontPeso: FontPeso.w600,
+                            fontWeight: FontWeight.w600,
                           ),
                         );
                       }).toList();
@@ -654,3 +654,4 @@ class PesoTrendCard extends StatelessWidget {
     );
   }
 }
+
