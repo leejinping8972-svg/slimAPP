@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - 'mobile/**'
+      - 'luckdate-admin-web/**'
       - '.github/workflows/deploy-web.yml'
   workflow_dispatch:
 
@@ -42,6 +43,11 @@ jobs:
         # Disable PWA service-worker precache — large video assets exceed
         # mobile cache quotas and can leave GitHub Pages on a blank screen.
         run: flutter build web --release --base-href /${{ github.event.repository.name }}/ --no-web-resources-cdn --pwa-strategy=none
+
+      - name: Include admin demo site
+        run: |
+          mkdir -p build/web/luckdate-admin-web
+          cp -r ../luckdate-admin-web/* build/web/luckdate-admin-web/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
