@@ -24,14 +24,14 @@ class DailyAdviceHelper {
     };
 
     final tips = <String>[
-      if (profile.userPlanType == UserPlanType.mealReplacement)
-        'Replace ${profile.mealSlot} with your Solar Protein shake today.'
-      else if (profile.userPlanType == UserPlanType.nonMealReplacement)
-        'Take your linked product at ${profile.reminderTime}.'
+      if (profile.userPlanType == UserPlanType.mealReemplazament)
+        'Reemplaza ${profile.mealSlot} with your Solar Protein shake today.'
+      else if (profile.userPlanType == UserPlanType.nonMealReemplazament)
+        'Toma tu producto vinculado a las ${profile.reminderTime}.'
       else
-        'Log meals and water — Sunny will refine your plan after you link a product.',
-      'Aim for ~$water ml water across the day.',
-      'Target sleep window: $sleepHours hours tonight.',
+        'Registra comidas y agua; Sunny ajustará tu plan después de vincular un producto.',
+      'Procura beber aproximadamente $water ml  ml de agua durante el día.',
+      'Horario de sueño recomendado: $sleepHours horas esta noche.',
     ];
 
     return DailyAdvice(
@@ -51,10 +51,8 @@ class DailyAdviceHelper {
       '65+' => 68,
       _ => 40,
     };
-    final bmr = 10 * profile.currentWeightKg +
-        6.25 * profile.heightCm -
-        5 * ageMid -
-        161;
+    final bmr =
+        10 * profile.currentPesoKg + 6.25 * profile.heightCm - 5 * ageMid - 161;
     return (bmr * 1.3).round().clamp(1200, 2000);
   }
 }

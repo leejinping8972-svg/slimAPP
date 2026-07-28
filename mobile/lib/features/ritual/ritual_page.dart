@@ -43,7 +43,7 @@ class _RitualPageState extends ConsumerState<RitualPage> {
         child: Column(
           children: [
             _RitualHeader(
-              onShare: () {},
+              onCompartir: () {},
               onChat: () => context.push('/home'),
             ),
             Expanded(
@@ -57,7 +57,7 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _JourneyPlanCard(
+                    _ViajePlanCard(
                       profile: profile,
                       journey: journey,
                       onOpenPlan: () => context.push('/plan'),
@@ -66,7 +66,9 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                         ref.read(appStateProvider.notifier).confirmReceipt();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Plan started — welcome to Day 1!'),
+                            content: Text(
+                              '¡Plan iniciado! Te damos la bienvenida al día 1.',
+                            ),
                           ),
                         );
                         context.go('/plan');
@@ -127,8 +129,9 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                             height: 44,
                             decoration: BoxDecoration(
                               color: LuckdateColors.sageSoft,
-                              borderRadius:
-                                  BorderRadius.circular(LuckdateRadius.md),
+                              borderRadius: BorderRadius.circular(
+                                LuckdateRadius.md,
+                              ),
                             ),
                             child: const Icon(
                               Icons.restaurant_menu_outlined,
@@ -141,11 +144,11 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Check-in Record',
+                                  'Record diario',
                                   style: LuckdateTextStyles.title,
                                 ),
                                 Text(
-                                  'Track meals, water, and daily nutrition.',
+                                  'Registra tus comidas, agua y nutrición diaria.',
                                   style: LuckdateTextStyles.bodySmall,
                                 ),
                               ],
@@ -172,21 +175,21 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                         journeyDay: journey.day - (4 - index),
                         record: dayRecord,
                         planType: profile.userPlanType,
-                        isToday: index == 4,
+                        isHoy: index == 4,
                       ),
                     ),
                     if (journey.weightTrend.isNotEmpty) ...[
                       const SizedBox(height: LuckdateSpacing.lg),
-                      WeightTrendCard(
+                      PesoTrendCard(
                         weights: journey.weightTrend,
-                        targetKg: profile.targetWeightKg,
+                        targetKg: profile.targetPesoKg,
                       ),
                     ],
                     const SizedBox(height: LuckdateSpacing.lg),
                     LdVitalityBanner(
                       message:
-                          'Your body is in balance and your habits are on track. Consistency is your superpower.',
-                      actionLabel: 'Share',
+                          'Tu cuerpo está en equilibrio y tus hábitos van por buen camino. La constancia es tu superpoder.',
+                      actionLabel: 'Compartir',
                       onAction: () {},
                     ),
                   ],
@@ -210,7 +213,7 @@ class _RitualPageState extends ConsumerState<RitualPage> {
     setState(() => _trendRange = order[(i + 1) % order.length]);
   }
 
-  List<double> _trendForRange(JourneyState journey, _VitalityRange range) {
+  List<double> _trendForRange(ViajeState journey, _VitalityRange range) {
     final full = journey.vitalityTrend.where((v) => v > 0).toList();
     if (full.isEmpty) return const [];
     return switch (range) {
@@ -224,18 +227,18 @@ class _RitualPageState extends ConsumerState<RitualPage> {
     };
   }
 
-  int _yesterdayDelta(JourneyState journey) {
+  int _yesterdayDelta(ViajeState journey) {
     final trend = journey.vitalityTrend.where((v) => v > 0).toList();
     if (trend.length < 2) return 0;
     return (trend.last - trend[trend.length - 2]).round();
   }
 
   String _rangeLabel(_VitalityRange range) => switch (range) {
-        _VitalityRange.today => 'Today',
-        _VitalityRange.days28 => '28 Days',
-        _VitalityRange.days56 => '56 Days',
-        _VitalityRange.days84 => '84 Days',
-      };
+    _VitalityRange.today => 'Hoy',
+    _VitalityRange.days28 => '28 Days',
+    _VitalityRange.days56 => '56 Days',
+    _VitalityRange.days84 => '84 Days',
+  };
 }
 
 class _DailyAdviceCard extends StatelessWidget {
@@ -249,10 +252,10 @@ class _DailyAdviceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Today\'s recommendations', style: LuckdateTextStyles.title),
+          Text('De hoy recommendations', style: LuckdateTextStyles.title),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            'Based on your profile basics',
+            'Según los datos básicos de tu perfil',
             style: LuckdateTextStyles.caption,
           ),
           const SizedBox(height: LuckdateSpacing.md),
@@ -260,7 +263,7 @@ class _DailyAdviceCard extends StatelessWidget {
             children: [
               _metric('Calories', '${advice.calorieKcal} kcal'),
               _metric('Protein', '${advice.proteinG} g'),
-              _metric('Water', '${advice.waterMl} ml'),
+              _metric('Agua', '${advice.waterMl} ml'),
             ],
           ),
           const SizedBox(height: LuckdateSpacing.md),
@@ -271,9 +274,7 @@ class _DailyAdviceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('·  ', style: TextStyle(height: 1.4)),
-                  Expanded(
-                    child: Text(t, style: LuckdateTextStyles.bodySmall),
-                  ),
+                  Expanded(child: Text(t, style: LuckdateTextStyles.bodySmall)),
                 ],
               ),
             ),
@@ -291,7 +292,7 @@ class _DailyAdviceCard extends StatelessWidget {
           Text(label, style: LuckdateTextStyles.caption),
           Text(
             value,
-            style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w700),
+            style: LuckdateTextStyles.body.copyWith(fontPeso: FontPeso.w700),
           ),
         ],
       ),
@@ -299,8 +300,8 @@ class _DailyAdviceCard extends StatelessWidget {
   }
 }
 
-class _JourneyPlanCard extends StatelessWidget {
-  const _JourneyPlanCard({
+class _ViajePlanCard extends StatelessWidget {
+  const _ViajePlanCard({
     required this.profile,
     required this.journey,
     required this.onOpenPlan,
@@ -309,7 +310,7 @@ class _JourneyPlanCard extends StatelessWidget {
   });
 
   final UserProfile profile;
-  final JourneyState journey;
+  final ViajeState journey;
   final VoidCallback onOpenPlan;
   final VoidCallback onBrowseMall;
   final VoidCallback onConfirmReceipt;
@@ -318,7 +319,7 @@ class _JourneyPlanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (profile.isAwaitingReceipt) {
       return LdAwaitingReceiptPanel(
-        productName: profile.linkedProductName,
+        productName: profile.linkedProductoName,
         onConfirmReceipt: onConfirmReceipt,
         onViewOverview: onOpenPlan,
         compact: true,
@@ -326,123 +327,122 @@ class _JourneyPlanCard extends StatelessWidget {
     }
 
     return switch (profile.userPlanType) {
-      UserPlanType.mealReplacement => LdCard(
-          onTap: onOpenPlan,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+      UserPlanType.mealReemplazament => LdCard(
+        onTap: onOpenPlan,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text('Tu plan', style: LuckdateTextStyles.title),
+                const Spacer(),
+                Text(
+                  'Abrir →',
+                  style: LuckdateTextStyles.caption.copyWith(
+                    color: LuckdateColors.deepSage,
+                    fontPeso: FontPeso.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: LuckdateSpacing.sm),
+            Text(
+              'Viaje Slim de 28 días · Day ${journey.day}/${journey.totalDays}',
+              style: LuckdateTextStyles.body.copyWith(fontPeso: FontPeso.w600),
+            ),
+            const SizedBox(height: LuckdateSpacing.sm),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: LinearProgresoIndicator(
+                value: (journey.completionPercent / 100).clamp(0.0, 1.0),
+                minHeight: 8,
+                backgroundColor: LuckdateColors.lineSoft,
+                color: LuckdateColors.deepSage,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '${journey.completionPercent}% completado',
+              style: LuckdateTextStyles.caption,
+            ),
+          ],
+        ),
+      ),
+      UserPlanType.nonMealReemplazament => LdCard(
+        onTap: onOpenPlan,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Plan de cuidado del producto',
+                  style: LuckdateTextStyles.title,
+                ),
+                const Spacer(),
+                Text(
+                  'Abrir →',
+                  style: LuckdateTextStyles.caption.copyWith(
+                    color: LuckdateColors.deepSage,
+                    fontPeso: FontPeso.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: LuckdateSpacing.sm),
+            Text(
+              profile.linkedProductoName.isEmpty
+                  ? 'Tu producto vinculado'
+                  : profile.linkedProductoName,
+              style: LuckdateTextStyles.body.copyWith(fontPeso: FontPeso.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Recordatorio: ${profile.reminderTime} & ${profile.reminderTime2}',
+              style: LuckdateTextStyles.caption,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              journey.todayRecord.productTaken == ProductoTakenStatus.taken
+                  ? 'Tomado hoy ✓'
+                  : 'Aún no registrado hoy',
+              style: LuckdateTextStyles.caption.copyWith(
+                color: LuckdateColors.deepSage,
+              ),
+            ),
+          ],
+        ),
+      ),
+      UserPlanType.noProducto => LdCard(
+        onTap: onBrowseMall,
+        child: Row(
+          children: [
+            const Icon(Icons.spa_outlined, color: LuckdateColors.deepSage),
+            const SizedBox(width: LuckdateSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Your Plan', style: LuckdateTextStyles.title),
-                  const Spacer(),
+                  Text('Inicia un plan', style: LuckdateTextStyles.title),
                   Text(
-                    'Open →',
-                    style: LuckdateTextStyles.caption.copyWith(
-                      color: LuckdateColors.deepSage,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    'Explora la tienda o vincula un pedido para desbloquear tu plan de viaje.',
+                    style: LuckdateTextStyles.caption,
                   ),
                 ],
               ),
-              const SizedBox(height: LuckdateSpacing.sm),
-              Text(
-                '28-Day Slim Journey · Day ${journey.day}/${journey.totalDays}',
-                style: LuckdateTextStyles.body.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: LuckdateSpacing.sm),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: LinearProgressIndicator(
-                  value: (journey.completionPercent / 100).clamp(0.0, 1.0),
-                  minHeight: 8,
-                  backgroundColor: LuckdateColors.lineSoft,
-                  color: LuckdateColors.deepSage,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                '${journey.completionPercent}% complete',
-                style: LuckdateTextStyles.caption,
-              ),
-            ],
-          ),
+            ),
+            const Icon(Icons.chevron_right),
+          ],
         ),
-      UserPlanType.nonMealReplacement => LdCard(
-          onTap: onOpenPlan,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text('Product Care Plan', style: LuckdateTextStyles.title),
-                  const Spacer(),
-                  Text(
-                    'Open →',
-                    style: LuckdateTextStyles.caption.copyWith(
-                      color: LuckdateColors.deepSage,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: LuckdateSpacing.sm),
-              Text(
-                profile.linkedProductName.isEmpty
-                    ? 'Your linked product'
-                    : profile.linkedProductName,
-                style: LuckdateTextStyles.body.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Reminder: ${profile.reminderTime} & ${profile.reminderTime2}',
-                style: LuckdateTextStyles.caption,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                journey.todayRecord.productTaken == ProductTakenStatus.taken
-                    ? 'Taken today ✓'
-                    : 'Not logged yet today',
-                style: LuckdateTextStyles.caption.copyWith(
-                  color: LuckdateColors.deepSage,
-                ),
-              ),
-            ],
-          ),
-        ),
-      UserPlanType.noProduct => LdCard(
-          onTap: onBrowseMall,
-          child: Row(
-            children: [
-              const Icon(Icons.spa_outlined, color: LuckdateColors.deepSage),
-              const SizedBox(width: LuckdateSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Start a plan', style: LuckdateTextStyles.title),
-                    Text(
-                      'Browse Mall or link an order to unlock your Journey plan.',
-                      style: LuckdateTextStyles.caption,
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right),
-            ],
-          ),
-        ),
+      ),
     };
   }
 }
 
 class _RitualHeader extends StatelessWidget {
-  const _RitualHeader({required this.onShare, required this.onChat});
+  const _RitualHeader({required this.onCompartir, required this.onChat});
 
-  final VoidCallback onShare;
+  final VoidCallback onCompartir;
   final VoidCallback onChat;
 
   @override
@@ -460,17 +460,17 @@ class _RitualHeader extends StatelessWidget {
             onPressed: onChat,
             icon: const Icon(Icons.arrow_back_ios_new, size: 18),
             color: LuckdateColors.textPrimary,
-            tooltip: 'Chat with Sunny',
+            tooltip: 'Chatea con Sunny',
           ),
           Expanded(
             child: Text(
-              'My Vitality Score',
+              'Mi puntuación de vitalidad',
               textAlign: TextAlign.center,
               style: LuckdateTextStyles.title,
             ),
           ),
           IconButton(
-            onPressed: onShare,
+            onPressed: onCompartir,
             icon: const Icon(Icons.ios_share_rounded, size: 20),
             color: LuckdateColors.textPrimary,
           ),
@@ -499,11 +499,7 @@ class _ScoreOverviewCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LdScoreRing(
-            score: score,
-            label: label,
-            size: 118,
-          ),
+          LdScoreRing(score: score, label: label, size: 118),
           const SizedBox(width: LuckdateSpacing.lg),
           Expanded(
             child: Column(
@@ -515,7 +511,7 @@ class _ScoreOverviewCard extends StatelessWidget {
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(
-                  'Keep your daily rituals, build your long-term vitality.',
+                  'Mantén tus rituales diarios y fortalece tu vitalidad a largo plazo.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
                 const SizedBox(height: LuckdateSpacing.md),
@@ -536,9 +532,9 @@ class _ScoreOverviewCard extends StatelessWidget {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    'Score Insights >',
+                    'Detalles de la puntuación >',
                     style: LuckdateTextStyles.caption.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontPeso: FontPeso.w600,
                     ),
                   ),
                 ),
@@ -547,13 +543,13 @@ class _ScoreOverviewCard extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     yesterdayDelta >= 0
-                        ? 'Compared to yesterday ↑ $yesterdayDelta pts'
-                        : 'Compared to yesterday ↓ ${yesterdayDelta.abs()} pts',
+                        ? 'Comparado con ayer ↑ $yesterdayDelta pts'
+                        : 'Comparado con ayer ↓ ${yesterdayDelta.abs()} pts',
                     style: LuckdateTextStyles.caption.copyWith(
                       color: yesterdayDelta >= 0
                           ? LuckdateColors.deepSage
                           : LuckdateColors.textSecondary,
-                      fontWeight: FontWeight.w600,
+                      fontPeso: FontPeso.w600,
                     ),
                   ),
                 ),
@@ -578,22 +574,19 @@ class _TrendCard extends StatelessWidget {
   final VoidCallback onRangeTap;
 
   String get _rangeLabel => switch (range) {
-        _VitalityRange.today => 'Today',
-        _VitalityRange.days28 => '28 Days',
-        _VitalityRange.days56 => '56 Days',
-        _VitalityRange.days84 => '84 Days',
-      };
+    _VitalityRange.today => 'Hoy',
+    _VitalityRange.days28 => '28 Days',
+    _VitalityRange.days56 => '56 Days',
+    _VitalityRange.days84 => '84 Days',
+  };
 
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    final labels = List.generate(
-      trend.length,
-      (i) {
-        final d = now.subtract(Duration(days: trend.length - 1 - i));
-        return DateFormat('M/d').format(d);
-      },
-    );
+    final labels = List.generate(trend.length, (i) {
+      final d = now.subtract(Duration(days: trend.length - 1 - i));
+      return DateFormat('M/d').format(d);
+    });
 
     return LdCard(
       child: Column(
@@ -601,7 +594,7 @@ class _TrendCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Score Trend', style: LuckdateTextStyles.title),
+              Text('Tendencia de puntuación', style: LuckdateTextStyles.title),
               const Spacer(),
               InkWell(
                 onTap: onRangeTap,
@@ -633,7 +626,7 @@ class _TrendCard extends StatelessWidget {
             child: trend.isEmpty
                 ? Center(
                     child: Text(
-                      'No trend data yet',
+                      'Aún no hay datos de tendencia',
                       style: LuckdateTextStyles.bodySmall,
                     ),
                   )
@@ -708,7 +701,7 @@ class _TrendCard extends StatelessWidget {
                                   s.y.toStringAsFixed(0),
                                   LuckdateTextStyles.caption.copyWith(
                                     color: LuckdateColors.ivoryWhite,
-                                    fontWeight: FontWeight.w600,
+                                    fontPeso: FontPeso.w600,
                                   ),
                                 ),
                               )
@@ -729,11 +722,11 @@ class _TrendCard extends StatelessWidget {
                             show: true,
                             getDotPainter: (_, __, ___, ____) =>
                                 FlDotCirclePainter(
-                              radius: 3.5,
-                              color: LuckdateColors.deepSage,
-                              strokeWidth: 2,
-                              strokeColor: LuckdateColors.ivoryWhite,
-                            ),
+                                  radius: 3.5,
+                                  color: LuckdateColors.deepSage,
+                                  strokeWidth: 2,
+                                  strokeColor: LuckdateColors.ivoryWhite,
+                                ),
                           ),
                           belowBarData: BarAreaData(
                             show: true,
@@ -741,10 +734,12 @@ class _TrendCard extends StatelessWidget {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                LuckdateColors.vitalitySage
-                                    .withValues(alpha: 0.35),
-                                LuckdateColors.vitalitySage
-                                    .withValues(alpha: 0.02),
+                                LuckdateColors.vitalitySage.withValues(
+                                  alpha: 0.35,
+                                ),
+                                LuckdateColors.vitalitySage.withValues(
+                                  alpha: 0.02,
+                                ),
                               ],
                             ),
                           ),
@@ -760,10 +755,7 @@ class _TrendCard extends StatelessWidget {
 }
 
 class _BreakdownCard extends StatelessWidget {
-  const _BreakdownCard({
-    required this.dimensions,
-    required this.onHabitsTap,
-  });
+  const _BreakdownCard({required this.dimensions, required this.onHabitsTap});
 
   final List<VitalityDimension> dimensions;
   final VoidCallback onHabitsTap;
@@ -776,10 +768,10 @@ class _BreakdownCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Score Breakdown', style: LuckdateTextStyles.title),
+              Text('Desglose de puntuación', style: LuckdateTextStyles.title),
               const Spacer(),
               Text(
-                'Learn More ⓘ',
+                'Más información ⓘ',
                 style: LuckdateTextStyles.caption.copyWith(
                   color: LuckdateColors.deepSage,
                 ),
@@ -847,11 +839,12 @@ class _BreakdownRing extends StatelessWidget {
                 SizedBox(
                   width: 56,
                   height: 56,
-                  child: CircularProgressIndicator(
+                  child: CircularProgresoIndicator(
                     value: dimension.score / 100,
                     strokeWidth: 5,
-                    backgroundColor:
-                        LuckdateColors.lineSoft.withValues(alpha: 0.55),
+                    backgroundColor: LuckdateColors.lineSoft.withValues(
+                      alpha: 0.55,
+                    ),
                     color: color,
                     strokeCap: StrokeCap.round,
                   ),
@@ -868,7 +861,7 @@ class _BreakdownRing extends StatelessWidget {
             VitalityScorer.scoreRating(dimension.score),
             style: LuckdateTextStyles.caption.copyWith(
               color: color,
-              fontWeight: FontWeight.w600,
+              fontPeso: FontPeso.w600,
             ),
           ),
         ],
@@ -890,23 +883,23 @@ class _FocusCarousel extends StatelessWidget {
 
   static const _items = [
     (
-      'Energy & Focus',
-      'Focus on high-quality nutrition and effective exercise to stay balanced and improve concentration.',
+      'Energía y concentración',
+      'Prioriza una nutrición de calidad y ejercicio efectivo para mantener el equilibrio y mejorar la concentración.',
       Icons.self_improvement_rounded,
     ),
     (
-      'Hydration Rhythm',
-      'Small, steady water breaks keep energy smooth through the afternoon.',
+      'Ritmo de hidratación',
+      'Tomar agua en pequeñas cantidades durante la tarde ayuda a mantener tu energía estable.',
       Icons.water_drop_outlined,
     ),
     (
-      'Rest & Recovery',
-      'Protect your sleep window — recovery is part of the ritual.',
+      'Descanso y recuperación',
+      'Protege tu horario de sueño: recuperarte es parte del ritual.',
       Icons.bedtime_outlined,
     ),
     (
-      'Daily Ritual',
-      'Log today\'s rituals with Sunny and keep your vitality streak on track.',
+      'Ritual diario',
+      'Registrar hoy\'s rituals with Sunny and keep your vitality streak on track.',
       Icons.wb_sunny_outlined,
     ),
   ];
@@ -943,10 +936,10 @@ class _FocusCarousel extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Today\'s Focus',
+                          'De hoy Focus',
                           style: LuckdateTextStyles.caption.copyWith(
                             color: LuckdateColors.sunGold,
-                            fontWeight: FontWeight.w700,
+                            fontPeso: FontPeso.w700,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -971,9 +964,9 @@ class _FocusCarousel extends StatelessWidget {
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             child: Text(
-                              'View Focus Plan >',
+                              'Ver plan de enfoque >',
                               style: LuckdateTextStyles.caption.copyWith(
-                                fontWeight: FontWeight.w700,
+                                fontPeso: FontPeso.w700,
                                 color: LuckdateColors.deepSage,
                               ),
                             ),

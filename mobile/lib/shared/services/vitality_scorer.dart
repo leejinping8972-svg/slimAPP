@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class VitalityScorer {
-  static int productScore(ProductTakenStatus status) {
+  static int productScore(ProductoTakenStatus status) {
     switch (status) {
-      case ProductTakenStatus.taken:
+      case ProductoTakenStatus.taken:
         return 100;
-      case ProductTakenStatus.partial:
+      case ProductoTakenStatus.partial:
         return 60;
-      case ProductTakenStatus.skippedWithReason:
+      case ProductoTakenStatus.skippedWithReason:
         return 30;
-      case ProductTakenStatus.notRecorded:
+      case ProductoTakenStatus.notRecorded:
         return 0;
     }
   }
@@ -40,7 +40,8 @@ class VitalityScorer {
 
   static int sleepScore({required double hours, required String quality}) {
     if (hours <= 0 && quality.isEmpty) return 0;
-    if (hours >= 7 && (quality == 'good' || quality == 'okay' || quality == 'logged')) {
+    if (hours >= 7 &&
+        (quality == 'good' || quality == 'okay' || quality == 'logged')) {
       return 100;
     }
     if ((hours >= 6 && hours < 7) || quality == 'okay' || quality == 'logged') {
@@ -89,9 +90,9 @@ class VitalityScorer {
           .round();
     }
 
-    final fromMinutes =
-        ((record.exerciseMinutes / 30).clamp(0.0, 1.0) * 100).round();
-    final sessionBonus = (record.exerciseSessions * 15).clamp(0, 30);
+    final fromMinutes = ((record.exerciseMinutes / 30).clamp(0.0, 1.0) * 100)
+        .round();
+    final sessionBonus = (record.exerciseSesiones * 15).clamp(0, 30);
     return (fromMinutes + sessionBonus).clamp(0, 100);
   }
 
@@ -103,7 +104,7 @@ class VitalityScorer {
   ) {
     final checks = <bool>[
       record.weightRecorded,
-      record.productTaken != ProductTakenStatus.notRecorded ||
+      record.productTaken != ProductoTakenStatus.notRecorded ||
           record.meals.isNotEmpty ||
           record.intakeKcal > 0,
       record.hydrationMl > 0,
@@ -120,20 +121,20 @@ class VitalityScorer {
 
   static int ritualCompletion(TodayRecord record, UserPlanType planType) {
     final checks = switch (planType) {
-      UserPlanType.mealReplacement => [
-        record.productTaken != ProductTakenStatus.notRecorded ||
+      UserPlanType.mealReemplazament => [
+        record.productTaken != ProductoTakenStatus.notRecorded ||
             record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
         record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
       ],
-      UserPlanType.nonMealReplacement => [
-        record.productTaken != ProductTakenStatus.notRecorded ||
+      UserPlanType.nonMealReemplazament => [
+        record.productTaken != ProductoTakenStatus.notRecorded ||
             record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
       ],
-      UserPlanType.noProduct => [
+      UserPlanType.noProducto => [
         record.hydrationMl > 0,
         record.weightRecorded || record.meals.isNotEmpty,
       ],
@@ -167,7 +168,7 @@ class VitalityScorer {
     );
     final cScore = habitsScore(record, planType, consistency7d);
 
-    // Daily score mirrors Score Breakdown (six dimensions from live check-ins).
+    // Daily score mirrors Desglose de puntuación (six dimensions from live check-ins).
     final daily = ((nScore + eScore + mScore + sScore + hScore + cScore) / 6)
         .round();
 
@@ -186,20 +187,20 @@ class VitalityScorer {
   }
 
   static String vitalityLabel(int score) {
-    if (score >= 90) return 'Excellent';
-    if (score >= 80) return 'Good';
-    if (score >= 75) return 'Good and steady';
-    if (score >= 50) return 'Keep it gentle';
-    if (score >= 1) return 'One small step counts';
-    return 'No pressure — restart anytime';
+    if (score >= 90) return 'Excelente';
+    if (score >= 80) return 'Bien';
+    if (score >= 75) return 'Bien y estable';
+    if (score >= 50) return 'Ve con calma';
+    if (score >= 1) return 'Cada pequeño paso cuenta';
+    return 'Sin presión: puedes retomar cuando quieras';
   }
 
   static String scoreRating(int score) {
-    if (score >= 90) return 'Excellent';
-    if (score >= 80) return 'Good';
-    if (score >= 60) return 'Fair';
-    if (score > 0) return 'Needs focus';
-    return 'Not logged';
+    if (score >= 90) return 'Excelente';
+    if (score >= 80) return 'Bien';
+    if (score >= 60) return 'Regular';
+    if (score > 0) return 'Necesita atención';
+    return 'No registrado';
   }
 
   static List<VitalityDimension> breakdown(VitalityScores scores) {
@@ -218,7 +219,7 @@ class VitalityScorer {
       ),
       VitalityDimension(
         key: 'body_mind',
-        label: 'Mindfulness',
+        label: 'Atención plena',
         score: scores.moodCheckScore,
         icon: Icons.spa_outlined,
       ),
@@ -239,7 +240,8 @@ class VitalityScorer {
         label: 'Habits',
         score: scores.consistencyScore,
         icon: Icons.wb_sunny_outlined,
-        highlighted: scores.consistencyScore > 0 && scores.consistencyScore < 80,
+        highlighted:
+            scores.consistencyScore > 0 && scores.consistencyScore < 80,
       ),
     ];
   }

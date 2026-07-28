@@ -8,8 +8,8 @@ import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/journey_outcome_helper.dart';
 
-class JourneyPage extends ConsumerWidget {
-  const JourneyPage({super.key});
+class ViajePage extends ConsumerWidget {
+  const ViajePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,25 +25,25 @@ class JourneyPage extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: Text('Journey', style: LuckdateTextStyles.h1),
-                  ),
+                  Expanded(child: Text('Viaje', style: LuckdateTextStyles.h1)),
                   _ProfileEntryAvatar(nickname: profile.nickname),
                 ],
               ),
               const SizedBox(height: LuckdateSpacing.md),
               Text(
-                'Your plan is ready — confirm delivery to begin Day 1.',
+                'Tu plan está listo: confirma la entrega para iniciar el día 1.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdAwaitingReceiptPanel(
-                productName: profile.linkedProductName,
+                productName: profile.linkedProductoName,
                 onConfirmReceipt: () {
                   ref.read(appStateProvider.notifier).confirmReceipt();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Plan started — welcome to Day 1!'),
+                      content: Text(
+                        '¡Plan iniciado! Te damos la bienvenida al día 1.',
+                      ),
                     ),
                   );
                   context.go('/plan');
@@ -56,7 +56,7 @@ class JourneyPage extends ConsumerWidget {
       );
     }
 
-    if (profile.userPlanType != UserPlanType.mealReplacement) {
+    if (profile.userPlanType != UserPlanType.mealReemplazament) {
       return LdScaffold(
         body: Padding(
           padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -65,22 +65,20 @@ class JourneyPage extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: Text('Journey', style: LuckdateTextStyles.h1),
-                  ),
+                  Expanded(child: Text('Viaje', style: LuckdateTextStyles.h1)),
                   _ProfileEntryAvatar(nickname: profile.nickname),
                 ],
               ),
               const SizedBox(height: LuckdateSpacing.md),
               Text(
-                profile.userPlanType == UserPlanType.noProduct
-                    ? 'You do not have a 28-day plan yet. Explore products in Product Center or keep logging on Ritual.'
-                    : 'Your product reminder plan is active. A full 28-day Slim Journey is available with meal replacement products.',
+                profile.userPlanType == UserPlanType.noProducto
+                    ? 'Aún no tienes un plan de 28 días. Explora productos en la tienda o sigue registrando en Ritual.'
+                    : 'Tu plan de recordatorios del producto está activo. Hay un recorrido Slim completo de 28 días disponible con productos de reemplazo de comida.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
-                label: 'Browse products',
+                label: 'Explorar productos',
                 onPressed: () => context.go('/mall'),
               ),
             ],
@@ -101,14 +99,17 @@ class JourneyPage extends ConsumerWidget {
             Row(
               children: [
                 Expanded(
-                  child: Text('28-Day Journey', style: LuckdateTextStyles.h1),
+                  child: Text(
+                    'Recorrido de 28 días',
+                    style: LuckdateTextStyles.h1,
+                  ),
                 ),
                 _ProfileEntryAvatar(nickname: profile.nickname),
               ],
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             Center(
-              child: LdProgressRing(
+              child: LdProgresoRing(
                 percent: journey.completionPercent.toDouble(),
                 centerLabel: '${journey.completionPercent}%',
                 subLabel: 'Day ${journey.day} / ${journey.totalDays}',
@@ -128,7 +129,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Days',
                     value: '${journey.day}',
-                    subtitle: 'Current',
+                    subtitle: 'Actual',
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -136,7 +137,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Vitality',
                     value: '${scores.dailyVitality}',
-                    subtitle: 'Today',
+                    subtitle: 'Hoy',
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -144,7 +145,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Ritual',
                     value: '${scores.ritualCompletion}%',
-                    subtitle: 'Done',
+                    subtitle: 'Listo',
                   ),
                 ),
               ],
@@ -153,19 +154,19 @@ class JourneyPage extends ConsumerWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Phase: ${journey.phase}',
+                'Fase: ${journey.phase}',
                 style: LuckdateTextStyles.h2,
               ),
             ),
             const SizedBox(height: LuckdateSpacing.md),
-            _phaseCard('Launch', 'Days 1-7', journey.day <= 7),
+            _phaseCard('Inicio', 'Days 1-7', journey.day <= 7),
             _phaseCard(
-              'Adaptation',
+              'Adaptación',
               'Days 8-14',
               journey.day > 7 && journey.day <= 14,
             ),
             _phaseCard(
-              'Stability',
+              'Estabilidad',
               'Days 15-21',
               journey.day > 14 && journey.day <= 21,
             ),
@@ -173,20 +174,20 @@ class JourneyPage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Day Map', style: LuckdateTextStyles.h2),
+              child: Text('Mapa de días', style: LuckdateTextStyles.h2),
             ),
             const SizedBox(height: LuckdateSpacing.md),
             _dayMap(journey),
             const SizedBox(height: LuckdateSpacing.sm),
             Row(
               children: [
-                _legendDot(LuckdateColors.deepSage, 'Completed'),
+                _legendDot(LuckdateColors.deepSage, 'Completado'),
                 const SizedBox(width: LuckdateSpacing.md),
-                _legendDot(LuckdateColors.sunGold, 'Today'),
+                _legendDot(LuckdateColors.sunGold, 'Hoy'),
                 const SizedBox(width: LuckdateSpacing.md),
                 _legendDot(
                   LuckdateColors.lineSoft.withValues(alpha: 0.8),
-                  'Upcoming',
+                  'Próximamente',
                 ),
               ],
             ),
@@ -202,7 +203,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Hydration',
                     value: '${scores.hydrationScore}%',
-                    subtitle: 'Progress',
+                    subtitle: 'Progreso',
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -210,7 +211,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Sleep',
                     value: '${scores.sleepScore}',
-                    subtitle: 'Recovery',
+                    subtitle: 'Recuperación',
                   ),
                 ),
               ],
@@ -222,7 +223,7 @@ class JourneyPage extends ConsumerWidget {
                   child: VitalityMetricCard(
                     label: 'Mood',
                     value: '${scores.moodCheckScore}',
-                    subtitle: 'Evening feedback',
+                    subtitle: 'Comentarios nocturnos',
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -269,7 +270,7 @@ class JourneyPage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Milestones', style: LuckdateTextStyles.h2),
+              child: Text('Hitos', style: LuckdateTextStyles.h2),
             ),
             const SizedBox(height: LuckdateSpacing.md),
             milestonesAsync.when(
@@ -292,7 +293,7 @@ class JourneyPage extends ConsumerWidget {
             if (journey.day >= 28) ...[
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
-                label: 'View Day 28 Report',
+                label: 'Ver informe del día 28',
                 onPressed: () => context.push('/journey/report'),
               ),
             ],
@@ -312,7 +313,7 @@ class JourneyPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Product Recommendations',
+                          'Recomendaciones de productos',
                           style: LuckdateTextStyles.title,
                         ),
                         Text(
@@ -419,14 +420,15 @@ class Day28ReportPage extends ConsumerWidget {
     final state = ref.watch(appStateProvider);
     final journey = state.journey;
     final profile = state.profile;
-    final offer = JourneyOutcomeHelper.resolve(
+    final offer = ViajeOutcomeHelper.resolve(
       profile: profile,
       journey: journey,
     );
     final startVitality = journey.vitalityTrend.isNotEmpty
         ? journey.vitalityTrend.first
         : 0.0;
-    final endVitality = journey.day > 0 && journey.vitalityTrend.length >= journey.day
+    final endVitality =
+        journey.day > 0 && journey.vitalityTrend.length >= journey.day
         ? journey.vitalityTrend[journey.day - 1]
         : journey.vitalityScores.dailyVitality.toDouble();
     final vitalityChange = (endVitality - startVitality).round();
@@ -435,7 +437,7 @@ class Day28ReportPage extends ConsumerWidget {
         .length;
 
     return LdScaffold(
-      title: 'Day 28 Report',
+      title: 'Informe del día 28',
       showBack: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -448,7 +450,7 @@ class Day28ReportPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.base),
             Text(
-              'You grew toward the light',
+              'Creciste hacia la luz',
               style: LuckdateTextStyles.display,
               textAlign: TextAlign.center,
             ),
@@ -456,19 +458,19 @@ class Day28ReportPage extends ConsumerWidget {
             VitalityMetricCard(
               label: 'Completion',
               value: '${journey.completionPercent}%',
-              subtitle: 'Ritual completion rate',
+              subtitle: 'Tasa de finalización de rituales',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
-              label: 'Days active',
+              label: 'Days activos',
               value: '$activeDays',
-              subtitle: 'Days with records',
+              subtitle: 'Days con registros',
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             VitalityMetricCard(
               label: 'Vitality change',
               value: '${vitalityChange >= 0 ? '+' : ''}$vitalityChange',
-              subtitle: 'From Day 1 to Day ${journey.day}',
+              subtitle: 'Del día 1 al día ${journey.day}',
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
@@ -489,7 +491,7 @@ class Day28ReportPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Your next journey', style: LuckdateTextStyles.title),
+                  Text('Tu próximo viaje', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(offer.title, style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.sm),
@@ -500,19 +502,20 @@ class Day28ReportPage extends ConsumerWidget {
             const SizedBox(height: LuckdateSpacing.xl),
             LdPrimaryButton(
               label: offer.primaryLabel,
-              onPressed: () =>
-                  context.push('/collection/product/${offer.primaryProductId}'),
+              onPressed: () => context.push(
+                '/collection/product/${offer.primaryProductoId}',
+              ),
             ),
-            if (offer.secondaryProductIds.isNotEmpty) ...[
+            if (offer.secondaryProductoIds.isNotEmpty) ...[
               const SizedBox(height: LuckdateSpacing.sm),
               LdSecondaryButton(
-                label: 'Browse more options',
+                label: 'Explorar más opciones',
                 onPressed: () => context.go('/mall'),
               ),
             ],
             const SizedBox(height: LuckdateSpacing.sm),
             LdSecondaryButton(
-              label: 'Not now',
+              label: 'Ahora no',
               onPressed: () => context.pop(),
             ),
           ],

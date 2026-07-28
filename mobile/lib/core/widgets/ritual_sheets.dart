@@ -25,7 +25,7 @@ void showHydrationSheet(
   );
 }
 
-void showWeightSheet(
+void showPesoSheet(
   BuildContext context,
   WidgetRef ref,
   TodayRecord record,
@@ -33,7 +33,7 @@ void showWeightSheet(
 ) {
   final baseline = record.weightValueKg > 0
       ? record.weightValueKg
-      : (profile.currentWeightKg > 0 ? profile.currentWeightKg : 68.0);
+      : (profile.currentPesoKg > 0 ? profile.currentPesoKg : 68.0);
   showModalBottomSheet<void>(
     context: context,
     useRootNavigator: true,
@@ -42,15 +42,11 @@ void showWeightSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
     ),
-    builder: (ctx) => WeightSheet(baseline: baseline, record: record),
+    builder: (ctx) => PesoSheet(baseline: baseline, record: record),
   );
 }
 
-void showSleepSheet(
-  BuildContext context,
-  WidgetRef ref,
-  TodayRecord record,
-) {
+void showSleepSheet(BuildContext context, WidgetRef ref, TodayRecord record) {
   showModalBottomSheet<void>(
     context: context,
     useRootNavigator: true,
@@ -86,7 +82,7 @@ void showDayCheckInSheet(
   required int journeyDay,
   required TodayRecord record,
   required UserPlanType planType,
-  required bool isToday,
+  required bool isHoy,
 }) {
   showModalBottomSheet<void>(
     context: context,
@@ -101,17 +97,13 @@ void showDayCheckInSheet(
       journeyDay: journeyDay > 0 ? journeyDay : null,
       record: record,
       planType: planType,
-      isToday: isToday,
+      isHoy: isHoy,
     ),
   );
 }
 
 class HydrationSheet extends ConsumerStatefulWidget {
-  const HydrationSheet({
-    super.key,
-    required this.record,
-    required this.target,
-  });
+  const HydrationSheet({super.key, required this.record, required this.target});
 
   final TodayRecord record;
   final int target;
@@ -143,7 +135,7 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
     super.dispose();
   }
 
-  void _addWater(int amount) {
+  void _addAgua(int amount) {
     setState(() => _ml += amount);
     _pulse.forward(from: 0.92).then((_) => _pulse.reverse());
     ref
@@ -153,13 +145,15 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
       showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          title: const Text('Hydration goal reached'),
-          content: const Text('Daily hydration goal reached ✓'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          title: const Text('Meta de hidratación alcanzada'),
+          content: const Text('Meta diaria de hidratación alcanzada ✓'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Done'),
+              child: const Text('Listo'),
             ),
           ],
         ),
@@ -187,10 +181,10 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
           style: LuckdateTextStyles.display.copyWith(fontSize: 36),
         ),
         const SizedBox(height: LuckdateSpacing.lg),
-        LdPrimaryButton(label: '+ 250 ml', onPressed: () => _addWater(250)),
+        LdPrimaryButton(label: '+ 250 ml', onPressed: () => _addAgua(250)),
         const SizedBox(height: LuckdateSpacing.sm),
         LdSecondaryButton(
-          label: 'Done',
+          label: 'Listo',
           onPressed: () => Navigator.pop(context),
         ),
       ],
@@ -198,21 +192,17 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
   }
 }
 
-class WeightSheet extends ConsumerStatefulWidget {
-  const WeightSheet({
-    super.key,
-    required this.baseline,
-    required this.record,
-  });
+class PesoSheet extends ConsumerStatefulWidget {
+  const PesoSheet({super.key, required this.baseline, required this.record});
 
   final double baseline;
   final TodayRecord record;
 
   @override
-  ConsumerState<WeightSheet> createState() => _WeightSheetState();
+  ConsumerState<PesoSheet> createState() => _PesoSheetState();
 }
 
-class _WeightSheetState extends ConsumerState<WeightSheet> {
+class _PesoSheetState extends ConsumerState<PesoSheet> {
   late double _weight;
   late double _min;
   late double _max;
@@ -229,9 +219,9 @@ class _WeightSheetState extends ConsumerState<WeightSheet> {
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('Weight', style: LuckdateTextStyles.h2),
+        Text('Peso', style: LuckdateTextStyles.h2),
         Text(
-          'Default range ±3 kg. Drag to the edge to expand.',
+          'Rango predeterminado ±3 kg. Arrastra hasta el borde para ampliarlo.',
           style: LuckdateTextStyles.bodySmall,
         ),
         Slider(
@@ -248,15 +238,14 @@ class _WeightSheetState extends ConsumerState<WeightSheet> {
             });
           },
         ),
-        Text(
-          '${_weight.toStringAsFixed(1)} kg',
-          style: LuckdateTextStyles.h1,
-        ),
+        Text('${_weight.toStringAsFixed(1)} kg', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.base),
         LdPrimaryButton(
-          label: 'Log weight',
+          label: 'Registrar peso',
           onPressed: () {
-            ref.read(appStateProvider.notifier).updateTodayRecord(
+            ref
+                .read(appStateProvider.notifier)
+                .updateTodayRecord(
                   widget.record.copyWith(
                     weightRecorded: true,
                     weightValueKg: _weight,
@@ -292,7 +281,7 @@ class _SleepSheetState extends ConsumerState<SleepSheet> {
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('How long did you sleep?', style: LuckdateTextStyles.h2),
+        Text('¿Cuánto dormiste?', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
         Text(
           '${_hours.toStringAsFixed(1)} hours',
@@ -307,9 +296,11 @@ class _SleepSheetState extends ConsumerState<SleepSheet> {
           onChanged: (v) => setState(() => _hours = v),
         ),
         LdPrimaryButton(
-          label: 'Save',
+          label: 'Guardar',
           onPressed: () {
-            ref.read(appStateProvider.notifier).updateTodayRecord(
+            ref
+                .read(appStateProvider.notifier)
+                .updateTodayRecord(
                   widget.record.copyWith(
                     sleepHours: _hours,
                     sleepQuality: 'logged',
@@ -330,33 +321,36 @@ class MealCheckInSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alreadyLogged = record.productTaken == ProductTakenStatus.taken ||
-        record.productTaken == ProductTakenStatus.partial;
+    final alreadyLogged =
+        record.productTaken == ProductoTakenStatus.taken ||
+        record.productTaken == ProductoTakenStatus.partial;
 
     return LdBottomSheetBody(
       children: [
-        Text('Nutritional Meal', style: LuckdateTextStyles.h2),
+        Text('Comida nutritiva', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
           alreadyLogged
-              ? 'Morning protein is already logged for today.'
-              : 'Quick-log your Solar Protein or morning meal. AI will estimate calories in Check-in Record.',
+              ? 'La proteína matutina ya está registrada hoy.'
+              : 'Registra rápidamente tu Solar Protein o comida matutina. La IA estimará las calorías en el Record diario.',
           style: LuckdateTextStyles.bodySmall,
         ),
         const SizedBox(height: LuckdateSpacing.lg),
         LdPrimaryButton(
-          label: alreadyLogged ? 'Logged ✓' : 'Log Solar Protein',
+          label: alreadyLogged ? 'Registrado ✓' : 'Registrar Solar Protein',
           onPressed: alreadyLogged
               ? () => Navigator.pop(context)
               : () {
-                  final updated = CheckInEstimator.applyProductShake(record);
-                  ref.read(appStateProvider.notifier).updateTodayRecord(updated);
+                  final updated = CheckInEstimator.applyProductoShake(record);
+                  ref
+                      .read(appStateProvider.notifier)
+                      .updateTodayRecord(updated);
                   Navigator.pop(context);
                 },
         ),
         const SizedBox(height: LuckdateSpacing.sm),
         LdSecondaryButton(
-          label: 'Cancel',
+          label: 'Cancelar',
           onPressed: () => Navigator.pop(context),
         ),
       ],
@@ -371,12 +365,7 @@ List<RitualLogItem> ritualItemsForPlan({
 }) {
   final items = <RitualLogItem>[];
 
-  void add(
-    String title,
-    String subtitle,
-    IconData icon,
-    bool completed,
-  ) {
+  void add(String title, String subtitle, IconData icon, bool completed) {
     items.add(
       RitualLogItem(
         title: title,
@@ -389,12 +378,12 @@ List<RitualLogItem> ritualItemsForPlan({
   }
 
   switch (profile.userPlanType) {
-    case UserPlanType.noProduct:
+    case UserPlanType.noProducto:
       add(
-        'Weight',
+        'Peso',
         record.weightRecorded
             ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
-            : 'Log today',
+            : 'Registrar hoy',
         Icons.monitor_weight_outlined,
         record.weightRecorded,
       );
@@ -404,16 +393,16 @@ List<RitualLogItem> ritualItemsForPlan({
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
       );
-    case UserPlanType.nonMealReplacement:
+    case UserPlanType.nonMealReemplazament:
       add(
-        profile.linkedProductName.isEmpty
-            ? 'Your product'
-            : profile.linkedProductName,
-        record.productTaken == ProductTakenStatus.taken
-            ? 'Taken today'
-            : 'Remember to take your product',
+        profile.linkedProductoName.isEmpty
+            ? 'Tu producto'
+            : profile.linkedProductoName,
+        record.productTaken == ProductoTakenStatus.taken
+            ? 'Tomado hoy'
+            : 'Recuerda tomar tu producto',
         Icons.medication_outlined,
-        record.productTaken == ProductTakenStatus.taken,
+        record.productTaken == ProductoTakenStatus.taken,
       );
       add(
         'Hydration',
@@ -422,21 +411,21 @@ List<RitualLogItem> ritualItemsForPlan({
         record.hydrationMl > 0,
       );
       add(
-        'Weight',
+        'Peso',
         record.weightRecorded
             ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
-            : 'Log today',
+            : 'Registrar hoy',
         Icons.monitor_weight_outlined,
         record.weightRecorded,
       );
-    case UserPlanType.mealReplacement:
+    case UserPlanType.mealReemplazament:
       add(
         'Solar Protein™',
-        record.productTaken == ProductTakenStatus.taken
-            ? 'Completed'
-            : 'Tap to log',
+        record.productTaken == ProductoTakenStatus.taken
+            ? 'Completado'
+            : 'Toca para registrar',
         Icons.local_drink_outlined,
-        record.productTaken == ProductTakenStatus.taken,
+        record.productTaken == ProductoTakenStatus.taken,
       );
       add(
         'Hydration',
@@ -445,10 +434,10 @@ List<RitualLogItem> ritualItemsForPlan({
         record.hydrationMl > 0,
       );
       add(
-        'Weight',
+        'Peso',
         record.weightRecorded
             ? '${record.weightValueKg.toStringAsFixed(1)} kg logged'
-            : 'Log today',
+            : 'Registrar hoy',
         Icons.monitor_weight_outlined,
         record.weightRecorded,
       );
@@ -456,7 +445,7 @@ List<RitualLogItem> ritualItemsForPlan({
         'Sleep',
         record.sleepHours > 0
             ? '${record.sleepHours.toStringAsFixed(1)}h logged'
-            : 'How long did you sleep?',
+            : '¿Cuánto dormiste?',
         Icons.bedtime_outlined,
         record.sleepHours > 0,
       );
