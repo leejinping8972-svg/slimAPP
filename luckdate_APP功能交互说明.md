@@ -1,27 +1,24 @@
-# Instrucciones de interacción de luckdate APP (versión núcleo)
+# luckdate APP 功能交互说明（核心流程版）
 
-> Versión: V2.0 · Mercado: México · Idioma de producto: Español (México)  
-> Descripción rápida del flujo principal. Detalle página a página: `luckdate_APP功能交互说明（完整版）.md`
+> 版本 V2.0 · 2026-07-24 · 完整细节见《全功能交互说明（完整版）》
 
-## Flujo principal del nuevo usuario
+## 闭环
 
-1. Región e idioma → **Español (México)**  
-2. Activar / crear cuenta  
-3. Vincular pedido (nombre + últimos 4 dígitos) **o** comprar en tienda  
-4. Confirmar recepción → inicia el **viaje Slim de 28 días**  
-5. Registro diario + orientación de Sunny  
-6. Día 28 → informe y recompra (A continuar / B mantener / C alternativa)
+注册 → 关联（姓名+后四位）或 Skip → Sunny 介绍+建档 → 有产品则方案进行中 → 每日 Journey/Sunny/Plan → Day28 A/B/C 复购。
 
-## Pestañas principales
+## 导航
 
-| Área | Función |
-|------|---------|
-| Journey | Progreso de 28 días, vitalidad, consejos diarios |
-| Sunny | Chat y acciones de acompañamiento |
-| Tienda | Productos y compra (cupón de bienvenida opcional) |
-| Yo | Perfil, cupones, confirmar recepción |
+底栏：Sunny · Journey · Mall · Me。**Plan 不进底栏。**
 
-## Notas
+## 新用户主路径
 
-- Documentación de negocio APP: español (México)  
-- Consola de administración: **interfaz en chino** (`规则-管理后台.md`)
+开屏 → 引导 → 注册（发 $5 券）→ 关联订单 → Sunny 首次（介绍+建档）→ 主壳。
+
+## 开通
+
+- 关联代餐 → 立即 Day 1  
+- Mall 内购 → Checkout 自动用券（可取消）→ 确认收货 → **Plan**
+
+## 验收
+
+A 订单绑定 · B 内购确认 · C 回访 · D Day28 · E 建档前后建议显隐
