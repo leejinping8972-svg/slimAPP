@@ -82,7 +82,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
           ref.read(appStateProvider.notifier).confirmReceipt();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('隆Plan iniciado! Te damos la bienvenida al d铆a 1.'),
+              content: Text('¡Plan iniciado! Te damos la bienvenida al día 1.'),
             ),
           );
           context.go('/plan');
@@ -138,7 +138,7 @@ class _PlanHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'Plan de 28 d铆as',
+              'Plan de 28 días',
               textAlign: TextAlign.center,
               style: LuckdateTextStyles.title,
             ),
@@ -224,7 +224,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
         if (journey.day >= 28) ...[
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
-            label: 'Ver informe del d铆a 28',
+            label: 'Ver informe del día 28',
             onPressed: onPlanDetails,
           ),
         ],
@@ -274,7 +274,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
         icon: Icons.local_cafe_outlined,
         color: const Color(0xFFC4A484),
         title: 'Comida nutritiva',
-        subtitle: 'Prote铆na matutina',
+        subtitle: 'Proteína matutina',
         time: '08:00',
         done: mealListo,
         valueText: _mealValueText(record),
@@ -293,7 +293,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
       _PlanTask(
         icon: Icons.bedtime_outlined,
         color: const Color(0xFF6B7A9E),
-        title: 'Preparaci贸n para dormir',
+        title: 'Preparación para dormir',
         subtitle: 'Protege tu ritmo',
         time: '22:30',
         done: sleepDone,
@@ -419,7 +419,7 @@ class _ActualPlanHero extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Plan inicial de vitalidad de 28 d铆as',
+                          'Plan inicial de vitalidad de 28 días',
                           style: LuckdateTextStyles.h2.copyWith(
                             color: LuckdateColors.ivoryWhite,
                           ),
@@ -434,7 +434,7 @@ class _ActualPlanHero extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Crea el h谩bito. Transforma tu vida.',
+                    'Crea el hábito. Transforma tu vida.',
                     style: LuckdateTextStyles.bodySmall.copyWith(
                       color: LuckdateColors.ivoryWhite.withValues(alpha: 0.85),
                     ),
@@ -443,7 +443,7 @@ class _ActualPlanHero extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Progreso: d铆a $day / $totalDays',
+                        'Progreso: día $day / $totalDays',
                         style: LuckdateTextStyles.caption.copyWith(
                           color: LuckdateColors.ivoryWhite,
                         ),
@@ -619,9 +619,9 @@ class _FasesRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final phases = const [
       (1, 'Inicio', 'Dia 1-7', Icons.spa_outlined, 1, 7),
-      (2, 'Adaptaci贸n', 'Dia 8-14', Icons.eco_outlined, 8, 14),
+      (2, 'Adaptación', 'Dia 8-14', Icons.eco_outlined, 8, 14),
       (3, 'Mejora', 'Dia 15-21', Icons.park_outlined, 15, 21),
-      (4, 'Consolidaci贸n', 'Dia 22-28', Icons.landscape_outlined, 22, 28),
+      (4, 'Consolidación', 'Dia 22-28', Icons.landscape_outlined, 22, 28),
     ];
 
     return SingleChildScrollView(
@@ -748,7 +748,7 @@ class _PlanToolsRow extends StatelessWidget {
   static const _tools = [
     (
       Icons.restaurant_menu_outlined,
-      'Gu铆a de alimentaci贸n',
+      'Guía de alimentación',
       'Nutrition y recetas',
     ),
     (
@@ -756,8 +756,8 @@ class _PlanToolsRow extends StatelessWidget {
       'Videos de ejercicio',
       'Biblioteca de entrenamiento',
     ),
-    (Icons.headphones_outlined, 'Audio de meditaci贸n', 'Rel谩jate y enf贸cate'),
-    (Icons.favorite_outline, 'Seguimiento de h谩bitos', 'Ver progreso'),
+    (Icons.headphones_outlined, 'Audio de meditación', 'Relájate y enfócate'),
+    (Icons.favorite_outline, 'Seguimiento de hábitos', 'Ver progreso'),
     (Icons.insights_outlined, 'Informes de datos', 'Ver tu avance'),
   ];
 
@@ -842,14 +842,14 @@ class _CompartirBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Cada esfuerzo diario har谩 que tu yo del futuro te lo agradezca.',
+                  'Cada esfuerzo diario hará que tu yo del futuro te lo agradezca.',
                   style: LuckdateTextStyles.bodySmall.copyWith(
                     color: LuckdateColors.textPrimary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
-                  'Cada peque帽o paso cuenta.',
+                  'Cada pequeño paso cuenta.',
                   style: LuckdateTextStyles.caption,
                 ),
               ],
@@ -915,7 +915,7 @@ class _MyPlansView extends StatelessWidget {
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(
-                  'Entrega pendiente: confirma la recepci贸n para iniciar el d铆a 1.',
+                  'Entrega pendiente: confirma la recepción para iniciar el día 1.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],
@@ -944,11 +944,11 @@ class _MyPlansView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Plan inicial de vitalidad de 28 d铆as',
+                        'Plan inicial de vitalidad de 28 días',
                         style: LuckdateTextStyles.title,
                       ),
                       Text(
-                        'En curso 路 d铆a ${journey.day} / ${journey.totalDays}',
+                        'En curso · día ${journey.day} / ${journey.totalDays}',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                     ],
@@ -961,7 +961,7 @@ class _MyPlansView extends StatelessWidget {
         else
           LdCard(
             child: Text(
-              'A煤n no tienes un plan activo de 28 d铆as. Explora la tienda para comenzar.',
+              'Aún no tienes un plan activo de 28 días. Explora la tienda para comenzar.',
               style: LuckdateTextStyles.bodySmall,
             ),
           ),
@@ -989,7 +989,7 @@ class _AwaitingReceiptView extends StatelessWidget {
         Text('Plan en pausa', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          'Tu viaje Slim de 28 d铆as se desbloquea cuando confirmes la entrega.',
+          'Tu viaje Slim de 28 días se desbloquea cuando confirmes la entrega.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
@@ -1023,7 +1023,7 @@ class _PurchaseGuideView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(LuckdateSpacing.lg),
       children: [
-        Text('Inicia tu viaje de 28 d铆as', style: LuckdateTextStyles.h1),
+        Text('Inicia tu viaje de 28 días', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
           'Solar Protein desbloquea el viaje Slim completo: rituales diarios, hitos y apoyo de Sunny.',
@@ -1042,7 +1042,7 @@ class _PurchaseGuideView extends StatelessWidget {
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 Text(
-                  'Obt茅n Solar Protein para iniciar tu viaje Slim de 28 d铆as.',
+                  'Obtén Solar Protein para iniciar tu viaje Slim de 28 días.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
                 const SizedBox(height: LuckdateSpacing.lg),
@@ -1052,7 +1052,7 @@ class _PurchaseGuideView extends StatelessWidget {
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
                 LdSecondaryButton(
-                  label: 'Proporcionar n煤mero de pedido',
+                  label: 'Proporcionar número de pedido',
                   onPressed: onProvideOrder,
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
@@ -1077,7 +1077,7 @@ class _PurchaseGuideView extends StatelessWidget {
         LdPrimaryButton(label: 'Comprar producto', onPressed: onBuyProducto),
         const SizedBox(height: LuckdateSpacing.sm),
         LdSecondaryButton(
-          label: 'Proporcionar n煤mero de pedido',
+          label: 'Proporcionar número de pedido',
           onPressed: onProvideOrder,
         ),
       ],
@@ -1126,7 +1126,7 @@ class _ProductoCarePlanView extends StatelessWidget {
               Text(
                 journey.todayRecord.productTaken == ProductTakenStatus.taken
                     ? 'Tomado hoy'
-                    : 'A煤n no registrado hoy',
+                    : 'Aún no registrado hoy',
                 style: LuckdateTextStyles.caption.copyWith(
                   color: LuckdateColors.deepSage,
                 ),
@@ -1149,7 +1149,7 @@ class _ProductoCarePlanView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Mejorar al viaje Slim de 28 d铆as',
+                      'Mejorar al viaje Slim de 28 días',
                       style: LuckdateTextStyles.title,
                     ),
                     Text(

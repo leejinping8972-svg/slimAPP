@@ -78,7 +78,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(LuckdateRadius.xl),
         ),
-        title: const Text('Editar meta de calor铆as'),
+        title: const Text('Editar meta de calorías'),
         content: TextField(
           controller: controller,
           keyboardType: TextInputType.number,
@@ -119,11 +119,11 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
     final calorieMeta = profile.calorieTargetKcal;
     final exerciseMeta = profile.exerciseTargetKcal;
     final waterMl = live.hydrationMl;
-    final waterTarget = profile.hydrationTargetMl > 0
+    final waterMeta = profile.hydrationTargetMl > 0
         ? profile.hydrationTargetMl
         : 2000;
-    final waterCups = (waterTarget / 250).round().clamp(4, 10);
-    final filledCups = ((waterMl / waterTarget) * waterCups).round().clamp(
+    final waterCups = (waterMeta / 250).round().clamp(4, 10);
+    final filledCups = ((waterMl / waterMeta) * waterCups).round().clamp(
       0,
       waterCups,
     );
@@ -205,7 +205,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                   if (live.meals.isEmpty)
                     LdCard(
                       child: Text(
-                        'A煤n no has registrado comidas. Dile a Sunny qu茅 comiste o usa un registro r谩pido: las calor铆as se estiman autom谩ticamente.',
+                        'Aún no has registrado comidas. Dile a Sunny qué comiste o usa un registro rápido: las calorías se estiman automáticamente.',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                     )
@@ -238,10 +238,10 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                     filledCups: filledCups,
                     totalCups: waterCups,
                     ml: waterMl,
-                    targetMl: waterTarget,
+                    targetMl: waterMeta,
                   ),
                   const SizedBox(height: LuckdateSpacing.xl),
-                  Text('An谩lisis de nutrici贸n', style: LuckdateTextStyles.h2),
+                  Text('Análisis de nutrición', style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.md),
                   _NutritionAnalysisSection(meals: live.meals),
                   const SizedBox(height: LuckdateSpacing.lg),
@@ -288,7 +288,7 @@ class _SourceBanner extends StatelessWidget {
             const SizedBox(width: LuckdateSpacing.sm),
             Expanded(
               child: Text(
-                'La dieta, el ejercicio, el sue帽o y el agua se sincronizan desde el chat con Sunny y los registros r谩pidos. La IA estima consumo y gasto cal贸rico.',
+                'La dieta, el ejercicio, el sueño y el agua se sincronizan desde el chat con Sunny y los registros rápidos. La IA estima consumo y gasto calórico.',
                 style: LuckdateTextStyles.caption.copyWith(
                   color: LuckdateColors.textPrimary,
                 ),
@@ -371,7 +371,7 @@ class _DateSwitcher extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              isHoy ? '$label 路 Hoy' : label,
+              isHoy ? '$label · Hoy' : label,
               textAlign: TextAlign.center,
               style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
             ),
@@ -410,7 +410,7 @@ class _IntakeOverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final macros = [
-      ('Prote铆na', protein, 120, 'Recomendado 80-120g', LuckdateColors.deepSage),
+      ('Proteína', protein, 120, 'Recomendado 80-120g', LuckdateColors.deepSage),
       ('Carbohidratos', carbs, 160, 'Recomendado 120-180g', const Color(0xFFD4A373)),
       ('Grasas', fat, 60, 'Recomendado 40-75g', const Color(0xFF9A8BB5)),
       ('Fibra', fiber, 25, 'Recomendado 20-30g', const Color(0xFF7BA3C4)),
@@ -670,7 +670,7 @@ class _ExerciseCard extends StatelessWidget {
               Expanded(
                 child: _MiniStat(
                   icon: Icons.schedule_rounded,
-                  label: 'Duraci贸n',
+                  label: 'Duración',
                   value: '$minutes min',
                 ),
               ),
@@ -757,11 +757,11 @@ class _SleepCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Registro de sue帽o', style: LuckdateTextStyles.title),
+                Text('Registro de sueño', style: LuckdateTextStyles.title),
                 Text(
                   hasData
-                      ? '${hours.toStringAsFixed(hours % 1 == 0 ? 0 : 1)}h 路 ${quality.isEmpty ? 'Registrado' : quality}'
-                      : 'Dile a Sunny c贸mo dormiste: se sincroniza aqu铆 autom谩ticamente.',
+                      ? '${hours.toStringAsFixed(hours % 1 == 0 ? 0 : 1)}h · ${quality.isEmpty ? 'Registrado' : quality}'
+                      : 'Dile a Sunny cómo dormiste: se sincroniza aquí automáticamente.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],
@@ -841,7 +841,7 @@ class _MealCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'P ${meal.protein}g 路 C ${meal.carbs}g 路 F ${meal.fat}g 路 via ${meal.source}',
+                  'P ${meal.protein}g · C ${meal.carbs}g · F ${meal.fat}g · vía ${meal.source}',
                   style: LuckdateTextStyles.caption,
                 ),
               ],
@@ -943,7 +943,7 @@ class _NutritionAnalysisSection extends StatelessWidget {
           children: [
             Expanded(
               child: _DonutCard(
-                title: 'Fuente de prote铆na',
+                title: 'Fuente de proteína',
                 centerLabel: meals.isEmpty ? '--' : 'Excelente',
                 sections: const [
                   (0.6, LuckdateColors.deepSage, 'Animal 60%'),
@@ -960,7 +960,7 @@ class _NutritionAnalysisSection extends StatelessWidget {
                 sections: const [
                   (0.45, LuckdateColors.vitalitySage, 'Verduras 45%'),
                   (0.30, LuckdateColors.sunGold, 'Granos 30%'),
-                  (0.25, LuckdateColors.deepSage, 'Prote铆na 25%'),
+                  (0.25, LuckdateColors.deepSage, 'Proteína 25%'),
                 ],
               ),
             ),
@@ -972,7 +972,7 @@ class _NutritionAnalysisSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Distribuci贸n de calor铆as',
+                'Distribución de calorías',
                 style: LuckdateTextStyles.caption.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -980,7 +980,7 @@ class _NutritionAnalysisSection extends StatelessWidget {
               const SizedBox(height: LuckdateSpacing.md),
               if (meals.isEmpty)
                 Text(
-                  'La distribuci贸n aparece despu茅s de registrar comidas en el chat.',
+                  'La distribución aparece después de registrar comidas en el chat.',
                   style: LuckdateTextStyles.caption,
                 )
               else
@@ -1136,7 +1136,7 @@ class _TipBanner extends StatelessWidget {
           const SizedBox(width: LuckdateSpacing.md),
           Expanded(
             child: Text(
-              'Consejo: acompa帽a la cena con verduras para favorecer un mejor sue帽o.',
+              'Consejo: acompaña la cena con verduras para favorecer un mejor sueño.',
               style: LuckdateTextStyles.bodySmall,
             ),
           ),

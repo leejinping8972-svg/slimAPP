@@ -287,7 +287,7 @@ class ConsistencyCalendarCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '脷ltimos 5 d铆as 路 Toca un d铆a para ver sus detalles',
+            'Últimos 5 días · Toca un día para ver sus detalles',
             style: LuckdateTextStyles.caption,
           ),
           const SizedBox(height: LuckdateSpacing.md),
@@ -398,7 +398,7 @@ class DayCheckInSheet extends StatelessWidget {
         if (journeyDay != null && journeyDay! > 0) ...[
           const SizedBox(height: 4),
           Text(
-            'D铆a $journeyDay del viaje',
+            'Día $journeyDay del viaje',
             style: LuckdateTextStyles.caption.copyWith(
               color: LuckdateColors.deepSage,
             ),
@@ -408,8 +408,8 @@ class DayCheckInSheet extends StatelessWidget {
         if (!hasData)
           const StatePlaceholder(
             type: 'empty',
-            title: 'A煤n no hay registro',
-            message: 'No se registraron rituales este d铆a.',
+            title: 'Aún no hay registro',
+            message: 'No se registraron rituales este día.',
           )
         else ...[
           _CheckInRow(
@@ -424,7 +424,7 @@ class DayCheckInSheet extends StatelessWidget {
           ),
           _CheckInRow(
             icon: Icons.water_drop_outlined,
-            label: 'Hidrataci贸n',
+            label: 'Hidratación',
             value: record.hydrationMl > 0
                 ? '${record.hydrationMl} ml'
                 : 'No registrado',
@@ -441,7 +441,7 @@ class DayCheckInSheet extends StatelessWidget {
           if (planType == UserPlanType.mealReplacement) ...[
             _CheckInRow(
               icon: Icons.bedtime_outlined,
-              label: 'Sue帽o',
+              label: 'Sueño',
               value: record.sleepHours > 0
                   ? '${record.sleepHours.toStringAsFixed(1)} h'
                   : 'No registrado',
@@ -449,7 +449,7 @@ class DayCheckInSheet extends StatelessWidget {
             ),
             _CheckInRow(
               icon: Icons.mood_outlined,
-              label: '脕nimo',
+              label: 'Ánimo',
               value: record.moodTag.isNotEmpty
                   ? record.moodTag[0].toUpperCase() +
                         record.moodTag.substring(1)
@@ -565,7 +565,7 @@ class PesoTrendCard extends StatelessWidget {
           Text('Tendencia de peso', style: LuckdateTextStyles.title),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            '${weights.last.toStringAsFixed(1)} kg 路 Target ${targetKg.toStringAsFixed(1)} kg',
+            '${weights.last.toStringAsFixed(1)} kg · Meta ${targetKg.toStringAsFixed(1)} kg',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.md),

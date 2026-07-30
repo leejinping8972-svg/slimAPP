@@ -168,7 +168,7 @@ class VitalityScorer {
     );
     final cScore = habitsScore(record, planType, consistency7d);
 
-    // Daily score mirrors Desglose de puntuaci贸n (six dimensions from live check-ins).
+    // Daily score mirrors Desglose de puntuación (six dimensions from live check-ins).
     final daily = ((nScore + eScore + mScore + sScore + hScore + cScore) / 6)
         .round();
 
@@ -191,15 +191,15 @@ class VitalityScorer {
     if (score >= 80) return 'Bien';
     if (score >= 75) return 'Bien y estable';
     if (score >= 50) return 'Ve con calma';
-    if (score >= 1) return 'Cada peque帽o paso cuenta';
-    return 'Sin presi贸n: puedes retomar cuando quieras';
+    if (score >= 1) return 'Cada pequeño paso cuenta';
+    return 'Sin presión: puedes retomar cuando quieras';
   }
 
   static String scoreRating(int score) {
     if (score >= 90) return 'Excelente';
     if (score >= 80) return 'Bien';
     if (score >= 60) return 'Regular';
-    if (score > 0) return 'Necesita atenci贸n';
+    if (score > 0) return 'Necesita atención';
     return 'No registrado';
   }
 
@@ -207,7 +207,7 @@ class VitalityScorer {
     return [
       VitalityDimension(
         key: 'nutrition',
-        label: 'Nutrici贸n',
+        label: 'Nutrición',
         score: scores.nutritionScore,
         icon: Icons.apple_outlined,
       ),
@@ -219,25 +219,25 @@ class VitalityScorer {
       ),
       VitalityDimension(
         key: 'body_mind',
-        label: 'Atenci贸n plena',
+        label: 'Atención plena',
         score: scores.moodCheckScore,
         icon: Icons.spa_outlined,
       ),
       VitalityDimension(
         key: 'sleep',
-        label: 'Sue帽o',
+        label: 'Sueño',
         score: scores.sleepScore,
         icon: Icons.bedtime_outlined,
       ),
       VitalityDimension(
         key: 'hydration',
-        label: 'Hidrataci贸n',
+        label: 'Hidratación',
         score: scores.hydrationScore,
         icon: Icons.water_drop_outlined,
       ),
       VitalityDimension(
         key: 'habits',
-        label: 'H谩bitos',
+        label: 'Hábitos',
         score: scores.consistencyScore,
         icon: Icons.wb_sunny_outlined,
         highlighted:

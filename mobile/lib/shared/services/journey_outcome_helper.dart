@@ -53,7 +53,7 @@ class JourneyOutcomeHelper {
         path: JourneyRepurchasePath.maintainNext,
         title: 'Alcanzaste tu meta',
         subtitle:
-            'Consolida tu logro con una etapa de mantenimiento y protecci贸n: apoyo suave, no otra restricci贸n intensa.',
+            'Consolida tu logro con una etapa de mantenimiento y protección: apoyo suave, no otra restricción intensa.',
         primaryProductId: 'youth_solar',
         primaryLabel: 'Iniciar etapa de mantenimiento',
         secondaryProductIds: ['aging_solar', 'recovery_night', 'daily_vital'],
@@ -63,7 +63,7 @@ class JourneyOutcomeHelper {
     if (effective && !reachedGoal) {
       return const JourneyRepurchaseOffer(
         path: JourneyRepurchasePath.continueActual,
-        title: 'Est谩s avanzando',
+        title: 'Estás avanzando',
         subtitle:
             'Buen ritmo; sigue con otro ciclo de Solar Protein para acercarte a tu meta.',
         primaryProductId: 'solar_protein',
@@ -76,7 +76,7 @@ class JourneyOutcomeHelper {
       path: JourneyRepurchasePath.tryAlternative,
       title: 'Probemos otro camino',
       subtitle:
-          'Los resultados fueron limitados en este ciclo. Explora una f贸rmula alternativa que pueda adaptarse mejor a tu cuerpo.',
+          'Los resultados fueron limitados en este ciclo. Explora una fórmula alternativa que pueda adaptarse mejor a tu cuerpo.',
       primaryProductId: 'active_boost',
       primaryLabel: 'Explorar alternativas',
       secondaryProductIds: ['sun_femme', 'recovery_night', 'aging_solar'],

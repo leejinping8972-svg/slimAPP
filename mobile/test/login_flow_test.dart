@@ -39,28 +39,28 @@ void main() {
     return router;
   }
 
-  testWidgets('Login Sign in navigates to ritual', (tester) async {
+  testWidgets('Login Iniciar sesión navigates to ritual', (tester) async {
     final router = await pumpApp(tester);
 
-    expect(find.text('Welcome back'), findsOneWidget);
+    expect(find.text('Qué bueno verte de nuevo'), findsOneWidget);
 
-    await tester.tap(find.bySemanticsLabel('Email'));
+    await tester.tap(find.bySemanticsLabel('Correo electrónico'));
     await pumpFrames(tester);
     await tester.enterText(find.byType(TextField).first, 'hq@flowhealth.com');
     await tester.enterText(find.byType(TextField).last, 'password123');
     await tester.pump();
 
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Iniciar sesión'));
     await pumpFrames(tester, 12);
 
-    expect(find.text('My Vitality Score'), findsOneWidget);
+    expect(find.text('Mi puntuación de vitalidad'), findsOneWidget);
     expect(find.text('Sunny'), findsWidgets);
-    expect(find.text('Journey'), findsOneWidget);
+    expect(find.text('Recorrido'), findsOneWidget);
 
-    await tester.tap(find.text('Me'));
+    await tester.tap(find.text('Yo'));
     await pumpFrames(tester, 12);
-    expect(find.text('Vitality Member'), findsOneWidget);
-    expect(find.text('Check-in'), findsOneWidget);
+    expect(find.text('Miembro Vitalidad'), findsOneWidget);
+    expect(find.text('Registro'), findsOneWidget);
   });
 
   testWidgets('Register goes to link order then Sunny questions', (tester) async {
@@ -86,37 +86,37 @@ void main() {
     router.go('/register');
     await pumpFrames(tester);
 
-    expect(find.text('Create your account'), findsOneWidget);
-    expect(find.text('Create account'), findsOneWidget);
+    expect(find.text('Crea tu cuenta'), findsOneWidget);
+    expect(find.text('Crear cuenta'), findsOneWidget);
 
     // Phone or email only — no password / verification code.
-    await tester.tap(find.bySemanticsLabel('Email'));
+    await tester.tap(find.bySemanticsLabel('Correo electrónico'));
     await pumpFrames(tester);
     final fields = find.byType(TextField);
     expect(fields, findsOneWidget);
     await tester.enterText(fields.at(0), 'new@luckdate.com');
     await tester.pump();
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Create account'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Crear cuenta'));
     await pumpFrames(tester, 12);
 
-    expect(find.text('Link your order'), findsOneWidget);
-    expect(find.text('Query'), findsOneWidget);
-    expect(find.text('Get product info'), findsOneWidget);
+    expect(find.text('Vincula tu pedido'), findsOneWidget);
+    expect(find.text('Buscar'), findsOneWidget);
+    expect(find.text('Ver información del producto'), findsOneWidget);
 
     await tester.scrollUntilVisible(
-      find.text('Skip for now'),
+      find.text('Omitir por ahora'),
       200,
       scrollable: find.byType(Scrollable).last,
     );
     await pumpFrames(tester, 4);
-    await tester.ensureVisible(find.text('Skip for now'));
-    await tester.tap(find.text('Skip for now'));
+    await tester.ensureVisible(find.text('Omitir por ahora'));
+    await tester.tap(find.text('Omitir por ahora'));
     await pumpFrames(tester, 16);
 
-    expect(find.textContaining('daily vitality partner'), findsOneWidget);
-    expect(find.textContaining('Daily Ritual'), findsOneWidget);
-    expect(find.textContaining('privacy policy'), findsOneWidget);
-    expect(find.textContaining('I agree'), findsWidgets);
+    expect(find.textContaining('compañera diaria de vitalidad'), findsOneWidget);
+    expect(find.textContaining('Ritual diario'), findsOneWidget);
+    expect(find.textContaining('Política de privacidad'), findsOneWidget);
+    expect(find.textContaining('Acepto'), findsWidgets);
   });
 
   testWidgets('Guest deep-link to register is forced back to launch',

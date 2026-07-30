@@ -23,15 +23,22 @@ class DailyAdviceHelper {
       _ => '7-8',
     };
 
+    final mealLabel = switch (profile.mealSlot) {
+      'breakfast' => 'el desayuno',
+      'lunch' => 'el almuerzo',
+      'dinner' => 'la cena',
+      _ => 'una comida',
+    };
+
     final tips = <String>[
       if (profile.userPlanType == UserPlanType.mealReplacement)
-        'Reemplaza ${profile.mealSlot} con tu batido Solar Protein hoy.'
+        'Reemplaza $mealLabel con tu batido Solar Protein hoy.'
       else if (profile.userPlanType == UserPlanType.nonMealReplacement)
         'Toma tu producto vinculado a las ${profile.reminderTime}.'
       else
-        'Registra comidas y agua; Sunny ajustar谩 tu plan despu茅s de vincular un producto.',
-      'Procura beber aproximadamente $water ml de agua durante el d铆a.',
-      'Horario de sue帽o recomendado: $sleepHours horas esta noche.',
+        'Registra comidas y agua; Sunny ajustará tu plan después de vincular un producto.',
+      'Procura beber aproximadamente $water ml de agua durante el día.',
+      'Horario de sueño recomendado: $sleepHours horas esta noche.',
     ];
 
     return DailyAdvice(
@@ -43,7 +50,7 @@ class DailyAdviceHelper {
   }
 
   static int _estimateKcal(UserProfile profile) {
-    // Mifflin-style rough resting need 脳 1.3 activity, capped for slim journey.
+    // Mifflin-style rough resting need × 1.3 activity, capped for slim journey.
     final ageMid = switch (profile.ageRange) {
       '18-34' => 28,
       '35-50' => 42,

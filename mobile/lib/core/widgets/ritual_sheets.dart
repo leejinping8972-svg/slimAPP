@@ -148,7 +148,7 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
-          title: const Text('Meta de hidrataci贸n alcanzada'),
+          title: const Text('Meta de hidratación alcanzada'),
           content: const Text('Meta diaria de hidratacion alcanzada.'),
           actions: [
             TextButton(
@@ -165,7 +165,7 @@ class _HydrationSheetState extends ConsumerState<HydrationSheet>
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('Hidrataci贸n', style: LuckdateTextStyles.h2),
+        Text('Hidratación', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.base),
         ScaleTransition(
           scale: _pulse,
@@ -221,7 +221,7 @@ class _PesoSheetState extends ConsumerState<PesoSheet> {
       children: [
         Text('Peso', style: LuckdateTextStyles.h2),
         Text(
-          'Rango predeterminado 卤3 kg. Arrastra hasta el borde para ampliarlo.',
+          'Rango predeterminado ±3 kg. Arrastra hasta el borde para ampliarlo.',
           style: LuckdateTextStyles.bodySmall,
         ),
         Slider(
@@ -281,7 +281,7 @@ class _SleepSheetState extends ConsumerState<SleepSheet> {
   Widget build(BuildContext context) {
     return LdBottomSheetBody(
       children: [
-        Text('驴Cu谩nto dormiste?', style: LuckdateTextStyles.h2),
+        Text('¿Cuánto dormiste?', style: LuckdateTextStyles.h2),
         const SizedBox(height: LuckdateSpacing.md),
         Text(
           '${_hours.toStringAsFixed(1)} hours',
@@ -331,8 +331,8 @@ class MealCheckInSheet extends ConsumerWidget {
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
           alreadyLogged
-              ? 'La prote铆na matutina ya est谩 registrada hoy.'
-              : 'Registra r谩pidamente tu Solar Protein o comida matutina. La IA estimar谩 las calor铆as en el registro diario.',
+              ? 'La proteína matutina ya está registrada hoy.'
+              : 'Registra rápidamente tu Solar Protein o comida matutina. La IA estimará las calorías en el registro diario.',
           style: LuckdateTextStyles.bodySmall,
         ),
         const SizedBox(height: LuckdateSpacing.lg),
@@ -388,7 +388,7 @@ List<RitualLogItem> ritualItemsForPlan({
         record.weightRecorded,
       );
       add(
-        'Hidrataci贸n',
+        'Hidratación',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -405,7 +405,7 @@ List<RitualLogItem> ritualItemsForPlan({
         record.productTaken == ProductTakenStatus.taken,
       );
       add(
-        'Hidrataci贸n',
+        'Hidratación',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -428,7 +428,7 @@ List<RitualLogItem> ritualItemsForPlan({
         record.productTaken == ProductTakenStatus.taken,
       );
       add(
-        'Hidrataci贸n',
+        'Hidratación',
         '${record.hydrationMl} / ${profile.hydrationTargetMl} ml',
         Icons.water_drop_outlined,
         record.hydrationMl > 0,
@@ -442,10 +442,10 @@ List<RitualLogItem> ritualItemsForPlan({
         record.weightRecorded,
       );
       add(
-        'Sue帽o',
+        'Sueño',
         record.sleepHours > 0
             ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
-            : '驴Cu谩nto dormiste?',
+            : '¿Cuánto dormiste?',
         Icons.bedtime_outlined,
         record.sleepHours > 0,
       );

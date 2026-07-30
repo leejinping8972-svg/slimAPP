@@ -89,7 +89,7 @@ class LuckdateGradients {
 }
 
 class LuckdateTextStyles {
-  // Keep Montserrat from Font/ (wired in pubspec via assets/fonts).
+  // Keep Montserrat from Font/ (wired in pubspec vía assets/fonts).
   static const String fontFamily = 'Montserrat';
 
   static const display = TextStyle(

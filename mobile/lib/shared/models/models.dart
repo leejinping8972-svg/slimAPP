@@ -231,7 +231,7 @@ extension UserProfilePlanX on UserProfile {
       userPlanType == UserPlanType.mealReplacement;
 }
 
-/// A product linked via recipient-name order lookup.
+/// A product linked vía recipient-name order lookup.
 class LinkedProductRef {
   const LinkedProductRef({
     required this.orderNo,
