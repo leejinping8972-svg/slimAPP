@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import '../config/app_config.dart';
 import '../models/models.dart';
 
 class LinkedProductInfo {
   const LinkedProductInfo({
     required this.orderNo,
     required this.productName,
+    required this.productId,
     required this.isMealReplacement,
     this.sku = '',
     this.orderedAt = '',
@@ -15,6 +17,7 @@ class LinkedProductInfo {
 
   final String orderNo;
   final String productName;
+  final String productId;
   final bool isMealReplacement;
   final String sku;
   final String orderedAt;
@@ -45,6 +48,7 @@ class MockOrderService {
     LinkedProductInfo(
       orderNo: 'ORD-2026-MEAL',
       productName: 'Solar Protein™ 28-Day',
+      productId: 'solar_protein',
       isMealReplacement: true,
       sku: 'LD-SLIM-28D',
       orderedAt: '2026-06-12 14:28',
@@ -56,6 +60,7 @@ class MockOrderService {
     LinkedProductInfo(
       orderNo: 'ORD-2026-YOUTH',
       productName: 'Youth Solar™',
+      productId: 'youth_solar',
       isMealReplacement: false,
       sku: 'LD-BEAU-YTH',
       orderedAt: '2026-06-18 09:12',
@@ -67,6 +72,7 @@ class MockOrderService {
     LinkedProductInfo(
       orderNo: 'ORD-2026-VITA',
       productName: 'Vitality Collagen Boost',
+      productId: 'active_boost',
       isMealReplacement: false,
       sku: 'LD-AGE-COL',
       orderedAt: '2026-06-22 16:45',
@@ -78,6 +84,7 @@ class MockOrderService {
     LinkedProductInfo(
       orderNo: 'ORD-2026-ENERGY',
       productName: 'Daily Energy Solar',
+      productId: 'daily_vital',
       isMealReplacement: false,
       sku: 'LD-NRG-DAY',
       orderedAt: '2026-07-01 11:03',
@@ -129,7 +136,7 @@ class MockOrderService {
       return OrderLinkResult(
         success: true,
         productName: product.productName,
-        isMealReplacement: true,
+        isMealReplacement: AppConfig.isSlimPlanProduct(product.productId),
         recipientName: name,
         products: [product],
       );
@@ -139,23 +146,29 @@ class MockOrderService {
     final count = 1 + rng.nextInt(3); // 1–3
     final pool = List<LinkedProductInfo>.of(_catalog)..shuffle(rng);
     final products = pool.take(count).toList();
+    final hasSlim = products.any(
+      (p) => AppConfig.isSlimPlanProduct(p.productId),
+    );
 
     return OrderLinkResult(
       success: true,
       productName: products.first.productName,
-      isMealReplacement: products.any((p) => p.isMealReplacement),
+      isMealReplacement: hasSlim,
       recipientName: name,
       products: products,
     );
   }
 
+  /// Opens the 28-day slim plan only when a linked product ID is in
+  /// [AppConfig.slimPlanProductIds].
   UserPlanType planTypeFor(OrderLinkResult result) {
     if (!result.success || result.products.isEmpty) {
       return UserPlanType.noProduct;
     }
-    final hasMeal = result.products.any((p) => p.isMealReplacement);
-    return hasMeal
-        ? UserPlanType.mealReplacement
-        : UserPlanType.nonMealReplacement;
+    final hasSlim = result.products.any(
+      (p) => AppConfig.isSlimPlanProduct(p.productId),
+    );
+    if (hasSlim) return UserPlanType.mealReplacement;
+    return UserPlanType.nonMealReplacement;
   }
 }

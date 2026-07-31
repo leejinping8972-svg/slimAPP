@@ -99,18 +99,13 @@ class _PlanPageState extends ConsumerState<PlanPage> {
         onPlanDetails: () => context.push('/journey/report'),
         onCompartir: () {},
       ),
-      UserPlanType.noProduct => _PurchaseGuideView(
-        hideCard: profile.hidePurchaseGuideCard,
-        onBrowse: () => context.go('/mall'),
-        onBuyProducto: () => context.push('/collection/product/solar_protein'),
+      UserPlanType.noProduct => _BindOrderGuideView(
         onProvideOrder: () => context.push('/link-order'),
-        onCerrar: () =>
-            ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
       ),
       UserPlanType.nonMealReplacement => _ProductoCarePlanView(
         profile: profile,
         journey: journey,
-        onBrowse: () => context.go('/mall'),
+        onLinkOrder: () => context.push('/link-order'),
       ),
     };
   }
@@ -960,7 +955,7 @@ class _MyPlansView extends StatelessWidget {
         else
           LdCard(
             child: Text(
-              'Aún no tienes un plan activo de 28 días. Explora la tienda para comenzar.',
+              'Aún no tienes un plan activo de 28 días. Vincula un pedido externo para comenzar.',
               style: LuckdateTextStyles.bodySmall,
             ),
           ),
@@ -1002,20 +997,10 @@ class _AwaitingReceiptView extends StatelessWidget {
   }
 }
 
-class _PurchaseGuideView extends StatelessWidget {
-  const _PurchaseGuideView({
-    required this.hideCard,
-    required this.onBrowse,
-    required this.onBuyProducto,
-    required this.onProvideOrder,
-    required this.onCerrar,
-  });
+class _BindOrderGuideView extends StatelessWidget {
+  const _BindOrderGuideView({required this.onProvideOrder});
 
-  final bool hideCard;
-  final VoidCallback onBrowse;
-  final VoidCallback onBuyProducto;
   final VoidCallback onProvideOrder;
-  final VoidCallback onCerrar;
 
   @override
   Widget build(BuildContext context) {
@@ -1025,59 +1010,31 @@ class _PurchaseGuideView extends StatelessWidget {
         Text('Inicia tu viaje de 28 días', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          'Solar Protein desbloquea el viaje Slim completo: rituales diarios, hitos y apoyo de Sunny.',
+          'Vincula un pedido externo de reemplazo de comida para desbloquear el viaje Slim completo: rituales diarios, hitos y apoyo de Sunny.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
-        if (!hideCard)
-          LdCard(
-            accentColor: LuckdateColors.sunGold,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Desbloquea tu plan de salud completo',
-                  style: LuckdateTextStyles.title,
-                ),
-                const SizedBox(height: LuckdateSpacing.sm),
-                Text(
-                  'Obtén Solar Protein para iniciar tu viaje Slim de 28 días.',
-                  style: LuckdateTextStyles.bodySmall,
-                ),
-                const SizedBox(height: LuckdateSpacing.lg),
-                LdPrimaryButton(
-                  label: 'Comprar producto',
-                  onPressed: onBuyProducto,
-                ),
-                const SizedBox(height: LuckdateSpacing.sm),
-                LdSecondaryButton(
-                  label: 'Proporcionar número de pedido',
-                  onPressed: onProvideOrder,
-                ),
-                const SizedBox(height: LuckdateSpacing.sm),
-                Row(
-                  children: [
-                    Expanded(
-                      child: LdSecondaryButton(
-                        label: 'Explorar tienda',
-                        onPressed: onBrowse,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: onCerrar,
-                      child: const Text('Cerrar'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        LdCard(
+          accentColor: LuckdateColors.sunGold,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Activa tu plan con un pedido',
+                style: LuckdateTextStyles.title,
+              ),
+              const SizedBox(height: LuckdateSpacing.sm),
+              Text(
+                'Busca por nombre del destinatario y los últimos 4 dígitos del teléfono.',
+                style: LuckdateTextStyles.bodySmall,
+              ),
+              const SizedBox(height: LuckdateSpacing.lg),
+              LdPrimaryButton(
+                label: 'Vincular pedido',
+                onPressed: onProvideOrder,
+              ),
+            ],
           ),
-        const SizedBox(height: LuckdateSpacing.lg),
-        LdPrimaryButton(label: 'Comprar producto', onPressed: onBuyProducto),
-        const SizedBox(height: LuckdateSpacing.sm),
-        LdSecondaryButton(
-          label: 'Proporcionar número de pedido',
-          onPressed: onProvideOrder,
         ),
       ],
     );
@@ -1088,12 +1045,12 @@ class _ProductoCarePlanView extends StatelessWidget {
   const _ProductoCarePlanView({
     required this.profile,
     required this.journey,
-    required this.onBrowse,
+    required this.onLinkOrder,
   });
 
   final UserProfile profile;
   final JourneyState journey;
-  final VoidCallback onBrowse;
+  final VoidCallback onLinkOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -1107,7 +1064,7 @@ class _ProductoCarePlanView extends StatelessWidget {
         Text('Plan de cuidado del producto', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          'Recordatorios diarios para $productName. Registra rituales en el chat con Sunny y sigue tu vitalidad en Viaje.',
+          'Recordatorios diarios para $productName. Registra rituales en el chat con Sunny y sigue tu vitalidad en Ritual.',
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
@@ -1135,11 +1092,11 @@ class _ProductoCarePlanView extends StatelessWidget {
         ),
         const SizedBox(height: LuckdateSpacing.lg),
         LdCard(
-          onTap: onBrowse,
+          onTap: onLinkOrder,
           child: Row(
             children: [
               const Icon(
-                Icons.upgrade_outlined,
+                Icons.link_outlined,
                 color: LuckdateColors.deepSage,
               ),
               const SizedBox(width: LuckdateSpacing.md),
@@ -1148,11 +1105,11 @@ class _ProductoCarePlanView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Mejorar al viaje Slim de 28 días',
+                      'Activar viaje Slim de 28 días',
                       style: LuckdateTextStyles.title,
                     ),
                     Text(
-                      'El reemplazo de comida desbloquea el plan completo con hitos.',
+                      'Vincula un pedido de reemplazo de comida para desbloquear el plan completo.',
                       style: LuckdateTextStyles.bodySmall,
                     ),
                   ],
@@ -1163,7 +1120,7 @@ class _ProductoCarePlanView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: LuckdateSpacing.lg),
-        LdPrimaryButton(label: 'Explorar tienda', onPressed: onBrowse),
+        LdPrimaryButton(label: 'Vincular pedido', onPressed: onLinkOrder),
       ],
     );
   }

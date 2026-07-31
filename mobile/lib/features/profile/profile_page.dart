@@ -123,14 +123,14 @@ class ProfilePage extends ConsumerWidget {
                         () => context.push('/record'),
                       ),
                       _quickMenuItem(
-                        Icons.shopping_bag_outlined,
-                        'Pedidos',
+                        Icons.link_outlined,
+                        'Vincular',
                         () => context.push('/link-order'),
                       ),
                       _quickMenuItem(
-                        Icons.local_offer_outlined,
-                        'Cupones',
-                        () => _showCouponsSheet(context, profile),
+                        Icons.notifications_outlined,
+                        'Recordatorios',
+                        () => context.push('/profile/reminders'),
                       ),
                     ],
                   ),
@@ -142,19 +142,19 @@ class ProfilePage extends ConsumerWidget {
                   Row(
                     children: [
                       _quickMenuItem(
-                        Icons.notifications_outlined,
-                        'Recordatorios',
-                        () => context.push('/profile/reminders'),
-                      ),
-                      _quickMenuItem(
-                        Icons.storefront_outlined,
-                        'Tienda',
-                        () => context.go('/mall'),
-                      ),
-                      _quickMenuItem(
                         Icons.event_note_outlined,
                         'Plan',
                         () => context.go('/plan'),
+                      ),
+                      _quickMenuItem(
+                        Icons.local_florist_outlined,
+                        'Recorrido',
+                        () => context.go('/ritual'),
+                      ),
+                      _quickMenuItem(
+                        Icons.wb_sunny_outlined,
+                        'Sunny',
+                        () => context.push('/home'),
                       ),
                     ],
                   ),
@@ -248,8 +248,8 @@ class ProfilePage extends ConsumerWidget {
             _sectionTitle('Pedidos y logros'),
             _settingsTile(
               context,
-              Icons.shopping_bag_outlined,
-              'Pedidos',
+              Icons.link_outlined,
+              'Pedido vinculado',
               profile.linkedOrderNo.isEmpty
                   ? 'Sin pedido vinculado'
                   : profile.linkedOrderNo,
@@ -260,50 +260,6 @@ class ProfilePage extends ConsumerWidget {
               Icons.emoji_events_outlined,
               'Logros',
               '${journey.unlockedMilestones.length} insignias',
-            ),
-            if (profile.welcomeCoupon != null)
-              _settingsTile(
-                context,
-                Icons.local_offer_outlined,
-                'Cupones',
-                '\$${profile.welcomeCoupon!.amount.toStringAsFixed(0)} · ${profile.welcomeCoupon!.status} · ${_couponDaysLeft(profile.welcomeCoupon!.expiresAt)} días restantes',
-                onTap: () => _showCouponsSheet(context, profile),
-              ),
-            const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('Tienda'),
-            LdCard(
-              onTap: () => context.go('/mall'),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.storefront_outlined,
-                    color: LuckdateColors.deepSage,
-                  ),
-                  const SizedBox(width: LuckdateSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Nutrición adicional',
-                          style: LuckdateTextStyles.body.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          'Entra a la tienda para ver todos los planes de nutrición.',
-                          style: LuckdateTextStyles.caption,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(
-                    Icons.chevron_right,
-                    size: 20,
-                    color: LuckdateColors.textSecondary,
-                  ),
-                ],
-              ),
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             SizedBox(
@@ -553,70 +509,6 @@ class ProfilePage extends ConsumerWidget {
       UserPlanType.nonMealReplacement => 'Plan de recordatorios del producto',
       UserPlanType.noProduct => 'Modo de seguimiento básico',
     };
-  }
-
-  int _couponDaysLeft(DateTime expiresAt) {
-    final days = expiresAt.difference(DateTime.now()).inDays;
-    return days < 0 ? 0 : days;
-  }
-
-  void _showCouponsSheet(BuildContext context, UserProfile profile) {
-    final coupon = profile.welcomeCoupon;
-    if (coupon == null) return;
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: LuckdateColors.cloudIvory,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(
-            LuckdateSpacing.lg,
-            LuckdateSpacing.lg,
-            LuckdateSpacing.lg,
-            LuckdateSpacing.lg + MediaQuery.paddingOf(ctx).bottom,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Mis cupones', style: LuckdateTextStyles.h2),
-              const SizedBox(height: LuckdateSpacing.md),
-              LdCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Cupón de bienvenida de \$${coupon.amount.toStringAsFixed(0)}',
-                      style: LuckdateTextStyles.title,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Estado: ${coupon.status} · ${_couponDaysLeft(coupon.expiresAt)} días restantes',
-                      style: LuckdateTextStyles.bodySmall,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Se aplica automáticamente al pagar si cumples los requisitos. Puedes cancelar antes de pagar.',
-                      style: LuckdateTextStyles.caption,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: LuckdateSpacing.md),
-              LdPrimaryButton(
-                label: 'Comprar en la tienda',
-                onPressed: () {
-                  Navigator.pop(ctx);
-                  context.go('/mall');
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   void _confirmSignOut(BuildContext context, WidgetRef ref) {

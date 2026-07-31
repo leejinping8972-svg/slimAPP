@@ -1,14 +1,19 @@
-export type OrderStatus = 'unpaid' | 'paid' | 'cancelled';
-export type LogisticsStatus =
-  | 'placed'
-  | 'shipped'
-  | 'arrived'
-  | 'received'
-  | 'problem';
+export type PlanStatus = 'active' | 'completed' | 'awaiting';
+export type BindStatus = 'bound' | 'unbound';
 
-export type CouponType = 'full_reduction' | 'discount' | 'no_threshold';
-export type ValidityType = 'fixed_date' | 'days_after_claim';
-export type ProductScope = 'all' | 'specified' | 'include_specified_order';
+export interface RoleRecord {
+  id: string;
+  name: string;
+  description: string;
+  permissions: string[];
+}
+
+export interface AdminRecord {
+  id: string;
+  username: string;
+  roleId: string;
+  enabled: boolean;
+}
 
 export interface UserRecord {
   id: string;
@@ -22,58 +27,41 @@ export interface UserRecord {
   registeredAt: string;
   reminderTime?: string;
   remark?: string;
-  linkedOrderIds: string[];
+  bindStatus: BindStatus;
+  linkedProductId?: string | null;
+  linkedProductName?: string | null;
+  linkedOrderNo?: string | null;
+  planDay?: number | null;
+  planId?: string | null;
 }
 
-export interface OrderRecord {
+export interface CheckInRecord {
+  id: string;
+  userId: string;
+  nickname: string;
+  date: string;
+  items: string[];
+  vitalityScore: number;
+}
+
+export interface PlanRecord {
+  id: string;
+  userId: string;
+  nickname: string;
+  day: number;
+  status: PlanStatus;
+  startDate: string;
+  productId: string;
+  productName: string;
+}
+
+export interface ExternalOrderRecord {
   id: string;
   orderNo: string;
   customerName: string;
   phone: string;
+  productId: string;
   productName: string;
-  sku: string;
-  orderStatus: OrderStatus;
-  logisticsStatus: LogisticsStatus;
-  orderedAt: string;
-  region: string;
-  receiverAddress?: string;
-  amount: number;
-}
-
-export interface ProductRecord {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-  onSale: boolean;
-  specs: string;
-  coverUrl?: string;
-  description?: string;
-}
-
-export interface CouponRecord {
-  id: string;
-  name: string;
-  type: CouponType;
-  thresholdUsd: number;
-  discountValue: number;
-  validityType: ValidityType;
-  startAt?: string;
-  endAt?: string;
-  daysAfterClaim?: number;
-  totalQuantity: number;
-  perUserLimit: number;
-  productScope: ProductScope;
-  productIds: string[];
-  enabled: boolean;
-}
-
-export interface CouponBatchRecord {
-  id: string;
-  couponId: string;
-  couponName: string;
-  userCount: number;
-  createdAt: string;
 }
 
 export interface ConfigRecord {
@@ -81,11 +69,4 @@ export interface ConfigRecord {
   description: string;
   value: string;
   unit?: string;
-}
-
-export interface AdminRecord {
-  id: string;
-  username: string;
-  role: string;
-  enabled: boolean;
 }

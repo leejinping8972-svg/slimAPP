@@ -11,7 +11,7 @@ class OnboardingChatGuide {
       'Puedo personalizar tu siguiente paso. ¿Qué te gustaría hacer?\n\n'
       '• Obtener un plan — responde unas preguntas para recibir un plan de vitalidad a tu medida\n'
       '• Solo ayuda con productos — consejos sobre los productos que ya tienes\n'
-      '• Solo explorar — descubre la tienda y tu viaje a tu ritmo\n'
+      '• Solo explorar — descubre tu viaje a tu ritmo\n'
       '• Ahora no — podemos platicar cuando quieras';
 
   static const planOfferActions = [
@@ -31,7 +31,7 @@ class OnboardingChatGuide {
       '• Panel de vitalidad — Registra tus datos y observa tu progreso\n'
       '• Fórmula científica — Fórmulas profesionales y acompañamiento suave\n'
       '• Apoyo de la comunidad — Apóyense y crezcan juntas\n'
-      '• Tienda de salud — Productos seleccionados para un estilo de vida más saludable';
+      '• Vinculación de pedido — Activa tu plan con un pedido externo';
 
   static List<ChatMessage> seedMessages() {
     return [
@@ -249,7 +249,7 @@ class OnboardingChatGuide {
                   'sobre horarios o recordatorios suaves. '
                   'Cuando quieras un plan personalizado completo, solo di "Obtener un plan".',
               intents: ['onboarding_product_help'],
-              actionLabels: ['Ir al viaje', 'Explorar la tienda'],
+              actionLabels: ['Ir al viaje', 'Vincular pedido'],
             ),
           );
         }
@@ -265,10 +265,10 @@ class OnboardingChatGuide {
             result: const SunnyIntentResult(
               reply:
                   'Me encanta: explora primero y sin presión.\n\n'
-                  'Explora la tienda para ver productos seleccionados o abre tu viaje '
-                  'para consultar tu resumen de vitalidad. Aquí estaré cuando quieras un plan.',
+                  'Abre tu recorrido para consultar tu resumen de vitalidad, '
+                  'o vincula un pedido cuando quieras activar un plan. Aquí estaré.',
               intents: ['onboarding_browse'],
-              actionLabels: ['Explorar la tienda', 'Ir al viaje'],
+              actionLabels: ['Ir al viaje', 'Vincular pedido'],
             ),
           );
         }
@@ -287,7 +287,7 @@ class OnboardingChatGuide {
                   'Cuando quieras consejos, un plan o simplemente registrarte, '
                   'abre el chat de Sunny: aquí estaré.',
               intents: ['onboarding_defer'],
-              actionLabels: ['Ir al viaje', 'Explorar la tienda'],
+              actionLabels: ['Ir al viaje', 'Vincular pedido'],
             ),
           );
         }
@@ -510,7 +510,7 @@ class OnboardingChatGuide {
                     'Registrar comida',
                     'Ir al viaje',
                   ]
-                : const ['Ver mi plan', 'Explorar la tienda'],
+                : const ['Ver mi plan', 'Vincular pedido'],
           ),
         );
 

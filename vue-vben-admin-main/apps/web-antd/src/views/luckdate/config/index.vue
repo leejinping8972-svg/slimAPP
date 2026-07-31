@@ -10,11 +10,7 @@ import { Button, Card, Form, Input, Modal, Table, message } from 'ant-design-vue
 
 import { queryConfigs, updateConfig } from '#/api/luckdate';
 
-const REQUIRED_CODES = [
-  'slim_plan_product_ids',
-  'repurchase_recommend_product_ids',
-  'register_gift_coupon_ids',
-] as const;
+const REQUIRED_CODES = ['slim_plan_product_ids'] as const;
 
 const formRef = ref<FormInstance>();
 const loading = ref(false);
@@ -93,8 +89,11 @@ onMounted(() => void loadData());
 </script>
 
 <template>
-  <Page title="系统配置">
+  <Page title="基础设置">
     <Card>
+      <p class="text-secondary mb-4">
+        仅保留 28 天方案关联产品配置。已移除复购推荐 / 注册送券等电商相关项。
+      </p>
       <Table
         :columns="columns"
         :data-source="configs"

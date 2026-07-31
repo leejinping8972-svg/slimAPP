@@ -1,241 +1,273 @@
 import type {
   AdminRecord,
+  BindStatus,
+  CheckInRecord,
   ConfigRecord,
-  CouponBatchRecord,
-  CouponRecord,
-  LogisticsStatus,
-  OrderRecord,
-  OrderStatus,
-  ProductRecord,
+  ExternalOrderRecord,
+  PlanRecord,
+  PlanStatus,
+  RoleRecord,
   UserRecord,
 } from './types';
 
-export type { OrderStatus, LogisticsStatus };
+export type { BindStatus, PlanStatus };
 
-export const ORDER_STATUS_LABEL: Record<OrderStatus, string> = {
-  unpaid: '未支付',
-  paid: '已付款',
-  cancelled: '已取消',
+export const PLAN_STATUS_LABEL: Record<PlanStatus, string> = {
+  active: '进行中',
+  completed: '已完成',
+  awaiting: '待收货',
 };
 
-export const LOGISTICS_STATUS_LABEL: Record<LogisticsStatus, string> = {
-  placed: '已下单',
-  shipped: '已发货',
-  arrived: '到达待取',
-  received: '客户已收',
-  problem: '问题件',
+export const BIND_STATUS_LABEL: Record<BindStatus, string> = {
+  bound: '已绑定',
+  unbound: '未绑定',
 };
+
+const roles: RoleRecord[] = [
+  {
+    id: 'r1',
+    name: '超级管理员',
+    description: '全部模块读写',
+    permissions: ['全部'],
+  },
+  {
+    id: 'r2',
+    name: '运营',
+    description: '用户、打卡、方案、基础设置',
+    permissions: ['用户管理', '打卡记录', '方案列表', '基础设置'],
+  },
+  {
+    id: 'r3',
+    name: '客服',
+    description: '用户查看与协助外部查单绑定',
+    permissions: ['用户管理', '打卡记录', '方案列表（只读）'],
+  },
+];
+
+const admins: AdminRecord[] = [
+  { id: 'a1', username: 'superadmin', roleId: 'r1', enabled: true },
+  { id: 'a2', username: 'ops', roleId: 'r2', enabled: true },
+  { id: 'a3', username: 'cs', roleId: 'r3', enabled: true },
+];
 
 const users: UserRecord[] = [
   {
-    id: 'u1',
-    nickname: 'Alice',
-    email: 'alice@example.com',
+    id: 'u1001',
+    nickname: 'Freya',
+    email: 'freya@example.com',
     phone: '13812345678',
-    region: 'California',
+    region: 'CDMX',
     heightCm: 165,
     weightKg: 58,
     accountStatus: 'active',
-    registeredAt: '2026-07-27T08:00:00.000Z',
-    linkedOrderIds: ['o1'],
+    registeredAt: '2026-07-20T08:00:00.000Z',
+    reminderTime: '21:00',
+    bindStatus: 'bound',
+    linkedProductId: 'solar_protein',
+    linkedProductName: 'Solar Protein™ 28天装',
+    linkedOrderNo: 'EXT-20260720-001',
+    planDay: 12,
+    planId: 'pl1',
   },
   {
-    id: 'u2',
-    nickname: 'Bob',
-    email: 'bob@example.com',
-    phone: '13987654321',
-    region: 'Texas',
-    heightCm: 178,
-    weightKg: 75,
+    id: 'u1002',
+    nickname: 'Maya',
+    email: '',
+    phone: '5512345678',
+    region: 'Jalisco',
     accountStatus: 'active',
-    registeredAt: '2026-07-20T10:30:00.000Z',
-    linkedOrderIds: [],
+    registeredAt: '2026-07-22T10:30:00.000Z',
+    reminderTime: '20:30',
+    bindStatus: 'unbound',
+    linkedProductId: null,
+    linkedProductName: null,
+    linkedOrderNo: null,
+    planDay: null,
+    planId: null,
   },
   {
-    id: 'u3',
-    nickname: 'Carol',
-    email: 'carol@example.com',
-    phone: '13611112222',
-    region: 'New York',
+    id: 'u1003',
+    nickname: 'Leo',
+    email: 'leo@example.com',
+    phone: '5598765432',
+    region: 'Nuevo León',
+    heightCm: 178,
+    weightKg: 82,
     accountStatus: 'disabled',
-    registeredAt: '2026-06-15T14:00:00.000Z',
-    remark: 'VIP customer',
-    linkedOrderIds: ['o3'],
+    registeredAt: '2026-07-18T14:00:00.000Z',
+    remark: '测试停用',
+    reminderTime: '22:00',
+    bindStatus: 'bound',
+    linkedProductId: 'solar_protein',
+    linkedProductName: 'Solar Protein™ 28天装',
+    linkedOrderNo: 'EXT-20260718-008',
+    planDay: 28,
+    planId: 'pl2',
+  },
+  {
+    id: 'u1004',
+    nickname: 'Sofia',
+    email: 'sofia@example.com',
+    phone: '5588990011',
+    region: 'CDMX',
+    heightCm: 160,
+    weightKg: 55,
+    accountStatus: 'active',
+    registeredAt: '2026-07-28T09:00:00.000Z',
+    reminderTime: '21:00',
+    bindStatus: 'bound',
+    linkedProductId: 'active_boost',
+    linkedProductName: 'Active Boost 14天装',
+    linkedOrderNo: 'EXT-20260728-020',
+    planDay: null,
+    planId: null,
+  },
+  {
+    id: 'u1005',
+    nickname: 'Diego',
+    email: 'diego@example.com',
+    phone: '5577001122',
+    region: 'Puebla',
+    heightCm: 172,
+    weightKg: 70,
+    accountStatus: 'active',
+    registeredAt: '2026-07-25T16:20:00.000Z',
+    reminderTime: '21:30',
+    bindStatus: 'bound',
+    linkedProductId: 'solar_protein',
+    linkedProductName: 'Solar Protein™ 28天装',
+    linkedOrderNo: 'EXT-20260725-011',
+    planDay: 3,
+    planId: 'pl3',
   },
 ];
 
-const orders: OrderRecord[] = [
+const checkIns: CheckInRecord[] = [
   {
-    id: 'o1',
-    orderNo: 'LD202607270001',
-    customerName: 'Alice',
+    id: 'ck1',
+    userId: 'u1001',
+    nickname: 'Freya',
+    date: '2026-07-31',
+    items: ['体重', '饮水', '睡眠', '代餐'],
+    vitalityScore: 86,
+  },
+  {
+    id: 'ck2',
+    userId: 'u1005',
+    nickname: 'Diego',
+    date: '2026-07-31',
+    items: ['体重', '饮水', '运动'],
+    vitalityScore: 72,
+  },
+  {
+    id: 'ck3',
+    userId: 'u1001',
+    nickname: 'Freya',
+    date: '2026-07-30',
+    items: ['体重', '饮水', '睡眠'],
+    vitalityScore: 78,
+  },
+  {
+    id: 'ck4',
+    userId: 'u1003',
+    nickname: 'Leo',
+    date: '2026-07-29',
+    items: ['体重', '代餐', '睡眠', '饮水', '心情'],
+    vitalityScore: 91,
+  },
+  {
+    id: 'ck5',
+    userId: 'u1005',
+    nickname: 'Diego',
+    date: '2026-07-30',
+    items: ['体重', '饮水'],
+    vitalityScore: 65,
+  },
+];
+
+const plans: PlanRecord[] = [
+  {
+    id: 'pl1',
+    userId: 'u1001',
+    nickname: 'Freya',
+    day: 12,
+    status: 'active',
+    startDate: '2026-07-20',
+    productId: 'solar_protein',
+    productName: 'Solar Protein™ 28天装',
+  },
+  {
+    id: 'pl2',
+    userId: 'u1003',
+    nickname: 'Leo',
+    day: 28,
+    status: 'completed',
+    startDate: '2026-07-01',
+    productId: 'solar_protein',
+    productName: 'Solar Protein™ 28天装',
+  },
+  {
+    id: 'pl3',
+    userId: 'u1005',
+    nickname: 'Diego',
+    day: 3,
+    status: 'active',
+    startDate: '2026-07-29',
+    productId: 'solar_protein',
+    productName: 'Solar Protein™ 28天装',
+  },
+  {
+    id: 'pl4',
+    userId: 'u1006',
+    nickname: 'Ana',
+    day: 0,
+    status: 'awaiting',
+    startDate: '2026-07-30',
+    productId: 'solar_protein',
+    productName: 'Solar Protein™ 28天装',
+  },
+];
+
+const externalOrders: ExternalOrderRecord[] = [
+  {
+    id: 'ext1',
+    orderNo: 'EXT-20260720-001',
+    customerName: 'Freya Lopez',
     phone: '13812345678',
-    productName: 'Slim Shake Vanilla',
-    sku: 'SS-VAN-30',
-    orderStatus: 'paid',
-    logisticsStatus: 'shipped',
-    orderedAt: '2026-07-27T09:00:00.000Z',
-    region: 'California',
-    receiverAddress: '123 Main St, Los Angeles, CA',
-    amount: 49.99,
+    productId: 'solar_protein',
+    productName: 'Solar Protein™ 28天装',
   },
   {
-    id: 'o2',
-    orderNo: 'LD202607260002',
-    customerName: 'David',
-    phone: '13755556666',
-    productName: 'Slim Shake Chocolate',
-    sku: 'SS-CHO-30',
-    orderStatus: 'unpaid',
-    logisticsStatus: 'placed',
-    orderedAt: '2026-07-26T15:30:00.000Z',
-    region: 'Florida',
-    amount: 49.99,
+    id: 'ext2',
+    orderNo: 'EXT-20260722-014',
+    customerName: 'Maya Ruiz',
+    phone: '5512345678',
+    productId: 'youth_solar',
+    productName: 'Youth Solar 维稳装',
   },
   {
-    id: 'o3',
-    orderNo: 'LD202607250003',
-    customerName: 'Carol',
-    phone: '13611112222',
-    productName: 'Slim Shake Vanilla',
-    sku: 'SS-VAN-30',
-    orderStatus: 'paid',
-    logisticsStatus: 'received',
-    orderedAt: '2026-07-25T11:00:00.000Z',
-    region: 'New York',
-    receiverAddress: '456 Park Ave, New York, NY',
-    amount: 49.99,
+    id: 'ext3',
+    orderNo: 'EXT-20260718-008',
+    customerName: 'Leo Cruz',
+    phone: '5598765432',
+    productId: 'solar_protein',
+    productName: 'Solar Protein™ 28天装',
   },
   {
-    id: 'o4',
-    orderNo: 'LD202607240004',
-    customerName: 'Eve',
-    phone: '13599998888',
-    productName: 'Slim Shake Chocolate',
-    sku: 'SS-CHO-30',
-    orderStatus: 'cancelled',
-    logisticsStatus: 'problem',
-    orderedAt: '2026-07-24T08:45:00.000Z',
-    region: 'Washington',
-    amount: 49.99,
-  },
-  {
-    id: 'o5',
-    orderNo: 'LD202607230005',
-    customerName: 'Frank',
-    phone: '13477778888',
-    productName: 'Slim Shake Vanilla',
-    sku: 'SS-VAN-30',
-    orderStatus: 'paid',
-    logisticsStatus: 'arrived',
-    orderedAt: '2026-07-23T16:20:00.000Z',
-    region: 'Oregon',
-    amount: 49.99,
-  },
-];
-
-const products: ProductRecord[] = [
-  {
-    id: 'p1',
-    name: 'Slim Shake Vanilla',
-    price: 49.99,
-    stock: 200,
-    onSale: true,
-    specs: '30 servings',
-    coverUrl: 'https://example.com/vanilla.jpg',
-    description: 'Vanilla meal replacement shake',
-  },
-  {
-    id: 'p2',
-    name: 'Slim Shake Chocolate',
-    price: 49.99,
-    stock: 150,
-    onSale: true,
-    specs: '30 servings',
-    coverUrl: 'https://example.com/chocolate.jpg',
-    description: 'Chocolate meal replacement shake',
-  },
-];
-
-const coupons: CouponRecord[] = [
-  {
-    id: 'c1',
-    name: 'Welcome $10 Off',
-    type: 'full_reduction',
-    thresholdUsd: 30,
-    discountValue: 10,
-    validityType: 'days_after_claim',
-    daysAfterClaim: 30,
-    totalQuantity: 1000,
-    perUserLimit: 1,
-    productScope: 'all',
-    productIds: [],
-    enabled: true,
-  },
-  {
-    id: 'c2',
-    name: 'Summer 20% Off',
-    type: 'discount',
-    thresholdUsd: 50,
-    discountValue: 0.8,
-    validityType: 'fixed_date',
-    startAt: '2026-07-01T00:00:00.000Z',
-    endAt: '2026-08-31T23:59:59.000Z',
-    totalQuantity: 500,
-    perUserLimit: 2,
-    productScope: 'specified',
-    productIds: ['p1', 'p2'],
-    enabled: true,
-  },
-];
-
-const couponBatches: CouponBatchRecord[] = [
-  {
-    id: 'b1',
-    couponId: 'c1',
-    couponName: 'Welcome $10 Off',
-    userCount: 120,
-    createdAt: '2026-07-01T10:00:00.000Z',
-  },
-  {
-    id: 'b2',
-    couponId: 'c2',
-    couponName: 'Summer 20% Off',
-    userCount: 85,
-    createdAt: '2026-07-15T14:30:00.000Z',
+    id: 'ext4',
+    orderNo: 'EXT-20260728-020',
+    customerName: 'Sofia Diaz',
+    phone: '5588990011',
+    productId: 'active_boost',
+    productName: 'Active Boost 14天装',
   },
 ];
 
 const configs: ConfigRecord[] = [
   {
     code: 'slim_plan_product_ids',
-    description: 'Slim plan product IDs',
-    value: 'p1,p2',
-  },
-  {
-    code: 'repurchase_recommend_product_ids',
-    description: 'Repurchase recommend product IDs',
-    value: 'p2',
-  },
-  {
-    code: 'register_gift_coupon_ids',
-    description: 'Register gift coupon IDs',
-    value: 'c1',
-  },
-];
-
-const admins: AdminRecord[] = [
-  {
-    id: 'a1',
-    username: 'admin',
-    role: 'Super Admin',
-    enabled: true,
-  },
-  {
-    id: 'a2',
-    username: 'operator',
-    role: 'Operator',
-    enabled: true,
+    description: '28 天方案关联产品',
+    value: 'solar_protein,LD-SLIM-28D',
   },
 ];
 
@@ -246,9 +278,23 @@ export function maskPhone(phone: string): string {
   return `${phone.slice(0, 3)}****${phone.slice(-4)}`;
 }
 
+export function getRoleName(roleId: string): string {
+  return roles.find((r) => r.id === roleId)?.name ?? roleId;
+}
+
+export function slimPlanProductIds(): string[] {
+  const cfg = configs.find((c) => c.code === 'slim_plan_product_ids');
+  if (!cfg?.value) return [];
+  return cfg.value
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 export interface QueryUsersParams {
   region?: string;
   accountStatus?: UserRecord['accountStatus'];
+  bindStatus?: BindStatus;
   registeredFrom?: string;
   registeredTo?: string;
 }
@@ -256,10 +302,15 @@ export interface QueryUsersParams {
 export function queryUsers(params: QueryUsersParams = {}) {
   let items = [...users];
   if (params.region) {
-    items = items.filter((u) => u.region === params.region);
+    items = items.filter((u) =>
+      u.region.toLowerCase().includes(params.region!.toLowerCase()),
+    );
   }
   if (params.accountStatus) {
     items = items.filter((u) => u.accountStatus === params.accountStatus);
+  }
+  if (params.bindStatus) {
+    items = items.filter((u) => u.bindStatus === params.bindStatus);
   }
   if (params.registeredFrom) {
     items = items.filter((u) => u.registeredAt >= params.registeredFrom!);
@@ -279,142 +330,133 @@ export function updateUserRemark(
   remark: string,
 ): UserRecord | undefined {
   const user = users.find((u) => u.id === id);
-  if (!user) {
-    return undefined;
-  }
+  if (!user) return undefined;
   user.remark = remark;
   return user;
 }
 
-export function linkOrderToUser(userId: string, orderId: string): boolean {
-  const user = users.find((u) => u.id === userId);
-  if (!user) {
-    return false;
-  }
-  if (!user.linkedOrderIds.includes(orderId)) {
-    user.linkedOrderIds.push(orderId);
-  }
-  return true;
+export interface QueryCheckInsParams {
+  userId?: string;
+  nickname?: string;
+  date?: string;
 }
 
-export interface QueryOrdersParams {
-  orderStatus?: OrderStatus;
-  logisticsStatus?: LogisticsStatus;
-  region?: string;
-  orderNo?: string;
-  customerName?: string;
-  phoneLast4?: string;
-  orderedFrom?: string;
-  orderedTo?: string;
-}
-
-export function queryOrders(params: QueryOrdersParams = {}) {
-  let items = [...orders];
-  if (params.orderStatus) {
-    items = items.filter((o) => o.orderStatus === params.orderStatus);
+export function queryCheckIns(params: QueryCheckInsParams = {}) {
+  let items = [...checkIns];
+  if (params.userId) {
+    items = items.filter((c) => c.userId === params.userId);
   }
-  if (params.logisticsStatus) {
-    items = items.filter((o) => o.logisticsStatus === params.logisticsStatus);
-  }
-  if (params.region) {
-    items = items.filter((o) =>
-      o.region.toLowerCase().includes(params.region!.toLowerCase()),
+  if (params.nickname) {
+    items = items.filter((c) =>
+      c.nickname.toLowerCase().includes(params.nickname!.toLowerCase()),
     );
   }
-  if (params.orderNo) {
-    items = items.filter((o) => o.orderNo.includes(params.orderNo!));
-  }
-  if (params.customerName) {
-    items = items.filter((o) =>
-      o.customerName
-        .toLowerCase()
-        .includes(params.customerName!.toLowerCase()),
-    );
-  }
-  if (params.phoneLast4) {
-    items = items.filter((o) => o.phone.endsWith(params.phoneLast4!));
-  }
-  if (params.orderedFrom) {
-    items = items.filter((o) => o.orderedAt >= params.orderedFrom!);
-  }
-  if (params.orderedTo) {
-    items = items.filter((o) => o.orderedAt <= params.orderedTo!);
+  if (params.date) {
+    items = items.filter((c) => c.date === params.date);
   }
   return { items, total: items.length };
 }
 
-export function getOrderById(id: string): OrderRecord | undefined {
-  return orders.find((o) => o.id === id);
+export interface QueryPlansParams {
+  nickname?: string;
+  status?: PlanStatus;
+  startFrom?: string;
 }
 
-export interface QueryProductsParams {
-  name?: string;
-  onSale?: boolean;
-}
-
-export function queryProducts(params: QueryProductsParams = {}) {
-  let items = [...products];
-  if (params.name) {
+export function queryPlans(params: QueryPlansParams = {}) {
+  let items = [...plans];
+  if (params.nickname) {
     items = items.filter((p) =>
-      p.name.toLowerCase().includes(params.name!.toLowerCase()),
+      p.nickname.toLowerCase().includes(params.nickname!.toLowerCase()),
     );
   }
-  if (params.onSale !== undefined) {
-    items = items.filter((p) => p.onSale === params.onSale);
+  if (params.status) {
+    items = items.filter((p) => p.status === params.status);
+  }
+  if (params.startFrom) {
+    items = items.filter((p) => p.startDate >= params.startFrom!);
   }
   return { items, total: items.length };
 }
 
-export function getProductById(id: string): ProductRecord | undefined {
-  return products.find((p) => p.id === id);
+export function getPlanDashboardStats() {
+  const today = '2026-07-31';
+  const active = plans.filter((p) => p.status === 'active').length;
+  const awaiting = plans.filter((p) => p.status === 'awaiting').length;
+  const completed = plans.filter((p) => p.status === 'completed').length;
+  const checkInsToday = checkIns.filter((c) => c.date === today).length;
+  const total = plans.length || 1;
+  const completionRate = Math.round((completed / total) * 100);
+  return { active, awaiting, completed, checkInsToday, completionRate };
 }
 
-export function saveProduct(product: ProductRecord): ProductRecord {
-  const index = products.findIndex((p) => p.id === product.id);
-  if (index >= 0) {
-    products[index] = { ...product };
-    return products[index];
+export function previewExternalOrders(name: string, phoneLast4: string) {
+  const items = externalOrders.filter(
+    (o) =>
+      o.customerName.toLowerCase() === name.trim().toLowerCase() &&
+      o.phone.endsWith(phoneLast4),
+  );
+  return { items, total: items.length };
+}
+
+export function bindExternalOrderToUser(
+  userId: string,
+  externalOrderId: string,
+): { ok: boolean; planOpened: boolean; message: string } {
+  const user = users.find((u) => u.id === userId);
+  const order = externalOrders.find((o) => o.id === externalOrderId);
+  if (!user || !order) {
+    return { ok: false, planOpened: false, message: '用户或订单不存在' };
   }
-  products.push({ ...product });
-  return product;
-}
 
-export function queryCoupons() {
-  return { items: [...coupons], total: coupons.length };
-}
+  user.bindStatus = 'bound';
+  user.linkedProductId = order.productId;
+  user.linkedProductName = order.productName;
+  user.linkedOrderNo = order.orderNo;
 
-export function saveCoupon(coupon: CouponRecord): CouponRecord {
-  const index = coupons.findIndex((c) => c.id === coupon.id);
-  if (index >= 0) {
-    coupons[index] = { ...coupon };
-    return coupons[index];
+  const eligible = slimPlanProductIds().includes(order.productId);
+  if (!eligible) {
+    user.planId = null;
+    user.planDay = null;
+    return {
+      ok: true,
+      planOpened: false,
+      message: '绑定成功（产品不在方案配置内，未开通方案）',
+    };
   }
-  coupons.push({ ...coupon });
-  return coupon;
-}
 
-export function deleteCoupon(id: string): boolean {
-  const index = coupons.findIndex((c) => c.id === id);
-  if (index < 0) {
-    return false;
+  let plan = plans.find((p) => p.userId === user.id && p.status !== 'completed');
+  if (!plan) {
+    plan = {
+      id: `pl${Date.now()}`,
+      userId: user.id,
+      nickname: user.nickname,
+      day: 0,
+      status: 'awaiting',
+      startDate: '2026-07-31',
+      productId: order.productId,
+      productName: order.productName,
+    };
+    plans.push(plan);
+  } else {
+    plan.productId = order.productId;
+    plan.productName = order.productName;
   }
-  coupons.splice(index, 1);
-  return true;
-}
-
-export function queryCouponBatches() {
-  return { items: [...couponBatches], total: couponBatches.length };
+  user.planId = plan.id;
+  user.planDay = plan.day;
+  return { ok: true, planOpened: true, message: '绑定成功，已开通 / 关联 28 天方案' };
 }
 
 export function queryConfigs() {
   return { items: [...configs], total: configs.length };
 }
 
-export function updateConfig(code: string, value: string): ConfigRecord | undefined {
+export function updateConfig(
+  code: string,
+  value: string,
+): ConfigRecord | undefined {
   const config = configs.find((c) => c.code === code);
-  if (!config) {
-    return undefined;
-  }
+  if (!config) return undefined;
   config.value = value;
   return config;
 }
@@ -423,34 +465,22 @@ export function queryAdmins() {
   return { items: [...admins], total: admins.length };
 }
 
-export function setAdminEnabled(id: string, enabled: boolean): AdminRecord | undefined {
+export function setAdminEnabled(
+  id: string,
+  enabled: boolean,
+): AdminRecord | undefined {
   const admin = admins.find((a) => a.id === id);
-  if (!admin) {
-    return undefined;
-  }
+  if (!admin) return undefined;
   admin.enabled = enabled;
   return admin;
 }
 
-export function getDashboardStats() {
-  const today = new Date().toISOString().slice(0, 10);
-  const todayRegister = users.filter((u) =>
-    u.registeredAt.startsWith(today),
-  ).length;
-  const todayOrders = orders.filter((o) =>
-    o.orderedAt.startsWith(today),
-  ).length;
+export function queryRoles() {
   return {
-    todayRegister,
-    todayOrders,
-    couponIssued: 205,
-    couponUsed: 87,
+    items: roles.map((r) => ({
+      ...r,
+      adminCount: admins.filter((a) => a.roleId === r.id).length,
+    })),
+    total: roles.length,
   };
-}
-
-export function previewOrdersForLink(name: string, phoneLast4: string) {
-  const items = orders.filter(
-    (o) => o.customerName === name && o.phone.endsWith(phoneLast4),
-  );
-  return { items, total: items.length };
 }

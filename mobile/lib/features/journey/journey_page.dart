@@ -72,14 +72,14 @@ class ViajePage extends ConsumerWidget {
               const SizedBox(height: LuckdateSpacing.md),
               Text(
                 profile.userPlanType == UserPlanType.noProduct
-                    ? 'Aún no tienes un plan de 28 días. Explora productos en la tienda o sigue registrando en Ritual.'
-                    : 'Tu plan de recordatorios del producto está activo. Hay un recorrido Slim completo de 28 días disponible con productos de reemplazo de comida.',
+                    ? 'Aún no tienes un plan de 28 días. Vincula un pedido externo con reemplazo de comida o sigue registrando en Ritual.'
+                    : 'Tu plan de recordatorios del producto está activo. Hay un recorrido Slim completo de 28 días disponible al vincular un producto de reemplazo de comida.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
-                label: 'Explorar productos',
-                onPressed: () => context.go('/mall'),
+                label: 'Vincular pedido',
+                onPressed: () => context.push('/link-order'),
               ),
             ],
           ),
@@ -297,39 +297,6 @@ class ViajePage extends ConsumerWidget {
                 onPressed: () => context.push('/journey/report'),
               ),
             ],
-            const SizedBox(height: LuckdateSpacing.lg),
-            LdCard(
-              onTap: () => context.go('/mall'),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.local_mall_outlined,
-                    color: LuckdateColors.deepSage,
-                    size: 28,
-                  ),
-                  const SizedBox(width: LuckdateSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Recomendaciones de productos',
-                          style: LuckdateTextStyles.title,
-                        ),
-                        Text(
-                          'Selecciones de nutrición adaptadas a tu ritmo: sigue construyendo impulso.',
-                          style: LuckdateTextStyles.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: LuckdateColors.textSecondary,
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
@@ -491,7 +458,7 @@ class Day28ReportPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Tu próximo viaje', style: LuckdateTextStyles.title),
+                  Text('Tu próximo paso', style: LuckdateTextStyles.title),
                   const SizedBox(height: LuckdateSpacing.sm),
                   Text(offer.title, style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.sm),
@@ -501,22 +468,8 @@ class Day28ReportPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             LdPrimaryButton(
-              label: offer.primaryLabel,
-              onPressed: () => context.push(
-                '/collection/product/${offer.primaryProductId}',
-              ),
-            ),
-            if (offer.secondaryProductIds.isNotEmpty) ...[
-              const SizedBox(height: LuckdateSpacing.sm),
-              LdSecondaryButton(
-                label: 'Explorar más opciones',
-                onPressed: () => context.go('/mall'),
-              ),
-            ],
-            const SizedBox(height: LuckdateSpacing.sm),
-            LdSecondaryButton(
-              label: 'Ahora no',
-              onPressed: () => context.pop(),
+              label: 'Volver al recorrido',
+              onPressed: () => context.go('/ritual'),
             ),
           ],
         ),

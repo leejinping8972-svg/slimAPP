@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
-import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 
 class CollectionPage extends ConsumerStatefulWidget {
@@ -23,8 +22,6 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
     final productsAsync = ref.watch(productsProvider);
     final state = ref.watch(appStateProvider);
     final journey = state.journey;
-    final profile = state.profile;
-    final coupon = profile.welcomeCoupon;
     final showExtension = journey.day >= 28;
 
     return LdScaffold(
@@ -51,10 +48,10 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tienda', style: LuckdateTextStyles.h1),
+                      Text('Catálogo', style: LuckdateTextStyles.h1),
                       const SizedBox(height: LuckdateSpacing.xs),
                       Text(
-                        'La casa de la vitalidad: seleccionada para tu próximo capítulo.',
+                        'Referencia de productos. La activación es solo por vinculación de pedido.',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                       const SizedBox(height: LuckdateSpacing.md),
@@ -77,36 +74,6 @@ class _CollectionPageState extends ConsumerState<CollectionPage> {
                   ),
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
-                if (coupon != null && coupon.status == 'unused') ...[
-                  LdCard(
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.local_offer_outlined,
-                          color: LuckdateColors.deepSage,
-                        ),
-                        const SizedBox(width: LuckdateSpacing.md),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Cupón de \$${coupon.amount.toStringAsFixed(0)} aplicado al pagar',
-                                style: LuckdateTextStyles.body.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text(
-                                'Toda la tienda · válido por 30 días',
-                                style: LuckdateTextStyles.caption,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
                 if (showExtension) ...[
                   const SizedBox(height: LuckdateSpacing.xl),
                   LdCard(

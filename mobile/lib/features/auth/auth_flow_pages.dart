@@ -200,8 +200,6 @@ class RegisterSuccessPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final coupon = ref.watch(appStateProvider).profile.welcomeCoupon;
-
     return LdScaffold(
       showBack: true,
       onBack: () {
@@ -221,27 +219,8 @@ class RegisterSuccessPage extends ConsumerWidget {
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Preparamos un regalo para ti.',
+              'Vincula tu pedido externo para activar tu recorrido, o continúa con Sunny.',
               style: LuckdateTextStyles.body,
-            ),
-            const SizedBox(height: LuckdateSpacing.xl),
-            LdCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '\$${coupon?.amount.toStringAsFixed(0) ?? '5'}',
-                    style: LuckdateTextStyles.display,
-                  ),
-                  const SizedBox(height: LuckdateSpacing.sm),
-                  Text(
-                    'Cupón para toda la tienda (excepto algunos artículos)',
-                    style: LuckdateTextStyles.bodySmall,
-                  ),
-                  const SizedBox(height: LuckdateSpacing.sm),
-                  Text('Válido por 30 días', style: LuckdateTextStyles.caption),
-                ],
-              ),
             ),
             const Spacer(),
             LdPrimaryButton(
@@ -343,8 +322,6 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
 
   @override
   Widget build(BuildContext context) {
-    final coupon = ref.watch(appStateProvider).profile.welcomeCoupon;
-
     return LdScaffold(
       showBack: true,
       onBack: () => context.go('/register'),
@@ -358,40 +335,10 @@ class _OrderLinkPageState extends ConsumerState<OrderLinkPage> {
             Text('Vincula tu pedido', style: LuckdateTextStyles.h1),
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
-              'Busca con el nombre del destinatario y los últimos 4 dígitos del teléfono.',
+              'Busca con el nombre del destinatario y los últimos 4 dígitos del teléfono. '
+              'Si el producto es de reemplazo de comida, activamos tu plan de 28 días.',
               style: LuckdateTextStyles.bodySmall,
             ),
-            if (coupon != null) ...[
-              const SizedBox(height: LuckdateSpacing.lg),
-              LdCard(
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.local_offer_outlined,
-                      color: LuckdateColors.deepSage,
-                    ),
-                    const SizedBox(width: LuckdateSpacing.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Cupón de bienvenida de \$${coupon.amount.toStringAsFixed(0)}',
-                            style: LuckdateTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            'Válido por 30 días · toda la tienda',
-                            style: LuckdateTextStyles.caption,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
             const SizedBox(height: LuckdateSpacing.xl),
             TextField(
               controller: _nameController,

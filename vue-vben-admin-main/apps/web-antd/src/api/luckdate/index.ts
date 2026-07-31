@@ -1,32 +1,24 @@
 import type {
   AdminRecord,
   ConfigRecord,
-  CouponRecord,
-  ProductRecord,
 } from '#/views/luckdate/_mock/types';
 
 import {
-  deleteCoupon as deleteCouponStore,
-  getDashboardStats as getDashboardStatsStore,
-  getOrderById as getOrderByIdStore,
-  getProductById as getProductByIdStore,
+  bindExternalOrderToUser as bindExternalOrderToUserStore,
+  getPlanDashboardStats as getPlanDashboardStatsStore,
   getUserById as getUserByIdStore,
-  linkOrderToUser as linkOrderToUserStore,
-  previewOrdersForLink as previewOrdersForLinkStore,
+  previewExternalOrders as previewExternalOrdersStore,
   queryAdmins as queryAdminsStore,
-  setAdminEnabled as setAdminEnabledStore,
+  queryCheckIns as queryCheckInsStore,
   queryConfigs as queryConfigsStore,
-  queryCouponBatches as queryCouponBatchesStore,
-  queryCoupons as queryCouponsStore,
-  queryOrders as queryOrdersStore,
-  queryProducts as queryProductsStore,
+  queryPlans as queryPlansStore,
+  queryRoles as queryRolesStore,
   queryUsers as queryUsersStore,
-  saveCoupon as saveCouponStore,
-  saveProduct as saveProductStore,
+  setAdminEnabled as setAdminEnabledStore,
   updateConfig as updateConfigStore,
   updateUserRemark as updateUserRemarkStore,
-  type QueryOrdersParams,
-  type QueryProductsParams,
+  type QueryCheckInsParams,
+  type QueryPlansParams,
   type QueryUsersParams,
 } from '#/views/luckdate/_mock/store';
 
@@ -42,44 +34,27 @@ export async function updateUserRemark(id: string, remark: string) {
   return updateUserRemarkStore(id, remark);
 }
 
-export async function linkOrderToUser(userId: string, orderId: string) {
-  return linkOrderToUserStore(userId, orderId);
+export async function queryCheckIns(params?: QueryCheckInsParams) {
+  return queryCheckInsStore(params);
 }
 
-export async function queryOrders(params?: QueryOrdersParams) {
-  return queryOrdersStore(params);
+export async function queryPlans(params?: QueryPlansParams) {
+  return queryPlansStore(params);
 }
 
-export async function getOrderById(id: string) {
-  return getOrderByIdStore(id);
+export async function getPlanDashboardStats() {
+  return getPlanDashboardStatsStore();
 }
 
-export async function queryProducts(params?: QueryProductsParams) {
-  return queryProductsStore(params);
+export async function previewExternalOrders(name: string, phoneLast4: string) {
+  return previewExternalOrdersStore(name, phoneLast4);
 }
 
-export async function getProductById(id: string) {
-  return getProductByIdStore(id);
-}
-
-export async function saveProduct(product: ProductRecord) {
-  return saveProductStore(product);
-}
-
-export async function queryCoupons() {
-  return queryCouponsStore();
-}
-
-export async function saveCoupon(coupon: CouponRecord) {
-  return saveCouponStore(coupon);
-}
-
-export async function deleteCoupon(id: string) {
-  return deleteCouponStore(id);
-}
-
-export async function queryCouponBatches() {
-  return queryCouponBatchesStore();
+export async function bindExternalOrderToUser(
+  userId: string,
+  externalOrderId: string,
+) {
+  return bindExternalOrderToUserStore(userId, externalOrderId);
 }
 
 export async function queryConfigs() {
@@ -98,12 +73,8 @@ export async function setAdminEnabled(id: string, enabled: boolean) {
   return setAdminEnabledStore(id, enabled);
 }
 
-export async function getDashboardStats() {
-  return getDashboardStatsStore();
+export async function queryRoles() {
+  return queryRolesStore();
 }
 
-export async function previewOrdersForLink(name: string, phoneLast4: string) {
-  return previewOrdersForLinkStore(name, phoneLast4);
-}
-
-export type { AdminRecord, ConfigRecord, CouponRecord, ProductRecord };
+export type { AdminRecord, ConfigRecord };
