@@ -280,6 +280,8 @@ class TodayRecord {
     this.energyTag = '',
     this.sleepHours = 0,
     this.sleepQuality = '',
+    this.sleepBedtime = '',
+    this.sleepWakeTime = '',
     this.ritualCompletionRate = 0,
     this.consistency7d = 0,
     this.intakeKcal = 0,
@@ -300,7 +302,12 @@ class TodayRecord {
   final String moodTag;
   final String energyTag;
   final double sleepHours;
+  /// good | okay | poor | logged (legacy)
   final String sleepQuality;
+  /// HH:mm — hora de dormir
+  final String sleepBedtime;
+  /// HH:mm — hora de despertar
+  final String sleepWakeTime;
   final double ritualCompletionRate;
   final double consistency7d;
   final int intakeKcal;
@@ -322,6 +329,8 @@ class TodayRecord {
     String? energyTag,
     double? sleepHours,
     String? sleepQuality,
+    String? sleepBedtime,
+    String? sleepWakeTime,
     double? ritualCompletionRate,
     double? consistency7d,
     int? intakeKcal,
@@ -343,6 +352,8 @@ class TodayRecord {
       energyTag: energyTag ?? this.energyTag,
       sleepHours: sleepHours ?? this.sleepHours,
       sleepQuality: sleepQuality ?? this.sleepQuality,
+      sleepBedtime: sleepBedtime ?? this.sleepBedtime,
+      sleepWakeTime: sleepWakeTime ?? this.sleepWakeTime,
       ritualCompletionRate: ritualCompletionRate ?? this.ritualCompletionRate,
       consistency7d: consistency7d ?? this.consistency7d,
       intakeKcal: intakeKcal ?? this.intakeKcal,
@@ -356,6 +367,12 @@ class TodayRecord {
       meals: meals ?? this.meals,
     );
   }
+
+  bool get hasSleepRecord =>
+      sleepHours > 0 ||
+      sleepQuality.isNotEmpty ||
+      sleepBedtime.isNotEmpty ||
+      sleepWakeTime.isNotEmpty;
 }
 
 class VitalityScores {

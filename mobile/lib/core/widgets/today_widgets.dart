@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
+import '../../shared/services/sleep_record_helper.dart';
 import '../../shared/services/vitality_scorer.dart';
 import 'ld_components.dart';
 
@@ -334,6 +335,8 @@ TodayRecord resolveDayCheckInRecord({
     weightValueKg: weight > 0 ? weight : 68 - targetViajeDay * 0.12,
     sleepHours: 6.5 + (targetViajeDay % 3) * 0.5,
     sleepQuality: 'good',
+    sleepBedtime: '23:00',
+    sleepWakeTime: '06:30',
     moodTag: moods[targetViajeDay % moods.length],
   );
 }
@@ -342,7 +345,7 @@ bool dayCheckInHasData(TodayRecord record, UserPlanType planType) {
   if (record.productTaken == ProductTakenStatus.taken) return true;
   if (record.hydrationMl > 0) return true;
   if (record.weightRecorded) return true;
-  if (record.sleepHours > 0) return true;
+  if (record.hasSleepRecord) return true;
   if (record.moodTag.isNotEmpty) return true;
   if (planType == UserPlanType.nonMealReplacement &&
       record.productTaken != ProductTakenStatus.notRecorded) {
@@ -442,10 +445,10 @@ class DayCheckInSheet extends StatelessWidget {
             _CheckInRow(
               icon: Icons.bedtime_outlined,
               label: 'Sueño',
-              value: record.sleepHours > 0
-                  ? '${record.sleepHours.toStringAsFixed(1)} h'
+              value: record.hasSleepRecord
+                  ? SleepRecordHelper.summary(record)
                   : 'No registrado',
-              done: record.sleepHours > 0,
+              done: record.hasSleepRecord,
             ),
             _CheckInRow(
               icon: Icons.mood_outlined,

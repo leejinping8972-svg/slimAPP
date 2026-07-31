@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
+import '../../core/widgets/ritual_sheets.dart';
 import '../../core/widgets/today_widgets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/sleep_record_helper.dart';
 
 class HoyPage extends ConsumerStatefulWidget {
   const HoyPage({super.key});
@@ -325,12 +327,12 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         );
         add(
           'Sueño',
-          record.sleepHours > 0
-              ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
-              : '¿Cuánto dormiste?',
+          record.hasSleepRecord
+              ? SleepRecordHelper.summary(record)
+              : 'Registra sueño',
           Icons.bedtime_outlined,
-          record.sleepHours > 0,
-          () => _showSleepSheet(context, ref, record),
+          record.hasSleepRecord,
+          () => showSleepSheet(context, ref, record),
         );
     }
     return items;
@@ -486,23 +488,6 @@ class _HoyPageState extends ConsumerState<HoyPage> {
       ),
       builder: (ctx) =>
           _PesoSheet(baseline: baseline, record: record, ref: ref),
-    );
-  }
-
-  void _showSleepSheet(
-    BuildContext context,
-    WidgetRef ref,
-    TodayRecord record,
-  ) {
-    showModalBottomSheet<void>(
-      context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      backgroundColor: LuckdateColors.ivoryWhite,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      builder: (ctx) => _SleepSheet(record: record, ref: ref),
     );
   }
 
@@ -715,60 +700,3 @@ class _PesoSheetState extends State<_PesoSheet> {
     );
   }
 }
-
-class _SleepSheet extends StatefulWidget {
-  const _SleepSheet({required this.record, required this.ref});
-
-  final TodayRecord record;
-  final WidgetRef ref;
-
-  @override
-  State<_SleepSheet> createState() => _SleepSheetState();
-}
-
-class _SleepSheetState extends State<_SleepSheet> {
-  late double _hours;
-
-  @override
-  void initState() {
-    super.initState();
-    _hours = widget.record.sleepHours > 0 ? widget.record.sleepHours : 7;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LdBottomSheetBody(
-      children: [
-        Text('¿Cuánto dormiste?', style: LuckdateTextStyles.h2),
-        const SizedBox(height: LuckdateSpacing.md),
-        Text(
-          '${_hours.toStringAsFixed(1)} hours',
-          style: LuckdateTextStyles.display.copyWith(fontSize: 32),
-        ),
-        Slider(
-          value: _hours,
-          min: 4,
-          max: 12,
-          divisions: 16,
-          activeColor: LuckdateColors.deepSage,
-          onChanged: (v) => setState(() => _hours = v),
-        ),
-        LdPrimaryButton(
-          label: 'Guardar',
-          onPressed: () {
-            widget.ref
-                .read(appStateProvider.notifier)
-                .updateTodayRecord(
-                  widget.record.copyWith(
-                    sleepHours: _hours,
-                    sleepQuality: 'logged',
-                  ),
-                );
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
-}
-

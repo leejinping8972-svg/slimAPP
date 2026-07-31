@@ -4,6 +4,7 @@ import '../../app/theme/luckdate_theme.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/check_in_estimator.dart';
+import '../../shared/services/sleep_record_helper.dart';
 import 'ld_components.dart';
 import 'today_widgets.dart';
 
@@ -269,47 +270,216 @@ class SleepSheet extends ConsumerStatefulWidget {
 }
 
 class _SleepSheetState extends ConsumerState<SleepSheet> {
-  late double _hours;
+  late TimeOfDay _bedtime;
+  late TimeOfDay _wakeTime;
+  late String _quality;
+  var _hasBedtime = false;
+  var _hasWakeTime = false;
+
+  static const _qualities = <(String, String)>[
+    ('good', 'Bien'),
+    ('okay', 'Regular'),
+    ('poor', 'Mal'),
+  ];
 
   @override
   void initState() {
     super.initState();
-    _hours = widget.record.sleepHours > 0 ? widget.record.sleepHours : 7;
+    final bed = SleepRecordHelper.parseHm(widget.record.sleepBedtime);
+    final wake = SleepRecordHelper.parseHm(widget.record.sleepWakeTime);
+    _hasBedtime = bed != null;
+    _hasWakeTime = wake != null;
+    _bedtime = bed ?? const TimeOfDay(hour: 23, minute: 0);
+    _wakeTime = wake ?? const TimeOfDay(hour: 7, minute: 0);
+    final q = widget.record.sleepQuality;
+    _quality = (q == 'good' || q == 'okay' || q == 'poor') ? q : '';
+  }
+
+  double? get _hours {
+    if (!_hasBedtime || !_hasWakeTime) return null;
+    return SleepRecordHelper.hoursBetween(
+      SleepRecordHelper.formatHm(_bedtime),
+      SleepRecordHelper.formatHm(_wakeTime),
+    );
+  }
+
+  Future<void> _pickTime({required bool bedtime}) async {
+    final initial = bedtime ? _bedtime : _wakeTime;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: initial,
+      helpText: bedtime ? 'Hora de dormir' : 'Hora de despertar',
+      cancelText: 'Cancelar',
+      confirmText: 'Listo',
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: LuckdateColors.deepSage,
+            ),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
+    );
+    if (picked == null) return;
+    setState(() {
+      if (bedtime) {
+        _bedtime = picked;
+        _hasBedtime = true;
+      } else {
+        _wakeTime = picked;
+        _hasWakeTime = true;
+      }
+    });
+  }
+
+  void _save() {
+    if (!_hasBedtime && !_hasWakeTime && _quality.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Elige hora de dormir, despertar o cómo te sientes.'),
+        ),
+      );
+      return;
+    }
+
+    final bed = _hasBedtime ? SleepRecordHelper.formatHm(_bedtime) : '';
+    final wake = _hasWakeTime ? SleepRecordHelper.formatHm(_wakeTime) : '';
+    final hours = (_hasBedtime && _hasWakeTime)
+        ? (SleepRecordHelper.hoursBetween(bed, wake) ?? 0)
+        : widget.record.sleepHours;
+
+    ref.read(appStateProvider.notifier).updateTodayRecord(
+          widget.record.copyWith(
+            sleepBedtime: bed,
+            sleepWakeTime: wake,
+            sleepHours: hours,
+            sleepQuality: _quality.isEmpty ? 'logged' : _quality,
+          ),
+        );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    final hours = _hours;
     return LdBottomSheetBody(
       children: [
-        Text('¿Cuánto dormiste?', style: LuckdateTextStyles.h2),
-        const SizedBox(height: LuckdateSpacing.md),
+        Text('Registro de sueño', style: LuckdateTextStyles.h2),
+        const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          '${_hours.toStringAsFixed(1)} hours',
-          style: LuckdateTextStyles.display.copyWith(fontSize: 32),
+          'Anota hora de dormir, despertar y cómo te sentiste al despertar.',
+          style: LuckdateTextStyles.bodySmall,
         ),
-        Slider(
-          value: _hours,
-          min: 4,
-          max: 12,
-          divisions: 16,
-          activeColor: LuckdateColors.deepSage,
-          onChanged: (v) => setState(() => _hours = v),
+        const SizedBox(height: LuckdateSpacing.lg),
+        _SleepTimeRow(
+          label: 'Hora de dormir',
+          value: _hasBedtime ? SleepRecordHelper.formatHm(_bedtime) : 'Elegir',
+          filled: _hasBedtime,
+          onTap: () => _pickTime(bedtime: true),
         ),
-        LdPrimaryButton(
-          label: 'Guardar',
-          onPressed: () {
-            ref
-                .read(appStateProvider.notifier)
-                .updateTodayRecord(
-                  widget.record.copyWith(
-                    sleepHours: _hours,
-                    sleepQuality: 'logged',
-                  ),
-                );
-            Navigator.pop(context);
-          },
+        const SizedBox(height: LuckdateSpacing.sm),
+        _SleepTimeRow(
+          label: 'Hora de despertar',
+          value: _hasWakeTime ? SleepRecordHelper.formatHm(_wakeTime) : 'Elegir',
+          filled: _hasWakeTime,
+          onTap: () => _pickTime(bedtime: false),
         ),
+        if (hours != null) ...[
+          const SizedBox(height: LuckdateSpacing.md),
+          Text(
+            'Duración: ${hours.toStringAsFixed(1)} h',
+            style: LuckdateTextStyles.title.copyWith(
+              color: LuckdateColors.deepSage,
+            ),
+          ),
+        ],
+        const SizedBox(height: LuckdateSpacing.lg),
+        Text('Cómo te sientes al despertar', style: LuckdateTextStyles.title),
+        const SizedBox(height: LuckdateSpacing.sm),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final (key, label) in _qualities)
+              ChoiceChip(
+                label: Text(label),
+                selected: _quality == key,
+                selectedColor: LuckdateColors.sageSoft,
+                labelStyle: LuckdateTextStyles.bodySmall.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: _quality == key
+                      ? LuckdateColors.deepSage
+                      : LuckdateColors.textPrimary,
+                ),
+                side: BorderSide(
+                  color: _quality == key
+                      ? LuckdateColors.deepSage
+                      : LuckdateColors.lineSoft,
+                ),
+                onSelected: (_) => setState(() {
+                  _quality = _quality == key ? '' : key;
+                }),
+              ),
+          ],
+        ),
+        const SizedBox(height: LuckdateSpacing.xl),
+        LdPrimaryButton(label: 'Guardar', onPressed: _save),
       ],
+    );
+  }
+}
+
+class _SleepTimeRow extends StatelessWidget {
+  const _SleepTimeRow({
+    required this.label,
+    required this.value,
+    required this.filled,
+    required this.onTap,
+  });
+
+  final String label;
+  final String value;
+  final bool filled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: LuckdateColors.cloudIvory,
+      borderRadius: BorderRadius.circular(LuckdateRadius.control),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(LuckdateRadius.control),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: LuckdateSpacing.base,
+            vertical: LuckdateSpacing.md,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(label, style: LuckdateTextStyles.body),
+              ),
+              Text(
+                value,
+                style: LuckdateTextStyles.title.copyWith(
+                  color: filled
+                      ? LuckdateColors.deepSage
+                      : LuckdateColors.textSecondary,
+                ),
+              ),
+              const SizedBox(width: 4),
+              const Icon(
+                Icons.access_time,
+                size: 18,
+                color: LuckdateColors.textSecondary,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -443,11 +613,11 @@ List<RitualLogItem> ritualItemsForPlan({
       );
       add(
         'Sueño',
-        record.sleepHours > 0
-            ? '${record.sleepHours.toStringAsFixed(1)} h registrado'
-            : '¿Cuánto dormiste?',
+        record.hasSleepRecord
+            ? SleepRecordHelper.summary(record)
+            : 'Registra sueño',
         Icons.bedtime_outlined,
-        record.sleepHours > 0,
+        record.hasSleepRecord,
       );
   }
   return items;

@@ -7,6 +7,7 @@ import '../../core/widgets/ld_shell.dart';
 import '../../core/widgets/ritual_sheets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/sleep_record_helper.dart';
 
 enum _PlanTab { inProgreso, myPlans }
 
@@ -255,7 +256,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
         record.productTaken == ProductTakenStatus.taken ||
         record.productTaken == ProductTakenStatus.partial ||
         record.meals.isNotEmpty;
-    final sleepDone = record.sleepHours > 0 || record.sleepQuality.isNotEmpty;
+    final sleepDone = record.hasSleepRecord;
 
     return [
       _PlanTask(
@@ -297,9 +298,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
         subtitle: 'Protege tu ritmo',
         time: '22:30',
         done: sleepDone,
-        valueText: record.sleepHours > 0
-            ? '${record.sleepHours.toStringAsFixed(1)} h'
-            : (sleepDone ? 'Registrado' : null),
+        valueText: sleepDone ? SleepRecordHelper.summary(record) : null,
         action: _PlanTaskAction.sleep,
       ),
     ];

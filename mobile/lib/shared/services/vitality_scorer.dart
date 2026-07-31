@@ -38,18 +38,75 @@ class VitalityScorer {
     return 70;
   }
 
-  static int sleepScore({required double hours, required String quality}) {
-    if (hours <= 0 && quality.isEmpty) return 0;
-    if (hours >= 7 &&
-        (quality == 'good' || quality == 'okay' || quality == 'logged')) {
-      return 100;
+  static int sleepScore({
+    required double hours,
+    required String quality,
+    String bedtime = '',
+    String wakeTime = '',
+  }) {
+    final hasBed = bedtime.trim().isNotEmpty;
+    final hasWake = wakeTime.trim().isNotEmpty;
+    final hasQuality = quality.isNotEmpty;
+    final q = quality.toLowerCase();
+
+    // Prefer computed duration from both ends; fall back to stored hours.
+    double resolvedHours = hours;
+    if (hasBed && hasWake) {
+      final computed = _hoursBetweenHm(bedtime, wakeTime);
+      if (computed != null) resolvedHours = computed;
     }
-    if ((hours >= 6 && hours < 7) || quality == 'okay' || quality == 'logged') {
-      return 80;
+
+    final hasDuration = resolvedHours > 0;
+    if (!hasBed && !hasWake && !hasDuration && !hasQuality) return 0;
+
+    int base;
+    if (!hasBed && !hasWake && !hasDuration && hasQuality) {
+      // Solo estado
+      base = 40;
+    } else if ((hasBed ^ hasWake) && !hasDuration) {
+      // Solo un extremo de tiempo
+      base = 50;
+    } else if (hasDuration) {
+      if (resolvedHours < 6) {
+        base = 60;
+      } else if (resolvedHours < 7) {
+        base = 80;
+      } else {
+        base = 90;
+      }
+    } else {
+      base = 40;
     }
-    if (hours > 0 && hours < 6) return 60;
-    if (quality.isNotEmpty) return 70;
-    return 0;
+
+    var delta = 0;
+    if (q == 'good') {
+      delta = 10;
+    } else if (q == 'poor') {
+      delta = -10;
+    }
+
+    var score = base + delta;
+    if (q == 'poor' && score < 40) score = 40;
+    return score.clamp(0, 100);
+  }
+
+  static double? _hoursBetweenHm(String bedtime, String wakeTime) {
+    final bed = _parseHmMinutes(bedtime);
+    final wake = _parseHmMinutes(wakeTime);
+    if (bed == null || wake == null) return null;
+    var mins = wake - bed;
+    if (mins <= 0) mins += 24 * 60;
+    return mins / 60.0;
+  }
+
+  static int? _parseHmMinutes(String raw) {
+    final parts = raw.trim().split(':');
+    if (parts.length < 2) return null;
+    final h = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    if (h == null || m == null) return null;
+    if (h < 0 || h > 23 || m < 0 || m > 59) return null;
+    return h * 60 + m;
   }
 
   /// Nutrition from Sunny chat + quick meal check-in (intake, meals, product).
@@ -108,7 +165,10 @@ class VitalityScorer {
           record.meals.isNotEmpty ||
           record.intakeKcal > 0,
       record.hydrationMl > 0,
-      record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
+      record.sleepHours > 0 ||
+          record.sleepQuality.isNotEmpty ||
+          record.sleepBedtime.isNotEmpty ||
+          record.sleepWakeTime.isNotEmpty,
       record.exerciseKcal > 0 || record.exerciseMinutes > 0,
       record.moodTag.isNotEmpty || record.energyTag.isNotEmpty,
     ];
@@ -126,7 +186,10 @@ class VitalityScorer {
             record.meals.isNotEmpty,
         record.hydrationMl > 0,
         record.weightRecorded,
-        record.sleepHours > 0 || record.sleepQuality.isNotEmpty,
+        record.sleepHours > 0 ||
+          record.sleepQuality.isNotEmpty ||
+          record.sleepBedtime.isNotEmpty ||
+          record.sleepWakeTime.isNotEmpty,
       ],
       UserPlanType.nonMealReplacement => [
         record.productTaken != ProductTakenStatus.notRecorded ||
@@ -165,6 +228,8 @@ class VitalityScorer {
     final sScore = sleepScore(
       hours: record.sleepHours,
       quality: record.sleepQuality,
+      bedtime: record.sleepBedtime,
+      wakeTime: record.sleepWakeTime,
     );
     final cScore = habitsScore(record, planType, consistency7d);
 

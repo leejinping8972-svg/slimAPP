@@ -7,6 +7,7 @@ import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/services/sleep_record_helper.dart';
 
 class CheckInRecordPage extends ConsumerStatefulWidget {
   const CheckInRecordPage({super.key});
@@ -195,10 +196,7 @@ class _CheckInRecordPageState extends ConsumerState<CheckInRecordPage> {
                     onEditGoal: () => _editExerciseGoal(exerciseMeta),
                   ),
                   const SizedBox(height: LuckdateSpacing.lg),
-                  _SleepCard(
-                    hours: live.sleepHours,
-                    quality: live.sleepQuality,
-                  ),
+                  _SleepCard(record: live),
                   const SizedBox(height: LuckdateSpacing.xl),
                   Text('Comidas de hoy', style: LuckdateTextStyles.h2),
                   const SizedBox(height: LuckdateSpacing.md),
@@ -729,14 +727,13 @@ class _MiniStat extends StatelessWidget {
 }
 
 class _SleepCard extends StatelessWidget {
-  const _SleepCard({required this.hours, required this.quality});
+  const _SleepCard({required this.record});
 
-  final double hours;
-  final String quality;
+  final TodayRecord record;
 
   @override
   Widget build(BuildContext context) {
-    final hasData = hours > 0 || quality.isNotEmpty;
+    final hasData = record.hasSleepRecord;
     return LdCard(
       child: Row(
         children: [
@@ -760,7 +757,7 @@ class _SleepCard extends StatelessWidget {
                 Text('Registro de sueño', style: LuckdateTextStyles.title),
                 Text(
                   hasData
-                      ? '${hours.toStringAsFixed(hours % 1 == 0 ? 0 : 1)}h · ${quality.isEmpty ? 'Registrado' : quality}'
+                      ? SleepRecordHelper.summary(record)
                       : 'Dile a Sunny cómo dormiste: se sincroniza aquí automáticamente.',
                   style: LuckdateTextStyles.bodySmall,
                 ),

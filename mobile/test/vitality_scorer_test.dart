@@ -51,4 +51,43 @@ void main() {
     expect(scores.exerciseScore, 0);
     expect(scores.dailyVitality, 0);
   });
+
+  test('Sleep score uses bedtime, wake time and status', () {
+    expect(
+      VitalityScorer.sleepScore(
+        hours: 0,
+        quality: '',
+        bedtime: '23:00',
+        wakeTime: '07:00',
+      ),
+      90,
+    );
+    expect(
+      VitalityScorer.sleepScore(
+        hours: 0,
+        quality: 'good',
+        bedtime: '23:00',
+        wakeTime: '07:00',
+      ),
+      100,
+    );
+    expect(
+      VitalityScorer.sleepScore(
+        hours: 0,
+        quality: 'poor',
+        bedtime: '01:00',
+        wakeTime: '06:30',
+      ),
+      50,
+    );
+    expect(VitalityScorer.sleepScore(hours: 0, quality: 'okay'), 40);
+    expect(
+      VitalityScorer.sleepScore(
+        hours: 0,
+        quality: '',
+        bedtime: '23:00',
+      ),
+      50,
+    );
+  });
 }
