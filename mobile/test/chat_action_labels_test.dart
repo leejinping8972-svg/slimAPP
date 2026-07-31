@@ -36,7 +36,7 @@ void main() {
     expect(guided.result.actionLabels, contains('Ir al viaje'));
     expect(
       guided.result.actionLabels,
-      contains('Contactar servicio al cliente'),
+      contains('Hablar por Messenger'),
     );
     expect(guided.result.actionLabels, isNot(contains('Vincular pedido')));
   });
@@ -64,10 +64,10 @@ void main() {
 
     final messages = container.read(appStateProvider).chatMessages;
     final lastBot = messages.lastWhere((m) => !m.isUser);
-    expect(lastBot.text, contains('servicio al cliente'));
+    expect(lastBot.text, contains('Messenger'));
     expect(
       lastBot.actionLabels,
-      contains('Contactar servicio al cliente'),
+      contains('Hablar por Messenger'),
     );
   });
 

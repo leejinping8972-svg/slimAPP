@@ -8,6 +8,9 @@ void main() {
       isLoggedIn: true,
       onboardingComplete: false,
       onboardingStep: 'privacy',
+      // Linked-product slim path (not no-product).
+      userPlanType: UserPlanType.mealReplacement,
+      slimPlanStatus: SlimPlanStatus.active,
     );
 
     void step(String input) {
@@ -41,6 +44,50 @@ void main() {
     expect(profile.reminderTime, '08:00');
     expect(profile.onboardingComplete, isTrue);
     expect(profile.onboardingStep, 'done');
+  });
+
+  test('No-product skip flow: health need → basics → Messenger', () {
+    var profile = const UserProfile(
+      isLoggedIn: true,
+      onboardingComplete: false,
+      onboardingStep: 'health_need',
+      userPlanType: UserPlanType.noProduct,
+      orderLinkStatus: OrderLinkStatus.skipped,
+    );
+
+    var guided = OnboardingChatGuide.handle(
+      input: 'Perder peso',
+      profile: profile,
+    );
+    profile = guided.profile;
+    expect(profile.healthNeed, 'weight_loss');
+    expect(profile.onboardingStep, 'privacy');
+
+    guided = OnboardingChatGuide.handle(input: 'Acepto', profile: profile);
+    profile = guided.profile;
+    expect(profile.onboardingStep, 'age');
+
+    guided = OnboardingChatGuide.handle(input: '35-50', profile: profile);
+    profile = guided.profile;
+    expect(profile.onboardingStep, 'height');
+
+    guided = OnboardingChatGuide.handle(input: '165', profile: profile);
+    profile = guided.profile;
+    expect(profile.onboardingStep, 'weight');
+
+    guided = OnboardingChatGuide.handle(input: '68 kg', profile: profile);
+    profile = guided.profile;
+    expect(profile.onboardingComplete, isTrue);
+    expect(profile.onboardingStep, 'done');
+    expect(guided.result.intents, contains('messenger_handoff'));
+    expect(guided.result.actionLabels, contains('Hablar por Messenger'));
+    expect(guided.result.reply, contains('Messenger'));
+  });
+
+  test('noProductSeedMessages start at health need', () {
+    final seeds = OnboardingChatGuide.noProductSeedMessages();
+    expect(seeds.first.actionLabels, contains('Perder peso'));
+    expect(seeds.first.text, contains('Messenger'));
   });
 
   test('Product intro offer starts privacy Q&A on Obtener un plan', () {
