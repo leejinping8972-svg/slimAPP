@@ -21,17 +21,17 @@ class OnboardingChatGuide {
     'Ahora no',
   ];
 
-  static const sunnyGreetingHelp =
-      'Te ayudaré a crear una cuenta, vincular tu pedido '
-      'y comenzar un viaje suave de 28 días.';
-
   static const sunnyCapabilitiesIntro =
       'Esto es lo que puedo hacer por ti:\n'
       '• Ritual diario — Crea hábitos que iluminen cada día\n'
       '• Panel de vitalidad — Registra tus datos y observa tu progreso\n'
       '• Fórmula científica — Fórmulas profesionales y acompañamiento suave\n'
       '• Apoyo de la comunidad — Apóyense y crezcan juntas\n'
-      '• Vinculación de pedido — Activa tu plan con un pedido externo';
+      '• Activación de plan — Servicio al cliente puede ayudarte a abrir tu viaje';
+
+  static const sunnyGreetingHelp =
+      'Te ayudaré a crear una cuenta, conocer tu ritmo '
+      'y acompañarte en un viaje suave de vitalidad.';
 
   static List<ChatMessage> seedMessages() {
     return [
