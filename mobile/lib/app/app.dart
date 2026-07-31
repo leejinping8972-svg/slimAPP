@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'router.dart';
 import 'theme/luckdate_theme.dart';
@@ -20,7 +21,17 @@ class ChatVivaApp extends ConsumerWidget {
       locale: lang.locale,
       supportedLocales: const [
         Locale('es', 'MX'),
+        Locale('es'),
+        Locale('zh', 'CN'),
         Locale('zh'),
+        Locale('en', 'US'),
+      ],
+      // Without these, locale es/zh + supportedLocales makes
+      // MaterialLocalizations.of(context)! null → TextField crash.
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       theme: buildLuckdateTheme(),
       routerConfig: router,
