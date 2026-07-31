@@ -1,8 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router';
 
+/** 默认落地到方案看板（无电商首页） */
 const routes: RouteRecordRaw[] = [
   {
     meta: {
+      hideInMenu: true,
       icon: 'lucide:layout-dashboard',
       order: -1,
       title: '首页',
@@ -11,13 +13,10 @@ const routes: RouteRecordRaw[] = [
     path: '/dashboard',
     children: [
       {
-        name: 'DashboardOverview',
-        path: '',
-        component: () => import('#/views/luckdate/dashboard/index.vue'),
-        meta: {
-          affixTab: true,
-          title: '数据概览',
-        },
+        name: 'Analytics',
+        path: '/analytics',
+        redirect: '/plan/list',
+        meta: { affixTab: true, title: '概览' },
       },
     ],
   },

@@ -1,20 +1,86 @@
 const { createApp, ref, computed, reactive, watch } = Vue;
 const { createRouter, createWebHashHistory } = VueRouter;
 
-const ORDER_STATUS = {
-  unpaid: '未支付',
-  paid: '已付款',
-  cancelled: '已取消',
-};
-const LOGISTICS = {
-  placed: '已下单',
-  shipped: '已发货',
-  arrived: '到达待取',
-  received: '客户已收',
-  problem: '问题件',
+const PLAN_STATUS = {
+  active: '进行中',
+  completed: '已完成',
+  awaiting: '待收货',
 };
 
+const PLAN_STATUS_TAG = {
+  active: 'ok',
+  completed: 'info',
+  awaiting: 'warn',
+};
+
+const BIND_STATUS = {
+  unbound: '未绑定',
+  bound: '已绑定',
+};
+
+/** 外部查单 mock（非后台订单台账） */
+const EXTERNAL_ORDERS = [
+  {
+    id: 'ext1',
+    orderNo: 'EXT-20260720-001',
+    customerName: 'Freya Lopez',
+    phone: '13812345678',
+    productId: 'p1',
+    productName: 'Solar Protein™ 28天装',
+  },
+  {
+    id: 'ext2',
+    orderNo: 'EXT-20260722-014',
+    customerName: 'Maya Ruiz',
+    phone: '5512345678',
+    productId: 'p3',
+    productName: 'Youth Solar 维稳装',
+  },
+  {
+    id: 'ext3',
+    orderNo: 'EXT-20260718-008',
+    customerName: 'Leo Cruz',
+    phone: '5598765432',
+    productId: 'p1',
+    productName: 'Solar Protein™ 28天装',
+  },
+  {
+    id: 'ext4',
+    orderNo: 'EXT-20260728-020',
+    customerName: 'Sofia Diaz',
+    phone: '5588990011',
+    productId: 'p2',
+    productName: 'Active Boost 14天装',
+  },
+];
+
 const store = reactive({
+  roles: [
+    {
+      id: 'r1',
+      name: '超级管理员',
+      description: '全部模块读写',
+      permissions: ['全部'],
+    },
+    {
+      id: 'r2',
+      name: '运营',
+      description: '用户、打卡、方案、基础设置',
+      permissions: ['用户管理', '打卡记录', '方案列表', '基础设置'],
+    },
+    {
+      id: 'r3',
+      name: '客服',
+      description: '用户查看与协助外部查单绑定',
+      permissions: ['用户管理', '打卡记录', '方案列表（只读）'],
+    },
+  ],
+  admins: [
+    { id: 'a1', username: 'superadmin', roleId: 'r1', enabled: true },
+    { id: 'a2', username: 'ops', roleId: 'r2', enabled: true },
+    { id: 'a3', username: 'cs', roleId: 'r3', enabled: true },
+    { id: 'a4', username: 'ops_backup', roleId: 'r2', enabled: false },
+  ],
   users: [
     {
       id: 'u1001',
@@ -26,8 +92,14 @@ const store = reactive({
       weightKg: 58,
       accountStatus: 'active',
       registeredAt: '2026-07-20',
+      reminderTime: '21:00',
       remark: '',
-      linkedOrderIds: ['o2001'],
+      bindStatus: 'bound',
+      linkedProductId: 'p1',
+      linkedProductName: 'Solar Protein™ 28天装',
+      linkedOrderNo: 'EXT-20260720-001',
+      planDay: 12,
+      planId: 'pl1',
     },
     {
       id: 'u1002',
@@ -39,8 +111,14 @@ const store = reactive({
       weightKg: null,
       accountStatus: 'active',
       registeredAt: '2026-07-22',
+      reminderTime: '20:30',
       remark: '',
-      linkedOrderIds: [],
+      bindStatus: 'unbound',
+      linkedProductId: null,
+      linkedProductName: null,
+      linkedOrderNo: null,
+      planDay: null,
+      planId: null,
     },
     {
       id: 'u1003',
@@ -52,121 +130,153 @@ const store = reactive({
       weightKg: 82,
       accountStatus: 'disabled',
       registeredAt: '2026-07-18',
+      reminderTime: '22:00',
       remark: '测试停用',
-      linkedOrderIds: ['o2003'],
-    },
-  ],
-  orders: [
-    {
-      id: 'o2001',
-      orderNo: 'LD-20260720-001',
-      customerName: 'Freya Lopez',
-      phone: '13812345678',
-      productName: 'Solar Protein™',
-      sku: 'SP-28',
-      orderStatus: 'paid',
-      logisticsStatus: 'received',
-      orderedAt: '2026-07-20 10:21',
-      region: 'CDMX',
-      receiverAddress: 'Calle Reforma 100, CDMX',
-      amount: 89,
+      bindStatus: 'bound',
+      linkedProductId: 'p1',
+      linkedProductName: 'Solar Protein™ 28天装',
+      linkedOrderNo: 'EXT-20260718-008',
+      planDay: 28,
+      planId: 'pl2',
     },
     {
-      id: 'o2002',
-      orderNo: 'LD-20260721-014',
-      customerName: 'Ana Ruiz',
-      phone: '5511223344',
-      productName: 'Youth Solar',
-      sku: 'YS-30',
-      orderStatus: 'paid',
-      logisticsStatus: 'shipped',
-      orderedAt: '2026-07-21 16:02',
-      region: 'Jalisco',
-      receiverAddress: 'Av. Vallarta 200, GDL',
-      amount: 79,
-    },
-    {
-      id: 'o2003',
-      orderNo: 'LD-20260718-008',
-      customerName: 'Leo Cruz',
-      phone: '5598765432',
-      productName: 'Active Boost',
-      sku: 'AB-14',
-      orderStatus: 'unpaid',
-      logisticsStatus: 'placed',
-      orderedAt: '2026-07-18 09:40',
-      region: 'Nuevo León',
-      receiverAddress: 'Centro 12, MTY',
-      amount: 49,
-    },
-    {
-      id: 'o2004',
-      orderNo: 'LD-20260725-033',
-      customerName: 'Sofia Diaz',
+      id: 'u1004',
+      nickname: 'Sofia',
+      email: 'sofia@example.com',
       phone: '5588990011',
-      productName: 'Solar Protein™',
-      sku: 'SP-28',
-      orderStatus: 'cancelled',
-      logisticsStatus: 'problem',
-      orderedAt: '2026-07-25 12:11',
       region: 'CDMX',
-      receiverAddress: 'Roma Nte. 45',
-      amount: 89,
+      heightCm: 160,
+      weightKg: 55,
+      accountStatus: 'active',
+      registeredAt: '2026-07-28',
+      reminderTime: '21:00',
+      remark: '',
+      bindStatus: 'bound',
+      linkedProductId: 'p2',
+      linkedProductName: 'Active Boost 14天装',
+      linkedOrderNo: 'EXT-20260728-020',
+      planDay: null,
+      planId: null,
+    },
+    {
+      id: 'u1005',
+      nickname: 'Diego',
+      email: 'diego@example.com',
+      phone: '5577001122',
+      region: 'Puebla',
+      heightCm: 172,
+      weightKg: 70,
+      accountStatus: 'active',
+      registeredAt: '2026-07-25',
+      reminderTime: '21:30',
+      remark: '',
+      bindStatus: 'bound',
+      linkedProductId: 'p1',
+      linkedProductName: 'Solar Protein™ 28天装',
+      linkedOrderNo: 'EXT-20260725-011',
+      planDay: 3,
+      planId: 'pl3',
     },
   ],
-  products: [
+  checkIns: [
     {
-      id: 'p1',
-      name: 'Solar Protein™',
-      price: 89,
-      stock: 120,
-      onSale: true,
-      specs: '28 天装',
-      description: '代餐蛋白粉主商品',
+      id: 'ck1',
+      userId: 'u1001',
+      nickname: 'Freya',
+      date: '2026-07-31',
+      items: ['体重', '饮水', '睡眠', '代餐'],
+      vitalityScore: 86,
     },
     {
-      id: 'p2',
-      name: 'Youth Solar',
-      price: 79,
-      stock: 80,
-      onSale: true,
-      specs: '30 天装',
-      description: '维稳阶段推荐',
+      id: 'ck2',
+      userId: 'u1005',
+      nickname: 'Diego',
+      date: '2026-07-31',
+      items: ['体重', '饮水', '运动'],
+      vitalityScore: 72,
+    },
+    {
+      id: 'ck3',
+      userId: 'u1001',
+      nickname: 'Freya',
+      date: '2026-07-30',
+      items: ['体重', '饮水', '睡眠'],
+      vitalityScore: 78,
+    },
+    {
+      id: 'ck4',
+      userId: 'u1003',
+      nickname: 'Leo',
+      date: '2026-07-29',
+      items: ['体重', '代餐', '睡眠', '饮水', '心情'],
+      vitalityScore: 91,
+    },
+    {
+      id: 'ck5',
+      userId: 'u1005',
+      nickname: 'Diego',
+      date: '2026-07-30',
+      items: ['体重', '饮水'],
+      vitalityScore: 65,
+    },
+    {
+      id: 'ck6',
+      userId: 'u1001',
+      nickname: 'Freya',
+      date: '2026-07-29',
+      items: ['体重', '饮水', '代餐', '运动'],
+      vitalityScore: 82,
+    },
+    {
+      id: 'ck7',
+      userId: 'u1003',
+      nickname: 'Leo',
+      date: '2026-07-28',
+      items: ['体重', '睡眠', '饮水'],
+      vitalityScore: 88,
     },
   ],
-  coupons: [
+  plans: [
     {
-      id: 'c1',
-      name: '注册欢迎券',
-      type: 'full_reduction',
-      thresholdUsd: 50,
-      discountValue: 10,
-      validityType: 'days_after_claim',
-      daysAfterClaim: 30,
-      totalQuantity: 0,
-      perUserLimit: 1,
-      productScope: 'all',
-      productIds: [],
-      enabled: true,
+      id: 'pl1',
+      userId: 'u1001',
+      nickname: 'Freya',
+      day: 12,
+      status: 'active',
+      startDate: '2026-07-20',
+      productId: 'p1',
+      productName: 'Solar Protein™ 28天装',
     },
     {
-      id: 'c2',
-      name: '满减券',
-      type: 'full_reduction',
-      thresholdUsd: 80,
-      discountValue: 15,
-      validityType: 'fixed_date',
-      startAt: '2026-07-01',
-      endAt: '2026-08-31',
-      totalQuantity: 500,
-      perUserLimit: 1,
-      productScope: 'specified',
-      productIds: ['p1'],
-      enabled: true,
+      id: 'pl2',
+      userId: 'u1003',
+      nickname: 'Leo',
+      day: 28,
+      status: 'completed',
+      startDate: '2026-07-01',
+      productId: 'p1',
+      productName: 'Solar Protein™ 28天装',
     },
-  ],
-  batches: [
-    { id: 'b1', couponId: 'c1', couponName: '注册欢迎券', userCount: 128, createdAt: '2026-07-20' },
+    {
+      id: 'pl3',
+      userId: 'u1005',
+      nickname: 'Diego',
+      day: 3,
+      status: 'active',
+      startDate: '2026-07-29',
+      productId: 'p1',
+      productName: 'Solar Protein™ 28天装',
+    },
+    {
+      id: 'pl4',
+      userId: 'u1006',
+      nickname: 'Ana',
+      day: 0,
+      status: 'awaiting',
+      startDate: '2026-07-30',
+      productId: 'p1',
+      productName: 'Solar Protein™ 28天装',
+    },
   ],
   configs: [
     {
@@ -175,28 +285,25 @@ const store = reactive({
       value: 'p1',
       unit: '',
     },
-    {
-      code: 'repurchase_recommend_product_ids',
-      description: '复购推荐产品',
-      value: 'p1,p2',
-      unit: '',
-    },
-    {
-      code: 'register_gift_coupon_ids',
-      description: '注册赠送优惠券',
-      value: 'c1',
-      unit: '',
-    },
-  ],
-  admins: [
-    { id: 'a1', username: 'superadmin', role: '超级管理员', enabled: true },
-    { id: 'a2', username: 'ops', role: '运营', enabled: true },
   ],
 });
 
 function maskPhone(p) {
   if (!p || p.length < 7) return p || '—';
   return p.slice(0, 3) + '****' + p.slice(-4);
+}
+
+function roleName(roleId) {
+  return store.roles.find((r) => r.id === roleId)?.name || roleId;
+}
+
+function slimPlanProductIds() {
+  const cfg = store.configs.find((c) => c.code === 'slim_plan_product_ids');
+  if (!cfg || !cfg.value) return [];
+  return cfg.value
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 function toast(msg) {
@@ -218,28 +325,78 @@ function toast(msg) {
   setTimeout(() => el.remove(), 1800);
 }
 
-const Dashboard = {
+function planDashboardStats() {
+  const today = '2026-07-31';
+  const active = store.plans.filter((p) => p.status === 'active').length;
+  const awaiting = store.plans.filter((p) => p.status === 'awaiting').length;
+  const completed = store.plans.filter((p) => p.status === 'completed').length;
+  const checkInsToday = store.checkIns.filter((c) => c.date === today).length;
+  const totalEnded = completed + active;
+  const completionRate =
+    totalEnded === 0 ? 0 : Math.round((completed / (completed + active + awaiting)) * 100);
+  return { active, awaiting, completed, checkInsToday, completionRate };
+}
+
+const Admins = {
   template: `
-  <div>
-    <div class="stats">
-      <div class="stat" @click="$router.push('/users')"><div class="n">{{ stats.reg }}</div><div class="l">今日注册</div></div>
-      <div class="stat" @click="$router.push('/orders')"><div class="n">{{ stats.orders }}</div><div class="l">今日订单</div></div>
-      <div class="stat" @click="$router.push('/coupons')"><div class="n">{{ stats.issued }}</div><div class="l">券发放</div></div>
-      <div class="stat" @click="$router.push('/coupons')"><div class="n">{{ stats.used }}</div><div class="l">券使用</div></div>
+  <div class="card">
+    <div class="section-head">
+      <h3>管理员列表</h3>
     </div>
-    <div class="card" style="margin-top:16px">
-      <h3 style="margin-top:0">luckdate 运营后台预览</h3>
-      <p style="color:#667;line-height:1.6">本页为静态演示环境（中文界面），数据为内存 Mock，可点通列表/详情/编辑/协助关联等交互。正式环境请对接真实 API。</p>
-    </div>
+    <table>
+      <thead>
+        <tr><th>用户名</th><th>角色</th><th>启用</th><th>操作</th></tr>
+      </thead>
+      <tbody>
+        <tr v-for="a in store.admins" :key="a.id">
+          <td>{{ a.username }}</td>
+          <td>{{ roleName(a.roleId) }}</td>
+          <td>
+            <label>
+              <input type="checkbox" :checked="a.enabled" @change="toggle(a, $event)" />
+              {{ a.enabled ? '启用' : '停用' }}
+            </label>
+          </td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
   </div>`,
   setup() {
-    const stats = computed(() => ({
-      reg: store.users.filter((u) => u.registeredAt >= '2026-07-27').length || 2,
-      orders: store.orders.filter((o) => o.orderedAt.startsWith('2026-07-2')).length,
-      issued: 128,
-      used: 36,
-    }));
-    return { stats };
+    function toggle(a, e) {
+      a.enabled = e.target.checked;
+      toast(a.enabled ? '账号已启用' : '账号已停用');
+    }
+    return { store, roleName, toggle };
+  },
+};
+
+const Roles = {
+  template: `
+  <div class="card">
+    <div class="section-head"><h3>角色列表</h3></div>
+    <table>
+      <thead>
+        <tr><th>角色</th><th>说明</th><th>权限范围</th><th>关联管理员数</th></tr>
+      </thead>
+      <tbody>
+        <tr v-for="r in store.roles" :key="r.id">
+          <td>{{ r.name }}</td>
+          <td>{{ r.description }}</td>
+          <td>
+            <span v-for="p in r.permissions" :key="p" class="tag" style="margin:2px">{{ p }}</span>
+          </td>
+          <td>{{ count(r.id) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="hint">演示级角色说明，正式环境可接入细粒度 RBAC。</p>
+  </div>`,
+  setup() {
+    function count(roleId) {
+      return store.admins.filter((a) => a.roleId === roleId).length;
+    }
+    return { store, count };
   },
 };
 
@@ -253,13 +410,25 @@ const Users = {
         <option value="active">启用</option>
         <option value="disabled">停用</option>
       </select>
+      <select v-model="q.bindStatus">
+        <option value="">绑定状态</option>
+        <option value="bound">已绑定</option>
+        <option value="unbound">未绑定</option>
+      </select>
       <button class="btn" @click="noop">查询</button>
       <button class="btn ghost" @click="reset">重置</button>
     </div>
     <table>
       <thead>
         <tr>
-          <th>用户 ID</th><th>昵称 / 联系方式</th><th>地区</th><th>身高 / 体重</th><th>注册时间</th><th>操作</th>
+          <th>用户 ID</th>
+          <th>昵称 / 联系方式</th>
+          <th>地区</th>
+          <th>身高 / 体重</th>
+          <th>绑定</th>
+          <th>方案天数</th>
+          <th>注册时间</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -268,6 +437,12 @@ const Users = {
           <td>{{ u.nickname }} · {{ u.email || maskPhone(u.phone) }}</td>
           <td>{{ u.region }}</td>
           <td>{{ u.heightCm ? u.heightCm + ' cm' : '—' }} / {{ u.weightKg ? u.weightKg + ' kg' : '—' }}</td>
+          <td>
+            <span class="tag" :class="u.bindStatus === 'bound' ? 'ok' : 'muted'">
+              {{ BIND_STATUS[u.bindStatus] }}
+            </span>
+          </td>
+          <td>{{ u.planDay != null ? 'Day ' + u.planDay : '—' }}</td>
           <td>{{ u.registeredAt }}</td>
           <td><button class="btn ghost" @click="$router.push('/users/' + u.id)">查看详情</button></td>
         </tr>
@@ -275,11 +450,12 @@ const Users = {
     </table>
   </div>`,
   setup() {
-    const q = reactive({ region: '', accountStatus: '' });
+    const q = reactive({ region: '', accountStatus: '', bindStatus: '' });
     const filtered = computed(() =>
       store.users.filter((u) => {
         if (q.region && !u.region.toLowerCase().includes(q.region.toLowerCase())) return false;
         if (q.accountStatus && u.accountStatus !== q.accountStatus) return false;
+        if (q.bindStatus && u.bindStatus !== q.bindStatus) return false;
         return true;
       }),
     );
@@ -287,7 +463,8 @@ const Users = {
       q,
       filtered,
       maskPhone,
-      reset: () => Object.assign(q, { region: '', accountStatus: '' }),
+      BIND_STATUS,
+      reset: () => Object.assign(q, { region: '', accountStatus: '', bindStatus: '' }),
       noop: () => {},
     };
   },
@@ -298,47 +475,111 @@ const UserDetail = {
   template: `
   <div>
     <div class="card" v-if="user">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">用户详情 · {{ user.nickname }}</h3>
+      <div class="section-head">
+        <h3>用户详情 · {{ user.nickname }}</h3>
         <div style="display:flex;gap:8px">
           <button class="btn ghost" @click="$router.push('/users')">返回</button>
-          <button class="btn" @click="openLink=true">协助关联订单</button>
+          <button class="btn" @click="openLink=true">协助外部查单绑定</button>
         </div>
       </div>
-      <table style="margin-top:16px">
-        <tr><th>昵称</th><td>{{ user.nickname }}</td><th>账号</th><td>{{ user.email || maskPhone(user.phone) }}</td></tr>
-        <tr><th>地区</th><td>{{ user.region }}</td><th>身高/体重</th><td>{{ user.heightCm || '—' }} / {{ user.weightKg || '—' }}</td></tr>
-        <tr><th>提醒时间</th><td>21:00</td><th>备注</th>
-          <td><input v-model="remark" style="width:70%" /> <button class="btn ghost" @click="saveRemark">保存</button></td></tr>
+      <table>
+        <tr>
+          <th>昵称</th><td>{{ user.nickname }}</td>
+          <th>账号</th><td>{{ user.email || maskPhone(user.phone) }}</td>
+        </tr>
+        <tr>
+          <th>地区</th><td>{{ user.region }}</td>
+          <th>身高 / 体重</th>
+          <td>{{ user.heightCm || '—' }} / {{ user.weightKg || '—' }}</td>
+        </tr>
+        <tr>
+          <th>提醒时间</th><td>{{ user.reminderTime || '—' }}</td>
+          <th>账号状态</th>
+          <td>
+            <span class="tag" :class="user.accountStatus==='active'?'ok':'warn'">
+              {{ user.accountStatus==='active'?'启用':'停用' }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>绑定状态</th>
+          <td>
+            <span class="tag" :class="user.bindStatus==='bound'?'ok':'muted'">
+              {{ BIND_STATUS[user.bindStatus] }}
+            </span>
+          </td>
+          <th>方案进度</th>
+          <td>{{ user.planDay != null ? 'Day ' + user.planDay : '未开通' }}</td>
+        </tr>
+        <tr>
+          <th>备注</th>
+          <td colspan="3">
+            <input v-model="remark" style="width:70%" />
+            <button class="btn ghost" @click="saveRemark">保存</button>
+          </td>
+        </tr>
       </table>
     </div>
+
     <div class="card">
-      <h3 style="margin-top:0">已关联订单</h3>
-      <div v-if="!linked.length" class="empty">暂无关联订单</div>
+      <h3 style="margin-top:0">已绑定产品</h3>
+      <div v-if="user && user.bindStatus==='bound'" >
+        <table>
+          <thead>
+            <tr><th>外部单号</th><th>产品 ID</th><th>产品名称</th><th>是否开通方案</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ user.linkedOrderNo || '—' }}</td>
+              <td><code>{{ user.linkedProductId }}</code></td>
+              <td>{{ user.linkedProductName }}</td>
+              <td>
+                <span class="tag" :class="user.planId ? 'ok' : 'muted'">
+                  {{ user.planId ? '已开通' : '未开通（产品不在方案配置内）' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else class="empty">暂无绑定产品。可通过「协助外部查单绑定」写入关联产品。</div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h3>近期打卡</h3>
+        <button class="btn ghost" @click="$router.push('/check-ins?userId=' + id)">查看全部打卡</button>
+      </div>
+      <div v-if="!userCheckIns.length" class="empty">暂无打卡记录</div>
       <table v-else>
-        <thead><tr><th>订单号</th><th>商品</th><th>下单时间</th><th>物流状态</th></tr></thead>
+        <thead>
+          <tr><th>日期</th><th>记录项</th><th>活力分</th></tr>
+        </thead>
         <tbody>
-          <tr v-for="o in linked" :key="o.id">
-            <td>{{ o.orderNo }}</td><td>{{ o.productName }}</td><td>{{ o.orderedAt }}</td>
-            <td><span class="tag">{{ LOGISTICS[o.logisticsStatus] }}</span></td>
+          <tr v-for="c in userCheckIns" :key="c.id">
+            <td>{{ c.date }}</td>
+            <td>{{ c.items.join('、') }}</td>
+            <td>{{ c.vitalityScore }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="card"><h3 style="margin-top:0">打卡摘要（可选）</h3><p class="empty" style="padding:8px 0">近 7 日打卡摘要：演示数据 · 3/7 天有记录</p></div>
 
     <div class="modal-mask" v-if="openLink">
       <div class="modal">
-        <h3>协助关联订单</h3>
-        <div class="form-row"><label>客户姓名</label><input v-model="link.name" /></div>
-        <div class="form-row"><label>手机后四位</label><input v-model="link.last4" maxlength="4" /></div>
+        <h3>协助外部查单绑定</h3>
+        <p class="hint" style="margin-top:0">按客户姓名 + 手机后四位预览外部订单；确认后写入用户关联产品。若产品 ID 属于 slim_plan_product_ids，则开通 28 天方案。</p>
+        <div class="form-row"><label>客户姓名</label><input v-model="link.name" placeholder="如 Freya Lopez" /></div>
+        <div class="form-row"><label>手机后四位</label><input v-model="link.last4" maxlength="4" placeholder="5678" /></div>
         <button class="btn ghost" @click="preview">预览命中订单</button>
         <table v-if="previewList.length" style="margin-top:12px">
-          <thead><tr><th></th><th>订单号</th><th>客户</th><th>商品</th></tr></thead>
+          <thead><tr><th></th><th>外部单号</th><th>客户</th><th>产品</th></tr></thead>
           <tbody>
             <tr v-for="o in previewList" :key="o.id">
               <td><input type="radio" :value="o.id" v-model="link.orderId" /></td>
-              <td>{{ o.orderNo }}</td><td>{{ o.customerName }}</td><td>{{ o.productName }}</td>
+              <td>{{ o.orderNo }}</td>
+              <td>{{ o.customerName }}</td>
+              <td>{{ o.productName }} <code style="margin-left:4px">{{ o.productId }}</code></td>
             </tr>
           </tbody>
         </table>
@@ -353,38 +594,73 @@ const UserDetail = {
     const user = computed(() => store.users.find((u) => u.id === props.id));
     const remark = ref(user.value?.remark || '');
     watch(user, (u) => (remark.value = u?.remark || ''));
-    const linked = computed(() =>
-      (user.value?.linkedOrderIds || [])
-        .map((id) => store.orders.find((o) => o.id === id))
-        .filter(Boolean),
+    const userCheckIns = computed(() =>
+      store.checkIns.filter((c) => c.userId === props.id).slice(0, 5),
     );
     const openLink = ref(false);
     const link = reactive({ name: '', last4: '', orderId: '' });
     const previewList = ref([]);
+
     function preview() {
-      previewList.value = store.orders.filter(
+      previewList.value = EXTERNAL_ORDERS.filter(
         (o) =>
           o.customerName.toLowerCase() === link.name.trim().toLowerCase() &&
           o.phone.endsWith(link.last4),
       );
-      if (!previewList.value.length) toast('未命中订单');
+      if (!previewList.value.length) toast('未命中外部订单');
     }
+
     function confirmLink() {
       if (!link.orderId || !user.value) return toast('请选择订单');
-      if (!user.value.linkedOrderIds.includes(link.orderId)) {
-        user.value.linkedOrderIds.push(link.orderId);
+      const order = EXTERNAL_ORDERS.find((o) => o.id === link.orderId);
+      if (!order) return toast('订单不存在');
+
+      const u = user.value;
+      u.bindStatus = 'bound';
+      u.linkedProductId = order.productId;
+      u.linkedProductName = order.productName;
+      u.linkedOrderNo = order.orderNo;
+
+      const eligible = slimPlanProductIds().includes(order.productId);
+      if (eligible) {
+        let plan = store.plans.find((p) => p.userId === u.id && p.status !== 'completed');
+        if (!plan) {
+          plan = {
+            id: 'pl' + Date.now(),
+            userId: u.id,
+            nickname: u.nickname,
+            day: 0,
+            status: 'awaiting',
+            startDate: '2026-07-31',
+            productId: order.productId,
+            productName: order.productName,
+          };
+          store.plans.push(plan);
+        } else {
+          plan.productId = order.productId;
+          plan.productName = order.productName;
+        }
+        u.planId = plan.id;
+        u.planDay = plan.day;
+        openLink.value = false;
+        toast('绑定成功，已开通 / 关联 28 天方案');
+      } else {
+        u.planId = null;
+        u.planDay = null;
+        openLink.value = false;
+        toast('绑定成功（产品不在方案配置内，未开通方案）');
       }
-      openLink.value = false;
-      toast('关联成功');
     }
+
     function saveRemark() {
       if (user.value) user.value.remark = remark.value;
       toast('备注已保存');
     }
+
     return {
       user,
-      linked,
       remark,
+      userCheckIns,
       openLink,
       link,
       previewList,
@@ -392,306 +668,160 @@ const UserDetail = {
       confirmLink,
       saveRemark,
       maskPhone,
-      LOGISTICS,
+      BIND_STATUS,
     };
   },
 };
 
-const Orders = {
+const CheckIns = {
   template: `
   <div class="card">
     <div class="filters">
-      <input v-model="q.orderNo" placeholder="订单号" />
-      <input v-model="q.customerName" placeholder="客户姓名" />
-      <input v-model="q.last4" placeholder="手机后四位" maxlength="4" />
-      <select v-model="q.orderStatus">
-        <option value="">订单状态</option>
-        <option v-for="(l,k) in ORDER_STATUS" :key="k" :value="k">{{ l }}</option>
-      </select>
-      <select v-model="q.logisticsStatus">
-        <option value="">物流状态</option>
-        <option v-for="(l,k) in LOGISTICS" :key="k" :value="k">{{ l }}</option>
-      </select>
-      <button class="btn ghost" @click="Object.assign(q,{orderNo:'',customerName:'',last4:'',orderStatus:'',logisticsStatus:''})">重置</button>
+      <input v-model="q.nickname" placeholder="用户昵称" />
+      <input v-model="q.date" type="date" />
+      <button class="btn" @click="noop">查询</button>
+      <button class="btn ghost" @click="reset">重置</button>
     </div>
     <table>
       <thead>
         <tr>
-          <th>订单号</th><th>客户姓名</th><th>手机</th><th>商品</th>
-          <th>订单状态</th><th>物流状态</th><th>下单时间</th><th>地区</th><th>操作</th>
+          <th>用户</th><th>日期</th><th>记录项</th><th>活力分</th><th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="o in filtered" :key="o.id">
-          <td>{{ o.orderNo }}</td>
-          <td>{{ o.customerName }}</td>
-          <td>{{ maskPhone(o.phone) }}</td>
-          <td>{{ o.productName }}</td>
-          <td><span class="tag">{{ ORDER_STATUS[o.orderStatus] }}</span></td>
-          <td><span class="tag ok">{{ LOGISTICS[o.logisticsStatus] }}</span></td>
-          <td>{{ o.orderedAt }}</td>
-          <td>{{ o.region }}</td>
-          <td><button class="btn ghost" @click="$router.push('/orders/' + o.id)">详情</button></td>
+        <tr v-for="c in filtered" :key="c.id">
+          <td>{{ c.nickname }} <span style="color:#889;font-size:12px">{{ c.userId }}</span></td>
+          <td>{{ c.date }}</td>
+          <td>
+            <span v-for="it in c.items" :key="it" class="tag" style="margin:2px">{{ it }}</span>
+          </td>
+          <td><strong>{{ c.vitalityScore }}</strong></td>
+          <td><button class="btn ghost" @click="$router.push('/users/' + c.userId)">用户详情</button></td>
         </tr>
       </tbody>
     </table>
+    <div v-if="!filtered.length" class="empty">无匹配打卡记录</div>
   </div>`,
   setup() {
+    const route = VueRouter.useRoute();
     const q = reactive({
-      orderNo: '',
-      customerName: '',
-      last4: '',
-      orderStatus: '',
-      logisticsStatus: '',
+      nickname: '',
+      date: '',
+      userId: route.query.userId || '',
     });
+    watch(
+      () => route.query.userId,
+      (v) => {
+        q.userId = v || '';
+      },
+    );
     const filtered = computed(() =>
-      store.orders.filter((o) => {
-        if (q.orderNo && !o.orderNo.includes(q.orderNo)) return false;
-        if (q.customerName && !o.customerName.toLowerCase().includes(q.customerName.toLowerCase()))
+      store.checkIns.filter((c) => {
+        if (q.userId && c.userId !== q.userId) return false;
+        if (q.nickname && !c.nickname.toLowerCase().includes(q.nickname.toLowerCase()))
           return false;
-        if (q.last4 && !o.phone.endsWith(q.last4)) return false;
-        if (q.orderStatus && o.orderStatus !== q.orderStatus) return false;
-        if (q.logisticsStatus && o.logisticsStatus !== q.logisticsStatus) return false;
+        if (q.date && c.date !== q.date) return false;
         return true;
       }),
     );
-    return { q, filtered, maskPhone, ORDER_STATUS, LOGISTICS };
+    return {
+      q,
+      filtered,
+      reset: () => Object.assign(q, { nickname: '', date: '', userId: '' }),
+      noop: () => {},
+    };
   },
 };
 
-const OrderDetail = {
-  props: ['id'],
+const Plans = {
   template: `
-  <div class="card" v-if="o">
-    <div style="display:flex;justify-content:space-between">
-      <h3 style="margin:0">订单详情 · {{ o.orderNo }}</h3>
-      <button class="btn ghost" @click="$router.push('/orders')">返回</button>
+  <div>
+    <div class="stats">
+      <div class="stat"><div class="n">{{ stats.active }}</div><div class="l">进行中方案</div></div>
+      <div class="stat"><div class="n">{{ stats.awaiting }}</div><div class="l">待收货</div></div>
+      <div class="stat"><div class="n">{{ stats.checkInsToday }}</div><div class="l">今日打卡</div></div>
+      <div class="stat"><div class="n">{{ stats.completionRate }}%</div><div class="l">完成率</div></div>
     </div>
-    <table style="margin-top:16px">
-      <tr><th>订单状态</th><td>{{ ORDER_STATUS[o.orderStatus] }}</td><th>物流状态</th><td>{{ LOGISTICS[o.logisticsStatus] }}</td></tr>
-      <tr><th>客户</th><td>{{ o.customerName }}</td><th>手机</th><td>{{ maskPhone(o.phone) }}</td></tr>
-      <tr><th>商品</th><td>{{ o.productName }} / {{ o.sku }}</td><th>金额</th><td>$ {{ o.amount }}</td></tr>
-      <tr><th>下单时间</th><td>{{ o.orderedAt }}</td><th>地区</th><td>{{ o.region }}</td></tr>
-      <tr><th>收件地址</th><td colspan="3">{{ o.receiverAddress }}</td></tr>
-    </table>
-  </div>`,
-  setup(props) {
-    const o = computed(() => store.orders.find((x) => x.id === props.id));
-    return { o, ORDER_STATUS, LOGISTICS, maskPhone };
-  },
-};
-
-const Products = {
-  template: `
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px">
-      <h3 style="margin:0">商品列表</h3>
-      <button class="btn" @click="openEdit()">新增</button>
-    </div>
-    <table>
-      <thead><tr><th>名称</th><th>价格</th><th>库存</th><th>上下架</th><th>规格</th><th>操作</th></tr></thead>
-      <tbody>
-        <tr v-for="p in store.products" :key="p.id">
-          <td>{{ p.name }}</td><td>$ {{ p.price }}</td><td>{{ p.stock }}</td>
-          <td><span class="tag" :class="p.onSale?'ok':'warn'">{{ p.onSale?'上架':'下架' }}</span></td>
-          <td>{{ p.specs }}</td>
-          <td><button class="btn ghost" @click="openEdit(p)">编辑</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="modal-mask" v-if="show">
-      <div class="modal">
-        <h3>{{ form.id ? '编辑商品' : '新增商品' }}</h3>
-        <div class="form-row"><label>名称</label><input v-model="form.name" /></div>
-        <div class="form-row"><label>价格</label><input type="number" v-model.number="form.price" /></div>
-        <div class="form-row"><label>库存</label><input type="number" v-model.number="form.stock" /></div>
-        <div class="form-row"><label>规格</label><input v-model="form.specs" /></div>
-        <div class="form-row"><label>描述</label><textarea v-model="form.description" rows="3"></textarea></div>
-        <div class="form-row"><label><input type="checkbox" v-model="form.onSale" /> 上架</label></div>
-        <p style="color:#889;font-size:12px">不提供：是否代餐 / 复购角色 / 可用欢迎券</p>
-        <div class="modal-actions">
-          <button class="btn ghost" @click="show=false">取消</button>
-          <button class="btn" @click="save">确认</button>
-        </div>
+    <div class="card">
+      <div class="section-head">
+        <h3>28 天方案实例</h3>
+        <span style="color:#667;font-size:13px">已完成 {{ stats.completed }} · 合计 {{ store.plans.length }}</span>
       </div>
+      <div class="filters">
+        <input v-model="q.nickname" placeholder="用户昵称" />
+        <select v-model="q.status">
+          <option value="">方案状态</option>
+          <option value="active">进行中</option>
+          <option value="completed">已完成</option>
+          <option value="awaiting">待收货</option>
+        </select>
+        <input v-model="q.startFrom" type="date" title="开始日期起" />
+        <button class="btn" @click="noop">查询</button>
+        <button class="btn ghost" @click="reset">重置</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>方案 ID</th><th>用户</th><th>当前天数</th><th>状态</th>
+            <th>开始日期</th><th>关联产品</th><th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="p in filtered" :key="p.id">
+            <td>{{ p.id }}</td>
+            <td>{{ p.nickname }} <span style="color:#889;font-size:12px">{{ p.userId }}</span></td>
+            <td>Day {{ p.day }}</td>
+            <td><span class="tag" :class="PLAN_STATUS_TAG[p.status]">{{ PLAN_STATUS[p.status] }}</span></td>
+            <td>{{ p.startDate }}</td>
+            <td>{{ p.productName }} <code style="margin-left:4px">{{ p.productId }}</code></td>
+            <td>
+              <button
+                v-if="p.userId && store.users.some(u => u.id === p.userId)"
+                class="btn ghost"
+                @click="$router.push('/users/' + p.userId)"
+              >用户</button>
+              <span v-else style="color:#889">—</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="!filtered.length" class="empty">无匹配方案</div>
     </div>
   </div>`,
   setup() {
-    const show = ref(false);
-    const form = reactive({});
-    function openEdit(p) {
-      Object.assign(form, p || { id: '', name: '', price: 0, stock: 0, specs: '', description: '', onSale: true });
-      show.value = true;
-    }
-    function save() {
-      if (!form.name) return toast('请填写名称');
-      if (form.id) {
-        const i = store.products.findIndex((x) => x.id === form.id);
-        store.products[i] = { ...form };
-      } else {
-        store.products.push({ ...form, id: 'p' + Date.now() });
-      }
-      show.value = false;
-      toast('已保存');
-    }
-    return { store, show, form, openEdit, save };
-  },
-};
-
-const Coupons = {
-  template: `
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px">
-      <h3 style="margin:0">优惠券列表</h3>
-      <div style="display:flex;gap:8px">
-        <button class="btn ghost" @click="$router.push('/coupon-batches')">批量发放列表</button>
-        <button class="btn" @click="openEdit()">新增优惠券</button>
-      </div>
-    </div>
-    <table>
-      <thead><tr><th>名称</th><th>类型</th><th>门槛/额度</th><th>有效期</th><th>启用</th><th>操作</th></tr></thead>
-      <tbody>
-        <tr v-for="c in store.coupons" :key="c.id">
-          <td>{{ c.name }}</td>
-          <td>{{ typeLabel(c.type) }}</td>
-          <td>满 {{ c.thresholdUsd }} 减 {{ c.discountValue }}</td>
-          <td>{{ c.validityType==='fixed_date' ? (c.startAt+' ~ '+c.endAt) : ('领取后 '+c.daysAfterClaim+' 天') }}</td>
-          <td>{{ c.enabled?'启用':'停用' }}</td>
-          <td>
-            <button class="btn ghost" @click="openEdit(c)">编辑</button>
-            <button class="btn danger" @click="del(c.id)">删除</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="modal-mask" v-if="show">
-      <div class="modal">
-        <h3>{{ form.id?'编辑':'新增' }}优惠券</h3>
-        <div class="form-row"><label>名称</label><input v-model="form.name" /></div>
-        <div class="form-row"><label>类型</label>
-          <select v-model="form.type">
-            <option value="full_reduction">满减券</option>
-            <option value="discount">折扣券</option>
-            <option value="no_threshold">无门槛券</option>
-          </select>
-        </div>
-        <div class="form-row" v-if="form.type==='full_reduction'"><label>满减门槛（美元）</label><input type="number" v-model.number="form.thresholdUsd" /></div>
-        <div class="form-row"><label>{{ form.type==='discount'?'折扣':'减免金额（美元）' }}</label><input type="number" v-model.number="form.discountValue" /></div>
-        <div class="form-row"><label>有效期类型</label>
-          <select v-model="form.validityType">
-            <option value="fixed_date">指定日期</option>
-            <option value="days_after_claim">领取后有效期</option>
-          </select>
-        </div>
-        <div class="form-row" v-if="form.validityType==='fixed_date'">
-          <label>开始 / 结束</label>
-          <input v-model="form.startAt" placeholder="YYYY-MM-DD" />
-          <input v-model="form.endAt" placeholder="YYYY-MM-DD" style="margin-top:6px" />
-        </div>
-        <div class="form-row" v-else><label>领取后 N 天</label><input type="number" v-model.number="form.daysAfterClaim" /></div>
-        <div class="form-row"><label>发放总量（0=不限）</label><input type="number" v-model.number="form.totalQuantity" /></div>
-        <div class="form-row"><label>单人限领</label><input type="number" v-model.number="form.perUserLimit" /></div>
-        <div class="form-row"><label>商品范围</label>
-          <select v-model="form.productScope">
-            <option value="all">全部商品</option>
-            <option value="specified">指定商品</option>
-            <option value="include_specified_order">包含指定商品后整单计算</option>
-          </select>
-        </div>
-        <div class="form-row" v-if="form.productScope!=='all'">
-          <label>指定商品 ID（逗号分隔）</label>
-          <input v-model="productIdsText" />
-        </div>
-        <div class="form-row"><label><input type="checkbox" v-model="form.enabled" /> 启用</label></div>
-        <div class="modal-actions">
-          <button class="btn ghost" @click="show=false">取消</button>
-          <button class="btn" @click="save">确认</button>
-        </div>
-      </div>
-    </div>
-  </div>`,
-  setup() {
-    const show = ref(false);
-    const form = reactive({});
-    const productIdsText = ref('');
-    function typeLabel(t) {
-      return { full_reduction: '满减券', discount: '折扣券', no_threshold: '无门槛券' }[t] || t;
-    }
-    function openEdit(c) {
-      Object.assign(
-        form,
-        c || {
-          id: '',
-          name: '',
-          type: 'full_reduction',
-          thresholdUsd: 0,
-          discountValue: 10,
-          validityType: 'days_after_claim',
-          daysAfterClaim: 30,
-          totalQuantity: 0,
-          perUserLimit: 1,
-          productScope: 'all',
-          productIds: [],
-          enabled: true,
-        },
-      );
-      productIdsText.value = (form.productIds || []).join(',');
-      show.value = true;
-    }
-    function save() {
-      form.productIds =
-        form.productScope === 'all'
-          ? []
-          : productIdsText.value
-              .split(',')
-              .map((s) => s.trim())
-              .filter(Boolean);
-      if (form.productScope !== 'all' && !form.productIds.length) return toast('请选择指定商品');
-      if (form.id) {
-        const i = store.coupons.findIndex((x) => x.id === form.id);
-        store.coupons[i] = { ...form, productIds: [...form.productIds] };
-      } else {
-        store.coupons.push({ ...form, id: 'c' + Date.now(), productIds: [...form.productIds] });
-      }
-      show.value = false;
-      toast('已保存');
-    }
-    function del(id) {
-      if (!confirm('确认删除该优惠券？')) return;
-      store.coupons = store.coupons.filter((c) => c.id !== id);
-      toast('已删除');
-    }
-    return { store, show, form, productIdsText, typeLabel, openEdit, save, del };
-  },
-};
-
-const CouponBatches = {
-  template: `
-  <div class="card">
-    <div style="display:flex;justify-content:space-between">
-      <h3 style="margin:0">批量发放列表</h3>
-      <button class="btn ghost" @click="$router.push('/coupons')">返回优惠券</button>
-    </div>
-    <table style="margin-top:16px">
-      <thead><tr><th>批次 ID</th><th>券名</th><th>人数</th><th>时间</th></tr></thead>
-      <tbody>
-        <tr v-for="b in store.batches" :key="b.id">
-          <td>{{ b.id }}</td><td>{{ b.couponName }}</td><td>{{ b.userCount }}</td><td>{{ b.createdAt }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>`,
-  setup() {
-    return { store };
+    const q = reactive({ nickname: '', status: '', startFrom: '' });
+    const stats = computed(() => planDashboardStats());
+    const filtered = computed(() =>
+      store.plans.filter((p) => {
+        if (q.nickname && !p.nickname.toLowerCase().includes(q.nickname.toLowerCase()))
+          return false;
+        if (q.status && p.status !== q.status) return false;
+        if (q.startFrom && p.startDate < q.startFrom) return false;
+        return true;
+      }),
+    );
+    return {
+      store,
+      q,
+      stats,
+      filtered,
+      PLAN_STATUS,
+      PLAN_STATUS_TAG,
+      reset: () => Object.assign(q, { nickname: '', status: '', startFrom: '' }),
+      noop: () => {},
+    };
   },
 };
 
 const Configs = {
   template: `
   <div class="card">
-    <h3 style="margin-top:0">系统配置</h3>
+    <div class="section-head"><h3>基础设置</h3></div>
+    <p class="hint" style="margin-top:0">仅保留 28 天方案关联产品配置。已移除复购推荐 / 注册送券等电商相关项。</p>
     <table>
-      <thead><tr><th>配置编码</th><th>配置说明</th><th>配置值</th><th>单位</th><th>操作</th></tr></thead>
+      <thead>
+        <tr><th>配置编码</th><th>配置说明</th><th>配置值</th><th>单位</th><th>操作</th></tr>
+      </thead>
       <tbody>
         <tr v-for="c in store.configs" :key="c.code">
           <td><code>{{ c.code }}</code></td>
@@ -707,7 +837,10 @@ const Configs = {
         <h3>编辑配置</h3>
         <div class="form-row"><label>编码</label><input :value="form.code" disabled /></div>
         <div class="form-row"><label>说明</label><input :value="form.description" disabled /></div>
-        <div class="form-row"><label>配置值</label><input v-model="form.value" /></div>
+        <div class="form-row">
+          <label>配置值（产品 ID，多个用英文逗号分隔）</label>
+          <input v-model="form.value" placeholder="如 p1,p2" />
+        </div>
         <div class="modal-actions">
           <button class="btn ghost" @click="show=false">取消</button>
           <button class="btn" @click="save">确认</button>
@@ -737,44 +870,15 @@ const Configs = {
   },
 };
 
-const Admins = {
-  template: `
-  <div class="card">
-    <h3 style="margin-top:0">管理员账号</h3>
-    <table>
-      <thead><tr><th>用户名</th><th>角色</th><th>启用</th><th>操作</th></tr></thead>
-      <tbody>
-        <tr v-for="a in store.admins" :key="a.id">
-          <td>{{ a.username }}</td>
-          <td>{{ a.role }}</td>
-          <td>
-            <label><input type="checkbox" :checked="a.enabled" @change="toggle(a, $event)" /> {{ a.enabled?'启用':'停用' }}</label>
-          </td>
-          <td>—</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>`,
-  setup() {
-    function toggle(a, e) {
-      a.enabled = e.target.checked;
-      toast(a.enabled ? '账号已启用' : '账号已停用');
-    }
-    return { store, toggle };
-  },
-};
-
 const routes = [
-  { path: '/', component: Dashboard },
+  { path: '/', redirect: '/plans' },
+  { path: '/admins', component: Admins },
+  { path: '/roles', component: Roles },
   { path: '/users', component: Users },
   { path: '/users/:id', component: UserDetail, props: true },
-  { path: '/orders', component: Orders },
-  { path: '/orders/:id', component: OrderDetail, props: true },
-  { path: '/products', component: Products },
-  { path: '/coupons', component: Coupons },
-  { path: '/coupon-batches', component: CouponBatches },
+  { path: '/check-ins', component: CheckIns },
+  { path: '/plans', component: Plans },
   { path: '/configs', component: Configs },
-  { path: '/admins', component: Admins },
 ];
 
 const router = createRouter({ history: createWebHashHistory(), routes });
@@ -785,38 +889,46 @@ const App = {
     <aside class="sider">
       <div class="brand">luckdate<span>管理后台 · 中文</span></div>
       <nav class="menu">
-        <router-link to="/" exact-active-class="active">首页</router-link>
-        <router-link to="/products">商品管理</router-link>
-        <router-link to="/orders">订单管理</router-link>
-        <router-link to="/coupons">优惠券管理</router-link>
-        <router-link to="/configs">基础设置</router-link>
-        <router-link to="/users">用户管理</router-link>
-        <router-link to="/admins">管理员管理</router-link>
+        <div class="menu-group">
+          <div class="menu-group-title">管理员配置</div>
+          <router-link to="/admins">管理员列表</router-link>
+          <router-link to="/roles">角色列表</router-link>
+        </div>
+        <div class="menu-group">
+          <div class="menu-group-title">用户管理</div>
+          <router-link to="/users">用户列表</router-link>
+          <router-link to="/check-ins">用户打卡记录</router-link>
+        </div>
+        <div class="menu-group">
+          <div class="menu-group-title">方案列表</div>
+          <router-link to="/plans">方案看板</router-link>
+        </div>
+        <div class="menu-group">
+          <div class="menu-group-title">系统设置</div>
+          <router-link to="/configs">基础设置</router-link>
+        </div>
       </nav>
     </aside>
     <div class="main">
       <header class="topbar">
         <div>{{ title }}</div>
-        <div style="color:#667;font-size:13px">演示账号 · 静态 Mock</div>
+        <div style="color:#667;font-size:13px">演示账号 · 静态 Mock · 无电商模块</div>
       </header>
       <main class="content"><router-view /></main>
     </div>
   </div>`,
   setup() {
     const titles = {
-      '/': '数据概览',
+      '/admins': '管理员列表',
+      '/roles': '角色列表',
       '/users': '用户列表',
-      '/orders': '订单列表',
-      '/products': '商品管理',
-      '/coupons': '优惠券管理',
-      '/coupon-batches': '批量发放列表',
-      '/configs': '系统配置',
-      '/admins': '管理员管理',
+      '/check-ins': '用户打卡记录',
+      '/plans': '28 天方案看板',
+      '/configs': '基础设置',
     };
     const title = computed(() => {
       const p = router.currentRoute.value.path;
       if (p.startsWith('/users/')) return '用户详情';
-      if (p.startsWith('/orders/')) return '订单详情';
       return titles[p] || 'luckdate';
     });
     return { title };

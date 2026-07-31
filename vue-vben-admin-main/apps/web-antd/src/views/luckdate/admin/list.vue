@@ -9,13 +9,14 @@ import { Page } from '@vben/common-ui';
 import { Card, Switch, Table, message } from 'ant-design-vue';
 
 import { queryAdmins, setAdminEnabled } from '#/api/luckdate';
+import { getRoleName } from '#/views/luckdate/_mock/store';
 
 const loading = ref(false);
 const admins = ref<AdminRecord[]>([]);
 
 const columns: TableColumnsType<AdminRecord> = [
   { title: '用户名', dataIndex: 'username' },
-  { title: '角色', dataIndex: 'role' },
+  { title: '角色', key: 'role' },
   { title: '启用', key: 'enabled', width: 100 },
   { title: '操作', key: 'action', width: 100 },
 ];
@@ -45,7 +46,7 @@ onMounted(() => void loadAdmins());
 </script>
 
 <template>
-  <Page title="账号与权限">
+  <Page title="管理员列表">
     <Card>
       <Table
         :columns="columns"
@@ -55,8 +56,11 @@ onMounted(() => void loadAdmins());
         row-key="id"
       >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'role'">
+            {{ getRoleName(record.roleId) }}
+          </template>
           <Switch
-            v-if="column.key === 'enabled'"
+            v-else-if="column.key === 'enabled'"
             :checked="record.enabled"
             checked-children="启用"
             un-checked-children="停用"
