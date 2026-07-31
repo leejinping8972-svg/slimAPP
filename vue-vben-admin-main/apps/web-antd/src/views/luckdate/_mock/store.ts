@@ -63,7 +63,7 @@ const users: UserRecord[] = [
     registeredAt: '2026-07-20T08:00:00.000Z',
     reminderTime: '21:00',
     bindStatus: 'bound',
-    linkedProductId: 'p1',
+    linkedProductId: 'solar_protein',
     linkedProductName: 'Solar Protein™ 28天装',
     linkedOrderNo: 'EXT-20260720-001',
     planDay: 12,
@@ -98,7 +98,7 @@ const users: UserRecord[] = [
     remark: '测试停用',
     reminderTime: '22:00',
     bindStatus: 'bound',
-    linkedProductId: 'p1',
+    linkedProductId: 'solar_protein',
     linkedProductName: 'Solar Protein™ 28天装',
     linkedOrderNo: 'EXT-20260718-008',
     planDay: 28,
@@ -116,7 +116,7 @@ const users: UserRecord[] = [
     registeredAt: '2026-07-28T09:00:00.000Z',
     reminderTime: '21:00',
     bindStatus: 'bound',
-    linkedProductId: 'p2',
+    linkedProductId: 'active_boost',
     linkedProductName: 'Active Boost 14天装',
     linkedOrderNo: 'EXT-20260728-020',
     planDay: null,
@@ -134,7 +134,7 @@ const users: UserRecord[] = [
     registeredAt: '2026-07-25T16:20:00.000Z',
     reminderTime: '21:30',
     bindStatus: 'bound',
-    linkedProductId: 'p1',
+    linkedProductId: 'solar_protein',
     linkedProductName: 'Solar Protein™ 28天装',
     linkedOrderNo: 'EXT-20260725-011',
     planDay: 3,
@@ -193,7 +193,7 @@ const plans: PlanRecord[] = [
     day: 12,
     status: 'active',
     startDate: '2026-07-20',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -203,7 +203,7 @@ const plans: PlanRecord[] = [
     day: 28,
     status: 'completed',
     startDate: '2026-07-01',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -213,7 +213,7 @@ const plans: PlanRecord[] = [
     day: 3,
     status: 'active',
     startDate: '2026-07-29',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -223,7 +223,7 @@ const plans: PlanRecord[] = [
     day: 0,
     status: 'awaiting',
     startDate: '2026-07-30',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
 ];
@@ -234,7 +234,7 @@ const externalOrders: ExternalOrderRecord[] = [
     orderNo: 'EXT-20260720-001',
     customerName: 'Freya Lopez',
     phone: '13812345678',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -242,7 +242,7 @@ const externalOrders: ExternalOrderRecord[] = [
     orderNo: 'EXT-20260722-014',
     customerName: 'Maya Ruiz',
     phone: '5512345678',
-    productId: 'p3',
+    productId: 'youth_solar',
     productName: 'Youth Solar 维稳装',
   },
   {
@@ -250,7 +250,7 @@ const externalOrders: ExternalOrderRecord[] = [
     orderNo: 'EXT-20260718-008',
     customerName: 'Leo Cruz',
     phone: '5598765432',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -258,7 +258,7 @@ const externalOrders: ExternalOrderRecord[] = [
     orderNo: 'EXT-20260728-020',
     customerName: 'Sofia Diaz',
     phone: '5588990011',
-    productId: 'p2',
+    productId: 'active_boost',
     productName: 'Active Boost 14天装',
   },
 ];
@@ -267,7 +267,7 @@ const configs: ConfigRecord[] = [
   {
     code: 'slim_plan_product_ids',
     description: '28 天方案关联产品',
-    value: 'p1',
+    value: 'solar_protein,LD-SLIM-28D',
   },
 ];
 

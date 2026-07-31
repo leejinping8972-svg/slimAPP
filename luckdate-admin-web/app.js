@@ -25,7 +25,7 @@ const EXTERNAL_ORDERS = [
     orderNo: 'EXT-20260720-001',
     customerName: 'Freya Lopez',
     phone: '13812345678',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -33,7 +33,7 @@ const EXTERNAL_ORDERS = [
     orderNo: 'EXT-20260722-014',
     customerName: 'Maya Ruiz',
     phone: '5512345678',
-    productId: 'p3',
+    productId: 'youth_solar',
     productName: 'Youth Solar 维稳装',
   },
   {
@@ -41,7 +41,7 @@ const EXTERNAL_ORDERS = [
     orderNo: 'EXT-20260718-008',
     customerName: 'Leo Cruz',
     phone: '5598765432',
-    productId: 'p1',
+    productId: 'solar_protein',
     productName: 'Solar Protein™ 28天装',
   },
   {
@@ -49,7 +49,7 @@ const EXTERNAL_ORDERS = [
     orderNo: 'EXT-20260728-020',
     customerName: 'Sofia Diaz',
     phone: '5588990011',
-    productId: 'p2',
+    productId: 'active_boost',
     productName: 'Active Boost 14天装',
   },
 ];
@@ -95,7 +95,7 @@ const store = reactive({
       reminderTime: '21:00',
       remark: '',
       bindStatus: 'bound',
-      linkedProductId: 'p1',
+      linkedProductId: 'solar_protein',
       linkedProductName: 'Solar Protein™ 28天装',
       linkedOrderNo: 'EXT-20260720-001',
       planDay: 12,
@@ -133,7 +133,7 @@ const store = reactive({
       reminderTime: '22:00',
       remark: '测试停用',
       bindStatus: 'bound',
-      linkedProductId: 'p1',
+      linkedProductId: 'solar_protein',
       linkedProductName: 'Solar Protein™ 28天装',
       linkedOrderNo: 'EXT-20260718-008',
       planDay: 28,
@@ -152,7 +152,7 @@ const store = reactive({
       reminderTime: '21:00',
       remark: '',
       bindStatus: 'bound',
-      linkedProductId: 'p2',
+      linkedProductId: 'active_boost',
       linkedProductName: 'Active Boost 14天装',
       linkedOrderNo: 'EXT-20260728-020',
       planDay: null,
@@ -171,7 +171,7 @@ const store = reactive({
       reminderTime: '21:30',
       remark: '',
       bindStatus: 'bound',
-      linkedProductId: 'p1',
+      linkedProductId: 'solar_protein',
       linkedProductName: 'Solar Protein™ 28天装',
       linkedOrderNo: 'EXT-20260725-011',
       planDay: 3,
@@ -244,7 +244,7 @@ const store = reactive({
       day: 12,
       status: 'active',
       startDate: '2026-07-20',
-      productId: 'p1',
+      productId: 'solar_protein',
       productName: 'Solar Protein™ 28天装',
     },
     {
@@ -254,7 +254,7 @@ const store = reactive({
       day: 28,
       status: 'completed',
       startDate: '2026-07-01',
-      productId: 'p1',
+      productId: 'solar_protein',
       productName: 'Solar Protein™ 28天装',
     },
     {
@@ -264,7 +264,7 @@ const store = reactive({
       day: 3,
       status: 'active',
       startDate: '2026-07-29',
-      productId: 'p1',
+      productId: 'solar_protein',
       productName: 'Solar Protein™ 28天装',
     },
     {
@@ -274,7 +274,7 @@ const store = reactive({
       day: 0,
       status: 'awaiting',
       startDate: '2026-07-30',
-      productId: 'p1',
+      productId: 'solar_protein',
       productName: 'Solar Protein™ 28天装',
     },
   ],
@@ -282,7 +282,7 @@ const store = reactive({
     {
       code: 'slim_plan_product_ids',
       description: '28 天方案关联产品',
-      value: 'p1',
+      value: 'solar_protein,LD-SLIM-28D',
       unit: '',
     },
   ],
@@ -839,7 +839,7 @@ const Configs = {
         <div class="form-row"><label>说明</label><input :value="form.description" disabled /></div>
         <div class="form-row">
           <label>配置值（产品 ID，多个用英文逗号分隔）</label>
-          <input v-model="form.value" placeholder="如 p1,p2" />
+          <input v-model="form.value" placeholder="如 solar_protein,LD-SLIM-28D" />
         </div>
         <div class="modal-actions">
           <button class="btn ghost" @click="show=false">取消</button>

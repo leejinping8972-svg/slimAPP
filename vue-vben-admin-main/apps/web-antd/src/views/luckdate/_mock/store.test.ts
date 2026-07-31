@@ -63,12 +63,12 @@ describe('users and check-ins', () => {
 
 describe('external bind', () => {
   it('only opens plan when product id is in slim_plan_product_ids', () => {
-    expect(slimPlanProductIds()).toContain('p1');
+    expect(slimPlanProductIds()).toContain('solar_protein');
     const preview = previewExternalOrders('Maya Ruiz', '5678');
     expect(preview.total).toBe(1);
     const result = bindExternalOrderToUser('u1002', preview.items[0]!.id);
     expect(result.ok).toBe(true);
-    // p3 is not in slim_plan_product_ids
+    // youth_solar is not in slim_plan_product_ids
     expect(result.planOpened).toBe(false);
   });
 });
