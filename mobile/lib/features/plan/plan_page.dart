@@ -7,6 +7,7 @@ import '../../core/widgets/ld_shell.dart';
 import '../../core/widgets/ritual_sheets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../shared/ui/contact_support.dart';
 import '../../shared/services/sleep_record_helper.dart';
 
 enum _PlanTab { inProgreso, myPlans }
@@ -99,13 +100,13 @@ class _PlanPageState extends ConsumerState<PlanPage> {
         onPlanDetails: () => context.push('/journey/report'),
         onCompartir: () {},
       ),
-      UserPlanType.noProduct => _BindOrderGuideView(
-        onProvideOrder: () => context.push('/link-order'),
+      UserPlanType.noProduct => _NoPlanContactSupportView(
+        onContactSupport: () => ContactSupport.show(context),
       ),
       UserPlanType.nonMealReplacement => _ProductoCarePlanView(
         profile: profile,
         journey: journey,
-        onLinkOrder: () => context.push('/link-order'),
+        onContactSupport: () => ContactSupport.show(context),
       ),
     };
   }
@@ -997,20 +998,20 @@ class _AwaitingReceiptView extends StatelessWidget {
   }
 }
 
-class _BindOrderGuideView extends StatelessWidget {
-  const _BindOrderGuideView({required this.onProvideOrder});
+class _NoPlanContactSupportView extends StatelessWidget {
+  const _NoPlanContactSupportView({required this.onContactSupport});
 
-  final VoidCallback onProvideOrder;
+  final VoidCallback onContactSupport;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(LuckdateSpacing.lg),
       children: [
-        Text('Inicia tu viaje de 28 días', style: LuckdateTextStyles.h1),
+        Text('Aún no tienes un plan activo', style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          'Vincula un pedido externo de reemplazo de comida para desbloquear el viaje Slim completo: rituales diarios, hitos y apoyo de Sunny.',
+          ContactSupport.shortMessage,
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
@@ -1020,18 +1021,18 @@ class _BindOrderGuideView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Activa tu plan con un pedido',
+                'Activa tu viaje con ayuda de soporte',
                 style: LuckdateTextStyles.title,
               ),
               const SizedBox(height: LuckdateSpacing.sm),
               Text(
-                'Busca por nombre del destinatario y los últimos 4 dígitos del teléfono.',
+                'Nuestro equipo puede verificar tu pedido externo y abrir tu plan de 28 días.',
                 style: LuckdateTextStyles.bodySmall,
               ),
               const SizedBox(height: LuckdateSpacing.lg),
               LdPrimaryButton(
-                label: 'Vincular pedido',
-                onPressed: onProvideOrder,
+                label: ContactSupport.label,
+                onPressed: onContactSupport,
               ),
             ],
           ),
@@ -1045,12 +1046,12 @@ class _ProductoCarePlanView extends StatelessWidget {
   const _ProductoCarePlanView({
     required this.profile,
     required this.journey,
-    required this.onLinkOrder,
+    required this.onContactSupport,
   });
 
   final UserProfile profile;
   final JourneyState journey;
-  final VoidCallback onLinkOrder;
+  final VoidCallback onContactSupport;
 
   @override
   Widget build(BuildContext context) {
@@ -1092,11 +1093,11 @@ class _ProductoCarePlanView extends StatelessWidget {
         ),
         const SizedBox(height: LuckdateSpacing.lg),
         LdCard(
-          onTap: onLinkOrder,
+          onTap: onContactSupport,
           child: Row(
             children: [
               const Icon(
-                Icons.link_outlined,
+                Icons.support_agent_outlined,
                 color: LuckdateColors.deepSage,
               ),
               const SizedBox(width: LuckdateSpacing.md),
@@ -1105,11 +1106,11 @@ class _ProductoCarePlanView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Activar viaje Slim de 28 días',
+                      '¿Quieres el viaje Slim de 28 días?',
                       style: LuckdateTextStyles.title,
                     ),
                     Text(
-                      'Vincula un pedido de reemplazo de comida para desbloquear el plan completo.',
+                      'Contacta a servicio al cliente para activarlo. Ya no hay compra dentro de la app.',
                       style: LuckdateTextStyles.bodySmall,
                     ),
                   ],
@@ -1120,7 +1121,10 @@ class _ProductoCarePlanView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: LuckdateSpacing.lg),
-        LdPrimaryButton(label: 'Vincular pedido', onPressed: onLinkOrder),
+        LdPrimaryButton(
+          label: ContactSupport.label,
+          onPressed: onContactSupport,
+        ),
       ],
     );
   }

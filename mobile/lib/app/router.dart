@@ -40,11 +40,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       final app = ref.read(appStateProvider);
       final profile = app.profile;
 
-      // Commerce routes removed — send leftover links to plan.
+      // Commerce routes removed — leftover deep links go to ritual (safe shell).
       if (path == '/mall' ||
           path == '/collection' ||
           path.startsWith('/collection/')) {
-        return '/plan';
+        return '/ritual';
       }
 
       if (path.startsWith('/region') || path.startsWith('/activation')) {
