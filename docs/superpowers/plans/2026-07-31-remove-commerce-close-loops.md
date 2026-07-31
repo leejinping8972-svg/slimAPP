@@ -43,5 +43,5 @@
 
 ### Task 4: Verify + PR
 
-- [ ] Smoke/analyze where feasible
-- [ ] Push + ManagePullRequest
+- [x] Smoke/analyze where feasible
+- [x] Push + ManagePullRequest
