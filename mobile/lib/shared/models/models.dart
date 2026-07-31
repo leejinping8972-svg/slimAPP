@@ -237,6 +237,7 @@ class LinkedProductRef {
     required this.orderNo,
     required this.productName,
     required this.isMealReplacement,
+    this.productId = '',
     this.series = '',
     this.blurb = '',
   });
@@ -244,6 +245,7 @@ class LinkedProductRef {
   final String orderNo;
   final String productName;
   final bool isMealReplacement;
+  final String productId;
   final String series;
   final String blurb;
 }

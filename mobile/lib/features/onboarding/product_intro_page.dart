@@ -90,7 +90,7 @@ class ProductIntroPage extends ConsumerWidget {
                       'Tómalo según las indicaciones de la etiqueta.',
                       'Configura un recordatorio diario para que Sunny pueda acompañarte.',
                       'Registra cada porción en el chat de Sunny para mantener tu racha.',
-                      'Cambia a Solar Protein cuando quieras para disfrutar el plan completo de 28 días.',
+                      'Cambia a un producto de reemplazo de comida vinculado cuando quieras para disfrutar el plan completo de 28 días.',
                     ],
             ),
             const SizedBox(height: LuckdateSpacing.lg),
@@ -105,7 +105,7 @@ class ProductIntroPage extends ConsumerWidget {
                     ]
                   : const [
                       'Sunny te hará algunas preguntas clave para crear tu perfil.',
-                      'Puedes explorar la tienda cuando quieras para desbloquear el viaje Slim completo.',
+                      'Puedes vincular un pedido de reemplazo de comida cuando quieras para desbloquear el viaje Slim completo.',
                     ],
             ),
             const SizedBox(height: LuckdateSpacing.xxl),

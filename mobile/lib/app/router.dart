@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'theme/luckdate_theme.dart';
 import '../../features/auth/auth_flow_pages.dart';
 import '../../features/auth/auth_pages.dart';
-import '../../features/collection/collection_page.dart';
-import '../../features/collection/product_detail_page.dart';
 import '../../features/home/home_page.dart';
 import '../../features/home/sunny_suggestion_page.dart';
 import '../../features/record/check_in_record_page.dart';
@@ -26,7 +24,6 @@ import '../../core/widgets/ld_shell.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _ritualKey = GlobalKey<NavigatorState>(debugLabel: 'ritual');
 final _planKey = GlobalKey<NavigatorState>(debugLabel: 'plan');
-final _mallKey = GlobalKey<NavigatorState>(debugLabel: 'mall');
 final _meKey = GlobalKey<NavigatorState>(debugLabel: 'me');
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -42,6 +39,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       final path = state.uri.path.isEmpty ? '/' : state.uri.path;
       final app = ref.read(appStateProvider);
       final profile = app.profile;
+
+      // Commerce routes removed — send leftover links to plan.
+      if (path == '/mall' ||
+          path == '/collection' ||
+          path.startsWith('/collection/')) {
+        return '/plan';
+      }
+
       if (path.startsWith('/region') || path.startsWith('/activation')) {
         return '/login';
       }
@@ -149,12 +154,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const Day28ReportPage(),
       ),
       GoRoute(
-        path: '/collection/product/:id',
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (_, state) =>
-            ProductDetailPage(productId: state.pathParameters['id']!),
-      ),
-      GoRoute(
         path: '/profile/reminders',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (_, __) => const ReminderSettingsPage(),
@@ -177,15 +176,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _mallKey,
-            routes: [
-              GoRoute(
-                path: '/mall',
-                builder: (_, __) => const CollectionPage(rootTab: true),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
             navigatorKey: _meKey,
             routes: [
               GoRoute(
@@ -205,13 +195,12 @@ class _MainShell extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
+  /// Visual tabs: 0 Sunny, 1 Recorrido, 2 Yo.
   int _selectedNavIndex(String location) {
     if (location.startsWith('/me') || location.startsWith('/profile')) {
-      return 3;
-    }
-    if (location.startsWith('/mall') || location.startsWith('/collection')) {
       return 2;
     }
+    // Recorrido covers ritual + plan (mall removed).
     if (location.startsWith('/ritual') || location.startsWith('/plan')) {
       return 1;
     }
@@ -235,8 +224,6 @@ class _MainShell extends StatelessWidget {
             case 1:
               context.go('/ritual');
             case 2:
-              context.go('/mall');
-            case 3:
               context.go('/me');
           }
         },

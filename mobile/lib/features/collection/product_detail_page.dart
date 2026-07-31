@@ -83,7 +83,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     if (context.canPop()) {
                       context.pop();
                     } else {
-                      context.go('/mall');
+                      context.go('/plan');
                     }
                   },
                 ),
@@ -233,126 +233,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   }
 
   Future<void> _handlePurchase() async {
-    final profile = ref.read(appStateProvider).profile;
-    final coupon = profile.welcomeCoupon;
-    final eligible =
-        coupon != null && coupon.isUnused && _price >= coupon.amount;
-    var applyCoupon = eligible;
-
-    if (eligible) {
-      final confirmed = await showModalBottomSheet<bool>(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: LuckdateColors.cloudIvory,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        builder: (ctx) {
-          var localApply = true;
-          return StatefulBuilder(
-            builder: (ctx, setModal) {
-              final discount = localApply ? coupon.amount : 0.0;
-              final total = (_price - discount).clamp(0, _price);
-              return Padding(
-                padding: EdgeInsets.fromLTRB(
-                  LuckdateSpacing.lg,
-                  LuckdateSpacing.lg,
-                  LuckdateSpacing.lg,
-                  LuckdateSpacing.lg + MediaQuery.paddingOf(ctx).bottom,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Pagar', style: LuckdateTextStyles.h2),
-                    const SizedBox(height: LuckdateSpacing.md),
-                    Text(
-                      'Solar Protein · ${_specs[_specIndex].$1}',
-                      style: LuckdateTextStyles.body,
-                    ),
-                    const SizedBox(height: LuckdateSpacing.sm),
-                    Text(
-                      'Subtotal  \$${_price.toStringAsFixed(2)}',
-                      style: LuckdateTextStyles.bodySmall,
-                    ),
-                    const SizedBox(height: LuckdateSpacing.md),
-                    LdCard(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Cupón de bienvenida de \$${coupon.amount.toStringAsFixed(0)}',
-                                  style: LuckdateTextStyles.title,
-                                ),
-                                Text(
-                                  localApply
-                                      ? 'Seleccionado automáticamente · toca para cancelar'
-                                      : 'No aplicado',
-                                  style: LuckdateTextStyles.caption,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Switch(
-                            value: localApply,
-                            activeThumbColor: LuckdateColors.deepSage,
-                            onChanged: (v) => setModal(() => localApply = v),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: LuckdateSpacing.md),
-                    Text(
-                      'Total  \$${total.toStringAsFixed(2)}',
-                      style: LuckdateTextStyles.h2,
-                    ),
-                    const SizedBox(height: LuckdateSpacing.lg),
-                    LdPrimaryButton(
-                      label: 'Confirmar compra',
-                      onPressed: () => Navigator.pop(ctx, localApply),
-                    ),
-                    const SizedBox(height: LuckdateSpacing.sm),
-                    LdSecondaryButton(
-                      label: 'Cancelar',
-                      onPressed: () => Navigator.pop(ctx, null),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      );
-      if (confirmed == null) return;
-      applyCoupon = confirmed;
-    }
-
-    ref
-        .read(appStateProvider.notifier)
-        .purchaseSolarProtein(applyCoupon: applyCoupon);
+    // In-app purchase removed — activation is external order linking only.
     if (!mounted) return;
-    await showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Compra realizada'),
-        content: Text(
-          applyCoupon && eligible
-              ? 'Cupón aplicado. Confirma la recepción cuando llegue tu paquete para comenzar tu viaje Slim de 28 días.'
-              : 'Compra realizada. Confirma la recepción cuando llegue tu paquete para comenzar tu viaje Slim de 28 días.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Continuar'),
-          ),
-        ],
-      ),
-    );
-    if (!mounted) return;
-    context.push('/plan/intro');
+    context.push('/link-order');
   }
 }
 

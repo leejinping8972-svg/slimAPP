@@ -1,38 +1,19 @@
 ﻿import '../models/models.dart';
 
-/// Day-28 repurchase guidance branches.
-enum JourneyRepurchasePath {
-  /// A: progress, but target not reached -> repurchase current product.
-  continueActual,
-
-  /// B: progress and goal reached -> next-stage maintain/protect.
-  maintainNext,
-
-  /// C: little or no progress -> alternative products.
-  tryAlternative,
-}
-
-class JourneyRepurchaseOffer {
-  const JourneyRepurchaseOffer({
-    required this.path,
+/// Day-28 outcome copy — encouragement only (no repurchase CTAs).
+class JourneyDay28Outcome {
+  const JourneyDay28Outcome({
     required this.title,
     required this.subtitle,
-    required this.primaryProductId,
-    required this.primaryLabel,
-    this.secondaryProductIds = const [],
   });
 
-  final JourneyRepurchasePath path;
   final String title;
   final String subtitle;
-  final String primaryProductId;
-  final String primaryLabel;
-  final List<String> secondaryProductIds;
 }
 
 class JourneyOutcomeHelper {
-  /// Uses weight trend (start -> end) vs target weight.
-  static JourneyRepurchaseOffer resolve({
+  /// Uses weight trend (start -> end) vs target weight for encouraging copy.
+  static JourneyDay28Outcome resolve({
     required UserProfile profile,
     required JourneyState journey,
   }) {
@@ -49,39 +30,25 @@ class JourneyOutcomeHelper {
     final effective = lost >= 0.5;
 
     if (effective && reachedGoal) {
-      return const JourneyRepurchaseOffer(
-        path: JourneyRepurchasePath.maintainNext,
+      return const JourneyDay28Outcome(
         title: 'Alcanzaste tu meta',
         subtitle:
-            'Consolida tu logro con una etapa de mantenimiento y protección: apoyo suave, no otra restricción intensa.',
-        primaryProductId: 'youth_solar',
-        primaryLabel: 'Iniciar etapa de mantenimiento',
-        secondaryProductIds: ['aging_solar', 'recovery_night', 'daily_vital'],
+            'Qué orgullo. Consolida este logro con hábitos suaves: hidratación, sueño y movimiento ligero. Sunny sigue aquí para acompañarte.',
       );
     }
 
     if (effective && !reachedGoal) {
-      return const JourneyRepurchaseOffer(
-        path: JourneyRepurchasePath.continueActual,
+      return const JourneyDay28Outcome(
         title: 'Estás avanzando',
         subtitle:
-            'Buen ritmo; sigue con otro ciclo de Solar Protein para acercarte a tu meta.',
-        primaryProductId: 'solar_protein',
-        primaryLabel: 'Volver a pedir Solar Protein',
-        secondaryProductIds: [],
+            'Buen ritmo en estos 28 días. Sigue con constancia y celebra cada pequeño paso; el progreso se construye con paciencia.',
       );
     }
 
-    return const JourneyRepurchaseOffer(
-      path: JourneyRepurchasePath.tryAlternative,
-      title: 'Probemos otro camino',
+    return const JourneyDay28Outcome(
+      title: 'Cada ciclo enseña algo',
       subtitle:
-          'Los resultados fueron limitados en este ciclo. Explora una fórmula alternativa que pueda adaptarse mejor a tu cuerpo.',
-      primaryProductId: 'active_boost',
-      primaryLabel: 'Explorar alternativas',
-      secondaryProductIds: ['sun_femme', 'recovery_night', 'aging_solar'],
+          'Este recorrido te dio datos valiosos sobre tu cuerpo y tu ritmo. Descansa, observa y cuando quieras, Sunny te ayuda a empezar de nuevo con calma.',
     );
   }
 }
-
-

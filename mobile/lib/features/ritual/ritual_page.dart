@@ -61,7 +61,7 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                       profile: profile,
                       journey: journey,
                       onOpenPlan: () => context.push('/plan'),
-                      onBrowseMall: () => context.go('/mall'),
+                      onLinkOrder: () => context.push('/link-order'),
                       onConfirmReceipt: () {
                         ref.read(appStateProvider.notifier).confirmReceipt();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -305,14 +305,14 @@ class _ViajePlanCard extends StatelessWidget {
     required this.profile,
     required this.journey,
     required this.onOpenPlan,
-    required this.onBrowseMall,
+    required this.onLinkOrder,
     required this.onConfirmReceipt,
   });
 
   final UserProfile profile;
   final JourneyState journey;
   final VoidCallback onOpenPlan;
-  final VoidCallback onBrowseMall;
+  final VoidCallback onLinkOrder;
   final VoidCallback onConfirmReceipt;
 
   @override
@@ -414,10 +414,10 @@ class _ViajePlanCard extends StatelessWidget {
         ),
       ),
       UserPlanType.noProduct => LdCard(
-        onTap: onBrowseMall,
+        onTap: onLinkOrder,
         child: Row(
           children: [
-            const Icon(Icons.spa_outlined, color: LuckdateColors.deepSage),
+            const Icon(Icons.link_outlined, color: LuckdateColors.deepSage),
             const SizedBox(width: LuckdateSpacing.md),
             Expanded(
               child: Column(
@@ -425,7 +425,7 @@ class _ViajePlanCard extends StatelessWidget {
                 children: [
                   Text('Inicia un plan', style: LuckdateTextStyles.title),
                   Text(
-                    'Explora la tienda o vincula un pedido para desbloquear tu plan de viaje.',
+                    'Vincula un pedido externo para desbloquear tu plan de viaje.',
                     style: LuckdateTextStyles.caption,
                   ),
                 ],

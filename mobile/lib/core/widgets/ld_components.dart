@@ -214,7 +214,7 @@ class LdSecondaryButton extends StatelessWidget {
   }
 }
 
-/// Shared panel for in-app purchase users waiting to confirm delivery.
+/// Shared panel for users waiting to confirm delivery after linking an order.
 class LdAwaitingReceiptPanel extends StatelessWidget {
   const LdAwaitingReceiptPanel({
     super.key,

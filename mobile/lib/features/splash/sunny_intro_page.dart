@@ -31,9 +31,9 @@ class SunnyIntroPage extends ConsumerWidget {
       'Apóyense y crezcan juntos',
     ),
     (
-      Icons.shopping_bag_outlined,
-      'Tienda de bienestar',
-      'Selecciones para un estilo de vida más saludable',
+      Icons.link_outlined,
+      'Vinculación de pedido',
+      'Activa tu plan con un pedido externo',
     ),
   ];
 

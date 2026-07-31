@@ -83,15 +83,6 @@ class AppStateNotifier extends StateNotifier<AppState> {
   final SunnyIntentRouter _router;
   final MockOrderService _orderService;
 
-  UserCoupon _issueWelcomeCoupon() {
-    return UserCoupon(
-      amount: 5,
-      currency: 'USD',
-      scope: 'global',
-      expiresAt: DateTime.now().add(const Duration(days: 30)),
-    );
-  }
-
   void markLaunchGuideSeen() {
     if (state.launchGuideSeen) return;
     state = state.copyWith(launchGuideSeen: true);
@@ -120,6 +111,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
           LinkedProductRef(
             orderNo: 'LD-DEMO-001',
             productName: 'Solar Protein 28-Day',
+            productId: 'solar_protein',
             isMealReplacement: true,
             series: 'Vitalidad Slim',
           ),
@@ -138,7 +130,6 @@ class AppStateNotifier extends StateNotifier<AppState> {
       onboardingComplete: false,
       onboardingStep: '',
       sunnyIntroSeen: true,
-      welcomeCoupon: _issueWelcomeCoupon(),
     );
     state = state.copyWith(
       profile: profile,
@@ -195,6 +186,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
           (p) => LinkedProductRef(
             orderNo: p.orderNo,
             productName: p.productName,
+            productId: p.productId,
             isMealReplacement: p.isMealReplacement,
             series: p.series,
             blurb: p.blurb,
@@ -241,46 +233,6 @@ class AppStateNotifier extends StateNotifier<AppState> {
         linkedProducts: const [],
         linkedOrderNo: '',
         linkedProductName: '',
-      ),
-    );
-  }
-
-  /// Completes an in-app Solar Protein purchase.
-  /// When [applyCoupon] is true and a welcome coupon is unused, marks it used.
-  void purchaseSolarProtein({bool applyCoupon = true}) {
-    var profile = state.profile.copyWith(
-      linkedProductName: 'Solar Protein™',
-      linkedOrderNo: 'PURCHASE-PENDING',
-      membershipPlan: 'Solar Protein 28-Day',
-      orderLinkStatus: OrderLinkStatus.linked,
-      productSource: ProductAcquisitionSource.inAppPurchase,
-      slimPlanStatus: SlimPlanStatus.awaitingReceipt,
-      userPlanType: UserPlanType.noProduct,
-    );
-    final coupon = profile.welcomeCoupon;
-    if (applyCoupon && coupon != null && coupon.isUnused) {
-      profile = profile.copyWith(
-        welcomeCoupon: coupon.copyWith(
-          status: 'used',
-          usedAt: DateTime.now(),
-          usedOrderId: 'PURCHASE-PENDING',
-        ),
-      );
-    }
-    state = state.copyWith(profile: profile);
-  }
-
-  /// Marks welcome coupon used for any eligible checkout (demo).
-  void applyWelcomeCouponToOrder(String orderId) {
-    final coupon = state.profile.welcomeCoupon;
-    if (coupon == null || !coupon.isUnused) return;
-    state = state.copyWith(
-      profile: state.profile.copyWith(
-        welcomeCoupon: coupon.copyWith(
-          status: 'used',
-          usedAt: DateTime.now(),
-          usedOrderId: orderId,
-        ),
       ),
     );
   }
@@ -466,7 +418,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
       themeZh: '',
       encouragement: profile.userPlanType == UserPlanType.nonMealReplacement
           ? 'Te recordaremos usar tu producto cada día.'
-          : 'Registra tus hábitos y chatea con Sunny mientras exploras productos.',
+          : 'Registra tus hábitos y chatea con Sunny a tu ritmo.',
       vitalityTrend: const [],
       weightTrend: const [],
       consistency5d: const [false, false, false, false, false],
@@ -475,7 +427,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
       todayRecord: const TodayRecord(),
       vitalityScores: const VitalityScores(),
       sunnyCardMessage: profile.userPlanType == UserPlanType.noProduct
-          ? 'Aún no tienes un plan específico, pero puedes seguir chateando conmigo. Cuéntame tus metas y te recomendaré los productos adecuados.'
+          ? 'Aún no tienes un plan específico, pero puedes seguir chateando conmigo. Vincula un pedido externo cuando quieras activar tu recorrido.'
           : 'Recuerda tomar tu producto hoy.',
     );
   }
@@ -620,10 +572,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
         state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
         await _streamReply(
           follow.id,
-          'Ahora puedes explorar tu viaje y la tienda. '
-          'Vincula un pedido o compra Solar Protein para desbloquear el registro del Día 1; '
+          'Ahora puedes explorar tu viaje. '
+          'Vincula un pedido externo con reemplazo de comida para desbloquear el registro del Día 1; '
           'te guiaré en cuanto comience tu plan.',
-          actionLabels: const ['Ver mi plan', 'Explorar la tienda'],
+          actionLabels: const ['Ver mi plan', 'Vincular pedido'],
         );
       }
     }

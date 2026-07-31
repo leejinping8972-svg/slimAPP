@@ -8,14 +8,13 @@ class LdMainBottomNav extends StatelessWidget {
     required this.onTap,
   });
 
-  /// Índice visual de pestañas: 0 Sunny, 1 Recorrido, 2 Tienda, 3 Yo.
+  /// Índice visual de pestañas: 0 Sunny, 1 Recorrido, 2 Yo.
   final int currentIndex;
   final ValueChanged<int> onTap;
 
   static const _items = [
     (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded, 'Sunny'),
     (Icons.local_florist_outlined, Icons.local_florist_rounded, 'Recorrido'),
-    (Icons.storefront_outlined, Icons.storefront_rounded, 'Tienda'),
     (Icons.person_outline_rounded, Icons.person_rounded, 'Yo'),
   ];
 

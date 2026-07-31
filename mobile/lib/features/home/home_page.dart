@@ -118,8 +118,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
     if (label == 'Ver plan detallado' || label == 'Ver mi plan') {
       context.push('/plan');
-    } else if (label == 'Explorar tienda') {
-      context.go('/mall');
+    } else if (label == 'Explorar tienda' ||
+        label == 'Explorar la tienda' ||
+        label == 'Vincular pedido') {
+      context.push('/link-order');
     } else if (label == 'Establecer meta de sueño' ||
         label == 'Entrar al día 1' ||
         label == 'Iniciar ritual del día 1' ||

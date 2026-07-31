@@ -45,14 +45,14 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(appStateProvider.notifier).markViajeCompleteSeen();
+              ref.read(appStateProvider.notifier).markJourneyCompleteSeen();
               Navigator.pop(ctx);
             },
             child: const Text('Ahora no'),
           ),
           TextButton(
             onPressed: () {
-              ref.read(appStateProvider.notifier).markViajeCompleteSeen();
+              ref.read(appStateProvider.notifier).markJourneyCompleteSeen();
               Navigator.pop(ctx);
               context.push('/journey/report');
             },
@@ -159,7 +159,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             if (!profile.hidePurchaseGuideCard &&
                 profile.userPlanType == UserPlanType.noProduct &&
                 !profile.isAwaitingReceipt) ...[
-              _purchaseGuideCard(context, ref),
+              _bindOrderGuideCard(context, ref),
               const SizedBox(height: LuckdateSpacing.lg),
             ],
             Text(
@@ -357,42 +357,35 @@ class _HoyPageState extends ConsumerState<HoyPage> {
         .toList();
   }
 
-  Widget _purchaseGuideCard(BuildContext context, WidgetRef ref) {
+  Widget _bindOrderGuideCard(BuildContext context, WidgetRef ref) {
     return LdCard(
       accentColor: LuckdateColors.sunGold,
-      onTap: () => context.push('/collection/product/solar_protein'),
+      onTap: () => context.push('/link-order'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Desbloquea tu plan de salud completo',
+            'Activa tu plan de 28 días',
             style: LuckdateTextStyles.title,
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            'Obtén Solar Protein para iniciar tu recorrido Slim de 28 días; toca para ver el plan.',
+            'Vincula un pedido externo de reemplazo de comida para iniciar tu recorrido Slim.',
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
-            label: 'Ver plan de 28 días',
-            onPressed: () => context.push('/collection/product/solar_protein'),
+            label: 'Vincular pedido',
+            onPressed: () => context.push('/link-order'),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: LdSecondaryButton(
-                  label: 'Explorar todos los productos',
-                  onPressed: () => context.push('/collection'),
-                ),
-              ),
-              TextButton(
-                onPressed: () =>
-                    ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
-                child: const Text('Cerrar'),
-              ),
-            ],
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () =>
+                  ref.read(appStateProvider.notifier).hidePurchaseGuideCard(),
+              child: const Text('Cerrar'),
+            ),
           ),
         ],
       ),
@@ -401,7 +394,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
 
   Widget _nutritionBanner(BuildContext context) {
     return LdCard(
-      onTap: () => context.push('/collection'),
+      onTap: () => context.push('/link-order'),
       child: Row(
         children: [
           Container(
@@ -412,7 +405,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.spa_outlined,
+              Icons.link_outlined,
               color: LuckdateColors.chocolateBrown,
             ),
           ),
@@ -421,9 +414,9 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nutrición adicional', style: LuckdateTextStyles.title),
+                Text('Vincular pedido', style: LuckdateTextStyles.title),
                 Text(
-                  'Explora más productos de nutrición para complementar tu ritmo diario.',
+                  'Activa tu recorrido Slim con un pedido externo de reemplazo de comida.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],
