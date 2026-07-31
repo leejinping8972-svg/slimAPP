@@ -92,6 +92,7 @@ class UserProfile {
     this.journeyCompleteSeen = false,
     this.sunnyIntroSeen = false,
     this.onboardingStep = '',
+    this.healthNeed = '',
     this.welcomeCoupon,
     this.activationCode = '',
     this.membershipPlan = 'Solar Protein 28-Day',
@@ -135,8 +136,12 @@ class UserProfile {
   final bool sunnyIntroSeen;
 
   /// Chat onboarding step:
-  /// plan_offer → privacy → age → height → weight → target → meal → reminder → done
+  /// - linked product: plan_offer → privacy → age → … → reminder → done
+  /// - no product: health_need → privacy → age → height → weight → done
   final String onboardingStep;
+
+  /// Health need selected by no-product users (e.g. weight_loss, gut, anti_aging).
+  final String healthNeed;
   final UserCoupon? welcomeCoupon;
   final String activationCode;
   final String membershipPlan;
@@ -175,6 +180,7 @@ class UserProfile {
     bool? journeyCompleteSeen,
     bool? sunnyIntroSeen,
     String? onboardingStep,
+    String? healthNeed,
     UserCoupon? welcomeCoupon,
     String? activationCode,
     String? membershipPlan,
@@ -214,6 +220,7 @@ class UserProfile {
       journeyCompleteSeen: journeyCompleteSeen ?? this.journeyCompleteSeen,
       sunnyIntroSeen: sunnyIntroSeen ?? this.sunnyIntroSeen,
       onboardingStep: onboardingStep ?? this.onboardingStep,
+      healthNeed: healthNeed ?? this.healthNeed,
       welcomeCoupon: welcomeCoupon ?? this.welcomeCoupon,
       activationCode: activationCode ?? this.activationCode,
       membershipPlan: membershipPlan ?? this.membershipPlan,

@@ -11,6 +11,10 @@ class AppConfig {
     'LD-SLIM-28D',
   ];
 
+  /// Facebook Messenger page for customer support (no-product handoff).
+  /// Replace with the real page username / ID before production.
+  static const String messengerUrl = 'https://m.me/luckdate';
+
   static bool isSlimPlanProduct(String productId) {
     if (productId.isEmpty) return false;
     final id = productId.trim().toLowerCase();

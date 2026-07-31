@@ -118,7 +118,13 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.read(appStateProvider.notifier).sendChatMessage(label);
       return;
     }
-    if (label == ContactSupport.label) {
+    // Health-need chips (no-product onboarding) — send as chat text.
+    if (OnboardingChatGuide.healthNeedActions.contains(label)) {
+      ref.read(appStateProvider.notifier).sendChatMessage(label);
+      return;
+    }
+    if (label == ContactSupport.label ||
+        label == ContactSupport.legacyLabel) {
       ContactSupport.show(context);
       return;
     }

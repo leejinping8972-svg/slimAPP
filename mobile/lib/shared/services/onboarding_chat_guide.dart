@@ -33,20 +33,47 @@ class OnboardingChatGuide {
       'Te ayudaré a crear una cuenta, conocer tu ritmo '
       'y acompañarte en un viaje suave de vitalidad.';
 
-  static List<ChatMessage> seedMessages() {
+  static const healthNeedPrompt =
+      'Primero cuéntame qué te importa más ahora:\n\n'
+      '• Perder peso — un ritmo suave de vitalidad y hábitos\n'
+      '• Salud intestinal — digestión y bienestar diario\n'
+      '• Antiedad — energía y cuidado continuo\n'
+      '• Más energía — rituales ligeros para sentirte activa\n'
+      '• Otra necesidad — cuéntame con tus palabras';
+
+  static const healthNeedActions = [
+    'Perder peso',
+    'Salud intestinal',
+    'Antiedad',
+    'Más energía',
+    'Otra necesidad',
+  ];
+
+  static const messengerHandoffPrompt =
+      'Gracias por compartir tu perfil. El siguiente paso es hablar con nuestro '
+      'equipo en Messenger: te orientarán con el producto o plan más adecuado '
+      'para tu necesidad.\n\n'
+      'Toca «Hablar por Messenger» cuando quieras.';
+
+  /// Seed for users who skipped order linking (no product).
+  static List<ChatMessage> noProductSeedMessages() {
     return [
       ChatMessage(
         id: 'onboard_greet',
         isUser: false,
         text:
             '¡Hola! ☀️ Soy Sunny, tu compañera diaria de vitalidad.\n\n'
-            '$sunnyGreetingHelp\n\n'
-            '$sunnyCapabilitiesIntro\n\n'
-            '$privacyPrompt',
+            'Como aún no vinculaste un pedido, primero quiero entender tu necesidad '
+            'y luego unos datos básicos. Al final te conecto con nuestro equipo en Messenger.\n\n'
+            '$healthNeedPrompt',
         timestamp: DateTime.now(),
+        actionLabels: healthNeedActions,
       ),
     ];
   }
+
+  /// Legacy alias — prefer [noProductSeedMessages] for skip path.
+  static List<ChatMessage> seedMessages() => noProductSeedMessages();
 
   /// Greeting (with Sunny intro + product intros) + plan offer CTA.
   static List<ChatMessage> productIntroSeedMessages(UserProfile profile) {
@@ -218,10 +245,40 @@ class OnboardingChatGuide {
   }) {
     final lower = input.toLowerCase().trim();
     final step = profile.onboardingStep.isEmpty
-        ? 'privacy'
+        ? (profile.userPlanType == UserPlanType.noProduct
+              ? 'health_need'
+              : 'privacy')
         : profile.onboardingStep;
+    final isNoProduct = profile.userPlanType == UserPlanType.noProduct;
 
     switch (step) {
+      case 'health_need':
+        final need = _parseHealthNeed(lower);
+        if (need == null) {
+          return (
+            profile: profile,
+            result: const SunnyIntentResult(
+              reply:
+                  'Elige una opción o descríbeme tu necesidad principal '
+                  '(peso, intestino, antiedad, energía u otra).',
+              intents: ['onboarding_health_need'],
+              actionLabels: healthNeedActions,
+            ),
+          );
+        }
+        return (
+          profile: profile.copyWith(
+            healthNeed: need,
+            onboardingStep: 'privacy',
+          ),
+          result: SunnyIntentResult(
+            reply:
+                'Perfecto, tomo nota: ${_healthNeedLabel(need)}.\n\n'
+                '$privacyPrompt',
+            intents: const ['onboarding_health_need'],
+          ),
+        );
+
       case 'plan_offer':
         if (_wantsPlan(lower)) {
           final next = profile.copyWith(onboardingStep: 'privacy');
@@ -252,7 +309,7 @@ class OnboardingChatGuide {
               intents: ['onboarding_product_help'],
               actionLabels: [
                 'Ir al viaje',
-                'Contactar servicio al cliente',
+                'Hablar por Messenger',
               ],
             ),
           );
@@ -270,11 +327,11 @@ class OnboardingChatGuide {
               reply:
                   'Me encanta: explora primero y sin presión.\n\n'
                   'Abre tu recorrido para consultar tu resumen de vitalidad. '
-                  'Si más adelante quieres un plan activo, contacta a servicio al cliente.',
+                  'Si más adelante quieres un plan activo, habla con nosotros por Messenger.',
               intents: ['onboarding_browse'],
               actionLabels: [
                 'Ir al viaje',
-                'Contactar servicio al cliente',
+                'Hablar por Messenger',
               ],
             ),
           );
@@ -292,11 +349,11 @@ class OnboardingChatGuide {
               reply:
                   'No hay problema. Tómate tu tiempo.\n\n'
                   'Cuando quieras consejos o activar un plan, abre el chat de Sunny '
-                  'o contacta a servicio al cliente: aquí estaré.',
+                  'o habla con nosotros por Messenger: aquí estaré.',
               intents: ['onboarding_defer'],
               actionLabels: [
                 'Ir al viaje',
-                'Contactar servicio al cliente',
+                'Hablar por Messenger',
               ],
             ),
           );
@@ -413,6 +470,37 @@ class OnboardingChatGuide {
           );
         }
         final recommended = (weight - 5).clamp(40.0, weight).toDouble();
+
+        // No-product path ends after basic info → Messenger handoff.
+        if (isNoProduct) {
+          final done = profile.copyWith(
+            currentWeightKg: weight,
+            targetWeightKg: recommended,
+            onboardingStep: 'done',
+            onboardingComplete: true,
+            isNewRegistration: false,
+            sunnyIntroSeen: true,
+          );
+          return (
+            profile: done,
+            result: SunnyIntentResult(
+              reply:
+                  'Registré ${weight.toStringAsFixed(1)} kg.\n\n'
+                  'Resumen rápido:\n'
+                  '• Necesidad: ${_healthNeedLabel(done.healthNeed)}\n'
+                  '• Edad: ${done.ageRange}\n'
+                  '• Perfil: ${done.heightCm.toStringAsFixed(0)} cm · '
+                  '${done.currentWeightKg.toStringAsFixed(1)} kg\n\n'
+                  '$messengerHandoffPrompt',
+              intents: const ['onboarding_complete', 'messenger_handoff'],
+              actionLabels: const [
+                'Hablar por Messenger',
+                'Ir al viaje',
+              ],
+            ),
+          );
+        }
+
         return (
           profile: profile.copyWith(
             currentWeightKg: weight,
@@ -522,12 +610,22 @@ class OnboardingChatGuide {
                   ]
                 : const [
                     'Ver mi plan',
-                    'Contactar servicio al cliente',
+                    'Hablar por Messenger',
                   ],
           ),
         );
 
       default:
+        if (profile.userPlanType == UserPlanType.noProduct) {
+          return (
+            profile: profile.copyWith(onboardingStep: 'health_need'),
+            result: const SunnyIntentResult(
+              reply: healthNeedPrompt,
+              intents: ['onboarding_restart'],
+              actionLabels: healthNeedActions,
+            ),
+          );
+        }
         return (
           profile: profile.copyWith(onboardingStep: 'privacy'),
           result: const SunnyIntentResult(
@@ -540,6 +638,58 @@ class OnboardingChatGuide {
 
   static bool wantsPlanRequest(String input) => _wantsPlan(input.toLowerCase());
 
+  static String? _parseHealthNeed(String lower) {
+    if (lower.contains('perder peso') ||
+        lower.contains('bajar de peso') ||
+        lower.contains('adelgazar') ||
+        lower.contains('weight loss') ||
+        lower == 'peso') {
+      return 'weight_loss';
+    }
+    if (lower.contains('intestinal') ||
+        lower.contains('intestino') ||
+        lower.contains('digest') ||
+        lower.contains('gut')) {
+      return 'gut';
+    }
+    if (lower.contains('antiedad') ||
+        lower.contains('anti-edad') ||
+        lower.contains('anti edad') ||
+        lower.contains('envejecimiento') ||
+        lower.contains('aging')) {
+      return 'anti_aging';
+    }
+    if (lower.contains('más energía') ||
+        lower.contains('mas energia') ||
+        lower.contains('energía') ||
+        lower.contains('energia') ||
+        lower.contains('energy')) {
+      return 'energy';
+    }
+    if (lower.contains('otra necesidad') ||
+        lower.contains('otra') ||
+        lower.contains('other')) {
+      return 'other';
+    }
+    // Short free-text description of a custom need.
+    if (lower.length >= 4 &&
+        !lower.contains('acepto') &&
+        !RegExp(r'^\d').hasMatch(lower)) {
+      return 'other';
+    }
+    return null;
+  }
+
+  static String _healthNeedLabel(String need) {
+    return switch (need) {
+      'weight_loss' => 'perder peso',
+      'gut' => 'salud intestinal',
+      'anti_aging' => 'antiedad',
+      'energy' => 'más energía',
+      'other' => 'otra necesidad',
+      _ => need.isEmpty ? 'por definir' : need,
+    };
+  }
   static bool _wantsPlan(String lower) {
     return lower.contains('obtener un plan') ||
         lower.contains('quiero un plan') ||
@@ -678,6 +828,13 @@ class OnboardingChatGuide {
 
   static List<(String, String)> quickAsksFor(String step) {
     return switch (step) {
+      'health_need' => [
+        ('⚖️', 'Perder peso'),
+        ('🌿', 'Salud intestinal'),
+        ('✨', 'Antiedad'),
+        ('☀️', 'Más energía'),
+        ('💬', 'Otra necesidad'),
+      ],
       'plan_offer' => [
         ('✨', 'Obtener un plan'),
         ('🧴', 'Solo ayuda con productos'),

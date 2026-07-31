@@ -139,9 +139,16 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   void beginOnboardingChat() {
+    // Skip / no-product: health need → basic info → Messenger.
+    // Linked-product users use beginProductIntroChat instead.
+    final noProduct = state.profile.userPlanType == UserPlanType.noProduct;
     state = state.copyWith(
-      chatMessages: OnboardingChatGuide.seedMessages(),
-      profile: state.profile.copyWith(onboardingStep: 'privacy'),
+      chatMessages: noProduct
+          ? OnboardingChatGuide.noProductSeedMessages()
+          : OnboardingChatGuide.seedMessages(),
+      profile: state.profile.copyWith(
+        onboardingStep: noProduct ? 'health_need' : 'privacy',
+      ),
     );
   }
 
@@ -509,12 +516,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
       // No mall upsell after commerce removal — guide users to support.
       result = const SunnyIntentResult(
         reply:
-            'Para activar un plan personalizado, contacta a nuestro servicio al '
-            'cliente. Ellos pueden ayudarte según tu pedido externo.\n\n'
-            'Correo: soporte@luckdate.com',
+            'Para activar un plan personalizado, habla con nuestro equipo en '
+            'Messenger. Ellos pueden orientarte según tu necesidad.\n\n'
+            'Toca «Hablar por Messenger» cuando quieras.',
         intents: ['plan_request_contact_support'],
         actionLabels: [
-          'Contactar servicio al cliente',
+          'Hablar por Messenger',
           'Ir al viaje',
         ],
       );
@@ -586,10 +593,10 @@ class AppStateNotifier extends StateNotifier<AppState> {
         state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
         await _streamReply(
           follow.id,
-          'Ahora puedes explorar tu viaje. '
-          'Vincula un pedido externo con reemplazo de comida para desbloquear el registro del Día 1; '
-          'te guiaré en cuanto comience tu plan.',
-          actionLabels: const ['Ver mi plan', 'Contactar servicio al cliente'],
+          'Gracias por completar tu perfil. '
+          'Habla con nuestro equipo en Messenger para recibir orientación '
+          'según tu necesidad de salud; ellos te ayudarán con el siguiente paso.',
+          actionLabels: const ['Hablar por Messenger', 'Ir al viaje'],
         );
       }
     }
