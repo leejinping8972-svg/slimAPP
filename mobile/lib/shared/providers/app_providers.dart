@@ -504,6 +504,20 @@ class AppStateNotifier extends StateNotifier<AppState> {
         completeOnboarding(guided.profile, preserveChat: true);
       }
       result = guided.result;
+    } else if (!state.profile.hasActiveSlimPlan &&
+        OnboardingChatGuide.wantsPlanRequest(text)) {
+      // No mall upsell after commerce removal — guide users to support.
+      result = const SunnyIntentResult(
+        reply:
+            'Para activar un plan personalizado, contacta a nuestro servicio al '
+            'cliente. Ellos pueden ayudarte según tu pedido externo.\n\n'
+            'Correo: soporte@luckdate.com',
+        intents: ['plan_request_contact_support'],
+        actionLabels: [
+          'Contactar servicio al cliente',
+          'Ir al viaje',
+        ],
+      );
     } else {
       result = _router.route(
         input: text,
@@ -575,7 +589,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
           'Ahora puedes explorar tu viaje. '
           'Vincula un pedido externo con reemplazo de comida para desbloquear el registro del Día 1; '
           'te guiaré en cuanto comience tu plan.',
-          actionLabels: const ['Ver mi plan', 'Vincular pedido'],
+          actionLabels: const ['Ver mi plan', 'Contactar servicio al cliente'],
         );
       }
     }

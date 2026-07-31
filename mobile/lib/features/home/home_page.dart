@@ -7,6 +7,7 @@ import '../../core/widgets/ld_shell.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/onboarding_chat_guide.dart';
+import '../../shared/ui/contact_support.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -106,36 +107,57 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onActionTap(String label) {
-    if (label == 'Obtener plan' || label == 'Obtenerlo ahora') {
-      ref.read(appStateProvider.notifier).sendChatMessage(label);
-      return;
-    }
-    if (label == 'Solo ayuda con productos' ||
+    // Plan-offer / onboarding choices — labels must match emitters exactly.
+    if (label == 'Obtener un plan' ||
+        label == 'Obtener plan' ||
+        label == 'Obtenerlo ahora' ||
+        label == 'Solo ayuda con productos' ||
+        label == 'Solo explorar' ||
         label == 'Solo estoy explorando' ||
         label == 'Ahora no') {
       ref.read(appStateProvider.notifier).sendChatMessage(label);
       return;
     }
+    if (label == ContactSupport.label) {
+      ContactSupport.show(context);
+      return;
+    }
+    // Shell branches: always go() — push() from /home or across branches
+    // blanks the IndexedStack body.
     if (label == 'Ver plan detallado' || label == 'Ver mi plan') {
-      context.push('/plan');
-    } else if (label == 'Explorar tienda' ||
-        label == 'Explorar la tienda' ||
-        label == 'Vincular pedido') {
+      context.go('/plan');
+      return;
+    }
+    if (label == 'Vincular pedido') {
+      // Post-registration bind remains available; upgrade upsells use CS.
       context.push('/link-order');
-    } else if (label == 'Establecer meta de sueño' ||
+      return;
+    }
+    if (label == 'Establecer meta de sueño' ||
         label == 'Entrar al día 1' ||
         label == 'Iniciar ritual del día 1' ||
         label == 'Iniciar registro del día 1' ||
+        label == 'Comenzar el registro del Día 1' ||
         label == 'Ir al ritual' ||
-        label == 'Ir al recorrido') {
+        label == 'Ir al recorrido' ||
+        label == 'Ir al viaje') {
       context.go('/ritual');
-    } else if (label == 'Registrar agua') {
-      ref.read(appStateProvider.notifier).sendQuickAction('water');
-    } else if (label == 'Registrar comida') {
-      ref.read(appStateProvider.notifier).sendQuickAction('meal');
-    } else if (label == 'Registrar sueño') {
-      ref.read(appStateProvider.notifier).sendQuickAction('sleep');
+      return;
     }
+    if (label == 'Registrar agua') {
+      ref.read(appStateProvider.notifier).sendQuickAction('water');
+      return;
+    }
+    if (label == 'Registrar comida') {
+      ref.read(appStateProvider.notifier).sendQuickAction('meal');
+      return;
+    }
+    if (label == 'Registrar sueño') {
+      ref.read(appStateProvider.notifier).sendQuickAction('sleep');
+      return;
+    }
+    // Fallback: treat unknown action chips as chat text so buttons never no-op.
+    ref.read(appStateProvider.notifier).sendChatMessage(label);
   }
 
   @override

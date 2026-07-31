@@ -12,6 +12,7 @@ import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/daily_advice_helper.dart';
 import '../../shared/services/vitality_scorer.dart';
+import '../../shared/ui/contact_support.dart';
 
 enum _VitalityRange { today, days28, days56, days84 }
 
@@ -60,8 +61,8 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                     _ViajePlanCard(
                       profile: profile,
                       journey: journey,
-                      onOpenPlan: () => context.push('/plan'),
-                      onLinkOrder: () => context.push('/link-order'),
+                      onOpenPlan: () => context.go('/plan'),
+                      onContactSupport: () => ContactSupport.show(context),
                       onConfirmReceipt: () {
                         ref.read(appStateProvider.notifier).confirmReceipt();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -305,14 +306,14 @@ class _ViajePlanCard extends StatelessWidget {
     required this.profile,
     required this.journey,
     required this.onOpenPlan,
-    required this.onLinkOrder,
+    required this.onContactSupport,
     required this.onConfirmReceipt,
   });
 
   final UserProfile profile;
   final JourneyState journey;
   final VoidCallback onOpenPlan;
-  final VoidCallback onLinkOrder;
+  final VoidCallback onContactSupport;
   final VoidCallback onConfirmReceipt;
 
   @override
@@ -414,18 +415,21 @@ class _ViajePlanCard extends StatelessWidget {
         ),
       ),
       UserPlanType.noProduct => LdCard(
-        onTap: onLinkOrder,
+        onTap: onContactSupport,
         child: Row(
           children: [
-            const Icon(Icons.link_outlined, color: LuckdateColors.deepSage),
+            const Icon(
+              Icons.support_agent_outlined,
+              color: LuckdateColors.deepSage,
+            ),
             const SizedBox(width: LuckdateSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Inicia un plan', style: LuckdateTextStyles.title),
+                  Text('Aún no tienes un plan', style: LuckdateTextStyles.title),
                   Text(
-                    'Vincula un pedido externo para desbloquear tu plan de viaje.',
+                    'Contacta a servicio al cliente para activarlo.',
                     style: LuckdateTextStyles.caption,
                   ),
                 ],

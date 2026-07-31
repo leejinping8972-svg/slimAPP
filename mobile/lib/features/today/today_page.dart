@@ -8,6 +8,7 @@ import '../../core/widgets/today_widgets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/sleep_record_helper.dart';
+import '../../shared/ui/contact_support.dart';
 
 class HoyPage extends ConsumerStatefulWidget {
   const HoyPage({super.key});
@@ -179,7 +180,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             ..._orderedRituals(rituals),
             const SizedBox(height: LuckdateSpacing.xl),
             LdCard(
-              onTap: () => context.push('/chat'),
+              onTap: () => context.push('/home'),
               child: Row(
                 children: [
                   const LdSunnyAvatar(),
@@ -360,23 +361,23 @@ class _HoyPageState extends ConsumerState<HoyPage> {
   Widget _bindOrderGuideCard(BuildContext context, WidgetRef ref) {
     return LdCard(
       accentColor: LuckdateColors.sunGold,
-      onTap: () => context.push('/link-order'),
+      onTap: () => ContactSupport.show(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Activa tu plan de 28 días',
+            'Aún no tienes un plan activo',
             style: LuckdateTextStyles.title,
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Text(
-            'Vincula un pedido externo de reemplazo de comida para iniciar tu recorrido Slim.',
+            ContactSupport.shortMessage,
             style: LuckdateTextStyles.bodySmall,
           ),
           const SizedBox(height: LuckdateSpacing.lg),
           LdPrimaryButton(
-            label: 'Vincular pedido',
-            onPressed: () => context.push('/link-order'),
+            label: ContactSupport.label,
+            onPressed: () => ContactSupport.show(context),
           ),
           const SizedBox(height: LuckdateSpacing.sm),
           Align(
@@ -394,7 +395,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
 
   Widget _nutritionBanner(BuildContext context) {
     return LdCard(
-      onTap: () => context.push('/link-order'),
+      onTap: () => ContactSupport.show(context),
       child: Row(
         children: [
           Container(
@@ -405,7 +406,7 @@ class _HoyPageState extends ConsumerState<HoyPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.link_outlined,
+              Icons.support_agent_outlined,
               color: LuckdateColors.chocolateBrown,
             ),
           ),
@@ -414,9 +415,9 @@ class _HoyPageState extends ConsumerState<HoyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Vincular pedido', style: LuckdateTextStyles.title),
+                Text(ContactSupport.label, style: LuckdateTextStyles.title),
                 Text(
-                  'Activa tu recorrido Slim con un pedido externo de reemplazo de comida.',
+                  'Activa tu recorrido Slim con ayuda de soporte.',
                   style: LuckdateTextStyles.bodySmall,
                 ),
               ],

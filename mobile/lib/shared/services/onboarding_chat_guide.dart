@@ -247,9 +247,13 @@ class OnboardingChatGuide {
                   'Perfecto, permaneceré en modo de cuidado de productos.\n\n'
                   'Pregúntame cuando quieras cómo tomar tus productos, '
                   'sobre horarios o recordatorios suaves. '
-                  'Cuando quieras un plan personalizado completo, solo di "Obtener un plan".',
+                  'Cuando quieras un plan personalizado completo, contacta a '
+                  'servicio al cliente: ellos pueden ayudarte a activarlo.',
               intents: ['onboarding_product_help'],
-              actionLabels: ['Ir al viaje', 'Vincular pedido'],
+              actionLabels: [
+                'Ir al viaje',
+                'Contactar servicio al cliente',
+              ],
             ),
           );
         }
@@ -265,10 +269,13 @@ class OnboardingChatGuide {
             result: const SunnyIntentResult(
               reply:
                   'Me encanta: explora primero y sin presión.\n\n'
-                  'Abre tu recorrido para consultar tu resumen de vitalidad, '
-                  'o vincula un pedido cuando quieras activar un plan. Aquí estaré.',
+                  'Abre tu recorrido para consultar tu resumen de vitalidad. '
+                  'Si más adelante quieres un plan activo, contacta a servicio al cliente.',
               intents: ['onboarding_browse'],
-              actionLabels: ['Ir al viaje', 'Vincular pedido'],
+              actionLabels: [
+                'Ir al viaje',
+                'Contactar servicio al cliente',
+              ],
             ),
           );
         }
@@ -284,10 +291,13 @@ class OnboardingChatGuide {
             result: const SunnyIntentResult(
               reply:
                   'No hay problema. Tómate tu tiempo.\n\n'
-                  'Cuando quieras consejos, un plan o simplemente registrarte, '
-                  'abre el chat de Sunny: aquí estaré.',
+                  'Cuando quieras consejos o activar un plan, abre el chat de Sunny '
+                  'o contacta a servicio al cliente: aquí estaré.',
               intents: ['onboarding_defer'],
-              actionLabels: ['Ir al viaje', 'Vincular pedido'],
+              actionLabels: [
+                'Ir al viaje',
+                'Contactar servicio al cliente',
+              ],
             ),
           );
         }
@@ -510,7 +520,10 @@ class OnboardingChatGuide {
                     'Registrar comida',
                     'Ir al viaje',
                   ]
-                : const ['Ver mi plan', 'Vincular pedido'],
+                : const [
+                    'Ver mi plan',
+                    'Contactar servicio al cliente',
+                  ],
           ),
         );
 
@@ -524,6 +537,8 @@ class OnboardingChatGuide {
         );
     }
   }
+
+  static bool wantsPlanRequest(String input) => _wantsPlan(input.toLowerCase());
 
   static bool _wantsPlan(String lower) {
     return lower.contains('obtener un plan') ||

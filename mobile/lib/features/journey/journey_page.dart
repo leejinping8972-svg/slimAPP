@@ -7,6 +7,7 @@ import '../../core/widgets/ld_components.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/journey_outcome_helper.dart';
+import '../../shared/ui/contact_support.dart';
 
 class ViajePage extends ConsumerWidget {
   const ViajePage({super.key});
@@ -72,14 +73,14 @@ class ViajePage extends ConsumerWidget {
               const SizedBox(height: LuckdateSpacing.md),
               Text(
                 profile.userPlanType == UserPlanType.noProduct
-                    ? 'Aún no tienes un plan de 28 días. Vincula un pedido externo con reemplazo de comida o sigue registrando en Ritual.'
-                    : 'Tu plan de recordatorios del producto está activo. Hay un recorrido Slim completo de 28 días disponible al vincular un producto de reemplazo de comida.',
+                    ? 'Aún no tienes un plan de 28 días. Contacta a servicio al cliente para activarlo, o sigue registrando en Ritual.'
+                    : 'Tu plan de recordatorios del producto está activo. Para el recorrido Slim de 28 días, contacta a servicio al cliente.',
                 style: LuckdateTextStyles.body,
               ),
               const SizedBox(height: LuckdateSpacing.xl),
               LdPrimaryButton(
-                label: 'Vincular pedido',
-                onPressed: () => context.push('/link-order'),
+                label: ContactSupport.label,
+                onPressed: () => ContactSupport.show(context),
               ),
             ],
           ),
@@ -488,7 +489,7 @@ class _ProfileEntryAvatar extends StatelessWidget {
     return LdProfileAvatar(
       nickname: nickname,
       radius: 18,
-      onTap: () => context.push('/profile'),
+      onTap: () => context.go('/me'),
     );
   }
 }
