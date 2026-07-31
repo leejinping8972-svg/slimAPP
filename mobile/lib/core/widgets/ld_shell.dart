@@ -6,16 +6,18 @@ class LdMainBottomNav extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
+    this.labels = const ['Sunny', 'Recorrido', 'Yo'],
   });
 
   /// Índice visual de pestañas: 0 Sunny, 1 Recorrido, 2 Yo.
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final List<String> labels;
 
-  static const _items = [
-    (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded, 'Sunny'),
-    (Icons.local_florist_outlined, Icons.local_florist_rounded, 'Recorrido'),
-    (Icons.person_outline_rounded, Icons.person_rounded, 'Yo'),
+  static const _icons = [
+    (Icons.wb_sunny_outlined, Icons.wb_sunny_rounded),
+    (Icons.local_florist_outlined, Icons.local_florist_rounded),
+    (Icons.person_outline_rounded, Icons.person_rounded),
   ];
 
   @override
@@ -37,8 +39,9 @@ class LdMainBottomNav extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6),
           child: Row(
-            children: List.generate(_items.length, (index) {
-              final item = _items[index];
+            children: List.generate(_icons.length, (index) {
+              final icons = _icons[index];
+              final label = index < labels.length ? labels[index] : '';
               final selected = currentIndex == index;
               return Expanded(
                 child: InkWell(
@@ -63,7 +66,7 @@ class LdMainBottomNav extends StatelessWidget {
                             ),
                           ),
                           child: Icon(
-                            selected ? item.$2 : item.$1,
+                            selected ? icons.$2 : icons.$1,
                             size: 22,
                             color: selected
                                 ? LuckdateColors.deepSage
@@ -72,7 +75,7 @@ class LdMainBottomNav extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          item.$3,
+                          label,
                           style: LuckdateTextStyles.tabLabel.copyWith(
                             color: selected
                                 ? LuckdateColors.deepSage

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../shared/l10n/app_locale.dart';
 import '../../shared/providers/app_providers.dart';
 import 'splash_backdrop.dart';
 
@@ -68,6 +69,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
+    final strings = ref.watch(appStringsProvider);
     // Left copy column — never wider than the clear wall zone.
     final copyWidth = (w * 0.52).clamp(188.0, 220.0);
     const cardWidth = 154.0;
@@ -89,17 +91,15 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: topInset),
-                  // Brand row can be a bit wider than body copy so the wordmark
-                  // is never clipped by the left copy column.
                   SizedBox(
                     width: (copyWidth + 48).clamp(232.0, 280.0),
-                    child: const _WelcomeBrand(),
+                    child: _WelcomeBrand(tagline: strings.welcomeTagline),
                   ),
                   const SizedBox(height: 18),
                   SizedBox(
                     width: copyWidth,
                     child: Text(
-                      'Siéntete viva.\nConoce luckdate.',
+                      strings.welcomeHeadline,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 29,
@@ -113,7 +113,10 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                   const SizedBox(height: 10),
                   Container(width: 38, height: 1.5, color: _gold),
                   const SizedBox(height: 22),
-                  SizedBox(width: cardWidth, child: const _RitualGlassCard()),
+                  SizedBox(
+                    width: cardWidth,
+                    child: _RitualGlassCard(quote: strings.welcomeQuote),
+                  ),
                   const Spacer(),
                   _BreathingButton(
                     breath: _breathe,
@@ -138,9 +141,9 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Comenzar mi viaje',
+                                  strings.welcomeStart,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -148,7 +151,7 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                                   ),
                                 ),
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_forward_rounded,
                                 size: 18,
                                 color: _lightBrown,
@@ -180,9 +183,9 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                           backgroundColor: _lightBrown.withValues(alpha: 0.12),
                         ),
                         onPressed: _goLogin,
-                        child: const Text(
-                          'Iniciar sesión',
-                          style: TextStyle(
+                        child: Text(
+                          strings.welcomeLogin,
+                          style: const TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -193,6 +196,31 @@ class _WelcomeGuideViewState extends ConsumerState<WelcomeGuideView>
                     ),
                   ),
                   const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () {
+                        final current = AppLangX.fromCode(
+                          ref.read(appStateProvider).profile.language,
+                        );
+                        final next = current == AppLang.zh
+                            ? AppLang.esMx
+                            : AppLang.zh;
+                        ref.read(appStateProvider.notifier).setLanguage(next);
+                      },
+                      child: Text(
+                        strings.isZh ? 'Español / 中文' : '中文 / Español',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: _lightBrown.withValues(alpha: 0.95),
+                          decoration: TextDecoration.underline,
+                          decorationColor: _lightBrown.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -232,7 +260,9 @@ class _BreathingButton extends StatelessWidget {
 }
 
 class _WelcomeBrand extends StatelessWidget {
-  const _WelcomeBrand();
+  const _WelcomeBrand({required this.tagline});
+
+  final String tagline;
 
   static const _taupe = Color(0xFF3A322C);
 
@@ -265,7 +295,7 @@ class _WelcomeBrand extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          'TU ACOMPAÑANTE DIARIO DE VITALIDAD',
+          tagline,
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 8.5,
@@ -280,7 +310,9 @@ class _WelcomeBrand extends StatelessWidget {
 }
 
 class _RitualGlassCard extends StatelessWidget {
-  const _RitualGlassCard();
+  const _RitualGlassCard({required this.quote});
+
+  final String quote;
 
   @override
   Widget build(BuildContext context) {
@@ -298,51 +330,24 @@ class _RitualGlassCard extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          BrandAssetImage(
+          const BrandAssetImage(
             kSuperSymbolAsset,
             height: 28,
             width: 28,
             knockoutBackground: false,
           ),
-          SizedBox(height: 10),
-          _RitualCopy(),
-        ],
-      ),
-    );
-  }
-}
-
-class _RitualCopy extends StatelessWidget {
-  const _RitualCopy();
-
-  static const _taupe = Color(0xFF4F463E);
-  static const _gold = Color(0xFFB8925C);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        style: TextStyle(
-          fontFamily: 'Caveat',
-          fontSize: 15,
-          height: 1.28,
-          color: _taupe.withValues(alpha: 0.9),
-          fontWeight: FontWeight.w500,
-        ),
-        children: [
-          const TextSpan(text: 'Todo gran día comienza con '),
-          TextSpan(
-            text: 'un pequeño ritual.',
-            style: TextStyle(
+          const SizedBox(height: 10),
+          Text(
+            quote,
+            style: const TextStyle(
               fontFamily: 'Caveat',
-              fontSize: 16,
-              height: 1.28,
-              color: _gold,
-              fontWeight: FontWeight.w600,
+              fontSize: 18,
+              height: 1.25,
+              color: Color(0xFF5C4635),
             ),
           ),
         ],

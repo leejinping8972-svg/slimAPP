@@ -13,6 +13,7 @@ import '../../features/onboarding/product_intro_page.dart';
 import '../../features/plan/plan_page.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/profile/reminder_settings_page.dart';
+import '../../features/profile/language_page.dart';
 import '../../features/ritual/ritual_page.dart';
 import '../../features/journey/journey_page.dart';
 import '../../features/splash/splash_page.dart';
@@ -158,6 +159,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: _rootNavigatorKey,
         builder: (_, __) => const ReminderSettingsPage(),
       ),
+      GoRoute(
+        path: '/profile/language',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, __) => const LanguagePage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return _MainShell(navigationShell: navigationShell);
@@ -190,7 +196,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-class _MainShell extends StatelessWidget {
+class _MainShell extends ConsumerWidget {
   const _MainShell({required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
@@ -208,14 +214,20 @@ class _MainShell extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final location = GoRouterState.of(context).matchedLocation;
+    final strings = ref.watch(appStringsProvider);
 
     return Scaffold(
       backgroundColor: LuckdateColors.cloudIvory,
       body: navigationShell,
       bottomNavigationBar: LdMainBottomNav(
         currentIndex: _selectedNavIndex(location),
+        labels: [
+          strings.tabSunny,
+          strings.tabJourney,
+          strings.tabMe,
+        ],
         onTap: (index) {
           switch (index) {
             case 0:

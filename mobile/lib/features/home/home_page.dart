@@ -8,6 +8,7 @@ import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/onboarding_chat_guide.dart';
 import '../../shared/ui/contact_support.dart';
+import '../../shared/l10n/app_strings.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -119,22 +120,33 @@ class _HomePageState extends ConsumerState<HomePage> {
       return;
     }
     // Health-need chips (no-product onboarding) — send as chat text.
-    if (OnboardingChatGuide.healthNeedActions.contains(label)) {
+    final healthActions = [
+      ...OnboardingChatGuide.healthNeedActions,
+      ...AppStrings.fromCode('zh').healthNeedActions,
+    ];
+    if (healthActions.contains(label)) {
       ref.read(appStateProvider.notifier).sendChatMessage(label);
       return;
     }
     if (label == ContactSupport.label ||
-        label == ContactSupport.legacyLabel) {
-      ContactSupport.show(context);
+        label == ContactSupport.legacyLabel ||
+        label == '通过 Messenger 咨询' ||
+        label == 'Hablar por Messenger' ||
+        ContactSupport.matchesLabel(label)) {
+      final zh = ref.read(appStateProvider).profile.language.startsWith('zh');
+      ContactSupport.show(context, zh: zh);
       return;
     }
     // Shell branches: always go() — push() from /home or across branches
     // blanks the IndexedStack body.
-    if (label == 'Ver plan detallado' || label == 'Ver mi plan') {
+    if (label == 'Ver plan detallado' ||
+        label == 'Ver mi plan' ||
+        label == '查看方案' ||
+        label == '查看我的方案') {
       context.go('/plan');
       return;
     }
-    if (label == 'Vincular pedido') {
+    if (label == 'Vincular pedido' || label == '关联订单') {
       // Post-registration bind remains available; upgrade upsells use CS.
       context.push('/link-order');
       return;
@@ -146,19 +158,20 @@ class _HomePageState extends ConsumerState<HomePage> {
         label == 'Comenzar el registro del Día 1' ||
         label == 'Ir al ritual' ||
         label == 'Ir al recorrido' ||
-        label == 'Ir al viaje') {
+        label == 'Ir al viaje' ||
+        label == '前往旅程') {
       context.go('/ritual');
       return;
     }
-    if (label == 'Registrar agua') {
+    if (label == 'Registrar agua' || label == '记录喝水') {
       ref.read(appStateProvider.notifier).sendQuickAction('water');
       return;
     }
-    if (label == 'Registrar comida') {
+    if (label == 'Registrar comida' || label == '记录饮食') {
       ref.read(appStateProvider.notifier).sendQuickAction('meal');
       return;
     }
-    if (label == 'Registrar sueño') {
+    if (label == 'Registrar sueño' || label == '记录睡眠') {
       ref.read(appStateProvider.notifier).sendQuickAction('sleep');
       return;
     }
@@ -171,6 +184,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final state = ref.watch(appStateProvider);
     final messages = state.chatMessages;
     final profile = state.profile;
+    final strings = ref.watch(appStringsProvider);
 
     ref.listen(appStateProvider, (_, __) => _scrollToBottom());
 
@@ -180,6 +194,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           children: [
             _HomeHeader(
+              title: strings.chatWithSunny,
+              subtitle: strings.sunnySubtitle,
               onBack: () {
                 if (context.canPop()) {
                   context.pop();
@@ -201,6 +217,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                   if (profile.onboardingComplete) ...[
                     _SunnyIntroCard(
                       nickname: profile.nickname,
+                      companionLabel:
+                          strings.isZh ? 'AI 伙伴' : 'Compañera de IA',
+                      greeting: strings.isZh
+                          ? '你好，${profile.nickname}。我是 Sunny。今天想聊点什么？'
+                          : 'Hola, ${profile.nickname}. Soy Sunny. ¿Sobre qué te gustaría platicar hoy?',
+                      learnMoreLabel:
+                          strings.isZh ? '认识 Sunny >' : 'Conoce a Sunny >',
                       onLearnMore: () => context.push('/sunny/suggestions'),
                     ),
                     const SizedBox(height: LuckdateSpacing.lg),
@@ -229,15 +252,12 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
             if (!_hasInlineActions(messages))
               _QuickAskRow(
-                items: profile.onboardingComplete
-                    ? _quickAsks
-                    : OnboardingChatGuide.quickAsksFor(
-                        profile.onboardingStep.isEmpty
-                            ? 'privacy'
-                            : profile.onboardingStep,
-                      ),
+                title: strings.isZh ? '你可能想问' : 'Quizá quieras preguntar',
+                items: _localizedQuickAsks(profile),
                 onTap: (text) {
-                  if (text == 'Recorrido diario' || text == 'Ritual diario') {
+                  if (text == 'Recorrido diario' ||
+                      text == 'Ritual diario' ||
+                      text == '每日旅程') {
                     context.go('/ritual');
                     return;
                   }
@@ -248,13 +268,31 @@ class _HomePageState extends ConsumerState<HomePage> {
               controller: _controller,
               canSend: _canSend,
               onSend: _send,
-              hintText: 'Chatea con Sunny...',
-              disclaimer:
-                  'Sunny puede equivocarse. Úsalo solo como referencia según tu situación.',
+              hintText: strings.chatHint,
+              disclaimer: strings.chatDisclaimer,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  List<(String, String)> _localizedQuickAsks(UserProfile profile) {
+    final zh = profile.language == 'zh' || profile.language.startsWith('zh');
+    if (profile.onboardingComplete) {
+      return zh
+          ? const [
+              ('☀️', '每日旅程'),
+              ('💧', '我喝了一杯水'),
+              ('🏃', '我做了 45 分钟瑜伽'),
+              ('🥗', '午餐吃了鸡肉沙拉'),
+              ('😴', '昨晚睡了 7 小时'),
+            ]
+          : _quickAsks;
+    }
+    return OnboardingChatGuide.quickAsksFor(
+      profile.onboardingStep.isEmpty ? 'privacy' : profile.onboardingStep,
+      language: profile.language,
     );
   }
 
@@ -267,9 +305,15 @@ class _HomePageState extends ConsumerState<HomePage> {
 }
 
 class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({required this.onBack});
+  const _HomeHeader({
+    required this.onBack,
+    required this.title,
+    required this.subtitle,
+  });
 
   final VoidCallback onBack;
+  final String title;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -298,13 +342,13 @@ class _HomeHeader extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Chat con Sunny AI',
+                  title,
                   style: LuckdateTextStyles.title.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  'Tu compañera de vitalidad',
+                  subtitle,
                   style: LuckdateTextStyles.caption,
                 ),
               ],
@@ -324,10 +368,16 @@ class _HomeHeader extends StatelessWidget {
 class _SunnyIntroCard extends StatelessWidget {
   const _SunnyIntroCard({
     required this.nickname,
+    required this.companionLabel,
+    required this.greeting,
+    required this.learnMoreLabel,
     required this.onLearnMore,
   });
 
   final String nickname;
+  final String companionLabel;
+  final String greeting;
+  final String learnMoreLabel;
   final VoidCallback onLearnMore;
 
   @override
@@ -368,7 +418,7 @@ class _SunnyIntroCard extends StatelessWidget {
                         border: Border.all(color: LuckdateColors.lineSoft),
                       ),
                       child: Text(
-                        'Compañera de IA',
+                        companionLabel,
                         style: LuckdateTextStyles.caption.copyWith(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -379,7 +429,7 @@ class _SunnyIntroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Hola, $nickname. Soy Sunny. ¿Sobre qué te gustaría platicar hoy?',
+                  greeting,
                   style: LuckdateTextStyles.bodySmall,
                 ),
                 const SizedBox(height: LuckdateSpacing.sm),
@@ -402,7 +452,7 @@ class _SunnyIntroCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Conoce a Sunny >',
+                      learnMoreLabel,
                       style: LuckdateTextStyles.caption.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
@@ -420,10 +470,15 @@ class _SunnyIntroCard extends StatelessWidget {
 }
 
 class _QuickAskRow extends StatelessWidget {
-  const _QuickAskRow({required this.items, required this.onTap});
+  const _QuickAskRow({
+    required this.items,
+    required this.onTap,
+    required this.title,
+  });
 
   final List<(String, String)> items;
   final ValueChanged<String> onTap;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -437,7 +492,7 @@ class _QuickAskRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Quizá quieras preguntar', style: LuckdateTextStyles.caption),
+          Text(title, style: LuckdateTextStyles.caption),
           const SizedBox(height: LuckdateSpacing.sm),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,

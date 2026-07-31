@@ -1,4 +1,5 @@
 import '../models/models.dart';
+import '../l10n/app_strings.dart';
 
 /// Guides new users through product intro + core questions inside Sunny chat.
 class OnboardingChatGuide {
@@ -56,24 +57,22 @@ class OnboardingChatGuide {
       'Toca «Hablar por Messenger» cuando quieras.';
 
   /// Seed for users who skipped order linking (no product).
-  static List<ChatMessage> noProductSeedMessages() {
+  static List<ChatMessage> noProductSeedMessages([UserProfile? profile]) {
+    final s = AppStrings.fromCode(profile?.language);
     return [
       ChatMessage(
         id: 'onboard_greet',
         isUser: false,
-        text:
-            '¡Hola! ☀️ Soy Sunny, tu compañera diaria de vitalidad.\n\n'
-            'Como aún no vinculaste un pedido, primero quiero entender tu necesidad '
-            'y luego unos datos básicos. Al final te conecto con nuestro equipo en Messenger.\n\n'
-            '$healthNeedPrompt',
+        text: '${s.noProductGreeting}${s.healthNeedPrompt}',
         timestamp: DateTime.now(),
-        actionLabels: healthNeedActions,
+        actionLabels: s.healthNeedActions,
       ),
     ];
   }
 
   /// Legacy alias — prefer [noProductSeedMessages] for skip path.
-  static List<ChatMessage> seedMessages() => noProductSeedMessages();
+  static List<ChatMessage> seedMessages([UserProfile? profile]) =>
+      noProductSeedMessages(profile);
 
   /// Greeting (with Sunny intro + product intros) + plan offer CTA.
   static List<ChatMessage> productIntroSeedMessages(UserProfile profile) {
@@ -250,6 +249,7 @@ class OnboardingChatGuide {
               : 'privacy')
         : profile.onboardingStep;
     final isNoProduct = profile.userPlanType == UserPlanType.noProduct;
+    final s = AppStrings.fromCode(profile.language);
 
     switch (step) {
       case 'health_need':
@@ -257,12 +257,13 @@ class OnboardingChatGuide {
         if (need == null) {
           return (
             profile: profile,
-            result: const SunnyIntentResult(
-              reply:
-                  'Elige una opción o descríbeme tu necesidad principal '
-                  '(peso, intestino, antiedad, energía u otra).',
-              intents: ['onboarding_health_need'],
-              actionLabels: healthNeedActions,
+            result: SunnyIntentResult(
+              reply: s.isZh
+                  ? '请选择一项，或用自己的话描述你的主要需求（减重、肠道、抗衰、能量或其他）。'
+                  : 'Elige una opción o descríbeme tu necesidad principal '
+                      '(peso, intestino, antiedad, energía u otra).',
+              intents: const ['onboarding_health_need'],
+              actionLabels: s.healthNeedActions,
             ),
           );
         }
@@ -273,8 +274,10 @@ class OnboardingChatGuide {
           ),
           result: SunnyIntentResult(
             reply:
-                'Perfecto, tomo nota: ${_healthNeedLabel(need)}.\n\n'
-                '$privacyPrompt',
+                (s.isZh
+                    ? '好的，已记下：${_healthNeedLabel(need, zh: true)}。\n\n'
+                    : 'Perfecto, tomo nota: ${_healthNeedLabel(need)}.\n\n') +
+                s.privacyPrompt,
             intents: const ['onboarding_health_need'],
           ),
         );
@@ -481,22 +484,27 @@ class OnboardingChatGuide {
             isNewRegistration: false,
             sunnyIntroSeen: true,
           );
+          final needLabel = _healthNeedLabel(done.healthNeed, zh: s.isZh);
           return (
             profile: done,
             result: SunnyIntentResult(
-              reply:
-                  'Registré ${weight.toStringAsFixed(1)} kg.\n\n'
-                  'Resumen rápido:\n'
-                  '• Necesidad: ${_healthNeedLabel(done.healthNeed)}\n'
-                  '• Edad: ${done.ageRange}\n'
-                  '• Perfil: ${done.heightCm.toStringAsFixed(0)} cm · '
-                  '${done.currentWeightKg.toStringAsFixed(1)} kg\n\n'
-                  '$messengerHandoffPrompt',
+              reply: s.isZh
+                  ? '已记录：${weight.toStringAsFixed(1)} kg。\n\n'
+                      '快速摘要：\n'
+                      '• 需求：$needLabel\n'
+                      '• 年龄：${done.ageRange}\n'
+                      '• 身体：${done.heightCm.toStringAsFixed(0)} cm · '
+                      '${done.currentWeightKg.toStringAsFixed(1)} kg\n\n'
+                      '${s.messengerHandoff}'
+                  : 'Registré ${weight.toStringAsFixed(1)} kg.\n\n'
+                      'Resumen rápido:\n'
+                      '• Necesidad: $needLabel\n'
+                      '• Edad: ${done.ageRange}\n'
+                      '• Perfil: ${done.heightCm.toStringAsFixed(0)} cm · '
+                      '${done.currentWeightKg.toStringAsFixed(1)} kg\n\n'
+                      '${s.messengerHandoff}',
               intents: const ['onboarding_complete', 'messenger_handoff'],
-              actionLabels: const [
-                'Hablar por Messenger',
-                'Ir al viaje',
-              ],
+              actionLabels: [s.talkMessenger, s.goJourney],
             ),
           );
         }
@@ -619,10 +627,10 @@ class OnboardingChatGuide {
         if (profile.userPlanType == UserPlanType.noProduct) {
           return (
             profile: profile.copyWith(onboardingStep: 'health_need'),
-            result: const SunnyIntentResult(
-              reply: healthNeedPrompt,
-              intents: ['onboarding_restart'],
-              actionLabels: healthNeedActions,
+            result: SunnyIntentResult(
+              reply: s.healthNeedPrompt,
+              intents: const ['onboarding_restart'],
+              actionLabels: s.healthNeedActions,
             ),
           );
         }
@@ -643,44 +651,61 @@ class OnboardingChatGuide {
         lower.contains('bajar de peso') ||
         lower.contains('adelgazar') ||
         lower.contains('weight loss') ||
+        lower.contains('减重') ||
+        lower.contains('减肥') ||
         lower == 'peso') {
       return 'weight_loss';
     }
     if (lower.contains('intestinal') ||
         lower.contains('intestino') ||
         lower.contains('digest') ||
-        lower.contains('gut')) {
+        lower.contains('gut') ||
+        lower.contains('肠道')) {
       return 'gut';
     }
     if (lower.contains('antiedad') ||
         lower.contains('anti-edad') ||
         lower.contains('anti edad') ||
         lower.contains('envejecimiento') ||
-        lower.contains('aging')) {
+        lower.contains('aging') ||
+        lower.contains('抗衰')) {
       return 'anti_aging';
     }
     if (lower.contains('más energía') ||
         lower.contains('mas energia') ||
         lower.contains('energía') ||
         lower.contains('energia') ||
-        lower.contains('energy')) {
+        lower.contains('energy') ||
+        lower.contains('提升能量') ||
+        lower.contains('能量')) {
       return 'energy';
     }
     if (lower.contains('otra necesidad') ||
         lower.contains('otra') ||
-        lower.contains('other')) {
+        lower.contains('other') ||
+        lower.contains('其他')) {
       return 'other';
     }
-    // Short free-text description of a custom need.
     if (lower.length >= 4 &&
         !lower.contains('acepto') &&
+        !lower.contains('我同意') &&
         !RegExp(r'^\d').hasMatch(lower)) {
       return 'other';
     }
     return null;
   }
 
-  static String _healthNeedLabel(String need) {
+  static String _healthNeedLabel(String need, {bool zh = false}) {
+    if (zh) {
+      return switch (need) {
+        'weight_loss' => '减重',
+        'gut' => '肠道健康',
+        'anti_aging' => '抗衰',
+        'energy' => '提升能量',
+        'other' => '其他需求',
+        _ => need.isEmpty ? '待定' : need,
+      };
+    }
     return switch (need) {
       'weight_loss' => 'perder peso',
       'gut' => 'salud intestinal',
@@ -740,6 +765,8 @@ class OnboardingChatGuide {
     return lower.contains('acepto') ||
         lower.contains('estoy de acuerdo') ||
         lower.contains('de acuerdo') ||
+        lower.contains('我同意') ||
+        lower.contains('同意') ||
         lower.contains('agree') ||
         lower == 'yes' ||
         lower == 'y' ||
@@ -826,7 +853,36 @@ class OnboardingChatGuide {
     return null;
   }
 
-  static List<(String, String)> quickAsksFor(String step) {
+  static List<(String, String)> quickAsksFor(
+    String step, {
+    String language = 'es-MX',
+  }) {
+    final zh = language == 'zh' || language.startsWith('zh');
+    if (zh) {
+      return switch (step) {
+        'health_need' => [
+          ('⚖️', '减重'),
+          ('🌿', '肠道健康'),
+          ('✨', '抗衰'),
+          ('☀️', '提升能量'),
+          ('💬', '其他需求'),
+        ],
+        'plan_offer' => [
+          ('✨', 'Obtener un plan'),
+          ('🧴', 'Solo ayuda con productos'),
+          ('👀', 'Solo explorar'),
+          ('🌙', 'Ahora no'),
+        ],
+        'privacy' => [('✅', '我同意')],
+        'age' => [('🌿', '35-50'), ('☀️', '18-34'), ('🌙', '51-64')],
+        'height' => [('📏', '165 cm')],
+        'weight' => [('⚖️', '68 kg')],
+        'target' => [('🎯', '使用推荐值'), ('⚖️', '62 kg')],
+        'meal' => [('🌅', '早餐'), ('🥗', '午餐'), ('🌙', '晚餐')],
+        'reminder' => [('⏰', '08:00'), ('☀️', '早上 7 点')],
+        _ => const [],
+      };
+    }
     return switch (step) {
       'health_need' => [
         ('⚖️', 'Perder peso'),

@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../l10n/app_locale.dart';
+import '../l10n/app_strings.dart';
 import '../models/models.dart';
 import '../repositories/mock_data_repository.dart';
 import '../services/mock_order_service.dart';
@@ -17,6 +19,11 @@ final sunnyRouterProvider = Provider<SunnyIntentRouter>(
 final mockOrderServiceProvider = Provider<MockOrderService>(
   (ref) => MockOrderService(),
 );
+
+final appStringsProvider = Provider<AppStrings>((ref) {
+  final code = ref.watch(appStateProvider.select((s) => s.profile.language));
+  return AppStrings.fromCode(code);
+});
 
 class AppState {
   const AppState({
@@ -144,8 +151,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
     final noProduct = state.profile.userPlanType == UserPlanType.noProduct;
     state = state.copyWith(
       chatMessages: noProduct
-          ? OnboardingChatGuide.noProductSeedMessages()
-          : OnboardingChatGuide.seedMessages(),
+          ? OnboardingChatGuide.noProductSeedMessages(state.profile)
+          : OnboardingChatGuide.seedMessages(state.profile),
       profile: state.profile.copyWith(
         onboardingStep: noProduct ? 'health_need' : 'privacy',
       ),
@@ -385,6 +392,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   void updateProfile(UserProfile profile) {
     state = state.copyWith(profile: profile);
+  }
+
+  void setLanguage(AppLang lang) {
+    state = state.copyWith(
+      profile: state.profile.copyWith(language: lang.code),
+    );
   }
 
   void completeOnboarding(UserProfile profile, {bool preserveChat = false}) {

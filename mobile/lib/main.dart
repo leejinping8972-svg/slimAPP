@@ -13,6 +13,8 @@ Future<void> main() async {
   // LocaleDataException and paints a blank flutter-view.
   await initializeDateFormatting('es_MX');
   await initializeDateFormatting('es');
+  await initializeDateFormatting('zh_CN');
+  await initializeDateFormatting('zh');
   Intl.defaultLocale = 'es_MX';
 
   FlutterError.onError = (details) {
@@ -29,7 +31,7 @@ Future<void> main() async {
           padding: const EdgeInsets.all(24),
           child: Text(
             kReleaseMode
-                ? 'Algo salió mal. Recarga la página.'
+                ? 'Something went wrong. Please reload.\n出了点问题，请刷新页面。'
                 : details.exceptionAsString(),
             style: const TextStyle(color: Color(0xFF5E6B45)),
           ),

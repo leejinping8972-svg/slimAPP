@@ -101,12 +101,18 @@ class _PlanPageState extends ConsumerState<PlanPage> {
         onCompartir: () {},
       ),
       UserPlanType.noProduct => _NoPlanContactSupportView(
-        onContactSupport: () => ContactSupport.show(context),
+        onContactSupport: () => ContactSupport.show(
+          context,
+          zh: profile.language == 'zh' || profile.language.startsWith('zh'),
+        ),
       ),
       UserPlanType.nonMealReplacement => _ProductoCarePlanView(
         profile: profile,
         journey: journey,
-        onContactSupport: () => ContactSupport.show(context),
+        onContactSupport: () => ContactSupport.show(
+          context,
+          zh: profile.language == 'zh' || profile.language.startsWith('zh'),
+        ),
       ),
     };
   }
@@ -998,20 +1004,21 @@ class _AwaitingReceiptView extends StatelessWidget {
   }
 }
 
-class _NoPlanContactSupportView extends StatelessWidget {
+class _NoPlanContactSupportView extends ConsumerWidget {
   const _NoPlanContactSupportView({required this.onContactSupport});
 
   final VoidCallback onContactSupport;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = ref.watch(appStringsProvider);
     return ListView(
       padding: const EdgeInsets.all(LuckdateSpacing.lg),
       children: [
-        Text('Aún no tienes un plan activo', style: LuckdateTextStyles.h1),
+        Text(s.noPlanTitle, style: LuckdateTextStyles.h1),
         const SizedBox(height: LuckdateSpacing.sm),
         Text(
-          ContactSupport.shortMessage,
+          s.noPlanBody,
           style: LuckdateTextStyles.body,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
@@ -1021,17 +1028,17 @@ class _NoPlanContactSupportView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Activa tu viaje con ayuda de soporte',
+                s.wantSlimJourney,
                 style: LuckdateTextStyles.title,
               ),
               const SizedBox(height: LuckdateSpacing.sm),
               Text(
-                'Nuestro equipo puede verificar tu pedido externo y abrir tu plan de 28 días.',
+                s.contactCsForSlim,
                 style: LuckdateTextStyles.bodySmall,
               ),
               const SizedBox(height: LuckdateSpacing.lg),
               LdPrimaryButton(
-                label: ContactSupport.label,
+                label: s.talkMessenger,
                 onPressed: onContactSupport,
               ),
             ],

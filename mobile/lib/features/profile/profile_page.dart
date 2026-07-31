@@ -8,6 +8,7 @@ import '../../core/widgets/ld_shell.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/vitality_scorer.dart';
+import '../../shared/l10n/app_locale.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key, this.rootTab = false});
@@ -19,6 +20,8 @@ class ProfilePage extends ConsumerWidget {
     final state = ref.watch(appStateProvider);
     final profile = state.profile;
     final journey = state.journey;
+    final strings = ref.watch(appStringsProvider);
+    final lang = AppLangX.fromCode(profile.language);
 
     final page = SingleChildScrollView(
         padding: const EdgeInsets.all(LuckdateSpacing.lg),
@@ -206,33 +209,37 @@ class ProfilePage extends ConsumerWidget {
               const SizedBox(height: LuckdateSpacing.lg),
             ],
             if (profile.userPlanType == UserPlanType.mealReplacement) ...[
-              _sectionTitle('Mi recorrido'),
+              _sectionTitle(strings.myJourney),
               _tile(
                 Icons.explore_outlined,
-                'Recorrido Slim de 28 días',
-                'Fase: ${journey.phase} · Día ${journey.day}',
+                strings.isZh
+                    ? '28 天 Slim 旅程'
+                    : 'Recorrido Slim de 28 días',
+                strings.isZh
+                    ? '阶段: ${journey.phase} · 第 ${journey.day} 天'
+                    : 'Fase: ${journey.phase} · Día ${journey.day}',
               ),
               const SizedBox(height: LuckdateSpacing.lg),
             ],
-            _sectionTitle('Ajustes'),
+            _sectionTitle(strings.settings),
             _settingsTile(
               context,
               Icons.straighten,
-              'Unidades',
+              strings.units,
               '${profile.weightUnit} / ${profile.heightUnit}',
               showChevron: false,
             ),
             _settingsTile(
               context,
               Icons.language,
-              'Idioma',
-              'Español (México)',
-              showChevron: false,
+              strings.language,
+              lang.displayName,
+              onTap: () => context.push('/profile/language'),
             ),
             _settingsTile(
               context,
               Icons.notifications_outlined,
-              'Recordatorios',
+              strings.reminders,
               profile.userPlanType == UserPlanType.mealReplacement
                   ? '${profile.reminderTime} / ${profile.reminderTime2}'
                   : profile.reminderTime,
@@ -241,25 +248,25 @@ class ProfilePage extends ConsumerWidget {
             _settingsTile(
               context,
               Icons.privacy_tip_outlined,
-              'Privacidad y aviso de salud',
-              'Ver',
+              strings.privacy,
+              strings.viewLabel,
             ),
             const SizedBox(height: LuckdateSpacing.lg),
-            _sectionTitle('Pedidos y logros'),
+            _sectionTitle(strings.ordersAchievements),
             _settingsTile(
               context,
               Icons.link_outlined,
-              'Pedido vinculado',
+              strings.linkedOrder,
               profile.linkedOrderNo.isEmpty
-                  ? 'Sin pedido vinculado'
+                  ? strings.noLinkedOrder
                   : profile.linkedOrderNo,
               onTap: () => context.push('/link-order'),
             ),
             _settingsTile(
               context,
               Icons.emoji_events_outlined,
-              'Logros',
-              '${journey.unlockedMilestones.length} insignias',
+              strings.achievements,
+              '${journey.unlockedMilestones.length} ${strings.badgesCount}',
             ),
             const SizedBox(height: LuckdateSpacing.xl),
             SizedBox(
@@ -269,7 +276,7 @@ class ProfilePage extends ConsumerWidget {
                 onPressed: () => _confirmSignOut(context, ref),
                 icon: const Icon(Icons.logout_rounded, size: 20),
                 label: Text(
-                  'Cerrar sesión',
+                  strings.signOut,
                   style: LuckdateTextStyles.body.copyWith(
                     fontWeight: FontWeight.w600,
                     color: LuckdateColors.errorSoft,
