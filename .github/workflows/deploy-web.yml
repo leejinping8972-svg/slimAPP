@@ -8,6 +8,7 @@ on:
     paths:
       - 'mobile/**'
       - 'luckdate-admin-web/**'
+      - 'luckdate-us-web/**'
       - '.github/workflows/deploy-web.yml'
   workflow_dispatch:
 
@@ -23,9 +24,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: mobile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,18 +34,49 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Install dependencies
+      - name: Install Flutter dependencies
+        working-directory: mobile
         run: flutter pub get
 
-      - name: Build web
+      - name: Build Flutter web
+        working-directory: mobile
         # Disable PWA service-worker precache — large video assets exceed
         # mobile cache quotas and can leave GitHub Pages on a blank screen.
         run: flutter build web --release --base-href /${{ github.event.repository.name }}/ --no-web-resources-cdn --pwa-strategy=none
 
       - name: Include admin demo site
+        working-directory: mobile
         run: |
           mkdir -p build/web/luckdate-admin-web
           cp -r ../luckdate-admin-web/* build/web/luckdate-admin-web/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: luckdate-us-web/package-lock.json
+
+      - name: Install US web dependencies
+        working-directory: luckdate-us-web
+        run: npm ci
+
+      - name: Prepare & build US web (static export)
+        working-directory: luckdate-us-web
+        env:
+          GITHUB_PAGES: 'true'
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/us
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: |
+          node scripts/prepare-pages-export.js
+          npm run build
+
+      - name: Include US web site under /us
+        working-directory: mobile
+        run: |
+          mkdir -p build/web/us
+          cp -r ../luckdate-us-web/out/* build/web/us/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

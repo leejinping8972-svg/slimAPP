@@ -1,0 +1,10 @@
+﻿node_modules
+.next
+.trae
+.docs
+.cursor
+.env
+.env.*
+!.env.example
+.DS_Store
+out

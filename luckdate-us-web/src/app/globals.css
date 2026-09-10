@@ -1,0 +1,560 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Luckdate VI — A2-1 线上标准色 */
+    --background: 40 20% 96%;
+    --foreground: 100 6% 31%;
+    --card: 0 0% 100%;
+    --card-foreground: 100 6% 31%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 100 6% 31%;
+    --primary: 36 24% 58%;
+    --primary-foreground: 100 6% 31%;
+    --secondary: 40 15% 92%;
+    --secondary-foreground: 100 6% 31%;
+    --muted: 40 12% 92%;
+    --muted-foreground: 30 8% 57%;
+    --accent: 36 24% 58%;
+    --accent-foreground: 100 6% 31%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 36 15% 85%;
+    --input: 36 15% 85%;
+    --ring: 36 24% 58%;
+    --radius: 0.625rem;
+
+    --brand-moon-beige: #D8CBB8;
+    --brand-moon-beige-hover: #C4B5A0;
+    --brand-cloud-ivory: #F7F5F1;
+    --brand-soft-taupe: #9A9188;
+    --brand-deep-olive: #4E554B;
+    --brand-midnight-taupe: #6C6763;
+    --brand-gold-accent: #B59461;
+
+    --coral: #D8CBB8;
+    --dark: #4E554B;
+    --gray: #6C6763;
+    --light-gray: #F7F5F1;
+    --white: #ffffff;
+    --float-color: #D8CBB8;
+    --float-color-light: #E8DCC8;
+    --float-color-dark: #9A9188;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Montserrat', 'Inter', sans-serif;
+    font-weight: 300;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .custom-expo {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .fluid-motion {
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, var(--brand-moon-beige) 0%, var(--brand-gold-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+  
+  .product-float {
+    animation: productFloat 4s ease-in-out infinite;
+  }
+  
+  @keyframes productFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  
+  .pulse-ring {
+    animation: pulseRing 3s ease-out infinite;
+  }
+  
+  @keyframes pulseRing {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+  
+  .marquee {
+    animation: marquee 30s linear infinite;
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+  
+  .noise-overlay {
+    position: relative;
+  }
+  
+  .noise-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--coral);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-soft-taupe);
+}
+
+/* Selection styling */
+::selection {
+  background: var(--coral);
+  color: white;
+}
+
+.gummies-theme {
+  --float-color: hsl(355, 53%, 81%);
+  --float-color-light: hsl(355, 38%, 73%);
+  --float-color-dark: hsl(355, 53%, 81%);
+}
+
+/* Shilajit landing page theme (dark + gold) */
+.shilajit-theme {
+  --background: 0 0% 5%;
+  --foreground: 43 30% 90%;
+  --card: 0 0% 8%;
+  --card-foreground: 43 30% 90%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 43 30% 90%;
+  --primary: 43 72% 55%;
+  --primary-foreground: 0 0% 5%;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 43 30% 90%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 43 10% 55%;
+  --accent: 43 85% 45%;
+  --accent-foreground: 0 0% 5%;
+  --destructive: 0 84.2% 60.2%;
+  --border: 43 20% 20%;
+  --input: 0 0% 18%;
+  --ring: 43 72% 55%;
+  --gold: 43 72% 55%;
+  --gold-light: 43 80% 70%;
+  --gold-dark: 43 65% 35%;
+  --gold-gradient: linear-gradient(135deg, hsl(43, 72%, 55%), hsl(43, 85%, 70%), hsl(43, 72%, 55%));
+  --gold-gradient-text: linear-gradient(135deg, hsl(43, 85%, 70%), hsl(43, 72%, 55%), hsl(43, 85%, 65%));
+  --sidebar-background: 0 0% 5%;
+  --sidebar-foreground: 43 30% 90%;
+  --sidebar-primary: 43 72% 55%;
+  --sidebar-primary-foreground: 0 0% 5%;
+  --sidebar-accent: 0 0% 12%;
+  --sidebar-accent-foreground: 43 30% 90%;
+  --sidebar-border: 43 20% 20%;
+  --sidebar-ring: 43 72% 55%;
+  --float-color: hsl(43, 72%, 55%);
+  --float-color-light: hsl(43, 85%, 70%);
+  --float-color-dark: hsl(43, 72%, 55%);
+}
+
+.shilajit-theme .text-gold-gradient {
+  background: var(--gold-gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shilajit-theme .bg-gold-gradient {
+  background: var(--gold-gradient);
+}
+
+.shilajit-theme .border-gold {
+  border-color: hsl(var(--gold));
+}
+
+/* Shilajit 主题下弹窗金色外边框 + 光晕 */
+.shilajit-theme .modal-gold-border {
+  border: 1px solid hsl(43 20% 25%);
+  box-shadow:
+    0 0 0 1px hsl(43 72% 55% / 0.15),
+    0 0 30px -5px hsl(43 72% 55% / 0.25),
+    0 20px 40px -4px rgba(0, 0, 0, 0.3);
+}
+
+/* 全局滚动条隐藏工具类 - 所有页面通用 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 主题色滚动条 - 用于弹窗等组件内部 */
+.modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 3px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.8);
+}
+
+.shilajit-theme .shadow-gold {
+  box-shadow: 0 0 30px -5px hsl(43 72% 55% / 0.3);
+}
+
+.shilajit-theme .scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.shilajit-theme .scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes shilajit-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.shilajit-theme .animate-marquee {
+  animation: shilajit-marquee 20s linear infinite;
+}
+
+@keyframes shilajit-pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(43 72% 55% / 0.4); }
+  50% { box-shadow: 0 0 0 10px hsl(43 72% 55% / 0); }
+}
+
+.shilajit-theme .animate-pulse-gold {
+  animation: shilajit-pulse-gold 2s infinite;
+}
+
+@keyframes shilajit-slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.shilajit-theme .animate-slide-up {
+  animation: shilajit-slide-up 0.3s ease-out;
+}
+
+/* Body Purification page styles */
+.body-purification-page {
+  font-family: 'DM Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.body-purification-page h1,
+.body-purification-page h2,
+.body-purification-page h3,
+.body-purification-page h4,
+.body-purification-page h5,
+.body-purification-page h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+.body-purification-page .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.body-purification-page .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .body-purification-page .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.body-purification-page .scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.body-purification-page .scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.body-purification-page .snap-x-rail {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.body-purification-page .snap-x-rail > * {
+  scroll-snap-align: start;
+}
+
+/* Microneedle landing page theme (executive-edge warm bronze) */
+.microneedle-theme {
+  --background: 40 18% 98%;
+  --foreground: 38 12% 17%;
+  --card: 0 0% 100%;
+  --card-foreground: 38 12% 17%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 38 12% 17%;
+  --primary: 36 42% 44%;
+  --primary-foreground: 40 20% 97%;
+  --secondary: 40 15% 94%;
+  --secondary-foreground: 38 12% 22%;
+  --muted: 40 12% 94%;
+  --muted-foreground: 38 8% 46%;
+  --accent: 43 48% 70%;
+  --accent-foreground: 38 12% 17%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 40 12% 88%;
+  --input: 40 12% 88%;
+  --ring: 36 42% 44%;
+  --radius: 0.125rem;
+  --gold: 36 42% 44%;
+  --gold-light: 43 48% 70%;
+  --gold-dark: 38 12% 22%;
+  --gold-gradient: linear-gradient(135deg, hsl(36, 42%, 44%), hsl(43, 48%, 70%), hsl(36, 42%, 44%));
+  --float-color: hsl(43, 48%, 62%);
+  --float-color-light: hsl(43, 55%, 72%);
+  --float-color-dark: hsl(36, 42%, 44%);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.microneedle-theme .font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+.microneedle-theme .bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+.microneedle-theme .modal-gold-border {
+  border: 1px solid hsl(var(--border));
+  box-shadow:
+    0 0 0 1px hsl(var(--primary) / 0.12),
+    0 0 30px -5px hsl(var(--primary) / 0.2),
+    0 20px 40px -4px rgba(80, 60, 30, 0.12);
+}
+
+.microneedle-theme .modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+
+.microneedle-theme .modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.microneedle-theme .modal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.microneedle-theme .modal-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 3px;
+}
+
+.microneedle-theme .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.8);
+}
+
+.microneedle-theme .scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.microneedle-theme .scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 未支付订单浮钮 — 读取当前主题 --float-color 变量 */
+.unpaid-order-float-btn {
+  background: linear-gradient(135deg, var(--float-color, #ef4444), var(--float-color-light, #f97316));
+}
+
+.unpaid-order-float-btn:hover {
+  background: linear-gradient(135deg, var(--float-color-dark, #dc2626), var(--float-color, #f97316));
+}
+
+/* Homepage compact 16:9 screens */
+:root {
+  --home-top-offset: calc(var(--site-nav-height, 88px) + 2rem);
+  --home-screen-height: min(calc(100vw * 9 / 16), calc(100vh - var(--home-top-offset)));
+}
+
+.home-screen {
+  min-height: var(--home-screen-height);
+  max-height: var(--home-screen-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.home-screen > .home-screen-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .home-screen {
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* Luckdate Slim landing page */
+.slim-theme {
+  --slim-forest: #737a65;
+  --slim-forest-deep: #5f6558;
+  --slim-sage: #ede8df;
+  --slim-sage-soft: #f3f0ea;
+  --slim-cream: #fcfbf7;
+  --slim-ivory: #fcfbf7;
+  --slim-ink: #3d4038;
+  --slim-muted: #6c6763;
+  --slim-line: rgba(115, 122, 101, 0.12);
+  --float-color: #737a65;
+  --float-color-light: #8a917d;
+  --float-color-dark: #5f6558;
+  font-family: 'Plus Jakarta Sans', 'Montserrat', system-ui, sans-serif;
+  color: var(--slim-ink);
+  background: var(--slim-ivory);
+}
+
+.slim-theme h1,
+.slim-theme h2,
+.slim-theme h3,
+.slim-theme h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+.slim-theme .slim-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slim-theme .slim-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes slim-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.slim-theme .slim-float {
+  animation: slim-float 4s ease-in-out infinite;
+}
+
+@keyframes slim-fade-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slim-theme .slim-fade-rise {
+  animation: slim-fade-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}

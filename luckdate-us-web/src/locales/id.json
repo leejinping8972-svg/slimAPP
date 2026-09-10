@@ -1,0 +1,741 @@
+{
+    "nav": {
+        "home": "Beranda",
+        "products": "Produk",
+        "categories": "Kategori",
+        "about": "Tentang kami",
+        "reviews": "Ulasan",
+        "faq": "FAQ",
+        "insight": "Insight",
+        "orderInquiry": "Lacak Pesanan",
+        "shopNow": "Beli Sekarang"
+    },
+    "hero": {
+        "badge": "Suplemen Premium",
+        "title": "Buka kunci\nvitalitas harian Anda",
+        "subtitle": "Suplemen premium yang dirancang untuk mendukung gaya hidup aktif Anda. Rasakan perbedaan ilmu pengetahuan yang didukung alam.",
+        "explore": "Jelajahi Produk",
+        "ourStory": "Kisah Kami",
+        "stats": {
+            "products": "Produk Premium",
+            "customers": "Pelanggan Senang",
+            "natural": "Bahan Alami"
+        },
+        "badges": {
+            "tested": "Teruji secara Klinis",
+            "rating": "Rating 4.9"
+        },
+        "slides": {
+            "badge1": "Bangunkan Energi Anda",
+            "title1": "Dipimpin oleh Nobel Laureate, Mendefinisikan Ulang Penuaan Sehat & Manajemen Berat Badan",
+            "subtitle1": "Dengan kolaborasi mendalam dengan pemenang Hadiah Nobel Kimia 2004, Prof. Aaron J. Ciechanover, kami memberikan solusi kesehatan yang akurat, efisien, dan seumur hidup dengan sains tingkat sel.",
+            "title1Part1": "Dipimpin oleh ",
+            "title1Highlight": "Nobel Laureate",
+            "title1Part2": "Mendefinisikan Ulang Penuaan Sehat & Manajemen Berat Badan",
+            "scientistName": "Aaron Ciechanover",
+            "scientistTitle1": "Pemenang Hadiah Nobel Kimia 2004,",
+            "scientistTitle2": "Ilmuwan Konsultan Utama Luckdate.",
+            "badge2": "Kesejahteraan yang Disesuaikan",
+            "title2": "Temukan Padanan Sempurna",
+            "subtitle2": "Tidak yakin harus mulai dari mana? Jelajahi kategori pilihan kami dan temukan dukungan nutrisi yang tepat yang dibutuhkan tubuh Anda saat ini.",
+            "badge3": "100% Organik",
+            "title3": "Suplemen Alami",
+            "subtitle3": "Rasakan kekuatan murni alam. Kami secara ketat menggunakan bahan-bahan non-transgenik, bebas gluten, dan bersumber secara etis untuk memberikan manfaat kesehatan maksimal."
+        },
+        "exploreCollection": "Jelajahi Koleksi",
+        "ourCategories": "Kategori Kami"
+    },
+    "whyChooseUs": {
+        "badge": "Mengapa Memilih Kami",
+        "title": "Perbedaan LUCKDATE",
+        "features": {
+            "cleanIngredients": "Bahan Bersih",
+            "cleanIngredientsDesc": "Kami hanya menggunakan bahan-bahan murni dari sumber alami. Tanpa warna, rasa, atau pengawet buatan.",
+            "scienceBacked": "Didukung Ilmu",
+            "scienceBackedDesc": "Setiap formula dikembangkan dengan penelitian terbaru dan studi klinis untuk efektivitas maksimal.",
+            "thirdParty": "Diuji Pihak Ketiga",
+            "thirdPartyDesc": "Laboratorium independen memverifikasi kemurnian dan potensi setiap batch yang kami produksi.",
+            "subscribe": "Berlangganan & Hemat",
+            "subscribeDesc": "Dapatkan diskon 20% untuk setiap pesanan dengan rencana langganan fleksibel kami. Batalkan kapan saja."
+        }
+    },
+    "brandLogos": {
+        "trustedBy": "Dipercaya oleh Pemimpin Industri",
+        "certifications": {
+            "fda": "Terdaftar FDA",
+            "gmp": "Sertifikat GMP",
+            "natural": "100% Alami",
+            "tested": "Diuji Pihak Ketiga",
+            "vegan": "Ramah Vegan",
+            "premium": "Kualitas Premium"
+        }
+    },
+    "latestBlog": {
+        "badge": "Insight Kesehatan",
+        "title": "Terbaru dari Insight Kami",
+        "viewAll": "Lihat Semua Artikel"
+    },
+    "products": {
+        "badge": "Produk Kami",
+        "title": "Dibuat Untuk Anda",
+        "description": "Temukan koleksi lengkap suplemen premium kami, masing-masing diformulasikan dengan bahan-bahan yang didukung secara ilmiah untuk hasil optimal.",
+        "loading": "Memuat suplemen premium...",
+        "quickView": "Lihat Detail",
+        "addCart": "Tambahkan ke Keranjang",
+        "allProducts": "Semua Produk",
+        "noProducts": "Produk tidak ditemukan",
+        "tryDifferentFilter": "Coba pilih filter yang berbeda",
+        "pagination": {
+            "previous": "Sebelumnya",
+            "next": "Selanjutnya",
+            "showingPage": "Halaman {{currentPage}} dari {{totalPages}} ({{total}} produk total)"
+        }
+    },
+    "categories": {
+        "badge": "Belanja berdasarkan kebutuhan",
+        "title": "Temukan pasangan sempurna Anda",
+        "energy": "Energi",
+        "energyDesc": "Tingkatkan vitalitas",
+        "immunity": "Kekebalan",
+        "immunityDesc": "Kuatkan pertahanan",
+        "beauty": "Kecantikan",
+        "beautyDesc": "Berkilau dari dalam"
+    },
+    "orderInquiry": {
+        "back": "Kembali",
+        "title": "Pertanyaan Pesanan",
+        "description": "Masukkan nama penerima dan 4 digit terakhir nomor telepon untuk mencari pesanan Anda.",
+        "namePlaceholder": "Nama penerima",
+        "phonePlaceholder": "Telepon (4 digit terakhir)",
+        "search": "Cari",
+        "foundOrders": "Ditemukan {{count}} pesanan",
+        "noOrders": "Tidak ada pesanan ditemukan",
+        "noOrdersDescription": "Kami tidak dapat menemukan pesanan yang sesuai dengan informasi yang Anda berikan. Harap periksa nama penerima dan nomor telepon.",
+        "orderNumberLabel": "Pesanan",
+        "trackingNumberLabel": "Nomor pelacakan",
+        "currentStatus": "Status saat ini",
+        "collapse": "Tutup",
+        "copy": "Salin",
+        "copied": "Disalin",
+        "status": {
+            "pending": "Menunggu pembayaran",
+            "processing": "Sedang diproses",
+            "shipped": "Sedang dikirim",
+            "delivered": "Terkirim",
+            "cancelled": "Dibatalkan"
+        }
+    },
+    "blog": {
+        "title": "Journal & Guides",
+        "description": "Jelajahi wawasan terbaru tentang longevitas, kesejahteraan, dan ilmu di balik LUCKDATE.",
+        "tryRefreshing": "Coba segarkan",
+        "readArticle": "Baca Artikel",
+        "pagination": {
+            "previous": "Sebelumnya",
+            "next": "Selanjutnya",
+            "showingPage": "Halaman {{currentPage}} dari {{totalPages}} ({{total}} artikel total)"
+        },
+        "article": {
+            "backToJournal": "Kembali ke Journal",
+            "shareArticle": "Bagikan artikel ini",
+            "notFound": "Artikel Tidak Ditemukan",
+            "notFoundDesc": "Artikel yang Anda cari mungkin telah dipindahkan atau saat ini tidak tersedia."
+        }
+    },
+    "product": {
+        "backToProducts": "Kembali ke produk",
+        "notFound": "Produk Tidak Ditemukan",
+        "notFoundDesc": "Produk yang Anda cari mungkin telah dipindahkan atau saat ini tidak tersedia.",
+        "backToHome": "Kembali ke halaman utama"
+    },
+    "success": {
+        "title": "Pembayaran berhasil!",
+        "description": "Terima kasih atas pembelian Anda. Pesanan Anda telah dikonfirmasi dan akan dikirim segera.",
+        "orderId": "ID pesanan: #{{orderId}}",
+        "continueShopping": "Lanjut berbelanja"
+    },
+    "cart": {
+        "title": "Keranjang Anda ({{count}})",
+        "empty": "Keranjang Anda kosong",
+        "emptyDesc": "Tambahkan beberapa produk untuk memulai",
+        "startShopping": "Mulai berbelanja",
+        "subtotal": "Subtotal",
+        "shipping": "Pengiriman",
+        "shippingCalculated": "Dihitung saat checkout",
+        "total": "Total",
+        "checkout": "Lanjut ke checkout",
+        "processing": "Memproses...",
+        "continueShopping": "Lanjut berbelanja"
+    },
+    "about": {
+        "badge": "Tentang Kami",
+        "title": "Di mana Alam Bertemu Ilmu Pengetahuan",
+        "science": "Ilmu Pengetahuan",
+        "desc1": "Di LUCKDATE, kami memadukan kearifan botani dengan penelitian mutakhir untuk menciptakan suplemen yang benar-benar bekerja. Tanpa gimmick — hanya formulasi murni dan kuat yang dirancang untuk mendukung perjalanan kesehatan Anda.",
+        "desc2": "Tim ahli gizi, ilmuwan, dan pakar kesehatan kami bekerja tanpa lelah untuk mencari bahan-bahan terbaik dari seluruh dunia. Setiap produk menjalani pengujian ketat untuk memastikan keamanan, kemanjuran, dan kualitas.",
+        "features": [
+            "Bahan yang terbukti secara klinis",
+            "Uji kemurnian pihak ketiga",
+            "Praktik pengadaan yang berkelanjutan",
+            "Tanpa bahan tambahan buatan"
+        ],
+        "experience": "Tahun-tahun Keunggulan"
+    },
+    "cta": {
+        "title": "Dapatkan diskon {{discount}}% untuk ",
+        "titleHighlight": "Pesanan Pertama",
+        "subtitle": "Mulai perjalanan kesehatan Anda hari ini. Berlangganan newsletter kami dan terima diskon eksklusif untuk pembelian pertama Anda.",
+        "button": "Beli sekarang",
+        "badges": {
+            "freeShipping": "Gratis pengiriman",
+            "guarantee": "Garansi 30 hari",
+            "cancel": "Batalkan kapan saja"
+        },
+        "discountBadge": {
+            "off": "DISKON"
+        }
+    },
+    "footer": {
+        "desc": "Suplemen premium yang dirancang untuk mendukung gaya hidup aktif Anda. Rasakan perbedaan ilmu pengetahuan yang didukung alam.",
+        "newsletter": {
+            "title": "Berlangganan newsletter dan dapatkan kupon Anda",
+            "placeholder": "Masukkan email Anda",
+            "thanks": "Terima kasih telah berlangganan!"
+        },
+        "sections": {
+            "products": "Produk",
+            "company": "Perusahaan",
+            "support": "Dukungan",
+            "legal": "Legal"
+        },
+        "copyright": "Seluruh hak cipta dilindungi undang-undang.",
+        "madeWith": "Dibuat dengan untuk kesehatan Anda",
+        "fda": "*Pernyataan ini belum dievaluasi oleh Food and Drug Administration. Produk ini tidak dimaksudkan untuk mendiagnosis, mengobati, menyembuhkan, oder mencegah penyakit apa pun."
+    },
+    "faq": {
+        "badge": "Punya Pertanyaan?",
+        "title": "Pertanyaan yang Sering Diajukan",
+        "science": "Pertanyaan",
+        "items": [
+            {
+                "question": "Apa yang membedakan suplemen LUCKDATE dari yang lain?",
+                "answer": "Suplemen LUCKDATE diformulasikan dengan bahan-bahan yang terbukti secara klinis pada dosis yang efektif. Semua produk kami menjalani pengujian pihak ketiga yang ketat untuk kemurnian dan potensi. Kami hanya menggunakan bahan-bahan alami yang bersih tanpa aditif buatan, pengisi, atau pengawet."
+            },
+            {
+                "question": "Berapa lama waktu yang dibutuhkan untuk melihat hasil?",
+                "answer": "Hasil bervariasi tergantung pada produk dan individu. Sebagian besar pelanggan melaporkan peningkatan yang nyata dalam 2-4 minggu penggunaan yang konsisten. Untuk hasil yang optimal, kami merekomendasikan mengonsumsi suplemen kami setiap hari sesuai petunjuk selama setidaknya 30 hari."
+            },
+            {
+                "question": "Apakah suplemen Anda disetujui FDA?",
+                "answer": "Suplemen diet tidak tunduk pada persetujuan FDA. Namun, fasilitas manufaktur kami terdaftar di FDA dan mengikuti pedoman GMP (Good Manufacturing Practices) yang ketat. Semua produk diuji oleh pihak ketiga untuk jaminan kualitas."
+            },
+            {
+                "question": "Dapatkah saya mengonsumsi beberapa suplemen LUCKDATE bersama-sama?",
+                "answer": "Ya, sebagian besar suplemen kami dirancang untuk bekerja secara sinergis. Namun, kami menyarankan untuk berkonsultasi dengan penyedia layanan kesehatan Anda sebelum memulai rejimen suplemen baru, terutama jika Anda sedang mengonsumsi obat atau memiliki kondisi kesehatan yang ada."
+            },
+            {
+                "question": "Bagaimana kebijakan pengembalian Anda?",
+                "answer": "Kami menawarkan jaminan kepuasan 30 hari. Jika Anda tidak sepenuhnya puas dengan pembelian Anda, hubungi tim layanan pelanggan kami untuk pengembalian dana penuh. Kami menjamin kualitas produk kami."
+            }
+        ],
+        "stillQuestions": "Masih punya pertanyaan?",
+        "contactSupport": "Hubungi tim dukungan kami"
+    },
+    "contact": {
+        "title": "Hubungi Kami",
+        "subtitle": "Tim dukungan kami siap membantu pesanan, pertanyaan produk, pengembalian, dan lainnya.",
+        "emailTitle": "Email Resmi",
+        "emailDesc": "Untuk semua pertanyaan, hubungi tim layanan pelanggan kami:",
+        "responseTime": "Kami biasanya merespons dalam 1-2 hari kerja.",
+        "helpWith": "Kami dapat membantu Anda dengan:",
+        "topics": [
+            "Status pesanan dan pengiriman",
+            "Pengembalian dan pengembalian dana",
+            "Informasi produk",
+            "Akun dan langganan"
+        ],
+        "back": "Kembali"
+    },
+    "testimonials": {
+        "badge": "Testimoni",
+        "title": "Apa Kata Pelanggan Kami",
+        "science": "Pelanggan",
+        "loadMore": "Lihat Lebih Banyak Ulasan",
+        "items": [
+            {
+                "name": "Sarah Mitchell",
+                "role": "Instruktur Kebugaran",
+                "text": "Kemasannya terlihat sangat premium, dan saat saya menerimanya, produk terasa sangat elegan. Belakangan ini saya rutin mengonsumsinya dan merasa kulit saya lebih seimbang, makeup juga lebih rata."
+            },
+            {
+                "name": "Michael Chen",
+                "role": "Insinyur Perangkat Lunak",
+                "text": "Ini produk yang terus saya beli ulang. Setelah digunakan, saya bisa melihat kondisi kulit dan rona wajah saya membaik. Sangat direkomendasikan!"
+            },
+            {
+                "name": "Patricia Williams",
+                "role": "Pensiunan Guru",
+                "text": "Saat ini kriteria saya untuk suplemen kecantikan oral sederhana: bahan yang terpercaya, formula yang masuk akal, dan mudah diikuti. LUCKDATE memenuhi semua itu, jadi saya menjadi pelanggan setia."
+            },
+            {
+                "name": "Emily Rodriguez",
+                "role": "Instruktur Yoga",
+                "text": "Setelah digunakan, saya merasa kelelahan fisik berkurang dan kondisi tubuh lebih rileks serta seimbang. Satu porsi per hari juga praktis; rasanya seperti memberi tubuh perlindungan antioksidan dan perawatan internal setiap hari."
+            },
+            {
+                "name": "David Thompson",
+                "role": "Eksekutif Bisnis",
+                "text": "Sebagai seseorang yang sering bekerja hingga larut malam, prioritas utama saya adalah menjaga kesehatan dan tetap awet muda. Sejak mulai memakai LUCKDATE, energi saya di siang hari lebih stabil dan tidak mudah habis karena begadang dan stres."
+            },
+            {
+                "name": "Linda Park",
+                "role": "Ahli Gizi",
+                "text": "Awalnya saya tidak berharap banyak dari suplemen semacam ini, tapi LUCKDATE benar-benar mengejutkan saya. Setelah konsisten mengonsumsinya, saya merasakan kondisi fisik saya membaik."
+            },
+            {
+                "name": "Jennifer Adams",
+                "role": "Pecinta Perawatan Kulit",
+                "text": "Awalnya saya hanya membelinya untuk mencoba, tapi tidak menyangka hasil anti-penuaan justru lebih baik dari perkiraan. Sejak mengonsumsinya, kulit saya perlahan menjadi lebih kencang dan bercahaya, dan rona wajah terus membaik. Pasti akan saya beli lagi."
+            },
+            {
+                "name": "Robert Lee",
+                "role": "Advokat Kesehatan",
+                "text": "Saya selalu tertarik dengan NAD+. Setelah membandingkan banyak merek, akhirnya saya memilih LUCKDATE. Sudah mengonsumsinya lebih dari sebulan, hasilnya cukup terlihat—kulit saya terlihat lebih kencang dan bercahaya."
+            }
+        ]
+    },
+    "legal": {
+        "back": "Kembali",
+        "lastUpdated": "Terakhir diperbarui",
+        "onThisPage": "Di halaman ini",
+        "contactTeam": "Tim {{team}} LUCKDATE",
+        "email": "Email",
+        "address": "Alamat",
+        "addressValue": "Los Angeles, CA, Amerika Serikat",
+        "privacy": {
+            "title": "Kebijakan Privasi",
+            "subtitle": "Privasi Anda Penting",
+            "date": "1 Maret 2026",
+            "intro": {
+                "title": "Pendahuluan",
+                "p1": "Di LUCKDATE (\"kami\"), kami berkomitmen untuk melindungi privasi dan keamanan informasi pribadi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi data Anda ketika Anda mengunjungi situs web kami, membeli produk kami, atau berinteraksi dengan layanan kami.",
+                "p2": "Dengan mengakses atau menggunakan layanan kami, Anda mengakui bahwa Anda telah membaca, memahami, dan setuju untuk terikat oleh Kebijakan Privasi ini. Jika Anda tidak setuju, harap hentikan penggunaan layanan kami segera."
+            },
+            "collect": {
+                "title": "Informasi yang Kami Kumpulkan",
+                "desc": "Kami dapat mengumpulkan jenis informasi berikut:",
+                "personalTitle": "Informasi Pribadi",
+                "personal": [
+                    "Nama lengkap dan detail kontak (alamat email, nomor telepon, alamat surat)",
+                    "Informasi pembayaran dan penagihan (nomor kartu kredit, alamat penagihan)",
+                    "Kredensial akun (nama pengguna, kata sandi terenkripsi)",
+                    "Riwayat pesanan dan preferensi pembelian"
+                ],
+                "autoTitle": "Informasi yang Dikumpulkan Secara Otomatis",
+                "auto": [
+                    "Jenis perangkat, jenis browser, dan sistem operasi",
+                    "Alamat IP dan perkiraan lokasi geografis",
+                    "Halaman yang dikunjungi, waktu yang dihabiskan, dan pola navigasi",
+                    "URL perujuk dan kueri pencarian yang mengarahkan Anda ke situs kami"
+                ]
+            },
+            "howWeUse": {
+                "title": "Bagaimana Kami Menggunakan Informasi Anda",
+                "desc": "Kami menggunakan informasi yang kami kumpulkan untuk:",
+                "items": [
+                    "Memproses dan memenuhi pesanan Anda, termasuk pengiriman dan pemrosesan pembayaran",
+                    "Menyediakan dukungan pelanggan dan merespons pertanyaan Anda",
+                    "Mempersonalisasi pengalaman belanja dan rekomendasi produk Anda",
+                    "Mengirim email transaksional (konfirmasi pesanan, pembaruan pengiriman)",
+                    "Mengirim komunikasi promosi, dengan persetujuan Anda, tentang produk dan penawaran baru",
+                    "Meningkatkan situs web, produk, dan layanan kami melalui analitik",
+                    "Mendeteksi dan mencegah penipuan, akses tidak sah, dan aktivitas ilegal lainnya"
+                ]
+            },
+            "sharing": {
+                "title": "Berbagi dan Pengungkapan Informasi",
+                "desc": "Kami tidak menjual informasi pribadi Anda kepada pihak ketiga. Kami dapat membagikan data Anda dengan:",
+                "items": [
+                    {
+                        "label": "Penyedia Layanan",
+                        "text": "Pemroses pembayaran, jasa pengiriman, dan penyedia hosting cloud yang membantu mengoperasikan bisnis kami"
+                    },
+                    {
+                        "label": "Mitra Analitik",
+                        "text": "Alat seperti Google Analytics untuk membantu kami memahami pola penggunaan situs web"
+                    },
+                    {
+                        "label": "Kewajiban Hukum",
+                        "text": "Ketika diwajibkan oleh hukum, peraturan, atau proses hukum"
+                    },
+                    {
+                        "label": "Transfer Bisnis",
+                        "text": "Sehubungan dengan merger, akuisisi, atau penjualan aset"
+                    }
+                ]
+            },
+            "security": {
+                "title": "Keamanan Data",
+                "p1": "Kami menerapkan langkah-langkah keamanan standar industri untuk melindungi informasi pribadi Anda, termasuk enkripsi SSL/TLS untuk data dalam transit, penyimpanan terenkripsi untuk data sensitif, dan audit keamanan rutin. Namun, tidak ada metode transmisi melalui Internet yang 100% aman, dan kami tidak dapat menjamin keamanan absolut."
+            },
+            "rights": {
+                "title": "Hak dan Pilihan Anda",
+                "desc": "Tergantung pada yurisdiksi Anda, Anda mungkin memiliki hak untuk:",
+                "items": [
+                    "Mengakses data pribadi yang kami simpan tentang Anda",
+                    "Meminta koreksi atau penghapusan data pribadi Anda",
+                    "Berhenti berlangganan komunikasi pemasaran kapan saja",
+                    "Meminta portabilitas data dalam format yang dapat dibaca mesin",
+                    "Menarik persetujuan di mana pemrosesan didasarkan pada persetujuan"
+                ],
+                "contact": "Untuk menggunakan hak-hak ini, silakan hubungi kami di"
+            },
+            "children": {
+                "title": "Privasi Anak-Anak",
+                "p1": "Layanan kami tidak ditujukan untuk individu di bawah usia 18 tahun. Kami tidak secara sengaja mengumpulkan informasi pribadi dari anak-anak. Jika kami menyadari bahwa kami secara tidak sengaja mengumpulkan data dari anak-anak, kami akan mengambil langkah-langkah untuk segera menghapus informasi tersebut."
+            },
+            "changes": {
+                "title": "Perubahan Kebijakan Ini",
+                "p1": "Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Ketika kami melakukannya, kami akan merevisi tanggal \"Terakhir diperbarui\" di bagian atas halaman ini. Kami mendorong Anda untuk meninjau kebijakan ini secara berkala agar tetap mendapat informasi tentang cara kami melindungi informasi Anda."
+            },
+            "contact": {
+                "title": "Hubungi Kami",
+                "desc": "Jika Anda memiliki pertanyaan atau kekhawatiran tentang Kebijakan Privasi ini, silakan hubungi kami:"
+            }
+        },
+        "terms": {
+            "title": "Ketentuan Layanan",
+            "subtitle": "Perjanjian Hukum",
+            "date": "1 Maret 2026",
+            "acceptance": {
+                "title": "Penerimaan Ketentuan",
+                "p1": "Selamat datang di LUCKDATE. Ketentuan Layanan (\"Ketentuan\") ini mengatur akses dan penggunaan Anda atas situs web, produk, dan layanan kami. Dengan mengakses atau menggunakan bagian mana pun dari layanan kami, Anda setuju untuk terikat oleh Ketentuan ini.",
+                "p2": "Jika Anda tidak menyetujui semua Ketentuan ini, Anda tidak boleh mengakses atau menggunakan layanan kami. Kami berhak untuk memperbarui atau mengubah Ketentuan ini kapan saja tanpa pemberitahuan sebelumnya."
+            },
+            "eligibility": {
+                "title": "Kelayakan",
+                "p1": "Anda harus berusia minimal 18 tahun dan mampu membentuk perjanjian hukum yang mengikat untuk menggunakan layanan kami. Dengan menggunakan layanan kami, Anda menyatakan dan menjamin bahwa Anda memenuhi persyaratan kelayakan ini."
+            },
+            "accounts": {
+                "title": "Akun Pengguna",
+                "desc": "Ketika Anda membuat akun dengan kami, Anda bertanggung jawab untuk menjaga kerahasiaan kredensial akun Anda dan untuk semua aktivitas yang terjadi di bawah akun Anda.",
+                "items": [
+                    "Memberikan informasi yang akurat, terkini, dan lengkap saat pendaftaran",
+                    "Segera memperbarui informasi akun Anda agar tetap akurat",
+                    "Segera memberi tahu kami tentang penggunaan akun Anda yang tidak sah",
+                    "Tidak membagikan kata sandi atau akses akun Anda kepada pihak ketiga"
+                ]
+            },
+            "orders": {
+                "title": "Pesanan dan Pembayaran",
+                "desc": "Semua pesanan yang dilakukan melalui situs web kami tunduk pada ketersediaan produk dan penerimaan. Kami berhak untuk menolak atau membatalkan pesanan apa pun dengan alasan apa pun.",
+                "pricingTitle": "Harga",
+                "pricingDesc": "Semua harga tercantum dalam USD dan dapat berubah tanpa pemberitahuan. Harga belum termasuk pajak dan biaya pengiriman yang berlaku, yang akan dihitung saat checkout.",
+                "paymentTitle": "Pembayaran",
+                "paymentDesc": "Kami menerima kartu kredit utama, kartu debit, dan metode pembayaran lain yang ditampilkan saat checkout. Semua pembayaran diproses secara aman melalui pemroses pembayaran pihak ketiga kami."
+            },
+            "shipping": {
+                "title": "Pengiriman dan Pengembalian",
+                "desc": "Kami berusaha mengirimkan semua pesanan dalam waktu 1–3 hari kerja. Waktu pengiriman bervariasi tergantung pada lokasi Anda dan metode pengiriman yang dipilih. Pengiriman internasional mungkin dikenakan bea cukai dan pajak impor.",
+                "returnTitle": "Kebijakan Pengembalian",
+                "returnItems": [
+                    "Tidak dapat dibatalkan atau dikembalikan; Anda perlu menghubungi layanan pelanggan untuk mendapatkan bantuan.",
+                    "Produk dapat dikembalikan dalam waktu 30 hari setelah diterima untuk pengembalian dana penuh",
+                    "Barang harus belum digunakan, belum dibuka, dan dalam kemasan asli",
+                    "Biaya pengiriman pengembalian menjadi tanggung jawab pelanggan kecuali produk cacat",
+                    "Pengembalian dana akan diproses dalam waktu 5–10 hari kerja setelah kami menerima barang yang dikembalikan"
+                ]
+            },
+            "ip": {
+                "title": "Kekayaan Intelektual",
+                "p1": "Semua konten di situs web kami — termasuk teks, grafik, logo, gambar, deskripsi produk, dan perangkat lunak — adalah milik eksklusif LUCKDATE dan dilindungi oleh hak cipta, merek dagang, dan undang-undang kekayaan intelektual lainnya.",
+                "p2": "Anda tidak boleh mereproduksi, mendistribusikan, memodifikasi, membuat karya turunan, menampilkan secara publik, atau mengeksploitasi konten kami dengan cara apa pun tanpa persetujuan tertulis sebelumnya dari LUCKDATE."
+            },
+            "prohibited": {
+                "title": "Perilaku yang Dilarang",
+                "desc": "Saat menggunakan layanan kami, Anda setuju untuk tidak:",
+                "items": [
+                    "Melanggar hukum atau peraturan yang berlaku",
+                    "Meniru identitas orang atau entitas mana pun, atau secara palsu menyatakan afiliasi Anda",
+                    "Mengirimkan pesanan atau ulasan palsu, menyesatkan, atau curang",
+                    "Mengganggu atau mengacaukan pengoperasian situs web atau server kami",
+                    "Mencoba mendapatkan akses tidak sah ke bagian mana pun dari layanan kami",
+                    "Menggunakan alat otomatis untuk mengambil, merayapi, atau mengekstrak data dari situs web kami"
+                ]
+            },
+            "limitation": {
+                "title": "Batasan Tanggung Jawab",
+                "p1": "Sejauh diizinkan oleh hukum, LUCKDATE tidak bertanggung jawab atas kerugian tidak langsung, insidental, khusus, konsekuensial, atau hukuman yang timbul dari atau sehubungan dengan penggunaan layanan kami, bahkan jika kami telah diberitahu tentang kemungkinan kerugian tersebut.",
+                "p2": "Total tanggung jawab kami untuk klaim apa pun yang timbul dari atau terkait dengan Ketentuan ini tidak akan melebihi jumlah yang Anda bayarkan kepada kami dalam dua belas (12) bulan sebelum klaim tersebut."
+            },
+            "governing": {
+                "title": "Hukum yang Berlaku",
+                "p1": "Ketentuan ini diatur oleh dan ditafsirkan sesuai dengan hukum Negara Bagian California, Amerika Serikat, tanpa memperhatikan prinsip-prinsip konflik hukumnya. Setiap perselisihan yang timbul berdasarkan atau sehubungan dengan Ketentuan ini tunduk pada yurisdiksi eksklusif pengadilan di Los Angeles County, California."
+            },
+            "contact": {
+                "title": "Hubungi Kami",
+                "desc": "Jika Anda memiliki pertanyaan tentang Ketentuan ini, silakan hubungi kami:"
+            }
+        },
+        "cookies": {
+            "title": "Kebijakan Cookie",
+            "subtitle": "Cara Kami Menggunakan Cookie",
+            "date": "1 Maret 2026",
+            "what": {
+                "title": "Apa Itu Cookie?",
+                "p1": "Cookie adalah file teks kecil yang ditempatkan di perangkat Anda saat Anda mengunjungi situs web. Cookie digunakan secara luas untuk membuat situs web bekerja lebih efisien, menyediakan informasi analitik kepada pemilik situs, dan memberikan pengalaman browsing yang lebih baik.",
+                "p2": "Kebijakan Cookie ini menjelaskan bagaimana LUCKDATE (\"kami\") menggunakan cookie dan teknologi serupa di situs web kami."
+            },
+            "types": {
+                "title": "Jenis Cookie yang Kami Gunakan",
+                "essential": {
+                    "label": "Cookie Esensial",
+                    "text": "Cookie ini sangat diperlukan untuk pengoperasian situs web kami. Cookie ini mengaktifkan fungsionalitas inti seperti navigasi halaman, akses ke area aman, dan fungsionalitas keranjang belanja. Situs web tidak dapat berfungsi dengan baik tanpa cookie ini."
+                },
+                "performance": {
+                    "label": "Cookie Kinerja",
+                    "text": "Cookie ini mengumpulkan informasi tentang bagaimana pengunjung menggunakan situs web kami — seperti halaman mana yang paling sering dikunjungi dan apakah pengguna menemukan pesan kesalahan. Data ini membantu kami meningkatkan kinerja dan kegunaan situs kami."
+                },
+                "functional": {
+                    "label": "Cookie Fungsional",
+                    "text": "Cookie ini memungkinkan situs web kami mengingat pilihan yang Anda buat (seperti preferensi bahasa atau wilayah) dan menyediakan fitur yang ditingkatkan dan dipersonalisasi. Cookie ini juga dapat digunakan untuk mengingat perubahan yang Anda buat pada ukuran teks, font, dan elemen yang dapat disesuaikan lainnya."
+                },
+                "marketing": {
+                    "label": "Cookie Pemasaran",
+                    "text": "Cookie ini melacak aktivitas browsing Anda di seluruh situs web untuk menayangkan iklan yang lebih relevan dengan Anda dan minat Anda. Cookie ini juga membatasi berapa kali Anda melihat iklan dan membantu mengukur efektivitas kampanye iklan."
+                }
+            },
+            "thirdParty": {
+                "title": "Cookie Pihak Ketiga",
+                "desc": "Selain cookie kami sendiri, kami dapat menggunakan cookie yang ditetapkan oleh layanan pihak ketiga di situs web kami, termasuk:",
+                "items": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "untuk menganalisis pola lalu lintas dan perilaku pengguna"
+                    },
+                    {
+                        "label": "Stripe",
+                        "text": "untuk memproses pembayaran secara aman"
+                    },
+                    {
+                        "label": "Platform Media Sosial",
+                        "text": "untuk mengaktifkan fitur berbagi dan melacak kinerja kampanye"
+                    }
+                ],
+                "note": "Pihak ketiga ini dapat menggunakan cookie untuk mengumpulkan informasi tentang aktivitas online Anda dari waktu ke waktu dan di berbagai situs web."
+            },
+            "managing": {
+                "title": "Mengelola Cookie Anda",
+                "desc": "Anda memiliki hak untuk memutuskan apakah akan menerima atau menolak cookie. Anda dapat mengelola preferensi cookie Anda dengan cara berikut:",
+                "browserTitle": "Pengaturan Browser",
+                "browserDesc": "Sebagian besar browser web memungkinkan Anda mengontrol cookie melalui pengaturannya. Anda dapat mengatur browser untuk memblokir atau memberi peringatan tentang cookie, atau menghapus cookie yang sudah ada. Harap dicatat bahwa menonaktifkan cookie tertentu dapat memengaruhi fungsionalitas situs web kami.",
+                "optOutTitle": "Tautan Penolakan",
+                "optOutItems": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "Penolakan Google Analytics",
+                        "url": "https://tools.google.com/dlpage/gaoptout"
+                    },
+                    {
+                        "label": "Network Advertising Initiative",
+                        "text": "Penolakan NAI",
+                        "url": "https://optout.networkadvertising.org"
+                    }
+                ]
+            },
+            "retention": {
+                "title": "Retensi Cookie",
+                "desc": "Lama waktu cookie bertahan di perangkat Anda tergantung pada apakah itu cookie \"sesi\" atau \"persisten\":",
+                "items": [
+                    {
+                        "label": "Cookie Sesi",
+                        "text": "Cookie sementara yang dihapus saat Anda menutup browser."
+                    },
+                    {
+                        "label": "Cookie Persisten",
+                        "text": "Cookie yang tetap ada di perangkat Anda selama jangka waktu tertentu atau hingga Anda menghapusnya secara manual. Cookie persisten kami disimpan tidak lebih dari 12 bulan."
+                    }
+                ]
+            },
+            "updates": {
+                "title": "Pembaruan Kebijakan Ini",
+                "p1": "Kami dapat memperbarui Kebijakan Cookie ini dari waktu ke waktu untuk mencerminkan perubahan dalam teknologi, perundang-undangan, atau praktik data kami. Ketika kami membuat perubahan, kami akan memperbarui tanggal \"Terakhir diperbarui\" di bagian atas halaman ini. Kami mendorong Anda untuk meninjau kebijakan ini secara berkala."
+            },
+            "contact": {
+                "title": "Hubungi Kami",
+                "desc": "Jika Anda memiliki pertanyaan tentang penggunaan cookie kami, silakan hubungi kami:"
+            }
+        },
+        "disclaimer": {
+            "title": "Penafian",
+            "subtitle": "Pemberitahuan Penting",
+            "date": "1 Maret 2026",
+            "general": {
+                "title": "Penafian Umum",
+                "p1": "Informasi yang disediakan di situs web ini hanya untuk tujuan informasi umum. Meskipun kami berusaha menjaga konten tetap akurat dan terkini, LUCKDATE tidak membuat pernyataan atau jaminan apa pun, baik tersurat maupun tersirat, tentang kelengkapan, keakuratan, keandalan, kesesuaian, atau ketersediaan informasi, produk, atau layanan yang terdapat di situs web ini.",
+                "p2": "Setiap kepercayaan yang Anda berikan pada informasi tersebut sepenuhnya menjadi risiko Anda sendiri."
+            },
+            "health": {
+                "title": "Penafian Kesehatan dan Medis",
+                "p1": "Produk kami adalah suplemen makanan dan tidak dimaksudkan untuk mendiagnosis, mengobati, menyembuhkan, atau mencegah penyakit apa pun. Pernyataan yang dibuat tentang produk kami belum dievaluasi oleh Food and Drug Administration (FDA).",
+                "noticeTitle": "Pemberitahuan Penting",
+                "noticeText": "Selalu konsultasikan dengan dokter atau penyedia layanan kesehatan yang berkualifikasi sebelum memulai rejimen suplemen baru, terutama jika Anda sedang hamil, menyusui, mengonsumsi obat-obatan, atau memiliki kondisi medis yang sudah ada. Hasil individu dapat bervariasi."
+            },
+            "productInfo": {
+                "title": "Informasi Produk",
+                "desc": "Kami berusaha sebaik mungkin untuk menampilkan warna, gambar, dan deskripsi produk seakurat mungkin. Namun, kami tidak dapat menjamin bahwa tampilan perangkat Anda secara akurat mencerminkan warna atau penampilan aktual produk kami.",
+                "items": [
+                    "Kemasan produk mungkin berbeda dari yang ditampilkan di situs web",
+                    "Informasi nutrisi dan daftar bahan dapat diperbarui tanpa pemberitahuan",
+                    "Selalu merujuk pada label produk untuk informasi bahan dan dosis terkini"
+                ]
+            },
+            "testimonials": {
+                "title": "Testimoni dan Ulasan",
+                "p1": "Testimoni dan ulasan yang ditampilkan di situs web kami mencerminkan pengalaman dan pendapat pribadi pelanggan individu. Hasil ini tidak umum dan pengalaman Anda mungkin berbeda. Testimoni tidak dimaksudkan untuk membuat klaim bahwa produk kami dapat digunakan untuk mendiagnosis, mengobati, menyembuhkan, atau mencegah penyakit apa pun."
+            },
+            "externalLinks": {
+                "title": "Tautan Eksternal",
+                "p1": "Situs web kami mungkin berisi tautan ke situs web pihak ketiga yang tidak dimiliki atau dikendalikan oleh LUCKDATE. Kami tidak memiliki kendali atas, dan tidak bertanggung jawab atas konten, kebijakan privasi, atau praktik situs web pihak ketiga mana pun.",
+                "p2": "Pencantuman tautan apa pun tidak menyiratkan dukungan, persetujuan, atau rekomendasi oleh LUCKDATE. Anda mengakses situs web pihak ketiga dengan risiko Anda sendiri."
+            },
+            "limitation": {
+                "title": "Batasan Tanggung Jawab",
+                "desc": "Dalam keadaan apa pun LUCKDATE, direktur, karyawan, mitra, agen, pemasok, atau afiliasinya tidak bertanggung jawab atas kerugian tidak langsung, insidental, khusus, konsekuensial, atau hukuman, termasuk namun tidak terbatas pada kehilangan keuntungan, data, penggunaan, niat baik, atau kerugian tidak berwujud lainnya, yang diakibatkan oleh:",
+                "items": [
+                    "Akses atau penggunaan Anda (atau ketidakmampuan untuk mengakses atau menggunakan) layanan kami",
+                    "Perilaku atau konten pihak ketiga mana pun di layanan kami",
+                    "Konten apa pun yang diperoleh dari layanan kami",
+                    "Akses tidak sah, penggunaan, atau perubahan transmisi atau konten Anda"
+                ]
+            },
+            "accuracy": {
+                "title": "Keakuratan Informasi",
+                "p1": "Meskipun kami berusaha menjaga informasi di situs web kami tetap terkini dan benar, kami tidak memberikan jaminan mengenai keakuratan, kecukupan, validitas, keandalan, atau kelengkapan informasi apa pun. Kami berhak memperbaiki kesalahan atau kelalaian apa pun dan mengubah atau memperbarui informasi kapan saja tanpa pemberitahuan sebelumnya."
+            },
+            "contact": {
+                "title": "Hubungi Kami",
+                "desc": "Jika Anda memiliki pertanyaan tentang Penafian ini, silakan hubungi kami:"
+            }
+        }
+    },
+    "orders": {
+        "title": "Pesanan",
+        "count": "{{count}} pesanan",
+        "loading": "Memuat...",
+        "empty": {
+            "title": "Belum ada pesanan",
+            "description": "Riwayat pesanan akan ditampilkan di sini"
+        },
+        "orderNumber": "Nomor Pesanan",
+        "date": "Tanggal",
+        "total": "Total",
+        "qty": "Jml: {{qty}}",
+        "moreItems": "item lainnya",
+        "continuePay": "Bayar Sekarang",
+        "cancelOrder": "Batalkan Pesanan",
+        "cancelling": "Membatalkan...",
+        "close": "Tutup",
+        "orderDetails": "Detail Pesanan",
+        "status": "Status",
+        "timeline": "Garis Waktu",
+        "created": "Dibuat",
+        "paid": "Dibayar",
+        "shipped": "Dikirim",
+        "received": "Diterima",
+        "completed": "Selesai",
+        "cancelled": "Dibatalkan",
+        "shippingAddress": "Alamat Pengiriman",
+        "items": "Item",
+        "subtotal": "Subtotal",
+        "shipping": "Ongkos Kirim",
+        "paymentInfo": "Informasi Pembayaran",
+        "paymentMethod": "Metode Pembayaran",
+        "amount": "Jumlah",
+        "transactionId": "ID Transaksi",
+        "paymentTime": "Waktu Pembayaran",
+        "logisticsInfo": "Informasi Logistik",
+        "logisticsStatus": "Status Logistik",
+        "trackingNumber": "Nomor Pelacakan",
+        "outboundOrderNo": "Nomor Pesanan Keluar",
+        "trackingTimeline": "Garis Waktu Pelacakan",
+        "tab": {
+            "all": "Semua",
+            "pendingPayment": "Menunggu Pembayaran",
+            "pendingDelivery": "Menunggu Pengiriman",
+            "pendingReceive": "Menunggu Penerimaan",
+            "confirmReceive": "Konfirmasi Terima",
+            "completed": "Selesai",
+            "cancelled": "Dibatalkan",
+            "payConfirming": "Konfirmasi Bayar"
+        },
+        "confirm": {
+            "title": "Batalkan Pesanan?",
+            "message": "Apakah Anda yakin ingin membatalkan pesanan ini?",
+            "orderLabel": "ID Pesanan",
+            "amountLabel": "Jumlah",
+            "couponPolicyTitle": "Kebijakan Kupon",
+            "couponPolicy1": "Kupon akan dikembalikan jika belum kedaluwarsa",
+            "couponPolicy2": "Kupon valid akan tersedia segera",
+            "couponPolicy3": "Kupon kedaluwarsa tidak dapat digunakan lagi",
+            "keepOrder": "Simpan Pesanan",
+            "yesCancel": "Ya, Batalkan"
+        },
+        "cancel": {
+            "successTitle": "Pesanan Dibatalkan",
+            "successMessage": "Pesanan Anda berhasil dibatalkan.",
+            "couponExpired": "Catatan: Kupon yang dikembalikan telah kedaluwarsa."
+        },
+        "error": {
+            "loadFailed": "Gagal memuat pesanan",
+            "network": "Error jaringan, coba lagi",
+            "payFailed": "Pembayaran gagal",
+            "payRetry": "Coba lagi",
+            "cancelFailed": "Gagal membatalkan",
+            "cancelRetry": "Gagal, coba lagi"
+        },
+        "countdownSuffix": " tersisa sebelum dibatalkan",
+        "viewOrder": "Lihat pesanan {{orderSn}}",
+        "productAltSuffix": "- produk LUCKDATE",
+        "processing": "Memproses...",
+        "previousPage": "Halaman sebelumnya",
+        "nextPage": "Halaman berikutnya",
+        "unpaidFloat": {
+            "ariaLabel": "Anda memiliki {{count}} pesanan belum bayar",
+            "single": "Pesanan Belum Bayar",
+            "multiple": "{{count}} Pesanan Belum Bayar",
+            "dismiss": "Tutup",
+            "loadFailed": "Gagal memuat detail",
+            "networkError": "Error jaringan"
+        },
+        "unpaidOrderModal": {
+            "title": "Anda memiliki pesanan yang belum dibayar",
+            "subtitle": "Apakah Anda ingin membayar sekarang?",
+            "viewDetails": "Lihat detail",
+            "goPay": "Bayar sekarang",
+            "cancelOrder": "Batalkan pesanan",
+            "noUnpaid": "Tidak ditemukan pesanan yang belum dibayar",
+            "loadFailed": "Gagal memuat detail pesanan",
+            "networkError": "Kesalahan jaringan"
+        },
+        "expired": "Kedaluwarsa",
+        "pagination": {
+            "previous": "Sebelumnya",
+            "next": "Berikutnya"
+        }
+    },
+    "coupon": {
+        "reason": {
+            "expired": "Kedaluwarsa",
+            "notYetValid": "Belum berlaku",
+            "minSpend": "Minimal belanja ${{min}} untuk menggunakan",
+            "productScope": "Hanya untuk produk tertentu",
+            "used": "Sudah digunakan",
+            "invalid": "Tidak valid"
+        }
+    },
+    "auth": {
+        "loginSuccess": "Login berhasil!",
+        "emailRegistered": "Email ini sudah terdaftar. Silakan masuk untuk mengklaim kupon Anda."
+    }
+}

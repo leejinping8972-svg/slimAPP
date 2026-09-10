@@ -1,0 +1,741 @@
+{
+    "nav": {
+        "home": "Trang chủ",
+        "products": "Sản phẩm",
+        "categories": "Danh mục",
+        "about": "Về chúng tôi",
+        "reviews": "Đánh giá",
+        "faq": "Hỏi đáp",
+        "insight": "Insight",
+        "orderInquiry": "Tra cứu đơn hàng",
+        "shopNow": "Mua ngay"
+    },
+    "hero": {
+        "badge": "Thực phẩm bổ sung cao cấp",
+        "title": "Khơi nguồn\nsức sống mỗi ngày",
+        "subtitle": "Thực phẩm bổ sung cao cấp được thiết kế để tiếp thêm năng lượng cho lối sống năng động của bạn. Trải nghiệm sự khác biệt của khoa học dựa trên thiên nhiên.",
+        "explore": "Khám phá sản phẩm",
+        "ourStory": "Câu chuyện của chúng tôi",
+        "stats": {
+            "products": "Sản phẩm cao cấp",
+            "customers": "Khách hàng hài lòng",
+            "natural": "Thành phần tự nhiên"
+        },
+        "badges": {
+            "tested": "Đã được kiểm nghiệm lâm sàng",
+            "rating": "Đánh giá 4.9"
+        },
+        "slides": {
+            "badge1": "Đánh thức năng lượng của bạn",
+            "title1": "Do nhà giải Nobel dẫn đầu, định nghĩa lại sự già đi khỏe mạnh & Quản lý cân nặng",
+            "subtitle1": "Phối hợp sâu rộng với Giáo sư Aaron J. Ciechanover - người đoạt Giải Nobel Hóa học năm 2004, chúng tôi cung cấp các giải pháp sức khỏe chính xác, hiệu quả và bền vững với khoa học tế bào.",
+            "title1Part1": "Do ",
+            "title1Highlight": "nhà giải Nobel",
+            "title1Part2": "dẫn đầu, định nghĩa lại sự già đi khỏe mạnh & Quản lý cân nặng",
+            "scientistName": "Aaron Ciechanover",
+            "scientistTitle1": "Người đoạt Giải Nobel Hóa học 2004,",
+            "scientistTitle2": "Nhà khoa học Tư vấn Chính của Luckdate.",
+            "badge2": "Sức khỏe cá nhân hóa",
+            "title2": "Tìm sự lựa chọn hoàn hảo",
+            "subtitle2": "Không biết bắt đầu từ đâu? Khám phá các danh mục được chọn lọc của chúng tôi và tìm chính xác sự hỗ trợ dinh dưỡng mà cơ thể bạn cần ngay bây giờ.",
+            "badge3": "100% Hữu cơ",
+            "title3": "Thực phẩm bổ sung tự nhiên",
+            "subtitle3": "Trải nghiệm sức mạnh tinh túy của thiên nhiên. Chúng tôi sử dụng nghiêm ngặt các thành phần không biến đổi gen, không chứa gluten và được thu hoạch có đạo đức để mang lại lợi ích sức khỏe tối đa."
+        },
+        "exploreCollection": "Khám phá bộ sưu tập",
+        "ourCategories": "Danh mục của chúng tôi"
+    },
+    "whyChooseUs": {
+        "badge": "Tại sao chọn chúng tôi",
+        "title": "Sự khác biệt của LUCKDATE",
+        "features": {
+            "cleanIngredients": "Thành phần sạch",
+            "cleanIngredientsDesc": "Chúng tôi chỉ sử dụng các thành phần tinh khiết nhất từ nguồn tự nhiên. Không có màu nhân tạo, hương liệu hoặc chất bảo quản.",
+            "scienceBacked": "Dựa trên khoa học",
+            "scienceBackedDesc": "Mỗi công thức được phát triển với nghiên cứu mới nhất và các nghiên cứu lâm sàng để đạt hiệu quả tối đa.",
+            "thirdParty": "Kiểm tra bên thứ ba",
+            "thirdPartyDesc": "Các phòng thí nghiệm độc lập xác minh độ tinh khiết và công suất của mỗi lô sản phẩm chúng tôi sản xuất.",
+            "subscribe": "Đăng ký và tiết kiệm",
+            "subscribeDesc": "Nhận giảm giá 20% cho mỗi đơn hàng với kế hoạch đăng ký linh hoạt của chúng tôi. Hủy bất kỳ lúc nào."
+        }
+    },
+    "brandLogos": {
+        "trustedBy": "Được các nhà lãnh đạo ngành tin tưởng",
+        "certifications": {
+            "fda": "Đã đăng ký FDA",
+            "gmp": "Chứng nhận GMP",
+            "natural": "100% Tự nhiên",
+            "tested": "Kiểm tra bên thứ ba",
+            "vegan": "Phù hợp cho người ăn chay",
+            "premium": "Chất lượng cao cấp"
+        }
+    },
+    "latestBlog": {
+        "badge": "Kiến thức sức khỏe",
+        "title": "Mới nhất từ Insight",
+        "viewAll": "Xem tất cả bài viết"
+    },
+    "products": {
+        "badge": "Sản phẩm của chúng tôi",
+        "title": "Được tạo ra cho bạn",
+        "description": "Khám phá toàn bộ dòng sản phẩm bổ sung cao cấp của chúng tôi, mỗi sản phẩm được pha chế với các thành phần có cơ sở khoa học để đạt hiệu quả tối ưu.",
+        "loading": "Đang tải sản phẩm bổ sung cao cấp...",
+        "quickView": "Xem chi tiết",
+        "addCart": "Thêm vào giỏ hàng",
+        "allProducts": "Tất cả sản phẩm",
+        "noProducts": "Không tìm thấy sản phẩm",
+        "tryDifferentFilter": "Thử chọn bộ lọc khác",
+        "pagination": {
+            "previous": "Trước",
+            "next": "Tiếp",
+            "showingPage": "Trang {{currentPage}} của {{totalPages}} ({{total}} sản phẩm tổng cộng)"
+        }
+    },
+    "categories": {
+        "badge": "Mua theo nhu cầu",
+        "title": "Tìm thấy sự phù hợp hoàn hảo của bạn",
+        "energy": "Năng lượng",
+        "energyDesc": "Tăng cường sinh lực",
+        "immunity": "Miễn dịch",
+        "immunityDesc": "Tăng cường phòng thủ",
+        "beauty": "Làm đẹp",
+        "beautyDesc": "Ánh sáng từ bên trong"
+    },
+    "orderInquiry": {
+        "back": "Quay lại",
+        "title": "Tra cứu đơn hàng",
+        "description": "Nhập tên người nhận và 4 chữ số cuối của số điện thoại để tra cứu đơn hàng của bạn.",
+        "namePlaceholder": "Tên người nhận",
+        "phonePlaceholder": "Điện thoại (4 chữ số cuối)",
+        "search": "Tra cứu",
+        "foundOrders": "Tìm thấy {{count}} đơn hàng",
+        "noOrders": "Không tìm thấy đơn hàng",
+        "noOrdersDescription": "Chúng tôi không tìm thấy đơn hàng nào phù hợp với thông tin bạn đã cung cấp. Vui lòng kiểm tra lại tên người nhận và số điện thoại.",
+        "orderNumberLabel": "Mã đơn hàng",
+        "trackingNumberLabel": "Mã vận đơn",
+        "currentStatus": "Trạng thái hiện tại",
+        "collapse": "Thu gọn",
+        "copy": "Sao chép",
+        "copied": "Đã sao chép",
+        "status": {
+            "pending": "Chờ thanh toán",
+            "processing": "Đang xử lý",
+            "shipped": "Đang giao hàng",
+            "delivered": "Đã giao",
+            "cancelled": "Đã hủy"
+        }
+    },
+    "blog": {
+        "title": "Journal & Guides",
+        "description": "Khám phá những hiểu biết mới nhất về tuổi thọ, sức khỏe và khoa học đằng sau LUCKDATE.",
+        "tryRefreshing": "Thử làm mới",
+        "readArticle": "Đọc Bài Viết",
+        "pagination": {
+            "previous": "Trước",
+            "next": "Tiếp",
+            "showingPage": "Trang {{currentPage}} của {{totalPages}} ({{total}} bài viết tổng cộng)"
+        },
+        "article": {
+            "backToJournal": "Quay lại Journal",
+            "shareArticle": "Chia sẻ bài viết này",
+            "notFound": "Không Tìm Thấy Bài Viết",
+            "notFoundDesc": "Bài viết bạn đang tìm kiếm có thể đã bị di chuyển hoặc hiện không có sẵn."
+        }
+    },
+    "product": {
+        "backToProducts": "Quay lại sản phẩm",
+        "notFound": "Không Tìm Thấy Sản Phẩm",
+        "notFoundDesc": "Sản phẩm bạn đang tìm kiếm có thể đã bị di chuyển hoặc hiện không có sẵn.",
+        "backToHome": "Quay lại trang chủ"
+    },
+    "success": {
+        "title": "Thanh toán thành công!",
+        "description": "Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được xác nhận và sẽ được gửi sớm.",
+        "orderId": "Mã đơn hàng: #{{orderId}}",
+        "continueShopping": "Tiếp tục mua sắm"
+    },
+    "cart": {
+        "title": "Giỏ hàng của bạn ({{count}})",
+        "empty": "Giỏ hàng của bạn trống",
+        "emptyDesc": "Thêm một số sản phẩm để bắt đầu",
+        "startShopping": "Bắt đầu mua sắm",
+        "subtotal": "Tổng phụ",
+        "shipping": "Vận chuyển",
+        "shippingCalculated": "Tính tại checkout",
+        "total": "Tổng cộng",
+        "checkout": "Tiến hành thanh toán",
+        "processing": "Đang xử lý...",
+        "continueShopping": "Tiếp tục mua sắm"
+    },
+    "about": {
+        "badge": "Về chúng tôi",
+        "title": "Nơi thiên nhiên giao thoa cùng khoa học",
+        "science": "khoa học",
+        "desc1": "Tại LUCKDATE, chúng tôi kết hợp trí tuệ thực vật với nghiên cứu tiên tiến để tạo ra các loại thực phẩm bổ sung thực sự hiệu quả. Không quảng cáo sáo rỗng — chỉ có những công thức tinh khiết, mạnh mẽ được thiết kế để hỗ trợ hành trình chăm sóc sức khỏe của bạn.",
+        "desc2": "Đội ngũ chuyên gia dinh dưỡng, nhà khoa học và chuyên gia y tế của chúng tôi làm việc không mệt mỏi để tìm kiếm những nguyên liệu tốt nhất từ khắp nơi trên thế giới. Mỗi sản phẩm đều trải qua quá trình kiểm tra nghiêm ngặt để đảm bảo an toàn, hiệu quả và chất lượng.",
+        "features": [
+            "Thành phần đã được chứng minh lâm sàng",
+            "Bên thứ ba kiểm tra độ tinh khiết",
+            "Thực hành tìm nguồn cung ứng bền vững",
+            "Không chất phụ gia nhân tạo"
+        ],
+        "experience": "Năm kinh nghiệm xuất sắc"
+    },
+    "cta": {
+        "title": "Nhận {{discount}}% giảm giá đơn ",
+        "titleHighlight": "đầu tiên",
+        "subtitle": "Bắt đầu hành trình sức khỏe của bạn hôm nay. Đăng ký nhận bản tin của chúng tôi và nhận ưu đãi độc quyền cho lần mua đầu tiên.",
+        "button": "Mua ngay",
+        "badges": {
+            "freeShipping": "Miễn phí vận chuyển",
+            "guarantee": "Bảo hành 30 ngày",
+            "cancel": "Hủy bất kỳ lúc nào"
+        },
+        "discountBadge": {
+            "off": "GIẢM"
+        }
+    },
+    "footer": {
+        "desc": "Thực phẩm bổ sung cao cấp được thiết kế để tiếp thêm năng lượng cho lối sống năng động của bạn. Trải nghiệm sự khác biệt của khoa học dựa trên thiên nhiên.",
+        "newsletter": {
+            "title": "Đăng ký nhận bản tin và nhận mã giảm giá của bạn",
+            "placeholder": "Nhập email của bạn",
+            "thanks": "Cảm ơn bạn đã đăng ký!"
+        },
+        "sections": {
+            "products": "Sản phẩm",
+            "company": "Công ty",
+            "support": "Hỗ trợ",
+            "legal": "Pháp lý"
+        },
+        "copyright": "Bản quyền đã được bảo hộ.",
+        "madeWith": "Được tạo ra với vì sức khỏe của bạn",
+        "fda": "*Những tuyên bố này chưa được đánh giá bởi Cục Quản lý Thực phẩm và Dược phẩm. Những sản phẩm này không nhằm mục đích chẩn đoán, điều trị, chữa khỏi hoặc ngăn ngừa bất kỳ bệnh nào."
+    },
+    "faq": {
+        "badge": "Có câu hỏi nào không?",
+        "title": "Các câu hỏi thường gặp",
+        "science": "câu hỏi",
+        "items": [
+            {
+                "question": "Điều gì làm cho thực phẩm bổ sung LUCKDATE khác biệt so với các sản phẩm khác?",
+                "answer": "Thực phẩm bổ sung LUCKDATE được bào chế với các thành phần đã được kiểm nghiệm lâm sàng với liều lượng hiệu quả. Tất cả các sản phẩm của chúng tôi đều trải qua quá trình kiểm tra nghiêm ngặt của bên thứ ba về độ tinh khiết và hiệu lực. Chúng tôi chỉ sử dụng các thành phần tự nhiên sạch, không có chất phụ gia nhân tạo, chất độn hoặc chất bảo quản."
+            },
+            {
+                "question": "Mất bao lâu để thấy kết quả?",
+                "answer": "Kết quả khác nhau tùy thuộc vào sản phẩm và từng cá nhân. Hầu hết khách hàng báo cáo những cải thiện đáng kể trong vòng 2-4 tuần sử dụng thường xuyên. Để có kết quả tối ưu, chúng tôi khuyên bạn nên bổ sung hàng ngày theo hướng dẫn trong ít nhất 30 ngày."
+            },
+            {
+                "question": "Các sản phẩm bổ sung của bạn có được FDA chấp thuận không?",
+                "answer": "Thực phẩm chức năng không thuộc diện phê duyệt của FDA. Tuy nhiên, cơ sở sản xuất của chúng tôi đã đăng ký với FDA và tuân thủ các hướng dẫn nghiêm ngặt của GMP (Thực hành sản xuất tốt). Tất cả các sản phẩm đều được bên thứ ba kiểm tra để đảm bảo chất lượng."
+            },
+            {
+                "question": "Tôi có thể sử dụng nhiều loại thực phẩm bổ sung LUCKDATE cùng lúc không?",
+                "answer": "Có, hầu hết các loại thực phẩm bổ sung của chúng tôi được thiết kế để hoạt động hiệp đồng. Tuy nhiên, chúng tôi khuyên bạn nên tham khảo ý kiến chuyên gia chăm sóc sức khỏe trước khi bắt đầu bất kỳ chế độ bổ sung mới nào, đặc biệt nếu bạn đang dùng thuốc hoặc có các tình trạng sức khỏe hiện tại."
+            },
+            {
+                "question": "Chính sách hoàn trả của bạn là gì?",
+                "answer": "Chúng tôi cung cấp cam kết hài lòng trong 30 ngày. Nếu bạn không hoàn toàn hài lòng với giao dịch mua của mình, hãy liên hệ với nhóm dịch vụ khách hàng của chúng tôi để được hoàn tiền đầy đủ. Chúng tôi đảm bảo chất lượng sản phẩm của mình."
+            }
+        ],
+        "stillQuestions": "Bạn vẫn còn câu hỏi?",
+        "contactSupport": "Liên hệ với nhóm hỗ trợ của chúng tôi"
+    },
+    "contact": {
+        "title": "Liên hệ với chúng tôi",
+        "subtitle": "Đội ngũ hỗ trợ của chúng tôi sẵn sàng giúp bạn với đơn hàng, câu hỏi về sản phẩm, hoàn trả và hơn thế nữa.",
+        "emailTitle": "Email chính thức",
+        "emailDesc": "Đối với mọi thắc mắc, vui lòng liên hệ với đội ngũ chăm sóc khách hàng:",
+        "responseTime": "Chúng tôi thường phản hồi trong 1-2 ngày làm việc.",
+        "helpWith": "Chúng tôi có thể giúp bạn với:",
+        "topics": [
+            "Trạng thái đơn hàng và vận chuyển",
+            "Hoàn trả và hoàn tiền",
+            "Thông tin sản phẩm",
+            "Tài khoản và đăng ký"
+        ],
+        "back": "Quay lại"
+    },
+    "testimonials": {
+        "badge": "Lời chứng thực",
+        "title": "Những gì khách hàng nói về chúng tôi",
+        "science": "khách hàng",
+        "loadMore": "Xem thêm đánh giá",
+        "items": [
+            {
+                "name": "Sarah Mitchell",
+                "role": "Huấn luyện viên Thể hình",
+                "text": "Bao bì trông rất cao cấp, và khi tôi nhận được sản phẩm, nó cảm giác vô cùng tinh tế. Gần đây tôi uống đều đặn và cảm thấy da ổn định hơn, trang điểm cũng mịn hơn nhiều."
+            },
+            {
+                "name": "Michael Chen",
+                "role": "Kỹ sư Phần mềm",
+                "text": "Đây là sản phẩm tôi luôn mua lại. Sau khi dùng, tôi có thể thấy rõ làn da và sắc mặt đã được cải thiện. Rất khuyên dùng!"
+            },
+            {
+                "name": "Patricia Williams",
+                "role": "Giáo viên đã nghỉ hưu",
+                "text": "Hiện tại tiêu chí của tôi với thực phẩm bổ sung làm đẹp uống được rất đơn giản: thành phần đáng tin cậy, công thức hợp lý và dễ duy trì. LUCKDATE đáp ứng đủ các tiêu chí này, nên tôi đã trở thành khách hàng trung thành."
+            },
+            {
+                "name": "Emily Rodriguez",
+                "role": "Huấn luyện viên Yoga",
+                "text": "Sau khi dùng, tôi cảm thấy mệt mỏi thể chất ít hơn trước và tổng thể thoải mái, cân bằng hơn. Mỗi ngày uống một liều cũng rất tiện; cảm giác như đang bổ sung chống oxy hóa và nuôi dưỡng cơ thể hàng ngày."
+            },
+            {
+                "name": "David Thompson",
+                "role": "Giám đốc Kinh doanh",
+                "text": "Là người thường xuyên làm việc khuya, ưu tiên hàng đầu của tôi là giữ sức khỏe và trẻ trung. Từ khi dùng LUCKDATE, tôi thấy năng lượng ban ngày ổn định hơn và ít bị kiệt sức vì thức khuya và căng thẳng."
+            },
+            {
+                "name": "Linda Park",
+                "role": "Chuyên gia Dinh dưỡng",
+                "text": "Ban đầu tôi không kỳ vọng nhiều với loại thực phẩm bổ sung này, nhưng LUCKDATE thực sự khiến tôi bất ngờ. Dùng đều đặn, tôi cảm nhận được thể trạng đã cải thiện."
+            },
+            {
+                "name": "Jennifer Adams",
+                "role": "Người yêu thích chăm sóc da",
+                "text": "Ban đầu tôi chỉ mua để thử, không ngờ hiệu quả chống lão hóa còn tốt hơn mong đợi. Sau khi uống, da tôi dần săn chắc và rạng rỡ hơn, sắc mặt cũng tiếp tục cải thiện. Tôi chắc chắn sẽ mua lại."
+            },
+            {
+                "name": "Robert Lee",
+                "role": "Người ủng hộ sức khỏe",
+                "text": "Tôi luôn quan tâm đến NAD+. Sau khi so sánh nhiều thương hiệu, cuối cùng tôi chọn LUCKDATE. Đã uống hơn một tháng, hiệu quả khá rõ rệt—da trông săn chắc và sáng hơn."
+            }
+        ]
+    },
+    "legal": {
+        "back": "Quay lại",
+        "lastUpdated": "Cập nhật lần cuối",
+        "onThisPage": "Trên trang này",
+        "contactTeam": "Đội ngũ {{team}} LUCKDATE",
+        "email": "Email",
+        "address": "Địa chỉ",
+        "addressValue": "Los Angeles, CA, Hoa Kỳ",
+        "privacy": {
+            "title": "Chính Sách Bảo Mật",
+            "subtitle": "Quyền Riêng Tư Của Bạn Rất Quan Trọng",
+            "date": "1 tháng 3, 2026",
+            "intro": {
+                "title": "Giới thiệu",
+                "p1": "Tại LUCKDATE (\"chúng tôi\"), chúng tôi cam kết bảo vệ quyền riêng tư và bảo mật thông tin cá nhân của bạn. Chính Sách Bảo Mật này giải thích cách chúng tôi thu thập, sử dụng, tiết lộ và bảo vệ dữ liệu của bạn khi bạn truy cập trang web, mua sản phẩm hoặc tương tác với các dịch vụ của chúng tôi.",
+                "p2": "Bằng việc truy cập hoặc sử dụng dịch vụ của chúng tôi, bạn xác nhận rằng bạn đã đọc, hiểu và đồng ý bị ràng buộc bởi Chính Sách Bảo Mật này. Nếu bạn không đồng ý, vui lòng ngừng sử dụng dịch vụ của chúng tôi ngay lập tức."
+            },
+            "collect": {
+                "title": "Thông Tin Chúng Tôi Thu Thập",
+                "desc": "Chúng tôi có thể thu thập các loại thông tin sau:",
+                "personalTitle": "Thông Tin Cá Nhân",
+                "personal": [
+                    "Họ tên đầy đủ và thông tin liên hệ (địa chỉ email, số điện thoại, địa chỉ gửi thư)",
+                    "Thông tin thanh toán và hóa đơn (số thẻ tín dụng, địa chỉ thanh toán)",
+                    "Thông tin đăng nhập tài khoản (tên người dùng, mật khẩu được mã hóa)",
+                    "Lịch sử đặt hàng và sở thích mua sắm"
+                ],
+                "autoTitle": "Thông Tin Được Thu Thập Tự Động",
+                "auto": [
+                    "Loại thiết bị, loại trình duyệt và hệ điều hành",
+                    "Địa chỉ IP và vị trí địa lý gần đúng",
+                    "Các trang đã truy cập, thời gian duyệt và các mẫu điều hướng",
+                    "URL giới thiệu và truy vấn tìm kiếm đã đưa bạn đến trang web của chúng tôi"
+                ]
+            },
+            "howWeUse": {
+                "title": "Cách Chúng Tôi Sử Dụng Thông Tin Của Bạn",
+                "desc": "Chúng tôi sử dụng thông tin thu thập được để:",
+                "items": [
+                    "Xử lý và thực hiện đơn hàng của bạn, bao gồm vận chuyển và xử lý thanh toán",
+                    "Cung cấp hỗ trợ khách hàng và phản hồi các yêu cầu của bạn",
+                    "Cá nhân hóa trải nghiệm mua sắm và đề xuất sản phẩm cho bạn",
+                    "Gửi email giao dịch (xác nhận đơn hàng, cập nhật vận chuyển)",
+                    "Gửi thông tin khuyến mãi, với sự đồng ý của bạn, về sản phẩm mới và ưu đãi",
+                    "Cải thiện trang web, sản phẩm và dịch vụ của chúng tôi thông qua phân tích",
+                    "Phát hiện và ngăn chặn gian lận, truy cập trái phép và các hoạt động bất hợp pháp khác"
+                ]
+            },
+            "sharing": {
+                "title": "Chia Sẻ và Tiết Lộ Thông Tin",
+                "desc": "Chúng tôi không bán thông tin cá nhân của bạn cho bên thứ ba. Chúng tôi có thể chia sẻ dữ liệu của bạn với:",
+                "items": [
+                    {
+                        "label": "Nhà Cung Cấp Dịch Vụ",
+                        "text": "Đơn vị xử lý thanh toán, đơn vị vận chuyển và nhà cung cấp dịch vụ lưu trữ đám mây hỗ trợ vận hành hoạt động kinh doanh của chúng tôi"
+                    },
+                    {
+                        "label": "Đối Tác Phân Tích",
+                        "text": "Các công cụ như Google Analytics giúp chúng tôi hiểu các mẫu sử dụng trang web"
+                    },
+                    {
+                        "label": "Nghĩa Vụ Pháp Lý",
+                        "text": "Khi được yêu cầu bởi luật pháp, quy định hoặc quy trình pháp lý"
+                    },
+                    {
+                        "label": "Chuyển Nhượng Kinh Doanh",
+                        "text": "Liên quan đến việc sáp nhập, mua lại hoặc bán tài sản"
+                    }
+                ]
+            },
+            "security": {
+                "title": "Bảo Mật Dữ Liệu",
+                "p1": "Chúng tôi triển khai các biện pháp bảo mật theo tiêu chuẩn ngành để bảo vệ thông tin cá nhân của bạn, bao gồm mã hóa SSL/TLS cho dữ liệu đang truyền, lưu trữ được mã hóa cho dữ liệu nhạy cảm và kiểm tra bảo mật định kỳ. Tuy nhiên, không có phương thức truyền tải qua Internet nào an toàn 100%, và chúng tôi không thể đảm bảo an toàn tuyệt đối."
+            },
+            "rights": {
+                "title": "Quyền và Lựa Chọn Của Bạn",
+                "desc": "Tùy thuộc vào quyền tài phán của bạn, bạn có thể có quyền:",
+                "items": [
+                    "Truy cập dữ liệu cá nhân mà chúng tôi lưu giữ về bạn",
+                    "Yêu cầu sửa chữa hoặc xóa dữ liệu cá nhân của bạn",
+                    "Từ chối nhận thông tin tiếp thị bất cứ lúc nào",
+                    "Yêu cầu chuyển dữ liệu ở định dạng máy có thể đọc được",
+                    "Rút lại sự đồng ý khi việc xử lý dựa trên sự đồng ý"
+                ],
+                "contact": "Để thực hiện bất kỳ quyền nào trong số này, vui lòng liên hệ với chúng tôi tại"
+            },
+            "children": {
+                "title": "Quyền Riêng Tư Của Trẻ Em",
+                "p1": "Dịch vụ của chúng tôi không dành cho cá nhân dưới 18 tuổi. Chúng tôi không cố ý thu thập thông tin cá nhân từ trẻ em. Nếu chúng tôi nhận thấy rằng chúng tôi đã vô tình thu thập dữ liệu từ trẻ em, chúng tôi sẽ thực hiện các bước để xóa thông tin đó ngay lập tức."
+            },
+            "changes": {
+                "title": "Thay Đổi Chính Sách Này",
+                "p1": "Chúng tôi có thể cập nhật Chính Sách Bảo Mật này theo thời gian. Khi cập nhật, chúng tôi sẽ sửa đổi ngày \"Cập nhật lần cuối\" ở đầu trang này. Chúng tôi khuyến khích bạn xem lại chính sách này định kỳ để cập nhật thông tin về cách chúng tôi bảo vệ thông tin của bạn."
+            },
+            "contact": {
+                "title": "Liên Hệ",
+                "desc": "Nếu bạn có bất kỳ câu hỏi hoặc thắc mắc nào về Chính Sách Bảo Mật này, vui lòng liên hệ với chúng tôi:"
+            }
+        },
+        "terms": {
+            "title": "Điều Khoản Dịch Vụ",
+            "subtitle": "Thỏa Thuận Pháp Lý",
+            "date": "1 tháng 3, 2026",
+            "acceptance": {
+                "title": "Chấp Nhận Điều Khoản",
+                "p1": "Chào mừng bạn đến với LUCKDATE. Các Điều Khoản Dịch Vụ (\"Điều Khoản\") này quy định việc bạn truy cập và sử dụng trang web, sản phẩm và dịch vụ của chúng tôi. Bằng việc truy cập hoặc sử dụng bất kỳ phần nào trong dịch vụ của chúng tôi, bạn đồng ý bị ràng buộc bởi các Điều Khoản này.",
+                "p2": "Nếu bạn không đồng ý với tất cả các Điều Khoản này, bạn không được truy cập hoặc sử dụng dịch vụ của chúng tôi. Chúng tôi có quyền cập nhật hoặc sửa đổi các Điều Khoản này bất cứ lúc nào mà không cần thông báo trước."
+            },
+            "eligibility": {
+                "title": "Điều Kiện Sử Dụng",
+                "p1": "Bạn phải từ 18 tuổi trở lên và có khả năng ký kết thỏa thuận pháp lý ràng buộc để sử dụng dịch vụ của chúng tôi. Bằng việc sử dụng dịch vụ, bạn tuyên bố và đảm bảo rằng bạn đáp ứng các yêu cầu về điều kiện sử dụng này."
+            },
+            "accounts": {
+                "title": "Tài Khoản Người Dùng",
+                "desc": "Khi bạn tạo tài khoản với chúng tôi, bạn có trách nhiệm duy trì tính bảo mật của thông tin đăng nhập và chịu trách nhiệm cho tất cả các hoạt động diễn ra dưới tài khoản của bạn.",
+                "items": [
+                    "Cung cấp thông tin chính xác, cập nhật và đầy đủ khi đăng ký",
+                    "Cập nhật kịp thời thông tin tài khoản để đảm bảo tính chính xác",
+                    "Thông báo ngay cho chúng tôi về bất kỳ việc sử dụng trái phép nào đối với tài khoản của bạn",
+                    "Không chia sẻ mật khẩu hoặc quyền truy cập tài khoản với bên thứ ba"
+                ]
+            },
+            "orders": {
+                "title": "Đơn Hàng và Thanh Toán",
+                "desc": "Tất cả đơn hàng đặt qua trang web của chúng tôi đều phụ thuộc vào tình trạng sản phẩm và sự chấp thuận. Chúng tôi có quyền từ chối hoặc hủy bất kỳ đơn hàng nào vì bất kỳ lý do gì.",
+                "pricingTitle": "Giá cả",
+                "pricingDesc": "Tất cả giá được niêm yết bằng USD và có thể thay đổi mà không cần thông báo trước. Giá chưa bao gồm thuế và phí vận chuyển áp dụng, sẽ được tính tại thời điểm thanh toán.",
+                "paymentTitle": "Thanh toán",
+                "paymentDesc": "Chúng tôi chấp nhận các loại thẻ tín dụng, thẻ ghi nợ chính và các phương thức thanh toán khác được hiển thị trong quá trình thanh toán. Tất cả thanh toán được xử lý an toàn thông qua đơn vị xử lý thanh toán bên thứ ba của chúng tôi."
+            },
+            "shipping": {
+                "title": "Vận Chuyển và Đổi Trả",
+                "desc": "Chúng tôi cố gắng gửi tất cả đơn hàng trong vòng 1–3 ngày làm việc. Thời gian giao hàng thay đổi tùy thuộc vào vị trí của bạn và phương thức vận chuyển được chọn. Các lô hàng quốc tế có thể phải chịu thuế hải quan và thuế nhập khẩu.",
+                "returnTitle": "Chính Sách Đổi Trả",
+                "returnItems": [
+                    "Không thể hủy hoặc trả lại; bạn cần liên hệ bộ phận chăm sóc khách hàng để được hỗ trợ.",
+                    "Sản phẩm có thể được trả lại trong vòng 30 ngày kể từ khi nhận hàng để được hoàn tiền đầy đủ",
+                    "Sản phẩm phải chưa qua sử dụng, chưa mở và còn nguyên bao bì gốc",
+                    "Chi phí vận chuyển hoàn trả do khách hàng chịu trừ khi sản phẩm bị lỗi",
+                    "Hoàn tiền sẽ được xử lý trong vòng 5–10 ngày làm việc sau khi chúng tôi nhận được sản phẩm trả lại"
+                ]
+            },
+            "ip": {
+                "title": "Sở Hữu Trí Tuệ",
+                "p1": "Tất cả nội dung trên trang web của chúng tôi — bao gồm văn bản, đồ họa, logo, hình ảnh, mô tả sản phẩm và phần mềm — là tài sản độc quyền của LUCKDATE và được bảo vệ bởi luật bản quyền, nhãn hiệu và các luật sở hữu trí tuệ khác.",
+                "p2": "Bạn không được sao chép, phân phối, sửa đổi, tạo các tác phẩm phái sinh, trưng bày công khai hoặc khai thác bất kỳ nội dung nào của chúng tôi mà không có sự đồng ý bằng văn bản từ LUCKDATE."
+            },
+            "prohibited": {
+                "title": "Hành Vi Bị Cấm",
+                "desc": "Khi sử dụng dịch vụ của chúng tôi, bạn đồng ý không:",
+                "items": [
+                    "Vi phạm bất kỳ luật hoặc quy định hiện hành nào",
+                    "Mạo danh bất kỳ cá nhân hoặc tổ chức nào, hoặc khai báo sai về mối liên kết của bạn",
+                    "Gửi đơn hàng hoặc đánh giá sai, gây nhầm lẫn hoặc gian lận",
+                    "Can thiệp hoặc làm gián đoạn hoạt động của trang web hoặc máy chủ của chúng tôi",
+                    "Cố gắng truy cập trái phép vào bất kỳ phần nào của dịch vụ của chúng tôi",
+                    "Sử dụng các công cụ tự động để thu thập, quét hoặc trích xuất dữ liệu từ trang web của chúng tôi"
+                ]
+            },
+            "limitation": {
+                "title": "Giới Hạn Trách Nhiệm",
+                "p1": "Trong phạm vi tối đa được pháp luật cho phép, LUCKDATE sẽ không chịu trách nhiệm về bất kỳ thiệt hại gián tiếp, ngẫu nhiên, đặc biệt, hệ quả hoặc mang tính trừng phạt nào phát sinh từ hoặc liên quan đến việc bạn sử dụng dịch vụ của chúng tôi, ngay cả khi chúng tôi đã được thông báo về khả năng xảy ra những thiệt hại đó.",
+                "p2": "Tổng trách nhiệm của chúng tôi đối với bất kỳ khiếu nại nào phát sinh từ hoặc liên quan đến các Điều Khoản này sẽ không vượt quá số tiền bạn đã thanh toán cho chúng tôi trong mười hai (12) tháng trước khiếu nại."
+            },
+            "governing": {
+                "title": "Luật Áp Dụng",
+                "p1": "Các Điều Khoản này sẽ được điều chỉnh và giải thích theo luật pháp của Bang California, Hoa Kỳ, không tính đến các nguyên tắc xung đột pháp luật. Bất kỳ tranh chấp nào phát sinh theo hoặc liên quan đến các Điều Khoản này sẽ thuộc quyền tài phán độc quyền của các tòa án tại Quận Los Angeles, California."
+            },
+            "contact": {
+                "title": "Liên Hệ",
+                "desc": "Nếu bạn có bất kỳ câu hỏi nào về các Điều Khoản này, vui lòng liên hệ với chúng tôi:"
+            }
+        },
+        "cookies": {
+            "title": "Chính Sách Cookie",
+            "subtitle": "Cách Chúng Tôi Sử Dụng Cookie",
+            "date": "1 tháng 3, 2026",
+            "what": {
+                "title": "Cookie Là Gì?",
+                "p1": "Cookie là các tệp văn bản nhỏ được lưu trữ trên thiết bị của bạn khi bạn truy cập một trang web. Chúng được sử dụng rộng rãi để giúp trang web hoạt động hiệu quả hơn, cung cấp thông tin phân tích cho chủ sở hữu trang web và mang lại trải nghiệm duyệt web tốt hơn.",
+                "p2": "Chính Sách Cookie này giải thích cách LUCKDATE (\"chúng tôi\") sử dụng cookie và các công nghệ tương tự trên trang web của chúng tôi."
+            },
+            "types": {
+                "title": "Các Loại Cookie Chúng Tôi Sử Dụng",
+                "essential": {
+                    "label": "Cookie Thiết Yếu",
+                    "text": "Những cookie này hoàn toàn cần thiết cho hoạt động của trang web. Chúng kích hoạt các chức năng cốt lõi như điều hướng trang, truy cập vào các khu vực bảo mật và chức năng giỏ hàng. Trang web không thể hoạt động đúng cách nếu không có những cookie này."
+                },
+                "performance": {
+                    "label": "Cookie Hiệu Suất",
+                    "text": "Những cookie này thu thập thông tin về cách khách truy cập sử dụng trang web — chẳng hạn như những trang nào được truy cập nhiều nhất và liệu người dùng có gặp thông báo lỗi không. Dữ liệu này giúp chúng tôi cải thiện hiệu suất và tính khả dụng của trang web."
+                },
+                "functional": {
+                    "label": "Cookie Chức Năng",
+                    "text": "Những cookie này cho phép trang web ghi nhớ các lựa chọn của bạn (như ngôn ngữ hoặc khu vực ưa thích) và cung cấp các tính năng nâng cao, được cá nhân hóa. Chúng cũng có thể được sử dụng để ghi nhớ các thay đổi bạn đã thực hiện đối với kích thước văn bản, phông chữ và các yếu tố tùy chỉnh khác."
+                },
+                "marketing": {
+                    "label": "Cookie Tiếp Thị",
+                    "text": "Những cookie này theo dõi hoạt động duyệt web của bạn trên các trang web để cung cấp quảng cáo phù hợp hơn với bạn và sở thích của bạn. Chúng cũng giới hạn số lần bạn nhìn thấy một quảng cáo và giúp đo lường hiệu quả của các chiến dịch quảng cáo."
+                }
+            },
+            "thirdParty": {
+                "title": "Cookie Bên Thứ Ba",
+                "desc": "Ngoài cookie của chúng tôi, chúng tôi có thể sử dụng cookie do các dịch vụ bên thứ ba đặt trên trang web, bao gồm:",
+                "items": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "để phân tích mẫu lưu lượng truy cập và hành vi người dùng"
+                    },
+                    {
+                        "label": "Stripe",
+                        "text": "để xử lý thanh toán an toàn"
+                    },
+                    {
+                        "label": "Nền Tảng Mạng Xã Hội",
+                        "text": "để kích hoạt tính năng chia sẻ và theo dõi hiệu suất chiến dịch"
+                    }
+                ],
+                "note": "Các bên thứ ba này có thể sử dụng cookie để thu thập thông tin về hoạt động trực tuyến của bạn theo thời gian và trên các trang web khác nhau."
+            },
+            "managing": {
+                "title": "Quản Lý Cookie Của Bạn",
+                "desc": "Bạn có quyền quyết định chấp nhận hoặc từ chối cookie. Bạn có thể quản lý tùy chọn cookie của mình theo các cách sau:",
+                "browserTitle": "Cài Đặt Trình Duyệt",
+                "browserDesc": "Hầu hết các trình duyệt web cho phép bạn kiểm soát cookie thông qua cài đặt. Bạn có thể đặt trình duyệt chặn hoặc cảnh báo bạn về cookie, hoặc xóa cookie đã được đặt. Xin lưu ý rằng việc tắt một số cookie có thể ảnh hưởng đến chức năng của trang web.",
+                "optOutTitle": "Liên Kết Từ Chối",
+                "optOutItems": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "Từ chối Google Analytics",
+                        "url": "https://tools.google.com/dlpage/gaoptout"
+                    },
+                    {
+                        "label": "Network Advertising Initiative",
+                        "text": "Từ chối NAI",
+                        "url": "https://optout.networkadvertising.org"
+                    }
+                ]
+            },
+            "retention": {
+                "title": "Thời Gian Lưu Giữ Cookie",
+                "desc": "Thời gian cookie tồn tại trên thiết bị của bạn phụ thuộc vào việc đó là cookie \"phiên\" hay cookie \"lâu dài\":",
+                "items": [
+                    {
+                        "label": "Cookie Phiên",
+                        "text": "Cookie tạm thời được xóa khi bạn đóng trình duyệt."
+                    },
+                    {
+                        "label": "Cookie Lâu Dài",
+                        "text": "Cookie tồn tại trên thiết bị của bạn trong một khoảng thời gian nhất định hoặc cho đến khi bạn xóa thủ công. Cookie lâu dài của chúng tôi được lưu giữ không quá 12 tháng."
+                    }
+                ]
+            },
+            "updates": {
+                "title": "Cập Nhật Chính Sách Này",
+                "p1": "Chúng tôi có thể cập nhật Chính Sách Cookie này theo thời gian để phản ánh những thay đổi trong công nghệ, pháp luật hoặc các hoạt động dữ liệu của chúng tôi. Khi thực hiện thay đổi, chúng tôi sẽ cập nhật ngày \"Cập nhật lần cuối\" ở đầu trang này. Chúng tôi khuyến khích bạn xem lại chính sách này định kỳ."
+            },
+            "contact": {
+                "title": "Liên Hệ",
+                "desc": "Nếu bạn có bất kỳ câu hỏi nào về việc sử dụng cookie của chúng tôi, vui lòng liên hệ:"
+            }
+        },
+        "disclaimer": {
+            "title": "Tuyên Bố Miễn Trừ",
+            "subtitle": "Thông Báo Quan Trọng",
+            "date": "1 tháng 3, 2026",
+            "general": {
+                "title": "Tuyên Bố Miễn Trừ Chung",
+                "p1": "Thông tin được cung cấp trên trang web này chỉ nhằm mục đích thông tin chung. Mặc dù chúng tôi cố gắng giữ nội dung chính xác và cập nhật, LUCKDATE không đưa ra bất kỳ tuyên bố hoặc bảo đảm nào, dù rõ ràng hay ngụ ý, về tính đầy đủ, chính xác, đáng tin cậy, phù hợp hoặc khả dụng của thông tin, sản phẩm hoặc dịch vụ trên trang web này.",
+                "p2": "Bất kỳ sự tin cậy nào bạn đặt vào những thông tin đó hoàn toàn thuộc rủi ro của bạn."
+            },
+            "health": {
+                "title": "Tuyên Bố Miễn Trừ Về Sức Khỏe và Y Tế",
+                "p1": "Sản phẩm của chúng tôi là thực phẩm bổ sung và không nhằm mục đích chẩn đoán, điều trị, chữa khỏi hoặc ngăn ngừa bất kỳ bệnh nào. Các tuyên bố về sản phẩm của chúng tôi chưa được đánh giá bởi Cục Quản lý Thực phẩm và Dược phẩm (FDA).",
+                "noticeTitle": "Lưu Ý Quan Trọng",
+                "noticeText": "Luôn tham khảo ý kiến bác sĩ hoặc nhà cung cấp dịch vụ chăm sóc sức khỏe có trình độ trước khi bắt đầu bất kỳ chế độ bổ sung mới nào, đặc biệt nếu bạn đang mang thai, cho con bú, đang dùng thuốc hoặc có tình trạng bệnh lý từ trước. Kết quả có thể khác nhau ở mỗi người."
+            },
+            "productInfo": {
+                "title": "Thông Tin Sản Phẩm",
+                "desc": "Chúng tôi nỗ lực hết sức để hiển thị màu sắc, hình ảnh và mô tả sản phẩm chính xác nhất có thể. Tuy nhiên, chúng tôi không thể đảm bảo rằng màn hình thiết bị của bạn phản ánh chính xác màu sắc hoặc hình dáng thực tế của sản phẩm.",
+                "items": [
+                    "Bao bì sản phẩm có thể khác với hình ảnh trên trang web",
+                    "Thông tin dinh dưỡng và danh sách thành phần có thể được cập nhật mà không cần thông báo trước",
+                    "Luôn tham khảo nhãn sản phẩm để biết thông tin mới nhất về thành phần và liều lượng"
+                ]
+            },
+            "testimonials": {
+                "title": "Lời Chứng Thực và Đánh Giá",
+                "p1": "Các lời chứng thực và đánh giá hiển thị trên trang web phản ánh trải nghiệm cá nhân và ý kiến của từng khách hàng. Những kết quả này không phải là điển hình và trải nghiệm của bạn có thể khác. Các lời chứng thực không nhằm mục đích tuyên bố rằng sản phẩm của chúng tôi có thể được sử dụng để chẩn đoán, điều trị, chữa khỏi hoặc ngăn ngừa bất kỳ bệnh nào."
+            },
+            "externalLinks": {
+                "title": "Liên Kết Bên Ngoài",
+                "p1": "Trang web của chúng tôi có thể chứa các liên kết đến trang web của bên thứ ba không thuộc sở hữu hoặc kiểm soát của LUCKDATE. Chúng tôi không kiểm soát và không chịu trách nhiệm về nội dung, chính sách bảo mật hoặc hoạt động của bất kỳ trang web bên thứ ba nào.",
+                "p2": "Việc bao gồm bất kỳ liên kết nào không ngụ ý sự chứng thực, chấp thuận hoặc khuyến nghị của LUCKDATE. Bạn truy cập các trang web bên thứ ba với rủi ro của riêng bạn."
+            },
+            "limitation": {
+                "title": "Giới Hạn Trách Nhiệm",
+                "desc": "Trong mọi trường hợp, LUCKDATE, giám đốc, nhân viên, đối tác, đại lý, nhà cung cấp hoặc chi nhánh của mình sẽ không chịu trách nhiệm về bất kỳ thiệt hại gián tiếp, ngẫu nhiên, đặc biệt, hệ quả hoặc mang tính trừng phạt nào, bao gồm nhưng không giới hạn, mất lợi nhuận, dữ liệu, quyền sử dụng, uy tín hoặc các tổn thất vô hình khác, phát sinh từ:",
+                "items": [
+                    "Việc bạn truy cập hoặc sử dụng (hoặc không thể truy cập hoặc sử dụng) dịch vụ của chúng tôi",
+                    "Bất kỳ hành vi hoặc nội dung nào của bên thứ ba trên dịch vụ của chúng tôi",
+                    "Bất kỳ nội dung nào thu được từ dịch vụ của chúng tôi",
+                    "Truy cập trái phép, sử dụng hoặc thay đổi dữ liệu truyền tải hoặc nội dung của bạn"
+                ]
+            },
+            "accuracy": {
+                "title": "Độ Chính Xác Của Thông Tin",
+                "p1": "Mặc dù chúng tôi cố gắng giữ thông tin trên trang web luôn cập nhật và chính xác, chúng tôi không đảm bảo về tính chính xác, đầy đủ, hợp lệ, đáng tin cậy hoặc toàn vẹn của bất kỳ thông tin nào. Chúng tôi có quyền sửa chữa bất kỳ lỗi hoặc thiếu sót nào và thay đổi hoặc cập nhật thông tin bất cứ lúc nào mà không cần thông báo trước."
+            },
+            "contact": {
+                "title": "Liên Hệ",
+                "desc": "Nếu bạn có bất kỳ câu hỏi nào về Tuyên Bố Miễn Trừ này, vui lòng liên hệ với chúng tôi:"
+            }
+        }
+    },
+    "orders": {
+        "title": "Đơn hàng",
+        "count": "{{count}} đơn hàng",
+        "loading": "Đang tải...",
+        "empty": {
+            "title": "Chưa có đơn hàng",
+            "description": "Lịch sử đơn hàng sẽ hiển thị tại đây"
+        },
+        "orderNumber": "Mã đơn hàng",
+        "date": "Ngày",
+        "total": "Tổng cộng",
+        "qty": "SL: {{qty}}",
+        "moreItems": "sản phẩm khác",
+        "continuePay": "Thanh toán ngay",
+        "cancelOrder": "Hủy đơn hàng",
+        "cancelling": "Đang hủy...",
+        "close": "Đóng",
+        "orderDetails": "Chi tiết đơn hàng",
+        "status": "Trạng thái",
+        "timeline": "Dòng thời gian",
+        "created": "Đã tạo",
+        "paid": "Đã thanh toán",
+        "shipped": "Đã giao",
+        "received": "Đã nhận",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã hủy",
+        "shippingAddress": "Địa chỉ giao hàng",
+        "items": "Sản phẩm",
+        "subtotal": "Tạm tính",
+        "shipping": "Phí vận chuyển",
+        "paymentInfo": "Thông tin thanh toán",
+        "paymentMethod": "Phương thức thanh toán",
+        "amount": "Số tiền",
+        "transactionId": "Mã giao dịch",
+        "paymentTime": "Thời gian thanh toán",
+        "logisticsInfo": "Thông tin logistics",
+        "logisticsStatus": "Trạng thái vận chuyển",
+        "trackingNumber": "Mã theo dõi",
+        "outboundOrderNo": "Mã đơn xuất khẩu",
+        "trackingTimeline": "Dòng thời gian theo dõi",
+        "tab": {
+            "all": "Tất cả",
+            "pendingPayment": "Chờ thanh toán",
+            "pendingDelivery": "Chờ giao hàng",
+            "pendingReceive": "Chờ nhận hàng",
+            "confirmReceive": "Xác nhận nhận",
+            "completed": "Hoàn thành",
+            "cancelled": "Đã hủy",
+            "payConfirming": "Xác nhận thanh toán"
+        },
+        "confirm": {
+            "title": "Hủy đơn hàng?",
+            "message": "Bạn có chắc muốn hủy đơn hàng này?",
+            "orderLabel": "Mã đơn hàng",
+            "amountLabel": "Số tiền",
+            "couponPolicyTitle": "Chính sách phiếu giảm giá",
+            "couponPolicy1": "Phiếu giảm giá sẽ được trả lại nếu chưa hết hạn",
+            "couponPolicy2": "Phiếu hợp lệ sẽ khả dụng ngay lập tức",
+            "couponPolicy3": "Phiếu hết hạn không thể sử dụng lại",
+            "keepOrder": "Giữ đơn hàng",
+            "yesCancel": "Có, hủy bỏ"
+        },
+        "cancel": {
+            "successTitle": "Đã hủy đơn hàng",
+            "successMessage": "Đơn hàng của bạn đã được hủy thành công.",
+            "couponExpired": "Lưu ý: Phiếu giảm giá đã trả lại đã hết hạn."
+        },
+        "error": {
+            "loadFailed": "Không tải được danh sách đơn hàng",
+            "network": "Lỗi mạng, vui lòng thử lại",
+            "payFailed": "Thanh toán thất bại",
+            "payRetry": "Vui lòng thử lại",
+            "cancelFailed": "Không thể hủy đơn hàng",
+            "cancelRetry": "Hủy thất bại, vui lòng thử lại"
+        },
+        "countdownSuffix": " còn hủy thanh toán",
+        "viewOrder": "Xem đơn hàng {{orderSn}}",
+        "productAltSuffix": "- sản phẩm LUCKDATE",
+        "processing": "Đang xử lý...",
+        "previousPage": "Trang trước",
+        "nextPage": "Trang sau",
+        "unpaidFloat": {
+            "ariaLabel": "Bạn có {{count}} đơn hàng chưa thanh toán",
+            "single": "Đơn hàng chưa TT",
+            "multiple": "{{count}} đơn hàng chưa TT",
+            "dismiss": "Đóng",
+            "loadFailed": "Không tải được chi tiết đơn hàng",
+            "networkError": "Lỗi mạng"
+        },
+        "unpaidOrderModal": {
+            "title": "Bạn có đơn hàng chưa thanh toán",
+            "subtitle": "Bạn có muốn thanh toán ngay không?",
+            "viewDetails": "Xem chi tiết",
+            "goPay": "Thanh toán ngay",
+            "cancelOrder": "Hủy đơn hàng",
+            "noUnpaid": "Không tìm thấy đơn hàng chưa thanh toán",
+            "loadFailed": "Không thể tải chi tiết đơn hàng",
+            "networkError": "Lỗi mạng"
+        },
+        "expired": "Đã hết hạn",
+        "pagination": {
+            "previous": "Trước",
+            "next": "Sau"
+        }
+    },
+    "coupon": {
+        "reason": {
+            "expired": "Đã hết hạn",
+            "notYetValid": "Chưa đến hiệu lực",
+            "minSpend": "Tối thiểu ${{min}} mới sử dụng được",
+            "productScope": "Chỉ áp dụng cho sản phẩm chỉ định",
+            "used": "Đã sử dụng",
+            "invalid": "Không hợp lệ"
+        }
+    },
+    "auth": {
+        "loginSuccess": "Đăng nhập thành công!",
+        "emailRegistered": "Email này đã được đăng ký. Vui lòng đăng nhập để nhận mã giảm giá."
+    }
+}

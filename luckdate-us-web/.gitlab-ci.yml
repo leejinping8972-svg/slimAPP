@@ -1,0 +1,94 @@
+stages:
+  - build
+  - deploy
+  #- build-to-docker
+
+#构建测试分支
+build-testing:
+  stage: build
+  tags:
+    - build-vue
+
+  only:
+    - testing
+
+  image: node:20.19.5-alpine
+  variables:
+    CONFIG_ENV: $TESTING_CONFIG_ENV
+
+  script:
+    - sh /shell/luckdate/build-luckdate-whole-product-web-file.sh
+
+  environment:
+    name: testing
+
+
+#构建测试分支
+deploy-testing:
+  stage: deploy
+  tags:
+    - build-vue
+
+  only:
+    - testing
+
+  dependencies:
+    - build-testing
+  variables:
+    DEPLOY_MODE: $TESTING_DEPLOY_MODE_FRONT
+    TARGET_HOSTS: $TESTING_TARGET_HOSTS
+    SSH_USER: $TESTING_SSH_USER
+    SSH_PORT: $TESTING_SSH_PORT
+    COMMAND: $TESTING_COMMAND
+
+  script:
+    - bash /shell/luckdate/deploy-common-vue-file.sh
+
+  environment:
+    name: testing
+
+### release ###
+#构建release分支
+build-release:
+  stage: build
+  tags:
+    - build-vue
+
+  only:
+    - release
+
+  image: node:20.19.5-alpine
+  variables:
+    CONFIG_ENV: $RELEASE_CONFIG_ENV
+
+  script:
+    - sh /shell/luckdate/build-luckdate-whole-product-web-file.sh
+
+  environment:
+    name: release
+
+
+#构建release分支
+deploy-release:
+  stage: deploy
+  tags:
+    - build-vue
+
+  only:
+    - release
+
+  dependencies:
+    - build-release
+  variables:
+    DEPLOY_MODE: $RELEASE_DEPLOY_MODE_FRONT
+    TARGET_HOSTS: $RELEASE_TARGET_HOSTS
+    SSH_USER: $RELEASE_SSH_USER
+    SSH_PORT: $RELEASE_SSH_PORT
+    COMMAND: $RELEASE_COMMAND
+
+  script:
+    - bash /shell/luckdate/deploy-common-vue-file.sh
+
+  environment:
+    name: release
+

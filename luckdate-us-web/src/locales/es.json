@@ -1,0 +1,765 @@
+{
+    "nav": {
+        "home": "Inicio",
+        "products": "Productos",
+        "categories": "Categorías",
+        "about": "Sobre nosotros",
+        "reviews": "Reseñas",
+        "faq": "PF",
+        "insight": "Insight",
+        "orderInquiry": "Consulta de pedido",
+        "shopNow": "Comprar ahora"
+    },
+    "hero": {
+        "badge": "Suplementos Premium",
+        "title": "Desbloquea tu\nvitalidad diaria",
+        "subtitle": "Suplementos premium diseñados para impulsar tu estilo de vida activo. Experimenta la diferencia de la ciencia respaldada por la naturaleza.",
+        "explore": "Explorar productos",
+        "ourStory": "Nuestra historia",
+        "stats": {
+            "products": "Productos premium",
+            "customers": "Clientes felices",
+            "natural": "Ingredientes naturales"
+        },
+        "badges": {
+            "tested": "Probado clínicamente",
+            "rating": "Calificación 4.9"
+        },
+        "slides": {
+            "badge1": "Despierta tu energía",
+            "title1": "Dirigido por un Laureado Nobel, Redefiniendo el Envejecimiento Saludable y la Gestión de Peso",
+            "subtitle1": "En profunda colaboración con el ganador del Premio Nobel de Química de 2004, el Prof. Aaron J. Ciechanover, ofrecemos soluciones de salud precisas, eficientes y duraderas con ciencia a nivel celular.",
+            "title1Part1": "Dirigido por un ",
+            "title1Highlight": "Laureado Nobel",
+            "title1Part2": "Redefiniendo el Envejecimiento Saludable y la Gestión de Peso",
+            "scientistName": "Aaron Ciechanover",
+            "scientistTitle1": "Ganador del Premio Nobel de Química 2004,",
+            "scientistTitle2": "Científico Asesor Jefe de Luckdate.",
+            "badge2": "Bienestar personalizado",
+            "title2": "Encuentra tu opción perfecta",
+            "subtitle2": "¿No sabes por dónde empezar? Explora nuestras categorías seleccionadas y encuentra el apoyo nutricional exacto que tu cuerpo necesita ahora.",
+            "badge3": "100% Orgánico",
+            "title3": "Suplementos naturales",
+            "subtitle3": "Experimenta el poder puro de la naturaleza. Utilizamos estrictamente ingredientes no transgénicos, sin gluten y obtenidos de manera ética para максимальные beneficios para la salud."
+        },
+        "exploreCollection": "Explorar colección",
+        "ourCategories": "Nuestras categorías"
+    },
+    "whyChooseUs": {
+        "badge": "Por qué elegirnos",
+        "title": "La diferencia LUCKDATE",
+        "features": {
+            "cleanIngredients": "Ingredientes limpios",
+            "cleanIngredientsDesc": "Solo usamos los ingredientes más puros de origen natural. Sin colores, sabores o conservantes artificiales.",
+            "scienceBacked": "Respaldado por ciencia",
+            "scienceBackedDesc": "Cada fórmula se desarrolla con las últimas investigaciones y estudios clínicos para máxima eficacia.",
+            "thirdParty": "Probado por terceros",
+            "thirdPartyDesc": "Laboratorios independientes verifican la pureza y potencia de cada lote que producimos.",
+            "subscribe": "Suscríbete y ahorra",
+            "subscribeDesc": "Obtén 20% de descuento en cada pedido con nuestro plan de suscripción flexible. Cancela en cualquier momento."
+        }
+    },
+    "brandLogos": {
+        "trustedBy": "Confiado por líderes de la industria",
+        "certifications": {
+            "fda": "Registrado por FDA",
+            "gmp": "Certificado GMP",
+            "natural": "100% Natural",
+            "tested": "Probado por terceros",
+            "vegan": "Apto para veganos",
+            "premium": "Calidad premium"
+        }
+    },
+    "latestBlog": {
+        "badge": "Consejos de salud",
+        "title": "Lo último de nuestro Insight",
+        "viewAll": "Ver todos los artículos"
+    },
+    "products": {
+        "badge": "Nuestros Productos",
+        "title": "Creado para ti",
+        "description": "Descubre nuestra gama completa de suplementos premium, cada uno formulado con ingredientes científicamente probados para resultados óptimos.",
+        "loading": "Cargando suplementos premium...",
+        "quickView": "Ver detalles",
+        "addCart": "Añadir al carrito",
+        "allProducts": "Todos los Productos",
+        "noProducts": "No se encontraron productos",
+        "tryDifferentFilter": "Intenta seleccionar un filtro diferente",
+        "pagination": {
+            "previous": "Anterior",
+            "next": "Siguiente",
+            "showingPage": "Página {{currentPage}} de {{totalPages}} ({{total}} productos en total)"
+        }
+    },
+    "categories": {
+        "badge": "Compra por necesidad",
+        "title": "Encuentra tu combinación perfecta",
+        "energy": "Energía",
+        "energyDesc": "Potencia tu vitalidad",
+        "immunity": "Inmunidad",
+        "immunityDesc": "Fortalece tus defensas",
+        "beauty": "Belleza",
+        "beautyDesc": "Brilla desde dentro"
+    },
+    "orderInquiry": {
+        "back": "Volver",
+        "title": "Consulta de pedido",
+        "description": "Ingresa el nombre del destinatario y los últimos 4 dígitos del número de teléfono para buscar tus pedidos.",
+        "namePlaceholder": "Nombre del destinatario",
+        "phonePlaceholder": "Teléfono (últimos 4 dígitos)",
+        "search": "Buscar",
+        "foundOrders_one": "{{count}} pedido encontrado",
+        "foundOrders_other": "{{count}} pedidos encontrados",
+        "noOrders": "No se encontraron pedidos",
+        "noOrdersDescription": "No pudimos encontrar pedidos que coincidan con la información que proporcionaste. Por favor, verifica el nombre del destinatario y el número de teléfono.",
+        "orderNumberLabel": "Pedido",
+        "trackingNumberLabel": "Número de seguimiento",
+        "currentStatus": "Estado actual",
+        "collapse": "Contraer",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "status": {
+            "pending": "Pendiente",
+            "processing": "En proceso",
+            "shipped": "Envío en curso",
+            "delivered": "Entregado",
+            "cancelled": "Cancelado"
+        }
+    },
+    "blog": {
+        "title": "Journal & Guides",
+        "description": "Explora los últimos conocimientos sobre longevidad, bienestar y la ciencia detrás de LUCKDATE.",
+        "tryRefreshing": "Intenta actualizar",
+        "readArticle": "Leer Artículo",
+        "pagination": {
+            "previous": "Anterior",
+            "next": "Siguiente",
+            "showingPage": "Página {{currentPage}} de {{totalPages}} ({{total}} artículos en total)"
+        },
+        "article": {
+            "backToJournal": "Volver al Journal",
+            "shareArticle": "Compartir este artículo",
+            "notFound": "Artículo No Encontrado",
+            "notFoundDesc": "El artículo que buscas puede haber sido movido o actualmente no está disponible."
+        }
+    },
+    "product": {
+        "backToProducts": "Volver a los productos",
+        "notFound": "Producto No Encontrado",
+        "notFoundDesc": "El producto que buscas puede haber sido movido o actualmente no está disponible.",
+        "backToHome": "Volver a la página de inicio"
+    },
+    "success": {
+        "title": "¡Pago exitoso!",
+        "description": "Gracias por tu compra. Tu pedido ha sido confirmado y será enviado pronto.",
+        "orderId": "ID de pedido: #{{orderId}}",
+        "continueShopping": "Continuar comprando"
+    },
+    "cart": {
+        "title": "Tu carrito ({{count}})",
+        "empty": "Tu carrito está vacío",
+        "emptyDesc": "Agrega algunos productos para comenzar",
+        "startShopping": "Comenzar a comprar",
+        "subtotal": "Subtotal",
+        "shipping": "Envío",
+        "shippingCalculated": "Calculado al pagar",
+        "total": "Total",
+        "checkout": "Proceder al pago",
+        "processing": "Procesando...",
+        "continueShopping": "Continuar comprando"
+    },
+    "about": {
+        "badge": "Sobre nosotros",
+        "title": "Donde la naturaleza se encuentra con la ciencia",
+        "science": "ciencia",
+        "desc1": "En LUCKDATE, combinamos la sabiduría botánica con la investigación de vanguardia para crear suplementos que realmente funcionan. Sin trucos: solo formulaciones puras y potentes diseñadas para apoyar tu camino hacia el bienestar.",
+        "desc2": "Nuestro equipo de nutricionistas, científicos y expertos en salud trabaja incansablemente para obtener los mejores ingredientes de todo el mundo. Cada producto se somete a pruebas rigurosas para garantizar la seguridad, eficacia y calidad.",
+        "features": [
+            "Ingredientes clínicamente probados",
+            "Pureza probada por terceros",
+            "Prácticas de abastecimiento sostenibles",
+            "Sin aditivos artificiales"
+        ],
+        "experience": "Años de excelencia"
+    },
+    "cta": {
+        "title": "Obtén {{discount}}% de descuento en tu ",
+        "titleHighlight": "Primer pedido",
+        "subtitle": "Comienza tu viaje de bienestar hoy. Suscríbete a nuestro boletín y recibe un descuento exclusivo en tu primera compra.",
+        "button": "Comprar ahora",
+        "badges": {
+            "freeShipping": "Envío gratis",
+            "guarantee": "Garantía de 30 días",
+            "cancel": "Cancelar en cualquier momento"
+        },
+        "discountBadge": {
+            "off": "DESC"
+        }
+    },
+    "footer": {
+        "desc": "Suplementos premium diseñados para impulsar tu estilo de vida activo. Experimenta la diferencia de la ciencia respaldada por la naturaleza.",
+        "newsletter": {
+            "title": "Suscríbete a nuestro boletín y recibe tu cupón",
+            "placeholder": "Introduce tu correo",
+            "thanks": "¡Gracias por suscribirte!"
+        },
+        "sections": {
+            "products": "Productos",
+            "company": "Compañía",
+            "support": "Soporte",
+            "legal": "Legal"
+        },
+        "productsList": {
+            "nmn": "Suplementos NMN",
+            "nad": "Complejo NAD+",
+            "probiotics": "Probióticos",
+            "shilajit": "Gomitas de Shilajit"
+        },
+        "companyList": {
+            "ourStory": "Nuestra historia",
+            "careers": "Empleo",
+            "press": "Prensa"
+        },
+        "supportList": {
+            "contactUs": "Contáctanos",
+            "shipping": "Envío",
+            "returns": "Devoluciones",
+            "trackOrder": "Rastrear pedido"
+        },
+        "legalList": {
+            "privacyPolicy": "Política de privacidad",
+            "termsOfService": "Términos de servicio",
+            "cookiePolicy": "Política de cookies",
+            "disclaimer": "Aviso legal"
+        },
+        "copyright": "Todos los derechos reservados.",
+        "madeWith": "Hecho con para tu bienestar",
+        "fda": "*Estas declaraciones no han sido evaluadas por la Administración de Alimentos y Medicamentos. Estos productos no están destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad."
+    },
+    "faq": {
+        "badge": "¿Tienes preguntas?",
+        "title": "Preguntas Frecuentes",
+        "science": "Preguntas",
+        "items": [
+            {
+                "question": "¿Qué hace que los suplementos de LUCKDATE sean diferentes de otros?",
+                "answer": "Los suplementos de LUCKDATE están formulados con ingredientes clínicamente probados en dosis efectivas. Todos nuestros productos se someten a rigurosas pruebas de terceros para garantizar su pureza y potencia. Utilizamos solo ingredientes naturales y limpios, sin aditivos artificiales, rellenos ni conservantes."
+            },
+            {
+                "question": "¿Cuánto tiempo se tarda en ver resultados?",
+                "answer": "Los resultados varían según el producto y la persona. La mayoría de los clientes informan mejoras notables en un plazo de 2 a 4 semanas de uso constante. Para obtener resultados óptimos, recomendamos tomar nuestros suplementos diariamente según las indicaciones durante al menos 30 días."
+            },
+            {
+                "question": "¿Están sus suplementos aprobados por la FDA?",
+                "answer": "Los suplementos dietéticos no están sujetos a la aprobación de la FDA. Sin embargo, nuestra instalación de fabricación está registrada en la FDA y sigue estrictas pautas de GMP (Buenas Prácticas de Manufactura). Todos los productos son probados por terceros para garantizar su calidad."
+            },
+            {
+                "question": "¿Puedo tomar varios suplementos de LUCKDATE juntos?",
+                "answer": "Sí, la mayoría de nuestros suplementos están diseñados para funcionar de manera sinérgica. Sin embargo, recomendamos consultar con su proveedor de atención médica antes de comenzar cualquier nuevo régimen de suplementos, especialmente si está tomando medicamentos o tiene condiciones de salud existentes."
+            },
+            {
+                "question": "¿Cuál es su política de devoluciones?",
+                "answer": "Ofrecemos una garantía de satisfacción de 30 días. Si no está completamente satisfecho con su compra, comuníquese con nuestro equipo de servicio al cliente para obtener un reembolso completo. Respaldamos la calidad de nuestros productos."
+            }
+        ],
+        "stillQuestions": "¿Aún tienes preguntas?",
+        "contactSupport": "Contacta a nuestro equipo de soporte"
+    },
+    "contact": {
+        "title": "Contáctanos",
+        "subtitle": "Nuestro equipo de soporte está aquí para ayudarte con pedidos, preguntas sobre productos, devoluciones y más.",
+        "emailTitle": "Correo oficial",
+        "emailDesc": "Para cualquier consulta, contacta a nuestro equipo de atención al cliente:",
+        "responseTime": "Normalmente respondemos en 1-2 días hábiles.",
+        "helpWith": "Podemos ayudarte con:",
+        "topics": [
+            "Estado del pedido y envío",
+            "Devoluciones y reembolsos",
+            "Información de productos",
+            "Cuenta y suscripciones"
+        ],
+        "back": "Volver"
+    },
+    "testimonials": {
+        "badge": "Testimonios",
+        "title": "Lo que dicen nuestros clientes",
+        "science": "clientes",
+        "loadMore": "Ver Más Reseñas",
+        "items": [
+            {
+                "name": "Sarah Mitchell",
+                "role": "Instructora de Fitness",
+                "text": "El empaque se ve muy premium, y al recibirlo, el producto me pareció increíblemente elegante. Lo he estado tomando con regularidad y siento que mi piel está más equilibrada y el maquillaje se aplica mucho mejor."
+            },
+            {
+                "name": "Michael Chen",
+                "role": "Ingeniero de Software",
+                "text": "Es un producto al que sigo volviendo. Después de usarlo, puedo ver claramente que el estado de mi piel y mi cutis han mejorado. ¡Lo recomiendo mucho!"
+            },
+            {
+                "name": "Patricia Williams",
+                "role": "Maestra Jubilada",
+                "text": "Hoy en día, mis criterios para suplementos de belleza oral son simples: ingredientes confiables, una fórmula bien pensada y algo fácil de mantener. LUCKDATE cumple con todo eso, así que me he convertido en un cliente fiel."
+            },
+            {
+                "name": "Emily Rodriguez",
+                "role": "Instructora de Yoga",
+                "text": "Después de usarlo, me siento menos agotado físicamente que antes y más relajado y equilibrado en general. Tomar una porción al día también es conveniente; se siente como darle al cuerpo protección antioxidante diaria y nutrición interna."
+            },
+            {
+                "name": "David Thompson",
+                "role": "Ejecutivo de Negocios",
+                "text": "Como alguien que a menudo trabaja hasta tarde, mi prioridad es mantener la salud y la juventud. Desde que empecé a tomar LUCKDATE, noto que mi energía es más constante durante el día y me agoto menos por las noches largas y el estrés."
+            },
+            {
+                "name": "Linda Park",
+                "role": "Nutricionista",
+                "text": "Al principio no tenía grandes expectativas con este tipo de suplemento, pero LUCKDATE realmente me sorprendió. Al usarlo de forma constante, siento que mi condición física ha mejorado."
+            },
+            {
+                "name": "Jennifer Adams",
+                "role": "Entusiasta del cuidado de la piel",
+                "text": "Originalmente lo compré solo para probarlo, pero no esperaba que los resultados antienvejecimiento fueran aún mejores de lo que anticipaba. Desde que lo tomo, mi piel se ha vuelto gradualmente más firme y radiante, y mi cutis sigue mejorando. Definitivamente lo volveré a comprar."
+            },
+            {
+                "name": "Robert Lee",
+                "role": "Defensor del bienestar",
+                "text": "Siempre me ha interesado el NAD+. Después de comparar muchas marcas, finalmente elegí LUCKDATE. Lo he estado tomando durante más de un mes y los resultados son bastante notables: mi piel se ve más firme y radiante."
+            }
+        ]
+    },
+    "legal": {
+        "back": "Volver",
+        "lastUpdated": "Última actualización",
+        "onThisPage": "En esta página",
+        "contactTeam": "Equipo de {{team}} de LUCKDATE",
+        "email": "Correo electrónico",
+        "address": "Dirección",
+        "addressValue": "Los Ángeles, CA, Estados Unidos",
+        "privacy": {
+            "title": "Política de Privacidad",
+            "subtitle": "Su Privacidad Importa",
+            "date": "1 de marzo de 2026",
+            "intro": {
+                "title": "Introducción",
+                "p1": "En LUCKDATE (\"nosotros\", \"nos\" o \"nuestro\"), nos comprometemos a proteger la privacidad y seguridad de su información personal. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos sus datos cuando visita nuestro sitio web, compra nuestros productos o interactúa con nuestros servicios.",
+                "p2": "Al acceder o utilizar nuestros servicios, usted reconoce que ha leído, comprendido y acepta estar sujeto a esta Política de Privacidad. Si no está de acuerdo, por favor deje de utilizar nuestros servicios de inmediato."
+            },
+            "collect": {
+                "title": "Información que Recopilamos",
+                "desc": "Podemos recopilar los siguientes tipos de información:",
+                "personalTitle": "Información Personal",
+                "personal": [
+                    "Nombre completo y datos de contacto (dirección de correo electrónico, número de teléfono, dirección postal)",
+                    "Información de pago y facturación (números de tarjeta de crédito, dirección de facturación)",
+                    "Credenciales de cuenta (nombre de usuario, contraseña cifrada)",
+                    "Historial de pedidos y preferencias de compra"
+                ],
+                "autoTitle": "Información Recopilada Automáticamente",
+                "auto": [
+                    "Tipo de dispositivo, tipo de navegador y sistema operativo",
+                    "Dirección IP y ubicación geográfica aproximada",
+                    "Páginas visitadas, tiempo de permanencia y patrones de navegación",
+                    "URLs de referencia y consultas de búsqueda que le llevaron a nuestro sitio"
+                ]
+            },
+            "howWeUse": {
+                "title": "Cómo Usamos Su Información",
+                "desc": "Usamos la información que recopilamos para:",
+                "items": [
+                    "Procesar y cumplir sus pedidos, incluyendo envío y procesamiento de pagos",
+                    "Proporcionar atención al cliente y responder a sus consultas",
+                    "Personalizar su experiencia de compra y recomendaciones de productos",
+                    "Enviar correos electrónicos transaccionales (confirmaciones de pedido, actualizaciones de envío)",
+                    "Enviar comunicaciones promocionales, con su consentimiento, sobre nuevos productos y ofertas",
+                    "Mejorar nuestro sitio web, productos y servicios a través de análisis",
+                    "Detectar y prevenir fraudes, accesos no autorizados y otras actividades ilegales"
+                ]
+            },
+            "sharing": {
+                "title": "Intercambio y Divulgación de Información",
+                "desc": "No vendemos su información personal a terceros. Podemos compartir sus datos con:",
+                "items": [
+                    {
+                        "label": "Proveedores de Servicios",
+                        "text": "Procesadores de pagos, transportistas y proveedores de alojamiento en la nube que nos ayudan a operar nuestro negocio"
+                    },
+                    {
+                        "label": "Socios de Análisis",
+                        "text": "Herramientas como Google Analytics que nos ayudan a comprender los patrones de uso del sitio web"
+                    },
+                    {
+                        "label": "Obligaciones Legales",
+                        "text": "Cuando lo requiera la ley, regulación o proceso legal"
+                    },
+                    {
+                        "label": "Transferencias Comerciales",
+                        "text": "En relación con una fusión, adquisición o venta de activos"
+                    }
+                ]
+            },
+            "security": {
+                "title": "Seguridad de Datos",
+                "p1": "Implementamos medidas de seguridad estándar de la industria para proteger su información personal, incluyendo cifrado SSL/TLS para datos en tránsito, almacenamiento cifrado para datos sensibles y auditorías de seguridad regulares. Sin embargo, ningún método de transmisión por Internet es 100% seguro, y no podemos garantizar seguridad absoluta."
+            },
+            "rights": {
+                "title": "Sus Derechos y Opciones",
+                "desc": "Dependiendo de su jurisdicción, usted puede tener derecho a:",
+                "items": [
+                    "Acceder a los datos personales que tenemos sobre usted",
+                    "Solicitar la corrección o eliminación de sus datos personales",
+                    "Darse de baja de las comunicaciones de marketing en cualquier momento",
+                    "Solicitar la portabilidad de datos en un formato legible por máquina",
+                    "Retirar el consentimiento cuando el procesamiento se base en el consentimiento"
+                ],
+                "contact": "Para ejercer cualquiera de estos derechos, contáctenos en"
+            },
+            "children": {
+                "title": "Privacidad de los Niños",
+                "p1": "Nuestros servicios no están dirigidos a personas menores de 18 años. No recopilamos intencionalmente información personal de niños. Si nos enteramos de que hemos recopilado inadvertidamente datos de un niño, tomaremos medidas para eliminar esa información de inmediato."
+            },
+            "changes": {
+                "title": "Cambios en Esta Política",
+                "p1": "Podemos actualizar esta Política de Privacidad de vez en cuando. Cuando lo hagamos, revisaremos la fecha de \"Última actualización\" en la parte superior de esta página. Le recomendamos que revise esta política periódicamente para mantenerse informado sobre cómo protegemos su información."
+            },
+            "contact": {
+                "title": "Contáctenos",
+                "desc": "Si tiene alguna pregunta o inquietud sobre esta Política de Privacidad, por favor contáctenos:"
+            }
+        },
+        "terms": {
+            "title": "Términos de Servicio",
+            "subtitle": "Acuerdo Legal",
+            "date": "1 de marzo de 2026",
+            "acceptance": {
+                "title": "Aceptación de los Términos",
+                "p1": "Bienvenido a LUCKDATE. Estos Términos de Servicio (\"Términos\") rigen su acceso y uso de nuestro sitio web, productos y servicios. Al acceder o utilizar cualquier parte de nuestros servicios, usted acepta estar sujeto a estos Términos.",
+                "p2": "Si no está de acuerdo con todos estos Términos, no podrá acceder ni utilizar nuestros servicios. Nos reservamos el derecho de actualizar o modificar estos Términos en cualquier momento sin previo aviso."
+            },
+            "eligibility": {
+                "title": "Elegibilidad",
+                "p1": "Debe tener al menos 18 años y ser capaz de celebrar un acuerdo legal vinculante para utilizar nuestros servicios. Al utilizar nuestros servicios, usted declara y garantiza que cumple con estos requisitos de elegibilidad."
+            },
+            "accounts": {
+                "title": "Cuentas de Usuario",
+                "desc": "Cuando crea una cuenta con nosotros, usted es responsable de mantener la confidencialidad de sus credenciales de cuenta y de todas las actividades que ocurran bajo su cuenta.",
+                "items": [
+                    "Proporcionar información precisa, actual y completa durante el registro",
+                    "Actualizar oportunamente la información de su cuenta para mantenerla precisa",
+                    "Notificarnos inmediatamente sobre cualquier uso no autorizado de su cuenta",
+                    "No compartir su contraseña o acceso a su cuenta con terceros"
+                ]
+            },
+            "orders": {
+                "title": "Pedidos y Pagos",
+                "desc": "Todos los pedidos realizados a través de nuestro sitio web están sujetos a disponibilidad del producto y aceptación. Nos reservamos el derecho de rechazar o cancelar cualquier pedido por cualquier motivo.",
+                "pricingTitle": "Precios",
+                "pricingDesc": "Todos los precios están en USD y están sujetos a cambios sin previo aviso. Los precios no incluyen impuestos aplicables ni gastos de envío, que se calcularán al finalizar la compra.",
+                "paymentTitle": "Pago",
+                "paymentDesc": "Aceptamos las principales tarjetas de crédito, tarjetas de débito y otros métodos de pago que se muestran durante el proceso de pago. Todos los pagos se procesan de forma segura a través de nuestro procesador de pagos externo."
+            },
+            "shipping": {
+                "title": "Envío y Devoluciones",
+                "desc": "Nuestro objetivo es enviar todos los pedidos dentro de 1 a 3 días hábiles. Los tiempos de entrega varían según su ubicación y el método de envío seleccionado. Los envíos internacionales pueden estar sujetos a derechos de aduana e impuestos de importación.",
+                "returnTitle": "Política de Devoluciones",
+                "returnItems": [
+                    "No se puede cancelar ni devolver; debe contactar al servicio de atención al cliente para obtener asistencia.",
+                    "Los productos pueden devolverse dentro de los 30 días posteriores a la recepción para un reembolso completo",
+                    "Los artículos deben estar sin usar, sin abrir y en su embalaje original",
+                    "Los costos de envío de devolución son responsabilidad del cliente, a menos que el producto sea defectuoso",
+                    "Los reembolsos se procesarán dentro de 5 a 10 días hábiles después de recibir el artículo devuelto"
+                ]
+            },
+            "ip": {
+                "title": "Propiedad Intelectual",
+                "p1": "Todo el contenido de nuestro sitio web — incluyendo texto, gráficos, logotipos, imágenes, descripciones de productos y software — es propiedad exclusiva de LUCKDATE y está protegido por derechos de autor, marcas registradas y otras leyes de propiedad intelectual.",
+                "p2": "No puede reproducir, distribuir, modificar, crear obras derivadas, exhibir públicamente ni explotar de otra manera ninguno de nuestros contenidos sin el consentimiento previo por escrito de LUCKDATE."
+            },
+            "prohibited": {
+                "title": "Conducta Prohibida",
+                "desc": "Al utilizar nuestros servicios, usted acepta no:",
+                "items": [
+                    "Violar cualquier ley o regulación aplicable",
+                    "Hacerse pasar por cualquier persona o entidad, o falsificar su afiliación",
+                    "Enviar pedidos o reseñas falsas, engañosas o fraudulentas",
+                    "Interferir o interrumpir el funcionamiento de nuestro sitio web o servidores",
+                    "Intentar obtener acceso no autorizado a cualquier parte de nuestros servicios",
+                    "Utilizar herramientas automatizadas para extraer, rastrear o recopilar datos de nuestro sitio web"
+                ]
+            },
+            "limitation": {
+                "title": "Limitación de Responsabilidad",
+                "p1": "En la máxima medida permitida por la ley, LUCKDATE no será responsable de ningún daño indirecto, incidental, especial, consecuente o punitivo que surja de o en conexión con su uso de nuestros servicios, incluso si se nos ha informado de la posibilidad de tales daños.",
+                "p2": "Nuestra responsabilidad total por cualquier reclamación que surja de o esté relacionada con estos Términos no excederá el monto que nos pagó en los doce (12) meses anteriores a la reclamación."
+            },
+            "governing": {
+                "title": "Ley Aplicable",
+                "p1": "Estos Términos se regirán e interpretarán de acuerdo con las leyes del Estado de California, Estados Unidos, sin tener en cuenta sus principios de conflicto de leyes. Cualquier disputa que surja en virtud de o en conexión con estos Términos estará sujeta a la jurisdicción exclusiva de los tribunales ubicados en el Condado de Los Ángeles, California."
+            },
+            "contact": {
+                "title": "Contáctenos",
+                "desc": "Si tiene alguna pregunta sobre estos Términos, por favor contáctenos:"
+            }
+        },
+        "cookies": {
+            "title": "Política de Cookies",
+            "subtitle": "Cómo Usamos las Cookies",
+            "date": "1 de marzo de 2026",
+            "what": {
+                "title": "¿Qué Son las Cookies?",
+                "p1": "Las cookies son pequeños archivos de texto que se colocan en su dispositivo cuando visita un sitio web. Se utilizan ampliamente para hacer que los sitios web funcionen de manera más eficiente, proporcionar información analítica a los propietarios del sitio y ofrecer una mejor experiencia de navegación.",
+                "p2": "Esta Política de Cookies explica cómo LUCKDATE (\"nosotros\", \"nos\" o \"nuestro\") utiliza cookies y tecnologías similares en nuestro sitio web."
+            },
+            "types": {
+                "title": "Tipos de Cookies que Utilizamos",
+                "essential": {
+                    "label": "Cookies Esenciales",
+                    "text": "Estas cookies son estrictamente necesarias para el funcionamiento de nuestro sitio web. Permiten funcionalidades básicas como la navegación por páginas, el acceso a áreas seguras y la funcionalidad del carrito de compras. El sitio web no puede funcionar correctamente sin estas cookies."
+                },
+                "performance": {
+                    "label": "Cookies de Rendimiento",
+                    "text": "Estas cookies recopilan información sobre cómo los visitantes utilizan nuestro sitio web, como qué páginas se visitan con más frecuencia y si los usuarios encuentran mensajes de error. Estos datos nos ayudan a mejorar el rendimiento y la usabilidad de nuestro sitio."
+                },
+                "functional": {
+                    "label": "Cookies Funcionales",
+                    "text": "Estas cookies permiten que nuestro sitio web recuerde las opciones que usted elige (como su preferencia de idioma o región) y proporcionan funciones mejoradas y personalizadas. También pueden utilizarse para recordar los cambios que realizó en el tamaño del texto, fuentes y otros elementos personalizables."
+                },
+                "marketing": {
+                    "label": "Cookies de Marketing",
+                    "text": "Estas cookies rastrean su actividad de navegación en diferentes sitios web para ofrecer anuncios que sean más relevantes para usted y sus intereses. También limitan el número de veces que ve un anuncio y ayudan a medir la efectividad de las campañas publicitarias."
+                }
+            },
+            "thirdParty": {
+                "title": "Cookies de Terceros",
+                "desc": "Además de nuestras propias cookies, podemos utilizar cookies establecidas por servicios de terceros en nuestro sitio web, incluyendo:",
+                "items": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "para analizar patrones de tráfico y comportamiento del usuario"
+                    },
+                    {
+                        "label": "Stripe",
+                        "text": "para procesar pagos de forma segura"
+                    },
+                    {
+                        "label": "Plataformas de Redes Sociales",
+                        "text": "para habilitar funciones de uso compartido y rastrear el rendimiento de las campañas"
+                    }
+                ],
+                "note": "Estos terceros pueden utilizar cookies para recopilar información sobre sus actividades en línea a lo largo del tiempo y en diferentes sitios web."
+            },
+            "managing": {
+                "title": "Gestión de Sus Cookies",
+                "desc": "Usted tiene derecho a decidir si acepta o rechaza las cookies. Puede gestionar sus preferencias de cookies de las siguientes maneras:",
+                "browserTitle": "Configuración del Navegador",
+                "browserDesc": "La mayoría de los navegadores web le permiten controlar las cookies a través de su configuración. Puede configurar su navegador para bloquear o alertarle sobre cookies, o para eliminar las cookies que ya se han establecido. Tenga en cuenta que deshabilitar ciertas cookies puede afectar la funcionalidad de nuestro sitio web.",
+                "optOutTitle": "Enlaces de Exclusión",
+                "optOutItems": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "Exclusión de Google Analytics",
+                        "url": "https://tools.google.com/dlpage/gaoptout"
+                    },
+                    {
+                        "label": "Network Advertising Initiative",
+                        "text": "Exclusión de NAI",
+                        "url": "https://optout.networkadvertising.org"
+                    }
+                ]
+            },
+            "retention": {
+                "title": "Retención de Cookies",
+                "desc": "El tiempo que una cookie permanece en su dispositivo depende de si es una cookie de \"sesión\" o \"persistente\":",
+                "items": [
+                    {
+                        "label": "Cookies de Sesión",
+                        "text": "Cookies temporales que se eliminan cuando cierra su navegador."
+                    },
+                    {
+                        "label": "Cookies Persistentes",
+                        "text": "Cookies que permanecen en su dispositivo durante un período establecido o hasta que las elimine manualmente. Nuestras cookies persistentes se conservan por no más de 12 meses."
+                    }
+                ]
+            },
+            "updates": {
+                "title": "Actualizaciones de Esta Política",
+                "p1": "Podemos actualizar esta Política de Cookies de vez en cuando para reflejar cambios en la tecnología, legislación o nuestras prácticas de datos. Cuando realicemos cambios, actualizaremos la fecha de \"Última actualización\" en la parte superior de esta página. Le recomendamos que revise esta política periódicamente."
+            },
+            "contact": {
+                "title": "Contáctenos",
+                "desc": "Si tiene alguna pregunta sobre nuestro uso de cookies, por favor contáctenos:"
+            }
+        },
+        "disclaimer": {
+            "title": "Aviso Legal",
+            "subtitle": "Avisos Importantes",
+            "date": "1 de marzo de 2026",
+            "general": {
+                "title": "Aviso Legal General",
+                "p1": "La información proporcionada en este sitio web es solo para fines informativos generales. Si bien nos esforzamos por mantener el contenido preciso y actualizado, LUCKDATE no hace representaciones ni garantías de ningún tipo, expresas o implícitas, sobre la integridad, exactitud, fiabilidad, idoneidad o disponibilidad de la información, productos o servicios contenidos en este sitio web.",
+                "p2": "Cualquier confianza que deposite en dicha información es estrictamente bajo su propio riesgo."
+            },
+            "health": {
+                "title": "Aviso de Salud y Médico",
+                "p1": "Nuestros productos son suplementos dietéticos y no están destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Las declaraciones hechas sobre nuestros productos no han sido evaluadas por la Administración de Alimentos y Medicamentos (FDA).",
+                "noticeTitle": "Aviso Importante",
+                "noticeText": "Siempre consulte a su médico o proveedor de atención médica calificado antes de comenzar cualquier nuevo régimen de suplementos, especialmente si está embarazada, amamantando, tomando medicamentos o tiene una condición médica preexistente. Los resultados individuales pueden variar."
+            },
+            "productInfo": {
+                "title": "Información del Producto",
+                "desc": "Hacemos todo lo posible para mostrar los colores, imágenes y descripciones de los productos con la mayor precisión posible. Sin embargo, no podemos garantizar que la pantalla de su dispositivo refleje con exactitud el color o la apariencia real de nuestros productos.",
+                "items": [
+                    "El embalaje del producto puede variar de lo que se muestra en el sitio web",
+                    "La información nutricional y las listas de ingredientes pueden actualizarse sin previo aviso",
+                    "Siempre consulte la etiqueta del producto para obtener la información más actualizada sobre ingredientes y dosificación"
+                ]
+            },
+            "testimonials": {
+                "title": "Testimonios y Reseñas",
+                "p1": "Los testimonios y reseñas que se muestran en nuestro sitio web reflejan las experiencias personales y opiniones de clientes individuales. Estos resultados no son típicos y su experiencia puede diferir. Los testimonios no pretenden afirmar que nuestros productos pueden usarse para diagnosticar, tratar, curar o prevenir ninguna enfermedad."
+            },
+            "externalLinks": {
+                "title": "Enlaces Externos",
+                "p1": "Nuestro sitio web puede contener enlaces a sitios web de terceros que no son propiedad ni están controlados por LUCKDATE. No tenemos control sobre, y no asumimos responsabilidad por, el contenido, las políticas de privacidad o las prácticas de sitios web de terceros.",
+                "p2": "La inclusión de cualquier enlace no implica respaldo, aprobación o recomendación por parte de LUCKDATE. Usted accede a sitios web de terceros bajo su propio riesgo."
+            },
+            "limitation": {
+                "title": "Limitación de Responsabilidad",
+                "desc": "En ningún caso LUCKDATE, sus directores, empleados, socios, agentes, proveedores o afiliados serán responsables de ningún daño indirecto, incidental, especial, consecuente o punitivo, incluyendo sin limitación, pérdida de ganancias, datos, uso, buena voluntad u otras pérdidas intangibles, resultantes de:",
+                "items": [
+                    "Su acceso o uso (o la imposibilidad de acceder o usar) de nuestros servicios",
+                    "Cualquier conducta o contenido de terceros en nuestros servicios",
+                    "Cualquier contenido obtenido de nuestros servicios",
+                    "Acceso no autorizado, uso o alteración de sus transmisiones o contenido"
+                ]
+            },
+            "accuracy": {
+                "title": "Exactitud de la Información",
+                "p1": "Aunque nos esforzamos por mantener la información de nuestro sitio web actualizada y correcta, no hacemos garantías sobre la exactitud, adecuación, validez, fiabilidad o integridad de la información. Nos reservamos el derecho de corregir cualquier error u omisión y de cambiar o actualizar la información en cualquier momento sin previo aviso."
+            },
+            "contact": {
+                "title": "Contáctenos",
+                "desc": "Si tiene alguna pregunta sobre este Aviso Legal, por favor contáctenos:"
+            }
+        }
+    },
+    "orders": {
+        "title": "Pedidos",
+        "count": "{{count}} pedidos",
+        "loading": "Cargando...",
+        "empty": {
+            "title": "Sin pedidos aún",
+            "description": "El historial de pedidos aparecerá aquí"
+        },
+        "orderNumber": "Nº de pedido",
+        "date": "Fecha",
+        "total": "Total",
+        "qty": "Cant.: {{qty}}",
+        "moreItems": "más artículos",
+        "continuePay": "Pagar ahora",
+        "cancelOrder": "Cancelar pedido",
+        "cancelling": "Cancelando...",
+        "close": "Cerrar",
+        "orderDetails": "Detalles del pedido",
+        "status": "Estado",
+        "timeline": "Línea de tiempo",
+        "created": "Creado",
+        "paid": "Pagado",
+        "shipped": "Enviado",
+        "received": "Recibido",
+        "completed": "Completado",
+        "cancelled": "Cancelado",
+        "shippingAddress": "Dirección de envío",
+        "items": "Artículos",
+        "subtotal": "Subtotal",
+        "shipping": "Envío",
+        "paymentInfo": "Información de pago",
+        "paymentMethod": "Método de pago",
+        "amount": "Importe",
+        "transactionId": "ID de transacción",
+        "paymentTime": "Hora de pago",
+        "logisticsInfo": "Información logística",
+        "logisticsStatus": "Estado logístico",
+        "trackingNumber": "Número de seguimiento",
+        "outboundOrderNo": "Nº de pedido de salida",
+        "trackingTimeline": "Línea de seguimiento",
+        "tab": {
+            "all": "Todos",
+            "pendingPayment": "Pago pendiente",
+            "pendingDelivery": "Envío pendiente",
+            "pendingReceive": "Recepción pendiente",
+            "confirmReceive": "Confirmar recepción",
+            "completed": "Completado",
+            "cancelled": "Cancelado",
+            "payConfirming": "Confirmando pago"
+        },
+        "confirm": {
+            "title": "¿Cancelar pedido?",
+            "message": "¿Estás seguro de que quieres cancelar este pedido?",
+            "orderLabel": "ID del pedido",
+            "amountLabel": "Importe",
+            "couponPolicyTitle": "Política de cupón",
+            "couponPolicy1": "El cupón se devolverá si no ha expirado",
+            "couponPolicy2": "El cupón válido estará disponible de inmediato",
+            "couponPolicy3": "El cupón expirado no se puede volver a usar",
+            "keepOrder": "Mantener pedido",
+            "yesCancel": "Sí, cancelar"
+        },
+        "cancel": {
+            "successTitle": "Pedido cancelado",
+            "successMessage": "Tu pedido ha sido cancelado correctamente.",
+            "couponExpired": "Nota: El cupón devuelto ha expirado."
+        },
+        "error": {
+            "loadFailed": "Error al cargar pedidos",
+            "network": "Error de red, reintenta",
+            "payFailed": "Error en el pago",
+            "payRetry": "Intenta de nuevo",
+            "cancelFailed": "Error al cancelar pedido",
+            "cancelRetry": "Error al cancelar, reintenta"
+        },
+        "countdownSuffix": " restante para cancelar",
+        "viewOrder": "Ver pedido {{orderSn}}",
+        "productAltSuffix": "- producto LUCKDATE",
+        "processing": "Procesando...",
+        "previousPage": "Página anterior",
+        "nextPage": "Página siguiente",
+        "unpaidFloat": {
+            "ariaLabel": "Tiene {{count}} pedidos pendientes de pago",
+            "single": "Pedido pendiente",
+            "multiple": "{{count}} pedidos pendientes",
+            "dismiss": "Cerrar",
+            "loadFailed": "Error al cargar detalles",
+            "networkError": "Error de red"
+        },
+        "unpaidOrderModal": {
+            "title": "Tiene un pedido pendiente de pago",
+            "subtitle": "¿Desea pagar ahora?",
+            "viewDetails": "Ver detalles",
+            "goPay": "Pagar ahora",
+            "cancelOrder": "Cancelar pedido",
+            "noUnpaid": "No se encontraron pedidos pendientes",
+            "loadFailed": "Error al cargar detalles del pedido",
+            "networkError": "Error de red"
+        },
+        "expired": "Expirado",
+        "pagination": {
+            "previous": "Anterior",
+            "next": "Siguiente"
+        }
+    },
+    "coupon": {
+        "reason": {
+            "expired": "Expirado",
+            "notYetValid": "Aún no válido",
+            "minSpend": "Mínimo ${{min}} para usar",
+            "productScope": "Solo para productos seleccionados",
+            "used": "Ya usado",
+            "invalid": "No válido"
+        }
+    },
+    "auth": {
+        "loginSuccess": "¡Inicio de sesión exitoso!",
+        "emailRegistered": "Este correo electrónico ya está registrado. Inicie sesión para reclamar su cupón."
+    }
+}

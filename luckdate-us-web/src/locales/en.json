@@ -1,0 +1,1348 @@
+{
+    "nav": {
+        "home": "Home",
+        "products": "Products",
+        "categories": "Categories",
+        "about": "About Us",
+        "reviews": "Reviews",
+        "faq": "FAQ",
+        "insight": "Insight",
+        "orderInquiry": "Order Inquiry",
+        "shopNow": "Shop Now"
+    },
+    "hero": {
+        "badge": "Premium Supplements",
+        "title": "Unlock Your\nDaily Vitality",
+        "subtitle": "Premium supplements designed to fuel your active lifestyle. Experience the difference of nature-backed science.",
+        "explore": "Explore Products",
+        "ourStory": "Our Story",
+        "stats": {
+            "products": "Premium Products",
+            "customers": "Happy Customers",
+            "natural": "Natural Ingredients"
+        },
+        "badges": {
+            "tested": "Clinically Tested",
+            "rating": "4.9 Rating"
+        },
+        "slides": {
+            "badge1": "Awaken Your Energy",
+            "title1": "Led by a Nobel Laureate, Redefining Healthy Aging & Weight Management",
+            "title1Part1": "Led by a ",
+            "title1Highlight": "Nobel Laureate",
+            "title1Part2": "Redefining Healthy Aging & Weight Management",
+            "subtitle1": "In deep collaboration with 2004 Nobel Prize in Chemistry winner Prof. Aaron J. Ciechanover, we deliver precise, efficient, life-long health solutions with cell-level science.",
+            "scientistName": "Aaron Ciechanover",
+            "scientistTitle1": "2004 Nobel Prize in Chemistry winner,",
+            "scientistTitle2": "Luckdate Chief Consulting Scientist.",
+            "badge2": "Tailored Wellness",
+            "title2": "Find Your Perfect Match",
+            "subtitle2": "Not sure where to start? Explore our curated categories and find the exact nutritional support your body needs right now.",
+            "badge3": "100% Organic",
+            "title3": "Natural Supplements",
+            "subtitle3": "Experience the pure power of nature. We strictly use non-GMO, gluten-free, and ethically sourced ingredients to deliver maximum health benefits."
+        },
+        "exploreCollection": "Explore Collection",
+        "ourCategories": "Our Categories"
+    },
+    "whyChooseUs": {
+        "badge": "Why Choose Us",
+        "title": "The LUCKDATE Difference",
+        "features": {
+            "cleanIngredients": "Clean Ingredients",
+            "cleanIngredientsDesc": "We use only the purest, naturally sourced ingredients. No artificial colors, flavors, or preservatives.",
+            "scienceBacked": "Science-Backed",
+            "scienceBackedDesc": "Every formula is developed with the latest research and clinical studies for maximum efficacy.",
+            "thirdParty": "3rd Party Tested",
+            "thirdPartyDesc": "Independent laboratories verify the purity and potency of every batch we produce.",
+            "subscribe": "Subscribe & Save",
+            "subscribeDesc": "Get 20% off every order with our flexible subscription plan. Cancel anytime."
+        }
+    },
+    "brandLogos": {
+        "trustedBy": "Trusted by Industry Leaders",
+        "certifications": {
+            "fda": "FDA Registered",
+            "gmp": "GMP Certified",
+            "natural": "100% Natural",
+            "tested": "3rd Party Tested",
+            "vegan": "Vegan Friendly",
+            "premium": "Premium Quality"
+        }
+    },
+    "latestBlog": {
+        "badge": "Health Insights",
+        "title": "Latest from Our Insight",
+        "viewAll": "View All Articles"
+    },
+    "products": {
+        "badge": "More LuckDate Solutions",
+        "title": "More ways to support your body, energy, and long-term youthfulness.",
+        "description": "From light body management to vitality support, LuckDate offers solutions designed to work with your daily routine, your app tracking, and your nutritionist guidance.",
+        "loading": "Loading premium supplements...",
+        "quickView": "Quick View",
+        "addCart": "Add to Cart",
+        "allProducts": "All Products",
+        "noProducts": "No products found",
+        "tryDifferentFilter": "Try selecting different filter",
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "showingPage": "Showing page {{currentPage}} of {{totalPages}} ({{total}} products total)"
+        }
+    },
+    "categories": {
+        "badge": "Shop by Need",
+        "title": "Find Your Perfect Match",
+        "energy": "Energy",
+        "energyDesc": "Boost vitality",
+        "immunity": "Immunity",
+        "immunityDesc": "Strengthen defense",
+        "beauty": "Beauty",
+        "beautyDesc": "Glow from within"
+    },
+    "orderInquiry": {
+        "back": "Back",
+        "title": "Order Inquiry",
+        "description": "Enter the recipient name and the last 4 digits of the phone number to look up your orders.",
+        "namePlaceholder": "Recipient Name",
+        "phonePlaceholder": "Phone (Last 4 digits)",
+        "search": "Search",
+        "foundOrders_one": "Found {{count}} order",
+        "foundOrders_other": "Found {{count}} orders",
+        "noOrders": "No Orders Found",
+        "noOrdersDescription": "We couldn't find any orders matching the information you provided. Please double-check the recipient name and phone number.",
+        "orderNumberLabel": "Order",
+        "trackingNumberLabel": "Tracking Number",
+        "currentStatus": "Current Status",
+        "collapse": "Collapse",
+        "copy": "Copy",
+        "copied": "Copied",
+        "status": {
+            "pending": "Pending",
+            "processing": "Processing",
+            "shipped": "Shipped",
+            "delivered": "Delivered",
+            "cancelled": "Cancelled"
+        }
+    },
+    "blog": {
+        "title": "Journal & Guides",
+        "description": "Explore the latest insights on longevity, wellness, and the science behind LUCKDATE.",
+        "tryRefreshing": "Try Refreshing",
+        "readArticle": "Read Article",
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "showingPage": "Showing page {{currentPage}} of {{totalPages}} ({{total}} articles total)"
+        },
+        "article": {
+            "backToJournal": "Back to Journal",
+            "shareArticle": "Share this article",
+            "notFound": "Article Not Found",
+            "notFoundDesc": "The article you are looking for might have been moved or is currently unavailable."
+        }
+    },
+    "product": {
+        "backToProducts": "Back to Products",
+        "notFound": "Product Not Found",
+        "notFoundDesc": "The product you are looking for might have been moved or is currently unavailable.",
+        "backToHome": "Back to Home"
+    },
+    "success": {
+        "title": "Payment Successful!",
+        "description": "Thank you for your purchase. Your order has been confirmed and will be shipped shortly.",
+        "orderId": "Order ID: {{orderId}}",
+        "continueShopping": "Continue Shopping"
+    },
+    "cart": {
+        "title": "Your Cart ({{count}})",
+        "empty": "Your cart is empty",
+        "emptyDesc": "Add some products to get started",
+        "startShopping": "Start Shopping",
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "shippingCalculated": "Calculated at checkout",
+        "total": "Total",
+        "checkout": "Proceed to Checkout",
+        "checkoutTitle": "Checkout",
+        "closeCheckout": "Close",
+        "checkoutError": "Unable to start checkout. Please try again.",
+        "checkoutNotConfigured": "Checkout is not configured.",
+        "payPageMissingSession": "No active checkout session. Please start checkout again from your cart or product page.",
+        "payPageCancel": "Cancel",
+        "processing": "Processing...",
+        "continueShopping": "Continue Shopping"
+    },
+    "about": {
+        "badge": "About Us",
+        "title": "Where Nature Meets Science",
+        "science": "Science",
+        "desc1": "At LUCKDATE, we blend botanical wisdom with cutting-edge research to create supplements that truly work. No gimmicks—just pure, potent formulations designed to support your wellness journey.",
+        "desc2": "Our team of nutritionists, scientists, and health experts work tirelessly to source the finest ingredients from around the world. Every product undergoes rigorous testing to ensure safety, efficacy, and quality.",
+        "features": [
+            "Clinically proven ingredients",
+            "Third-party tested for purity",
+            "Sustainable sourcing practices",
+            "No artificial additives"
+        ],
+        "experience": "Years of Excellence"
+    },
+    "cta": {
+        "title": "Get {{discount}}% Off Your ",
+        "titleHighlight": "First Order",
+        "subtitle": "Start your wellness journey today. Subscribe to our newsletter and receive an exclusive discount on your first purchase.",
+        "button": "Shop Now",
+        "badges": {
+            "freeShipping": "Free Shipping",
+            "guarantee": "30-Day Guarantee",
+            "cancel": "Cancel Anytime"
+        },
+        "discountBadge": {
+            "off": "OFF"
+        }
+    },
+    "footer": {
+        "desc": "Premium supplements designed to fuel your active lifestyle. Experience the difference of nature-backed science.",
+        "newsletter": {
+            "title": "Subscribe to our newsletter and get your coupon",
+            "placeholder": "Enter your email",
+            "thanks": "Thanks for subscribing!"
+        },
+        "sections": {
+            "products": "Products",
+            "company": "Company",
+            "support": "Support",
+            "legal": "Legal"
+        },
+        "productsList": {
+            "nmn": "NMN Supplements",
+            "nad": "NAD+ Complex",
+            "probiotics": "Probiotics",
+            "shilajit": "Shilajit Gummies"
+        },
+        "companyList": {
+            "ourStory": "Our Story",
+            "careers": "Careers",
+            "press": "Press"
+        },
+        "supportList": {
+            "contactUs": "Contact Us",
+            "shipping": "Shipping",
+            "returns": "Returns",
+            "trackOrder": "Track Order"
+        },
+        "legalList": {
+            "privacyPolicy": "Privacy Policy",
+            "termsOfService": "Terms of Service",
+            "cookiePolicy": "Cookie Policy",
+            "disclaimer": "Disclaimer"
+        },
+        "copyright": "All rights reserved.",
+        "madeWith": "Made with for your wellness",
+        "fda": "*These statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose, treat, cure, or prevent any disease."
+    },
+    "faq": {
+        "badge": "Got Questions?",
+        "title": "FAQ",
+        "science": "",
+        "items": [
+            {
+                "question": "Who is LuckDate?",
+                "answer": "LuckDate is a youthful wellness brand built around everyday management — not just supplements, but a complete system. We combine science-led products (including Fitoo meal replacement and NMN vitality support), a smart tracking app, and nutritionist guidance to help adults stay lighter, more active, and more consistent over time. Our philosophy is simple: staying young is about how light, active, and consistent you feel in daily life."
+            },
+            {
+                "question": "What products does LuckDate offer?",
+                "answer": "LuckDate focuses on two core solution lines plus supporting formulas. Fitoo Meal Replacement Powder supports light body management, meal rhythm, and calorie-aware routines. NMN Vitality Support is designed for long-term youthful wellness, energy, and cellular vitality. Additional LuckDate supplements may support digestion, detox, energy, and skin health as part of a broader daily routine. Products are meant to work together with the LuckDate app and nutritionist support — not as isolated purchases."
+            },
+            {
+                "question": "Who should use LuckDate products?",
+                "answer": "LuckDate is designed for adults who want practical support for weight goals, daily energy, and long-term vitality — especially people who feel motivated but struggle to stay consistent alone. It is ideal for busy professionals, parents, and wellness-minded adults who want a structured routine rather than a one-time quick fix. LuckDate is for people ready to eat smarter, track progress, and communicate with support — not for those seeking a miracle cure without lifestyle effort."
+            },
+            {
+                "question": "What problems does LuckDate help solve?",
+                "answer": "LuckDate addresses the gap between wanting results and maintaining consistency. Many people fail not because they do not care, but because they lack structure. LuckDate helps with: irregular meals and portion control (Fitoo), low energy and long-term vitality concerns (NMN and related formulas), lack of accountability (app tracking), and uncertainty about what to adjust next (nutritionist check-ins). The goal is a lighter everyday body feeling and sustainable youthful wellness — not extreme short-term dieting."
+            },
+            {
+                "question": "What are the main ingredients?",
+                "answer": "Key ingredients vary by product, but LuckDate formulas emphasize high-quality, purposeful ingredients selected for daily wellness support. Fitoo meal replacement typically includes balanced macronutrients, fiber, and vitamins/minerals to support meal substitution and calorie-aware routines. NMN Vitality Support centers on NMN (Nicotinamide Mononucleotide) as a NAD+ precursor, often combined with complementary nutrients that support cellular energy and antioxidant pathways. Other LuckDate products may include probiotics, botanical extracts, omega fatty acids, or targeted actives depending on the formula. Always review the full Supplement Facts label on each product for the exact ingredient list and amounts."
+            },
+            {
+                "question": "How do the ingredients work?",
+                "answer": "LuckDate ingredients are chosen to support everyday wellness goals through practical biological pathways. Fitoo helps replace a meal with structured nutrition — supporting portion control, meal timing, and a lighter daily routine when paired with tracking. NMN supports NAD+ levels, which are involved in cellular energy production and metabolic processes associated with healthy aging. Probiotics and botanical ingredients in other formulas may support digestion, antioxidant balance, or skin wellness depending on the product. LuckDate is designed for consistent daily use so these supports can compound over time — not for instant overnight transformation."
+            },
+            {
+                "question": "How is LuckDate different from other supplement brands?",
+                "answer": "Most brands sell a bottle and leave you on your own. LuckDate is a system: Product + App + Nutritionist Support. You get effective formulas (Fitoo, NMN, and more), app-based tracking for meals, weight, habits, and reminders, plus nutritionist guidance for practical adjustments. LuckDate also emphasizes science-led credibility — including authorized endorsement from Aaron, a 2004 Nobel Prize laureate in Chemistry, and quality standards supported by FDA-registered manufacturing and GMP practices. The difference is consistency support, not just another product on a shelf."
+            },
+            {
+                "question": "What situations is LuckDate best for?",
+                "answer": "LuckDate fits modern routines where structure matters: replacing a rushed breakfast or lunch with Fitoo, supporting a weight goal before an event or season, building a post-40 wellness routine, maintaining energy during busy work weeks, or adding long-term vitality support alongside healthy habits. The daily ritual is simple — Eat/Take, Record in the app, Communicate with your nutritionist, and Get Results through consistency. It works best when integrated into real life: home, office, travel, and everyday meal rhythms."
+            },
+            {
+                "question": "What precautions should I know?",
+                "answer": "LuckDate products are dietary supplements and wellness support tools — not medicines and not intended to diagnose, treat, cure, or prevent any disease. Results vary by individual and depend on consistent use, diet, sleep, and activity. Do not use LuckDate products as a sole source of nutrition unless a product is specifically designed and labeled for meal replacement. Consult your healthcare provider before use if you are pregnant, nursing, under 18, taking medication, or managing a medical condition. Follow label directions, store products properly, and discontinue use if you experience an adverse reaction. LuckDate supports healthy aging and daily wellness — not medical treatment."
+            },
+            {
+                "question": "Is there scientific support behind LuckDate?",
+                "answer": "Yes — LuckDate is built on a science-led wellness philosophy. NMN is widely studied in the context of NAD+ and cellular energy pathways. Fitoo and other formulas use thoughtfully selected ingredients at purposeful levels for daily support. LuckDate highlights authorized endorsement from Aaron, 2004 Nobel Prize laureate in Chemistry, and manufactures in facilities that follow FDA registration and GMP quality practices. Certificates and science content are available in our Journal & Guides and About sections. While supplements are not FDA-approved drugs, LuckDate prioritizes credible science communication, quality manufacturing, and transparent ingredient information."
+            }
+        ],
+        "stillQuestions": "Still have questions?",
+        "contactSupport": "Contact our support team"
+    },
+    "contact": {
+        "title": "Contact Us",
+        "subtitle": "Our support team is here to help with orders, product questions, returns, and more.",
+        "emailTitle": "Official Email",
+        "emailDesc": "For all inquiries, please reach out to our customer support team:",
+        "responseTime": "We typically respond within 1-2 business days.",
+        "helpWith": "We can help you with:",
+        "topics": [
+            "Order status and shipping",
+            "Returns and refunds",
+            "Product information",
+            "Account and subscription issues"
+        ],
+        "back": "Back"
+    },
+    "geoSeo": {
+        "tagline": "Stay Young Longer.",
+        "brandDefinition": {
+            "title": "The LuckDate Wellness System",
+            "summary": "LuckDate is a wellness system designed to help adults stay young longer through light body management, long-term vitality support, app tracking, and nutritionist guidance — not just single products, but a connected routine you can follow.",
+            "modulesTitle": "Four pillars of the system",
+            "modules": [
+                {
+                    "id": "fitoo",
+                    "title": "Fitoo",
+                    "description": "Meal replacement and light body management support for sustainable daily nutrition.",
+                    "href": "/products"
+                },
+                {
+                    "id": "nmn",
+                    "title": "NMN & Vitality",
+                    "description": "Long-term vitality formulas aligned with healthy aging and cellular wellness goals.",
+                    "href": "/products"
+                },
+                {
+                    "id": "app",
+                    "title": "LuckDate App",
+                    "description": "Track routines, progress, and habits so wellness becomes measurable—not guesswork.",
+                    "href": "/order-inquiry"
+                },
+                {
+                    "id": "nutritionist",
+                    "title": "Nutritionist Guidance",
+                    "description": "Professional support to reduce choice anxiety and help you stay consistent.",
+                    "href": "/contact"
+                }
+            ]
+        },
+        "audience": {
+            "title": "Who LuckDate is for",
+            "items": [
+                "Adults 40+ who want to stay young longer with structured daily support",
+                "People managing weight after 40 who need sustainable light body management",
+                "Busy professionals seeking daily vitality and energy consistency",
+                "Anyone who benefits from app tracking plus nutritionist guidance—not willpower alone"
+            ]
+        },
+        "trust": {
+            "title": "Trust & quality signals",
+            "items": [
+                "Nobel Laureate scientific endorsement featured on our homepage",
+                "FDA-registered manufacturing with GMP quality standards",
+                "Premium, science-backed formulations with third-party testing",
+                "1 Million+ products sold with 30-day satisfaction guarantee"
+            ]
+        },
+        "geoFaq": {
+            "title": "Common questions about LuckDate",
+            "items": [
+                {
+                    "question": "What is LuckDate?",
+                    "answer": "LuckDate is a wellness system that combines supplements (including Fitoo and NMN), app tracking, and nutritionist guidance to support light body management and long-term vitality for adults who want to stay young longer."
+                },
+                {
+                    "question": "Who should use LuckDate?",
+                    "answer": "LuckDate is designed for adults 40+, people managing weight after 40, and anyone who wants guided wellness routines with professional support—not just a single product purchase."
+                },
+                {
+                    "question": "How does the LuckDate App help?",
+                    "answer": "The LuckDate App helps you track daily routines, progress, and habits so you can see what's working and adjust with your nutritionist instead of relying on memory or willpower alone."
+                },
+                {
+                    "question": "Is LuckDate only meal replacement?",
+                    "answer": "No. Fitoo supports meal replacement and light body management, while NMN and other formulas address long-term vitality. The system is designed to work together with app tracking and nutritionist guidance."
+                },
+                {
+                    "question": "How do I get started?",
+                    "answer": "Browse products for Fitoo and NMN, explore our Journal & Guides, or contact support@luckdate.com for personalized guidance on building your LuckDate routine."
+                }
+            ]
+        },
+        "blog": {
+            "categories": {
+                "all": "All",
+                "guides": "Guides",
+                "comparisons": "Comparisons",
+                "wellnessSystem": "Wellness System",
+                "ingredientScience": "Ingredient Science",
+                "useCases": "Use Cases"
+            },
+            "pillarTitle": "Start with these guides",
+            "pillars": [
+                {
+                    "title": "How to Stay Young Longer After 40",
+                    "description": "A practical guide to light body management and long-term vitality.",
+                    "href": "/blog"
+                },
+                {
+                    "title": "Product + App + Nutritionist",
+                    "description": "How the LuckDate Wellness System works together.",
+                    "href": "/blog"
+                },
+                {
+                    "title": "What Is Fitoo?",
+                    "description": "LuckDate's meal replacement solution explained.",
+                    "href": "/products"
+                }
+            ],
+            "relatedModulesTitle": "Explore LuckDate modules",
+            "relatedModules": [
+                {
+                    "label": "Shop Fitoo & supplements",
+                    "href": "/products"
+                },
+                {
+                    "label": "About our science",
+                    "href": "/about"
+                },
+                {
+                    "label": "Contact nutritionist support",
+                    "href": "/contact"
+                }
+            ]
+        }
+    },
+    "testimonials": {
+        "badge": "Testimonials",
+        "title": "What Our Customers Say",
+        "science": "Customers Say",
+        "loadMore": "View More Reviews",
+        "items": [
+            {
+                "name": "Sarah Mitchell",
+                "role": "Fitness Instructor",
+                "text": "The packaging looks very high-end, and when I received it, the product felt incredibly elegant. I've been taking it regularly lately, and I feel like my skin is more balanced, and my makeup goes on much more smoothly."
+            },
+            {
+                "name": "Michael Chen",
+                "role": "Software Engineer",
+                "text": "This is a product I keep coming back to. After using it, I can clearly see that my skin's condition and complexion have improved. I highly recommend it!"
+            },
+            {
+                "name": "Patricia Williams",
+                "role": "Retired Teacher",
+                "text": "These days, my criteria for oral beauty supplements are simple: reliable ingredients, a well-thought-out formula, and something that's easy to stick with. LUCKDATE checks all these boxes, so I've become a loyal customer of theirs."
+            },
+            {
+                "name": "Emily Rodriguez",
+                "role": "Yoga Instructor",
+                "text": "After using it, I feel less physically exhausted than before, and I feel more relaxed and balanced overall. It's also convenient to take one serving a day; it feels like I'm providing my body with daily antioxidant protection and internal nourishment."
+            },
+            {
+                "name": "David Thompson",
+                "role": "Business Executive",
+                "text": "As someone who often works late into the night, my top priority is maintaining my health and staying youthful. Since I started taking LUCKDATE, I've noticed that my energy levels are more consistent during the day, and I'm less prone to feeling drained by late nights and stress."
+            },
+            {
+                "name": "Linda Park",
+                "role": "Nutritionist",
+                "text": "At first, I didn't have high expectations for this kind of supplement, but LUCKDATE really surprised me. After using it consistently, I can feel that my physical condition has improved."
+            },
+            {
+                "name": "Jennifer Adams",
+                "role": "Skincare Enthusiast",
+                "text": "I originally bought it just to give it a try, but I didn't expect the anti-aging results to be even better than I anticipated. Since taking it, my skin has gradually become firmer and more radiant, and my complexion has continued to improve. I'll definitely be buying it again."
+            },
+            {
+                "name": "Robert Lee",
+                "role": "Wellness Advocate",
+                "text": "I've always been interested in NAD+. After comparing many brands, I finally chose LUCKDATE. I've been taking it for over a month, and the results are quite noticeable—my skin looks firmer and more radiant."
+            }
+        ]
+    },
+    "legal": {
+        "back": "Back",
+        "lastUpdated": "Last updated",
+        "onThisPage": "On this page",
+        "contactTeam": "LUCKDATE {{team}} Team",
+        "email": "Email",
+        "address": "Address",
+        "addressValue": "Los Angeles, CA, United States",
+        "privacy": {
+            "title": "Privacy Policy",
+            "subtitle": "Your Privacy Matters",
+            "date": "March 1, 2026",
+            "intro": {
+                "title": "Introduction",
+                "p1": "At LUCKDATE (\"we,\" \"us,\" or \"our\"), we are committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you visit our website, purchase our products, or interact with our services.",
+                "p2": "By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree, please discontinue use of our services immediately."
+            },
+            "collect": {
+                "title": "Information We Collect",
+                "desc": "We may collect the following types of information:",
+                "personalTitle": "Personal Information",
+                "personal": [
+                    "Full name and contact details (email address, phone number, mailing address)",
+                    "Payment and billing information (credit card numbers, billing address)",
+                    "Account credentials (username, encrypted password)",
+                    "Order history and purchase preferences"
+                ],
+                "autoTitle": "Automatically Collected Information",
+                "auto": [
+                    "Device type, browser type, and operating system",
+                    "IP address and approximate geographic location",
+                    "Pages visited, time spent, and navigation patterns",
+                    "Referring URLs and search queries that led you to our site"
+                ]
+            },
+            "howWeUse": {
+                "title": "How We Use Your Information",
+                "desc": "We use the information we collect to:",
+                "items": [
+                    "Process and fulfill your orders, including shipping and payment processing",
+                    "Provide customer support and respond to your inquiries",
+                    "Personalize your shopping experience and product recommendations",
+                    "Send transactional emails (order confirmations, shipping updates)",
+                    "Send promotional communications, with your consent, about new products and offers",
+                    "Improve our website, products, and services through analytics",
+                    "Detect and prevent fraud, unauthorized access, and other illegal activities"
+                ]
+            },
+            "sharing": {
+                "title": "Information Sharing & Disclosure",
+                "desc": "We do not sell your personal information to third parties. We may share your data with:",
+                "items": [
+                    {
+                        "label": "Service Providers",
+                        "text": "Payment processors, shipping carriers, and cloud hosting providers who assist in operating our business"
+                    },
+                    {
+                        "label": "Analytics Partners",
+                        "text": "Tools like Google Analytics to help us understand website usage patterns"
+                    },
+                    {
+                        "label": "Legal Obligations",
+                        "text": "When required by law, regulation, or legal process"
+                    },
+                    {
+                        "label": "Business Transfers",
+                        "text": "In connection with a merger, acquisition, or sale of assets"
+                    }
+                ]
+            },
+            "security": {
+                "title": "Data Security",
+                "p1": "We implement industry-standard security measures to protect your personal information, including SSL/TLS encryption for data in transit, encrypted storage for sensitive data, and regular security audits. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security."
+            },
+            "rights": {
+                "title": "Your Rights & Choices",
+                "desc": "Depending on your jurisdiction, you may have the right to:",
+                "items": [
+                    "Access the personal data we hold about you",
+                    "Request correction or deletion of your personal data",
+                    "Opt out of marketing communications at any time",
+                    "Request data portability in a machine-readable format",
+                    "Withdraw consent where processing is based on consent"
+                ],
+                "contact": "To exercise any of these rights, please contact us at"
+            },
+            "children": {
+                "title": "Children's Privacy",
+                "p1": "Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If we become aware that we have inadvertently collected data from a child, we will take steps to delete that information promptly."
+            },
+            "changes": {
+                "title": "Changes to This Policy",
+                "p1": "We may update this Privacy Policy from time to time. When we do, we will revise the \"Last updated\" date at the top of this page. We encourage you to review this policy periodically to stay informed about how we protect your information."
+            },
+            "contact": {
+                "title": "Contact Us",
+                "desc": "If you have any questions or concerns about this Privacy Policy, please contact us:"
+            }
+        },
+        "terms": {
+            "title": "Terms of Service",
+            "subtitle": "Legal Agreement",
+            "date": "March 1, 2026",
+            "acceptance": {
+                "title": "Acceptance of Terms",
+                "p1": "Welcome to LUCKDATE. These Terms of Service (\"Terms\") govern your access to and use of our website, products, and services. By accessing or using any part of our services, you agree to be bound by these Terms.",
+                "p2": "If you do not agree to all of these Terms, you may not access or use our services. We reserve the right to update or modify these Terms at any time without prior notice."
+            },
+            "eligibility": {
+                "title": "Eligibility",
+                "p1": "You must be at least 18 years old and capable of forming a binding legal agreement to use our services. By using our services, you represent and warrant that you meet these eligibility requirements."
+            },
+            "accounts": {
+                "title": "User Accounts",
+                "desc": "When you create an account with us, you are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.",
+                "items": [
+                    "Provide accurate, current, and complete information during registration",
+                    "Promptly update your account information to keep it accurate",
+                    "Notify us immediately of any unauthorized use of your account",
+                    "Do not share your password or account access with third parties"
+                ]
+            },
+            "orders": {
+                "title": "Orders & Payments",
+                "desc": "All orders placed through our website are subject to product availability and acceptance. We reserve the right to refuse or cancel any order for any reason.",
+                "pricingTitle": "Pricing",
+                "pricingDesc": "All prices are listed in USD and are subject to change without notice. Prices do not include applicable taxes and shipping fees, which will be calculated at checkout.",
+                "paymentTitle": "Payment",
+                "paymentDesc": "We accept major credit cards, debit cards, and other payment methods as displayed during checkout. All payments are processed securely through our third-party payment processor."
+            },
+            "shipping": {
+                "title": "Shipping & Returns",
+                "desc": "We aim to ship all orders within 1–3 business days. Delivery times vary depending on your location and selected shipping method. International shipments may be subject to customs duties and import taxes.",
+                "returnTitle": "Return Policy",
+                "returnItems": [
+                    "Cannot be canceled or returned; you need to contact customer service for assistance.",
+                    "Products may be returned within 30 days of receipt for a full refund",
+                    "Items must be unused, unopened, and in their original packaging",
+                    "Return shipping costs are the responsibility of the customer unless the product is defective",
+                    "Refunds will be processed within 5–10 business days after we receive the returned item"
+                ]
+            },
+            "ip": {
+                "title": "Intellectual Property",
+                "p1": "All content on our website — including text, graphics, logos, images, product descriptions, and software — is the exclusive property of LUCKDATE and is protected by copyright, trademark, and other intellectual property laws.",
+                "p2": "You may not reproduce, distribute, modify, create derivative works of, publicly display, or otherwise exploit any of our content without prior written consent from LUCKDATE."
+            },
+            "prohibited": {
+                "title": "Prohibited Conduct",
+                "desc": "When using our services, you agree not to:",
+                "items": [
+                    "Violate any applicable laws or regulations",
+                    "Impersonate any person or entity, or falsely represent your affiliation",
+                    "Submit false, misleading, or fraudulent orders or reviews",
+                    "Interfere with or disrupt the operation of our website or servers",
+                    "Attempt to gain unauthorized access to any part of our services",
+                    "Use automated tools to scrape, crawl, or extract data from our website"
+                ]
+            },
+            "limitation": {
+                "title": "Limitation of Liability",
+                "p1": "To the maximum extent permitted by law, LUCKDATE shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or in connection with your use of our services, even if we have been advised of the possibility of such damages.",
+                "p2": "Our total liability for any claim arising from or related to these Terms shall not exceed the amount you paid to us in the twelve (12) months preceding the claim."
+            },
+            "governing": {
+                "title": "Governing Law",
+                "p1": "These Terms shall be governed by and construed in accordance with the laws of the State of California, United States, without regard to its conflict of law principles. Any disputes arising under or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts located in Los Angeles County, California."
+            },
+            "contact": {
+                "title": "Contact Us",
+                "desc": "If you have any questions about these Terms, please reach out to us:"
+            }
+        },
+        "cookies": {
+            "title": "Cookie Policy",
+            "subtitle": "How We Use Cookies",
+            "date": "March 1, 2026",
+            "what": {
+                "title": "What Are Cookies?",
+                "p1": "Cookies are small text files that are placed on your device when you visit a website. They are widely used to make websites work more efficiently, provide analytics information to site owners, and deliver a better browsing experience.",
+                "p2": "This Cookie Policy explains how LUCKDATE (\"we,\" \"us,\" or \"our\") uses cookies and similar technologies on our website."
+            },
+            "types": {
+                "title": "Types of Cookies We Use",
+                "essential": {
+                    "label": "Essential Cookies",
+                    "text": "These cookies are strictly necessary for the operation of our website. They enable core functionalities such as page navigation, access to secure areas, and shopping cart functionality. The website cannot function properly without these cookies."
+                },
+                "performance": {
+                    "label": "Performance Cookies",
+                    "text": "These cookies collect information about how visitors use our website — such as which pages are visited most often and whether users encounter error messages. This data helps us improve the performance and usability of our site."
+                },
+                "functional": {
+                    "label": "Functional Cookies",
+                    "text": "These cookies allow our website to remember choices you make (such as your language preference or region) and provide enhanced, personalized features. They may also be used to remember changes you made to text size, fonts, and other customizable elements."
+                },
+                "marketing": {
+                    "label": "Marketing Cookies",
+                    "text": "These cookies track your browsing activity across websites to deliver advertisements that are more relevant to you and your interests. They also limit the number of times you see an ad and help measure the effectiveness of advertising campaigns."
+                }
+            },
+            "thirdParty": {
+                "title": "Third-Party Cookies",
+                "desc": "In addition to our own cookies, we may use cookies set by third-party services on our website, including:",
+                "items": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "to analyze traffic patterns and user behavior"
+                    },
+                    {
+                        "label": "Stripe",
+                        "text": "to process payments securely"
+                    },
+                    {
+                        "label": "Social Media Platforms",
+                        "text": "to enable sharing features and track campaign performance"
+                    }
+                ],
+                "note": "These third parties may use cookies to collect information about your online activities over time and across different websites."
+            },
+            "managing": {
+                "title": "Managing Your Cookies",
+                "desc": "You have the right to decide whether to accept or reject cookies. You can manage your cookie preferences in the following ways:",
+                "browserTitle": "Browser Settings",
+                "browserDesc": "Most web browsers allow you to control cookies through their settings. You can set your browser to block or alert you about cookies, or to delete cookies that have already been set. Please note that disabling certain cookies may affect the functionality of our website.",
+                "optOutTitle": "Opt-Out Links",
+                "optOutItems": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "Google Analytics Opt-out",
+                        "url": "https://tools.google.com/dlpage/gaoptout"
+                    },
+                    {
+                        "label": "Network Advertising Initiative",
+                        "text": "NAI Opt-out",
+                        "url": "https://optout.networkadvertising.org"
+                    }
+                ]
+            },
+            "retention": {
+                "title": "Cookie Retention",
+                "desc": "The length of time a cookie will stay on your device depends on whether it is a \"session\" or \"persistent\" cookie:",
+                "items": [
+                    {
+                        "label": "Session Cookies",
+                        "text": "Temporary cookies that are deleted when you close your browser."
+                    },
+                    {
+                        "label": "Persistent Cookies",
+                        "text": "Cookies that remain on your device for a set period or until you manually delete them. Our persistent cookies are retained for no longer than 12 months."
+                    }
+                ]
+            },
+            "updates": {
+                "title": "Updates to This Policy",
+                "p1": "We may update this Cookie Policy from time to time to reflect changes in technology, legislation, or our data practices. When we make changes, we will update the \"Last updated\" date at the top of this page. We encourage you to periodically review this policy."
+            },
+            "contact": {
+                "title": "Contact Us",
+                "desc": "If you have any questions about our use of cookies, please contact us:"
+            }
+        },
+        "disclaimer": {
+            "title": "Disclaimer",
+            "subtitle": "Important Notices",
+            "date": "March 1, 2026",
+            "general": {
+                "title": "General Disclaimer",
+                "p1": "The information provided on this website is for general informational purposes only. While we strive to keep the content accurate and up-to-date, LUCKDATE makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information, products, or services contained on this website.",
+                "p2": "Any reliance you place on such information is strictly at your own risk."
+            },
+            "health": {
+                "title": "Health & Medical Disclaimer",
+                "p1": "Our products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. The statements made about our products have not been evaluated by the Food and Drug Administration (FDA).",
+                "noticeTitle": "Important Notice",
+                "noticeText": "Always consult your physician or qualified healthcare provider before starting any new supplement regimen, especially if you are pregnant, nursing, taking medications, or have a pre-existing medical condition. Individual results may vary."
+            },
+            "productInfo": {
+                "title": "Product Information",
+                "desc": "We make every effort to display product colors, images, and descriptions as accurately as possible. However, we cannot guarantee that your device's display accurately reflects the actual color or appearance of our products.",
+                "items": [
+                    "Product packaging may vary from what is shown on the website",
+                    "Nutritional information and ingredient lists may be updated without notice",
+                    "Always refer to the product label for the most current ingredient and dosage information"
+                ]
+            },
+            "testimonials": {
+                "title": "Testimonials & Reviews",
+                "p1": "Testimonials and reviews displayed on our website reflect the personal experiences and opinions of individual customers. These results are not typical and your experience may differ. Testimonials are not intended to make claims that our products can be used to diagnose, treat, cure, or prevent any disease."
+            },
+            "externalLinks": {
+                "title": "External Links",
+                "p1": "Our website may contain links to third-party websites that are not owned or controlled by LUCKDATE. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites.",
+                "p2": "Inclusion of any link does not imply endorsement, approval, or recommendation by LUCKDATE. You access third-party websites at your own risk."
+            },
+            "limitation": {
+                "title": "Limitation of Liability",
+                "desc": "In no event shall LUCKDATE, its directors, employees, partners, agents, suppliers, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:",
+                "items": [
+                    "Your access to or use of (or inability to access or use) our services",
+                    "Any conduct or content of any third party on our services",
+                    "Any content obtained from our services",
+                    "Unauthorized access, use, or alteration of your transmissions or content"
+                ]
+            },
+            "accuracy": {
+                "title": "Accuracy of Information",
+                "p1": "While we endeavor to keep the information on our website current and correct, we make no guarantees regarding the accuracy, adequacy, validity, reliability, or completeness of any information. We reserve the right to correct any errors or omissions and to change or update information at any time without prior notice."
+            },
+            "contact": {
+                "title": "Contact Us",
+                "desc": "If you have any questions about this Disclaimer, please contact us:"
+            }
+        }
+    },
+    "common": {
+        "dismiss": "Dismiss",
+        "tryAgain": "Try Again"
+    },
+    "auth": {
+        "loginSuccess": "Logged in successfully!",
+        "emailRegistered": "This email is already registered. Please sign in to claim your coupon."
+    },
+    "orders": {
+        "title": "Recent Orders",
+        "count": "{{count}} orders",
+        "loading": "Loading your orders...",
+        "orderNumber": "Order Number",
+        "date": "Date",
+        "total": "Total",
+        "qty": "Qty: {{qty}}",
+        "cancelOrder": "Cancel Order",
+        "cancelling": "Cancelling...",
+        "trackOrder": "Track Order",
+        "trackingTimeline": "Tracking Timeline",
+        "tab": {
+            "all": "All Orders",
+            "pendingPayment": "Pending Payment",
+            "pendingDelivery": "Pending Delivery",
+            "pendingReceive": "Pending Receive",
+            "confirmReceive": "Confirm Receive",
+            "completed": "Completed",
+            "cancelled": "Cancelled",
+            "payConfirming": "Pay Confirming"
+        },
+        "empty": {
+            "title": "No orders yet",
+            "description": "Looks like you haven't made your first purchase."
+        },
+        "error": {
+            "loadFailed": "Failed to load orders",
+            "network": "Network error. Please try again.",
+            "cancelFailed": "Failed to cancel order",
+            "cancelRetry": "Failed to cancel order. Please try again."
+        },
+        "cancel": {
+            "successTitle": "Order Cancelled Successfully",
+            "successMessage": "Your order has been cancelled. Any coupon used for this order has been returned to your account.",
+            "couponExpired": "Note: The returned coupon has expired and is no longer usable."
+        },
+        "confirm": {
+            "title": "Cancel Order?",
+            "message": "Are you sure you want to cancel this order?",
+            "orderLabel": "Order",
+            "amountLabel": "Amount",
+            "couponPolicyTitle": "Coupon Return Policy:",
+            "couponPolicy1": "Any coupon used will be returned to your account",
+            "couponPolicy2": "If the coupon is still valid, it will be available for future use",
+            "couponPolicy3": "If the coupon has expired, it will be marked as expired",
+            "keepOrder": "Keep Order",
+            "yesCancel": "Yes, Cancel"
+        },
+        "countdownSuffix": " left",
+        "viewOrder": "View order {orderSn}",
+        "productAltSuffix": "- LUCKDATE product",
+        "processing": "Processing...",
+        "previousPage": "Previous page",
+        "nextPage": "Next page",
+        "unpaidFloat": {
+            "ariaLabel": "You have {{count}} unpaid order{{plural}}",
+            "single": "Unpaid Order",
+            "multiple": "{{count}} Unpaid Orders",
+            "dismiss": "Dismiss",
+            "loadFailed": "Failed to load order details",
+            "networkError": "Network error"
+        },
+        "unpaidOrderModal": {
+            "titleSingle": "You have an unpaid order",
+            "titlePlural": "You have {{count}} unpaid orders",
+            "subtitle": "Would you like to pay now?",
+            "viewDetails": "View Details",
+            "goPay": "Pay Now",
+            "cancelOrder": "Cancel Order",
+            "noUnpaid": "No unpaid orders found",
+            "loadFailed": "Failed to load order details",
+            "networkError": "Network error"
+        },
+        "expired": "Expired",
+        "pagination": {
+            "showing": "Showing {{showing}} of {{total}} orders · Page {{page}} of {{totalPages}}"
+        }
+    },
+    "coupon": {
+        "reason": {
+            "expired": "Expired",
+            "notYetValid": "Not yet valid",
+            "minSpend": "Min spend ${{min}} to use",
+            "productScope": "Only for selected products",
+            "used": "Already used",
+            "invalid": "Invalid"
+        }
+    },
+    "homeLayout": {
+        "promo": {
+            "left": "Start your ritual — 30-day money-back on every order",
+            "right": "",
+            "rightArrow": ""
+        },
+        "hero": {
+            "eyebrow": "LuckDate Daily Wellness",
+            "title": "Your daily ritual starts here",
+            "subtitle": "Slim Vitality fiber kits and Gut Balance probiotic sachets — simple daily rituals for lightness, digestion, and lasting vitality.",
+            "ctaPrimary": "Shop Rituals",
+            "ctaSecondary": "Explore Slim",
+            "badges": [
+                "Daily Fiber Ritual",
+                "Gut Balance",
+                "App Tracking",
+                "Nutritionist Support"
+            ],
+            "scroll": "Scroll"
+        },
+        "brandFilm": {
+            "label": "The LuckDate Belief",
+            "title": "Young is not just about age. It is about how light, active, and consistent you feel.",
+            "subtitle": "At LuckDate, we believe looking and feeling younger starts with everyday management — managing your body, your nutrition, your habits, and your long-term vitality. That is why our approach begins with Light Body Management and extends into Long-Term Vitality.",
+            "tapSound": "",
+            "points": [
+                {
+                    "num": "01",
+                    "title": "Light Body Management",
+                    "desc": "Support your weight goals, meal rhythm, and a lighter everyday body feeling."
+                },
+                {
+                    "num": "02",
+                    "title": "Long-Term Vitality",
+                    "desc": "Build daily habits that support energy, confidence, and long-term youthful wellness."
+                }
+            ],
+            "cta": "Explore the LuckDate Method →"
+        },
+        "method": {
+            "label": "The LuckDate Method",
+            "title": "Rituals that stick — with product, app, and guidance.",
+            "subtitle": "Slim Vitality and Gut Balance are designed as daily rituals. Pair them with app tracking and nutritionist support so consistency becomes easier than willpower.",
+            "pillars": [
+                {
+                    "num": "01",
+                    "name": "Ritual Products",
+                    "role": "Product",
+                    "desc": "Slim Vitality fiber kits and Gut Balance probiotic sachets built for everyday use."
+                },
+                {
+                    "num": "02",
+                    "name": "Smart Tracking App",
+                    "role": "App",
+                    "desc": "Scan your kit, activate guidance, reminders, and progress in one place."
+                },
+                {
+                    "num": "03",
+                    "name": "Nutritionist Support",
+                    "role": "Nutritionist",
+                    "desc": "Get check-ins and practical adjustments so you do not have to do it alone."
+                }
+            ],
+            "productCaption": "LuckDate · Slim Vitality + Gut Balance",
+            "cta": "Learn more about our science"
+        },
+        "featured": {
+            "label": "Featured Rituals",
+            "title": "Two rituals. One daily system.",
+            "subtitle": "Start with Slim Vitality for daily fiber lightness, or Gut Balance for a 30-day probiotic reset — both designed to live with the Luckdate App.",
+            "products": [
+                {
+                    "title": "Slim Vitality™",
+                    "tagline": "Daily Fiber + Plant Blend · 7 / 14 / 30-Day Ritual Kits",
+                    "bullets": [
+                        "Pink Guava & Oat & Grains single-serve sachets",
+                        "Pour · Shake · Enjoy with matching sage shaker",
+                        "Starter kits with QR activation in the Luckdate App",
+                        "Built for consistency — not another extreme plan"
+                    ],
+                    "accent": "sage",
+                    "ctaBuy": "Start Fiber Ritual",
+                    "ctaLearn": "See Kits",
+                    "buyHref": "/slim_1",
+                    "learnHref": "/slim_1#plans"
+                },
+                {
+                    "title": "Gut Balance",
+                    "tagline": "30-Day Inner Reset · Probiotic + Prebiotic Formula",
+                    "bullets": [
+                        "30 Billion CFU per daily ritual",
+                        "Prebiotic fiber for microbiome support",
+                        "30 slim sachets for a complete inner reset",
+                        "Designed for digestive comfort and daily balance"
+                    ],
+                    "accent": "cream",
+                    "ctaBuy": "Shop Gut Balance",
+                    "ctaLearn": "Read the Formula",
+                    "buyHref": "/products",
+                    "learnHref": "/blog"
+                }
+            ]
+        },
+        "profile": {
+            "label": "",
+            "title": "Want to know your current wellness status?",
+            "subtitle": "",
+            "cta": "Test My Status",
+            "note": "",
+            "profiles": []
+        },
+        "science": {
+            "label": "Scientific Background",
+            "title": "Backed by science. Built with quality. Designed for daily wellness.",
+            "subtitle": "LuckDate is built on a science-led wellness philosophy — combining high-quality ingredients, thoughtful formulation, recognized quality standards, and expert-backed brand credibility. With authorized endorsement from Aaron, a 2004 Nobel Prize laureate in Chemistry, and product quality supported by FDA and GMP certifications, LuckDate brings stronger scientific trust to everyday light body management and long-term vitality support.",
+            "pillars": [
+                {
+                    "title": "Nobel Laureate Endorsement",
+                    "desc": "Authorized endorsement from Aaron, 2004 Nobel Prize laureate in Chemistry, strengthens LuckDate’s science-led credibility.",
+                    "actionLabel": "Read in Journal & Guides",
+                    "actionHref": "#learn-hub"
+                },
+                {
+                    "title": "FDA & GMP Quality Support",
+                    "desc": "FDA food facility registration, GMP (21 CFR 111), and HACCP certifications from our manufacturing partner Innova Nutra support product quality and consumer trust.",
+                    "actionLabel": "View factory certificates",
+                    "actionHref": "#factory-certifications"
+                },
+                {
+                    "title": "Premium Ingredients",
+                    "desc": "LuckDate focuses on carefully selected ingredients suitable for daily wellness routines.",
+                    "actionLabel": "Explore our products",
+                    "actionHref": "/products"
+                },
+                {
+                    "title": "Scientific Formulation",
+                    "desc": "Each formula is designed around clear wellness goals, from light body management to long-term vitality.",
+                    "actionLabel": "Visit The Science",
+                    "actionHref": "/about"
+                }
+            ],
+            "complianceNote": "Science-backed wellness support, not medical treatment.",
+            "cta": "Visit The Science →",
+            "certificationsTitle": "Factory Qualifications & Certifications",
+            "certificationsSubtitle": "LuckDate products are manufactured by Sed Pharma Inc DBA Innova Nutra with documented FDA registration, GMP, HACCP, and business licensing.",
+            "certifications": [
+                {
+                    "id": "fda",
+                    "title": "FDA Food Facility Registration",
+                    "subtitle": "Sed Pharma Inc — Active registration #13565746238 (Ontario, CA, USA)",
+                    "file": "/certifications/fda-food-facility-registration.png",
+                    "type": "image"
+                },
+                {
+                    "id": "haccp-gmp",
+                    "title": "HACCP & GMP Certificate",
+                    "subtitle": "SED Pharma Inc DBA Innova Nutra — combined HACCP and GMP certification",
+                    "file": "/certifications/haccp-gmp-certificate.pdf",
+                    "type": "pdf"
+                },
+                {
+                    "id": "gmp-cfr111",
+                    "title": "GMP CFR 111 Certificate",
+                    "subtitle": "SED Pharma Inc DBA Innova Nutra — dietary supplement GMP (21 CFR Part 111)",
+                    "file": "/certifications/gmp-cfr-111-certificate.pdf",
+                    "type": "pdf"
+                },
+                {
+                    "id": "business-license",
+                    "title": "Business License",
+                    "subtitle": "Innova Nutra — official business operating license",
+                    "file": "/certifications/innova-business-license.pdf",
+                    "type": "pdf"
+                }
+            ]
+        },
+        "scientificAdvisory": {
+            "hero": {
+                "eyebrow": "Our Scientific Advisory Perspective",
+                "name": "Professor Aaron Ciechanover",
+                "title": "2004 Nobel Laureate in Chemistry / Scientific Advisor to Luckdate",
+                "bio": "Professor Ciechanover was awarded the Nobel Prize in Chemistry for discovering how proteins are broken down in cells — work that reshaped modern biology. As Scientific Advisor to Luckdate, he provides advisory perspectives on scientific principles, long-term health thinking, and responsible science communication.",
+                "cta": "Learn More About His Work",
+                "ctaHref": "/about"
+            },
+            "advises": {
+                "title": "What Professor Ciechanover Advises",
+                "items": [
+                    {
+                        "title": "Scientific Principles",
+                        "desc": "Ground wellness communication in evidence-based thinking — clarity over hype, and honesty about what science can and cannot promise."
+                    },
+                    {
+                        "title": "Long-Term Health Thinking",
+                        "desc": "Support habits and routines that compound over time, rather than quick fixes that fade after a few weeks."
+                    },
+                    {
+                        "title": "Responsible Science Communication",
+                        "desc": "Help Luckdate explain formulas, quality standards, and daily rituals in language people can trust and act on."
+                    }
+                ]
+            },
+            "notMeans": {
+                "title": "What This Role Does Not Mean",
+                "items": [
+                    "He did not formulate Luckdate Slim Vitality or other product recipes.",
+                    "He was not involved in app development or AI feature design.",
+                    "His advisory role does not constitute a medical endorsement of any product.",
+                    "Individual results vary — supplements support wellness, not medical treatment."
+                ]
+            },
+            "standards": {
+                "title": "Our Science Standards",
+                "items": [
+                    "Full ingredient transparency on every label",
+                    "Reviewed against expert guidance and scientific literature",
+                    "Third-party tested for purity and safety",
+                    "Manufactured in GMP-certified facilities",
+                    "Compliant with FDA regulations and global quality standards"
+                ],
+                "cta": "View Our Quality Commitment",
+                "ctaHref": "/about"
+            },
+            "quote": {
+                "text": "Science should clarify choices, not create confusion. Our responsibility is to share knowledge honestly, and empower people to live better every day.",
+                "attribution": "— Aaron Ciechanover, 2004 Nobel Laureate in Chemistry"
+            },
+            "journal": {
+                "title": "Stay Informed",
+                "desc": "Explore our science articles, research insights, and health education content.",
+                "cta": "Visit Our Journal",
+                "ctaHref": "/blog"
+            }
+        },
+        "ritual": {
+            "label": "How the Ritual Works",
+            "title": "Pour. Shake. Enjoy. Then stay guided.",
+            "subtitle": "Slim Vitality is a three-step daily fiber ritual. Scan your kit, open the Luckdate App, and keep momentum with reminders and check-ins.",
+            "steps": [
+                {
+                    "num": "01",
+                    "title": "Pour",
+                    "desc": "Empty one Slim Vitality or Gut Balance sachet into your shaker or glass."
+                },
+                {
+                    "num": "02",
+                    "title": "Shake",
+                    "desc": "Add water, shake, and create your daily ritual in under a minute."
+                },
+                {
+                    "num": "03",
+                    "title": "Enjoy",
+                    "desc": "Drink as part of your morning or afternoon rhythm — Pink Guava or Oat & Grains."
+                },
+                {
+                    "num": "04",
+                    "title": "Activate App",
+                    "desc": "Scan the QR inside your kit for personalized guidance, reminders, and progress."
+                }
+            ],
+            "closing": "Feel Alive. Meet Luckdate."
+        },
+        "reviews": {
+            "label": "Member Reviews",
+            "title": "What LuckDate Members Are Saying",
+            "subtitle": "Real routines, real consistency, and everyday wellness support.",
+            "featured": [
+                {
+                    "text": "Fitoo made it easier to replace one chaotic meal, but the app reminders helped me stay on track.",
+                    "name": "Sarah",
+                    "age": "42",
+                    "role": "Busy Professional",
+                    "since": "Member since 2024"
+                },
+                {
+                    "text": "The biggest difference was not doing it alone. The nutritionist check-ins helped me adjust instead of giving up.",
+                    "name": "Michelle",
+                    "age": "48",
+                    "role": "Weight Management User",
+                    "since": "Member since 2023"
+                },
+                {
+                    "text": "I started with Fitoo, then added more LuckDate support for my long-term vitality routine.",
+                    "name": "David",
+                    "age": "51",
+                    "role": "Long-Term Wellness User",
+                    "since": "Member since 2024"
+                }
+            ],
+            "cta": "Read more stories →",
+            "cards": [
+                {
+                    "rating": 5,
+                    "date": "Jun 22, 2026",
+                    "title": "Perfect for busy mornings",
+                    "body": "I replace breakfast with Fitoo on hectic workdays. It keeps me full until lunch and the app reminders help me stay consistent.",
+                    "name": "Sarah M.",
+                    "verified": true,
+                    "product": "Fitoo Nutrition Drink Mix"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 19, 2026",
+                    "title": "More energy in my routine",
+                    "body": "I take the NMN supplement every morning. My energy feels steadier through long workdays without relying on extra coffee.",
+                    "name": "Michelle K.",
+                    "verified": true,
+                    "product": "4-in-1 Liposomal NMN"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 16, 2026",
+                    "title": "Finally a plan I can follow",
+                    "body": "The nutritionist check-ins made a huge difference. Fitoo plus app tracking feels structured, not overwhelming.",
+                    "name": "Jennifer L.",
+                    "verified": true,
+                    "product": "Fitoo Nutrition Drink Mix"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 13, 2026",
+                    "title": "Skin looks healthier",
+                    "body": "After a few weeks with NMN, my skin looks more radiant and I feel more confident day to day. Simple routine, easy to stick with.",
+                    "name": "Lisa P.",
+                    "verified": true,
+                    "product": "4-in-1 Liposomal NMN"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 10, 2026",
+                    "title": "Great afternoon snack swap",
+                    "body": "Fitoo replaced my random afternoon snacks. Purple shake tastes good and fits my calorie goals.",
+                    "name": "Amanda S.",
+                    "verified": true,
+                    "product": "Fitoo Nutrition Drink Mix"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 7, 2026",
+                    "title": "Quality you can trust",
+                    "body": "Clear labeling and fast shipping. I like that LuckDate explains how to use products as part of a daily system.",
+                    "name": "Robert T.",
+                    "verified": true,
+                    "product": "NMN 1000mg"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 4, 2026",
+                    "title": "Helps after workouts",
+                    "body": "I use Fitoo after light workouts as a recovery shake. Convenient and keeps my meal rhythm steady.",
+                    "name": "Emily H.",
+                    "verified": true,
+                    "product": "Fitoo Nutrition Drink Mix"
+                },
+                {
+                    "rating": 5,
+                    "date": "Jun 1, 2026",
+                    "title": "Easy healthy aging support",
+                    "body": "NMN is now part of my morning ritual alongside better sleep habits. Gradual improvements, exactly what I wanted.",
+                    "name": "Karen Y.",
+                    "verified": true,
+                    "product": "4-in-1 Liposomal NMN"
+                },
+                {
+                    "rating": 5,
+                    "date": "May 29, 2026",
+                    "title": "Less stress about meals",
+                    "body": "When travel gets chaotic, Fitoo is an easy meal I can count on. Less temptation to grab fast food.",
+                    "name": "Diana W.",
+                    "verified": true,
+                    "product": "Fitoo Nutrition Drink Mix"
+                },
+                {
+                    "rating": 5,
+                    "date": "May 26, 2026",
+                    "title": "Worth reordering",
+                    "body": "Both Fitoo and NMN fit into one simple LuckDate routine. Already placed my second order.",
+                    "name": "Laura V.",
+                    "verified": true,
+                    "product": "LuckDate System"
+                },
+                {
+                    "rating": 5,
+                    "date": "May 23, 2026",
+                    "title": "Tastes better than expected",
+                    "body": "The drink mix blends smoothly and does not feel chalky. My husband started using it too.",
+                    "name": "Angela O.",
+                    "verified": true,
+                    "product": "Fitoo Nutrition Drink Mix"
+                },
+                {
+                    "rating": 5,
+                    "date": "May 20, 2026",
+                    "title": "Steady progress",
+                    "body": "No miracle promises — just a routine that works. App tracking plus nutritionist tips keep me accountable.",
+                    "name": "Patricia I.",
+                    "verified": true,
+                    "product": "LuckDate App + Fitoo"
+                }
+            ],
+            "loadMore": "View More Reviews"
+        },
+        "learnHub": {
+            "label": "Learn with LuckDate",
+            "title": "Simple guidance for weight management, nutrition, and youthful living.",
+            "subtitle": "Explore practical articles about meal replacement, app-based tracking, nutritionist support, and long-term vitality — all designed to help you build habits that last.",
+            "cta": "Explore the Learn Hub",
+            "categories": [
+                {
+                    "name": "Fitoo & Weight Management",
+                    "count": 12
+                },
+                {
+                    "name": "App Tracking Tips",
+                    "count": 10
+                },
+                {
+                    "name": "Nutritionist Guidance",
+                    "count": 8
+                },
+                {
+                    "name": "Long-Term Vitality",
+                    "count": 14
+                },
+                {
+                    "name": "Sunflower Rituals",
+                    "count": 9
+                }
+            ]
+        },
+        "finalCta": {
+            "label": "Start today",
+            "title": "Support healthy aging from all four angles.",
+            "subtitle": "Test your wellness status or explore Fitoo and the LuckDate system.",
+            "ctaPrimary": "Test My Status",
+            "ctaSecondary": "Shop Fitoo",
+            "note": "30-day money-back guarantee · Cancel anytime · Free shipping"
+        },
+        "products": {
+            "badge": "More LuckDate Solutions",
+            "title": "More ways to support your body, energy, and long-term youthfulness.",
+            "description": "From light body management to vitality support, LuckDate offers solutions designed to work with your daily routine, your app tracking, and your nutritionist guidance."
+        },
+        "results": {
+            "label": "Built for Everyday Balance",
+            "title": "Fiber lightness. Gut resilience.",
+            "subtitle": "Two complementary rituals — Slim Vitality for daily fiber and plant blend support, Gut Balance for probiotic + prebiotic inner reset.",
+            "visuals": [
+                {
+                    "title": "Slim Vitality · Daily Fiber",
+                    "desc": "Pink Guava and Oat & Grains sachets make fiber a ritual you can keep — with kits and a sage shaker designed for real mornings."
+                },
+                {
+                    "title": "Gut Balance · Inner Reset",
+                    "desc": "30 Billion CFU plus prebiotic fiber in a 30-day sachet ritual for digestive comfort, microbiome support, and daily balance."
+                }
+            ]
+        }
+    }
+}

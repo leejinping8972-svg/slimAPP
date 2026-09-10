@@ -1,0 +1,746 @@
+{
+    "nav": {
+        "home": "首页",
+        "products": "产品中心",
+        "categories": "产品分类",
+        "about": "关于我们",
+        "reviews": "客户评价",
+        "faq": "常见问题",
+        "insight": "洞察",
+        "orderInquiry": "订单查询",
+        "shopNow": "立即购买"
+    },
+    "hero": {
+        "badge": "高端膳食补充剂",
+        "title": "开启您的\n健康活力体验",
+        "subtitle": "高端补剂，为您的积极生活方式注入能量。体验天然成分与科学配方的卓越融合。",
+        "explore": "探索产品",
+        "ourStory": "品牌故事",
+        "stats": {
+            "products": "高端产品",
+            "customers": "忠实客户",
+            "natural": "纯天然成分"
+        },
+        "badges": {
+            "tested": "临床测试认证",
+            "rating": "4.9 评分"
+        },
+        "slides": {
+            "badge1": "唤醒您的能量",
+            "title1": "诺贝尔奖得主领衔，重新定义健康衰老与体重管理",
+            "subtitle1": "与2004年诺贝尔化学奖得主Aaron J. Ciechanover教授深度合作，我们以细胞层面的科学提供精准、高效、终身健康解决方案。",
+            "title1Part1": "由",
+            "title1Highlight": "诺贝尔奖得主",
+            "title1Part2": "领衔，重新定义健康衰老与体重管理",
+            "scientistName": "Aaron Ciechanover",
+            "scientistTitle1": "2004年诺贝尔化学奖得主，",
+            "scientistTitle2": "Luckdate首席咨询科学家。",
+            "badge2": "个性化健康",
+            "title2": "找到您的完美选择",
+            "subtitle2": "不确定从哪里开始？探索我们精心策划的分类，找到您的身体目前所需的确切营养支持。",
+            "badge3": "100% 纯天然",
+            "title3": "天然补充剂",
+            "subtitle3": "体验大自然的纯粹力量。我们严格使用非转基因、无麸质和道德采购的成分，传递最大健康效益。"
+        },
+        "exploreCollection": "探索系列",
+        "ourCategories": "产品分类"
+    },
+    "whyChooseUs": {
+        "badge": "为什么选择我们",
+        "title": "LUCKDATE 的独特之处",
+        "features": {
+            "cleanIngredients": "纯净成分",
+            "cleanIngredientsDesc": "我们只使用最纯净的天然来源成分。无人工色素、香料或防腐剂。",
+            "scienceBacked": "科学验证",
+            "scienceBackedDesc": "每种配方均采用最新研究和临床研究开发，功效最大化。",
+            "thirdParty": "第三方检测",
+            "thirdPartyDesc": "独立实验室验证我们生产的每批产品的纯度和功效。",
+            "subscribe": "订阅省钱",
+            "subscribeDesc": "通过我们灵活的订阅计划，每单可节省 20%。随时可取消。"
+        }
+    },
+    "brandLogos": {
+        "trustedBy": "行业领先品牌信赖",
+        "certifications": {
+            "fda": "FDA 注册",
+            "gmp": "GMP 认证",
+            "natural": "100% 纯天然",
+            "tested": "第三方检测",
+            "vegan": "素食友好",
+            "premium": "优质品质"
+        }
+    },
+    "latestBlog": {
+        "badge": "健康资讯",
+        "title": "最新洞察",
+        "viewAll": "查看全部文章"
+    },
+    "products": {
+        "badge": "我们的产品",
+        "title": "为您精心打造",
+        "description": "探索我们全系列优质补充剂，每款均采用科学配方成分，以获得最佳效果。",
+        "loading": "加载优质补充剂中...",
+        "quickView": "快速查看",
+        "addCart": "加入购物车",
+        "allProducts": "所有产品",
+        "noProducts": "未找到产品",
+        "tryDifferentFilter": "尝试选择其他筛选条件",
+        "pagination": {
+            "previous": "上一页",
+            "next": "下一页",
+            "showingPage": "第 {{currentPage}} 页，共 {{totalPages}} 页（共 {{total}} 个产品）"
+        }
+    },
+    "categories": {
+        "badge": "按需求购买",
+        "title": "找到您的完美匹配",
+        "energy": "能量",
+        "energyDesc": "提升活力",
+        "immunity": "免疫力",
+        "immunityDesc": "增强防御",
+        "beauty": "美容",
+        "beautyDesc": "由内而外绽放"
+    },
+    "orderInquiry": {
+        "back": "返回",
+        "title": "订单查询",
+        "description": "请输入收件人姓名和手机号码后4位来查询您的订单。",
+        "namePlaceholder": "收件人姓名",
+        "phonePlaceholder": "手机号（后4位）",
+        "search": "查询",
+        "foundOrders": "找到 {{count}} 个订单",
+        "noOrders": "未找到订单",
+        "noOrdersDescription": "我们无法找到与您提供的信息匹配的订单。请仔细检查收件人姓名和手机号码。",
+        "orderNumberLabel": "订单编号",
+        "trackingNumberLabel": "物流单号",
+        "currentStatus": "当前状态",
+        "collapse": "收起",
+        "copy": "复制",
+        "copied": "已复制",
+        "status": {
+            "pending": "待付款",
+            "processing": "处理中",
+            "shipped": "运输中",
+            "delivered": "已送达",
+            "cancelled": "已取消"
+        }
+    },
+    "blog": {
+        "title": "健康期刊与指南",
+        "description": "探索关于长寿、健康和 LUCKDATE 背后科学的最新见解。",
+        "tryRefreshing": "尝试刷新",
+        "readArticle": "阅读文章",
+        "pagination": {
+            "previous": "上一页",
+            "next": "下一页",
+            "showingPage": "第 {{currentPage}} 页，共 {{totalPages}} 页（共 {{total}} 篇文章）"
+        },
+        "article": {
+            "backToJournal": "返回期刊",
+            "shareArticle": "分享这篇文章",
+            "notFound": "文章未找到",
+            "notFoundDesc": "您要查找的文章可能已被移除或暂时不可用。"
+        }
+    },
+    "product": {
+        "backToProducts": "返回产品列表",
+        "notFound": "产品未找到",
+        "notFoundDesc": "您要查找的产品可能已被移除或暂时不可用。",
+        "backToHome": "返回首页"
+    },
+    "success": {
+        "title": "支付成功！",
+        "description": "感谢您的购买。您的订单已确认，将很快发货。",
+        "orderId": "订单号：#{{orderId}}",
+        "continueShopping": "继续购物"
+    },
+    "cart": {
+        "title": "您的购物车 ({{count}})",
+        "empty": "您的购物车是空的",
+        "emptyDesc": "添加一些产品开始购物",
+        "startShopping": "开始购物",
+        "subtotal": "小计",
+        "shipping": "运费",
+        "shippingCalculated": "结账时计算",
+        "total": "总计",
+        "checkout": "去结账",
+        "checkoutTitle": "结账",
+        "closeCheckout": "关闭",
+        "checkoutError": "无法发起结账，请重试。",
+        "checkoutNotConfigured": "结账未配置。",
+        "payPageMissingSession": "没有有效的结账会话，请从购物车或商品页重新发起结账。",
+        "payPageCancel": "取消",
+        "processing": "处理中...",
+        "continueShopping": "继续购物"
+    },
+    "about": {
+        "badge": "关于我们",
+        "title": "自然与科学的完美融合",
+        "science": "科学",
+        "desc1": "在 LUCKDATE，我们将植物智慧与前沿研究相结合，创造出真正有效的补充剂。拒绝虚假宣传，只为您提供纯正、高效的配方，助力您的健康之旅。",
+        "desc2": "我们的营养学家、科学家和健康专家团队不懈努力，从世界各地寻找优质原料。每款产品都经过严格测试，确保其安全性、有效性和高品质。",
+        "features": [
+            "临床验证成分",
+            "纯净度第三方测试",
+            "可持续采购实践",
+            "无人工添加剂"
+        ],
+        "experience": "卓越品质历程"
+    },
+    "cta": {
+        "title": "首单立享 {{discount}}% 折扣",
+        "titleHighlight": "首单优惠",
+        "subtitle": "立即开始您的健康之旅。订阅我们的新闻通讯，在首次购买时获得独家折扣。",
+        "button": "立即选购",
+        "badges": {
+            "freeShipping": "免运费",
+            "guarantee": "30天保障",
+            "cancel": "随时取消"
+        },
+        "discountBadge": {
+            "off": "立减"
+        }
+    },
+    "footer": {
+        "desc": "高端补剂，为您的积极生活方式注入能量。体验天然成分与科学配方的卓越融合。",
+        "newsletter": {
+            "title": "订阅我们的通讯并获取优惠券",
+            "placeholder": "输入您的电子邮箱",
+            "thanks": "感谢您的订阅！"
+        },
+        "sections": {
+            "products": "产品中心",
+            "company": "公司信息",
+            "support": "客户服务",
+            "legal": "法律条款"
+        },
+        "productsList": {
+            "nmn": "NMN 补充剂",
+            "nad": "NAD+ 复合物",
+            "probiotics": "益生菌",
+            "shilajit": "喜马拉雅古鲁胶软糖"
+        },
+        "companyList": {
+            "ourStory": "我们的故事",
+            "careers": "加入我们",
+            "press": "媒体报道"
+        },
+        "supportList": {
+            "contactUs": "联系我们",
+            "shipping": "配送信息",
+            "returns": "退换货",
+            "trackOrder": "订单追踪"
+        },
+        "legalList": {
+            "privacyPolicy": "隐私政策",
+            "termsOfService": "服务条款",
+            "cookiePolicy": "Cookie政策",
+            "disclaimer": "免责声明"
+        },
+        "copyright": "版权所有。",
+        "madeWith": "用心守护您的健康",
+        "fda": "*以上声明未经美国食品药品监督管理局 (FDA) 评估。此类产品不用于诊断、治疗、治愈或预防任何疾病。"
+    },
+    "faq": {
+        "badge": "有问题吗？",
+        "title": "常见问题解答",
+        "science": "常见问题",
+        "items": [
+            {
+                "question": "LUCKDATE 补剂与其他品牌有什么不同？",
+                "answer": "LUCKDATE 补剂采用临床验证的成分，并配合有效剂量。我们所有的产品都经过严格的第三方纯度和效力测试。我们只使用纯净、天然的成分，不含人工添加剂、填充剂或防腐剂。"
+            },
+            {
+                "question": "多久能看到效果？",
+                "answer": "效果因产品和个人体质而异。大多数客户报告在持续使用 2-4 周后会有明显改善。为了获得最佳效果，我们建议按照说明每天服用，并坚持至少 30 天。"
+            },
+            {
+                "question": "你们的补剂经过 FDA 批准吗？",
+                "answer": "膳食补充剂不需要经过 FDA 批准。但是，我们的生产设施已在 FDA 注册，并遵循严格的 GMP（良好生产规范）指南。所有产品均经过第三方测试以确保质量。"
+            },
+            {
+                "question": "我可以同时服用多种 LUCKDATE 补剂吗？",
+                "answer": "可以，我们的大多数补充剂旨在协同工作。但是，在开始任何新的补充剂计划之前，我们建议咨询您的医疗保健提供者，特别是如果您正在服用药物或患有现有健康状况。"
+            },
+            {
+                "question": "你们的退货政策是什么？",
+                "answer": "我们提供 30 天满意保证。如果您对购买的产品不完全满意，请联系我们的客户服务团队申请全额退款。我们对产品质量充满信心。"
+            }
+        ],
+        "stillQuestions": "还有其他问题吗？",
+        "contactSupport": "联系我们的支持团队"
+    },
+    "contact": {
+        "title": "联系我们",
+        "subtitle": "我们的客服团队随时为您提供订单、产品咨询、退换货等方面的帮助。",
+        "emailTitle": "官方邮箱",
+        "emailDesc": "如有任何问题，请通过以下官方邮箱联系我们的客服团队：",
+        "responseTime": "我们通常会在 1-2 个工作日内回复。",
+        "helpWith": "我们可以为您提供以下帮助：",
+        "topics": [
+            "订单状态与物流",
+            "退换货与退款",
+            "产品信息咨询",
+            "账户与订阅问题"
+        ],
+        "back": "返回"
+    },
+    "testimonials": {
+        "badge": "客户见证",
+        "title": "客户的真实评价",
+        "science": "评价",
+        "loadMore": "查看更多评价",
+        "items": [
+            {
+                "name": "Sarah Mitchell",
+                "role": "健身教练",
+                "text": "包装很有高级感，收到时感觉产品非常精致。我最近一直在坚持吃，感觉皮肤状态更稳定了，上妆也更服帖。"
+            },
+            {
+                "name": "Michael Chen",
+                "role": "软件工程师",
+                "text": "这是我一直在复购的产品。使用之后，能肉眼看到皮肤状态和气色都有所改善。非常推荐！"
+            },
+            {
+                "name": "Patricia Williams",
+                "role": "退休教师",
+                "text": "我现在对口服美容产品的要求很简单：成分靠谱、配方逻辑清晰，而且容易坚持。LUCKDATE 这几点都符合，我也算是它家的忠实客户了。"
+            },
+            {
+                "name": "Emily Rodriguez",
+                "role": "瑜伽导师",
+                "text": "使用后，我感觉身体的疲惫感没有以前那么强了，整个人状态更轻松、更平衡。每天吃一份也很方便，感觉像是在为身体进行日常抗氧化和内在养护。"
+            },
+            {
+                "name": "David Thompson",
+                "role": "企业高管",
+                "text": "作为一个经常熬夜工作的人，我最在意的是身体能否保持健康、年轻的状态。自从开始服用 LUCKDATE 后，我感觉自己白天的状态更加稳定，也不那么容易被熬夜和压力消耗。"
+            },
+            {
+                "name": "Linda Park",
+                "role": "营养师",
+                "text": "一开始我对这类补充剂并没有抱太高期待，但 LUCKDATE 真的让我有些惊喜。坚持使用后，我能感觉到我的身体状态变得更好了。"
+            },
+            {
+                "name": "Jennifer Adams",
+                "role": "护肤爱好者",
+                "text": "原本只是买来试试看，没想到抗衰效果比预期更好。内服后，我的皮肤逐渐变得更紧致、更有光泽，气色也一直在改善。我会继续复购的。"
+            },
+            {
+                "name": "Robert Lee",
+                "role": "健康倡导者",
+                "text": "我一直对NAD+很感兴趣。对比了很多品牌之后，最后选择了 LUCKDATE。吃了一个多月，效果还是挺明显的，皮肤看起来更紧致、更透亮。"
+            }
+        ]
+    },
+    "legal": {
+        "back": "返回",
+        "lastUpdated": "最后更新",
+        "onThisPage": "本页目录",
+        "contactTeam": "LUCKDATE {{team}}团队",
+        "email": "电子邮箱",
+        "address": "地址",
+        "addressValue": "美国加利福尼亚州洛杉矶",
+        "privacy": {
+            "title": "隐私政策",
+            "subtitle": "您的隐私至关重要",
+            "date": "2026年3月1日",
+            "intro": {
+                "title": "引言",
+                "p1": "在 LUCKDATE（以下简称「我们」），我们致力于保护您个人信息的隐私和安全。本隐私政策说明了当您访问我们的网站、购买我们的产品或使用我们的服务时，我们如何收集、使用、披露和保护您的数据。",
+                "p2": "访问或使用我们的服务即表示您已阅读、理解并同意受本隐私政策的约束。如果您不同意，请立即停止使用我们的服务。"
+            },
+            "collect": {
+                "title": "我们收集的信息",
+                "desc": "我们可能会收集以下类型的信息：",
+                "personalTitle": "个人信息",
+                "personal": [
+                    "姓名及联系方式（电子邮箱、电话号码、通讯地址）",
+                    "付款及账单信息（信用卡号、账单地址）",
+                    "账户凭证（用户名、加密密码）",
+                    "订单历史和购买偏好"
+                ],
+                "autoTitle": "自动收集的信息",
+                "auto": [
+                    "设备类型、浏览器类型和操作系统",
+                    "IP 地址及大致地理位置",
+                    "访问的页面、停留时间和浏览路径",
+                    "引荐 URL 及将您引导至本站的搜索关键词"
+                ]
+            },
+            "howWeUse": {
+                "title": "我们如何使用您的信息",
+                "desc": "我们使用所收集的信息用于：",
+                "items": [
+                    "处理和履行您的订单，包括配送和支付处理",
+                    "提供客户支持并回复您的咨询",
+                    "个性化您的购物体验和产品推荐",
+                    "发送交易相关邮件（订单确认、物流更新）",
+                    "在您同意的情况下，发送有关新产品和优惠的促销信息",
+                    "通过数据分析改进我们的网站、产品和服务",
+                    "检测和防范欺诈、未授权访问及其他违法活动"
+                ]
+            },
+            "sharing": {
+                "title": "信息共享与披露",
+                "desc": "我们不会将您的个人信息出售给第三方。我们可能会与以下方共享您的数据：",
+                "items": [
+                    {
+                        "label": "服务提供商",
+                        "text": "协助我们运营业务的支付处理商、物流承运商和云托管提供商"
+                    },
+                    {
+                        "label": "分析合作伙伴",
+                        "text": "如 Google Analytics 等工具，帮助我们了解网站使用情况"
+                    },
+                    {
+                        "label": "法律义务",
+                        "text": "在法律、法规或法律程序要求时"
+                    },
+                    {
+                        "label": "业务转让",
+                        "text": "与合并、收购或资产出售相关时"
+                    }
+                ]
+            },
+            "security": {
+                "title": "数据安全",
+                "p1": "我们采取行业标准的安全措施来保护您的个人信息，包括传输中数据的 SSL/TLS 加密、敏感数据的加密存储以及定期安全审计。但是，互联网上的任何传输方式都无法保证 100% 安全，我们无法保证绝对的安全性。"
+            },
+            "rights": {
+                "title": "您的权利与选择",
+                "desc": "根据您所在司法管辖区的法律，您可能有权：",
+                "items": [
+                    "访问我们持有的关于您的个人数据",
+                    "要求更正或删除您的个人数据",
+                    "随时退出营销通讯",
+                    "要求以机器可读格式获取数据的可携性",
+                    "在处理基于同意的情况下撤回同意"
+                ],
+                "contact": "如需行使上述任何权利，请通过以下方式联系我们"
+            },
+            "children": {
+                "title": "儿童隐私",
+                "p1": "我们的服务不面向 18 岁以下的个人。我们不会有意收集儿童的个人信息。如果我们发现无意中收集了儿童的数据，我们将及时采取措施删除该信息。"
+            },
+            "changes": {
+                "title": "本政策的变更",
+                "p1": "我们可能会不时更新本隐私政策。更新时，我们将修改本页面顶部的「最后更新」日期。我们建议您定期查阅本政策，以了解我们如何保护您的信息。"
+            },
+            "contact": {
+                "title": "联系我们",
+                "desc": "如果您对本隐私政策有任何疑问或顾虑，请联系我们："
+            }
+        },
+        "terms": {
+            "title": "服务条款",
+            "subtitle": "法律协议",
+            "date": "2026年3月1日",
+            "acceptance": {
+                "title": "条款接受",
+                "p1": "欢迎访问 LUCKDATE。本服务条款（以下简称「条款」）规定了您访问和使用我们网站、产品及服务的条件。访问或使用我们服务的任何部分即表示您同意受本条款的约束。",
+                "p2": "如果您不同意本条款的全部内容，您不得访问或使用我们的服务。我们保留随时更新或修改本条款的权利，恕不另行通知。"
+            },
+            "eligibility": {
+                "title": "使用资格",
+                "p1": "您必须年满 18 周岁且具有签订具有法律约束力协议的能力，方可使用我们的服务。使用我们的服务即表示您声明并保证您符合上述资格要求。"
+            },
+            "accounts": {
+                "title": "用户账户",
+                "desc": "当您在我们这里创建账户时，您有责任维护账户凭证的保密性，并对账户下发生的所有活动负责。",
+                "items": [
+                    "在注册时提供准确、最新和完整的信息",
+                    "及时更新您的账户信息以保持其准确性",
+                    "在发现任何未授权使用您账户的情况时立即通知我们",
+                    "不与第三方共享您的密码或账户访问权限"
+                ]
+            },
+            "orders": {
+                "title": "订单与付款",
+                "desc": "通过我们网站下的所有订单均受产品库存及我们接受与否的约束。我们保留因任何原因拒绝或取消任何订单的权利。",
+                "pricingTitle": "定价",
+                "pricingDesc": "所有价格均以美元标示，如有变更恕不另行通知。价格不包含适用的税费和运费，这些将在结账时计算。",
+                "paymentTitle": "付款",
+                "paymentDesc": "我们接受主要的信用卡、借记卡以及结账时显示的其他付款方式。所有付款均通过我们的第三方支付处理商安全处理。"
+            },
+            "shipping": {
+                "title": "配送与退货",
+                "desc": "我们力求在 1-3 个工作日内发货。送达时间因您的位置和所选配送方式而异。国际运输可能需要缴纳关税和进口税。",
+                "returnTitle": "退货政策",
+                "returnItems": [
+                    "不可取消或退货；您需要联系客服寻求帮助。",
+                    "收到产品后 30 天内可退货并获得全额退款",
+                    "商品必须未使用、未拆封，且保持原始包装",
+                    "退货运费由客户承担，除非产品存在缺陷",
+                    "退款将在我们收到退货商品后的 5-10 个工作日内处理"
+                ]
+            },
+            "ip": {
+                "title": "知识产权",
+                "p1": "本网站上的所有内容——包括文本、图形、徽标、图像、产品描述和软件——均为 LUCKDATE 的专属财产，受版权、商标和其他知识产权法律保护。",
+                "p2": "未经 LUCKDATE 事先书面同意，您不得复制、分发、修改、创建衍生作品、公开展示或以其他方式利用我们的任何内容。"
+            },
+            "prohibited": {
+                "title": "禁止行为",
+                "desc": "使用我们的服务时，您同意不得：",
+                "items": [
+                    "违反任何适用的法律或法规",
+                    "冒充任何个人或实体，或虚假陈述您的关联关系",
+                    "提交虚假、误导性或欺诈性的订单或评论",
+                    "干扰或破坏我们网站或服务器的运行",
+                    "试图未经授权访问我们服务的任何部分",
+                    "使用自动化工具抓取、爬取或提取我们网站上的数据"
+                ]
+            },
+            "limitation": {
+                "title": "责任限制",
+                "p1": "在法律允许的最大范围内，LUCKDATE 对因您使用我们的服务而产生或与之相关的任何间接、附带、特殊、后果性或惩罚性损害不承担责任，即使我们已被告知此类损害的可能性。",
+                "p2": "对于因本条款产生或与之相关的任何索赔，我们的总责任不超过您在索赔前十二（12）个月内向我们支付的金额。"
+            },
+            "governing": {
+                "title": "适用法律",
+                "p1": "本条款应受美国加利福尼亚州法律管辖并据其解释，不考虑其法律冲突原则。因本条款产生或与之相关的任何争议均应受加利福尼亚州洛杉矶县法院的专属管辖。"
+            },
+            "contact": {
+                "title": "联系我们",
+                "desc": "如果您对本条款有任何疑问，请联系我们："
+            }
+        },
+        "cookies": {
+            "title": "Cookie 政策",
+            "subtitle": "我们如何使用 Cookie",
+            "date": "2026年3月1日",
+            "what": {
+                "title": "什么是 Cookie？",
+                "p1": "Cookie 是您访问网站时存放在您设备上的小型文本文件。它们被广泛用于使网站更高效地运行、为网站所有者提供分析信息，并提供更好的浏览体验。",
+                "p2": "本 Cookie 政策说明了 LUCKDATE（以下简称「我们」）如何在我们的网站上使用 Cookie 及类似技术。"
+            },
+            "types": {
+                "title": "我们使用的 Cookie 类型",
+                "essential": {
+                    "label": "必要 Cookie",
+                    "text": "这些 Cookie 是网站运行所必需的。它们支持页面导航、安全区域访问和购物车功能等核心功能。没有这些 Cookie，网站将无法正常运行。"
+                },
+                "performance": {
+                    "label": "性能 Cookie",
+                    "text": "这些 Cookie 收集有关访问者如何使用我们网站的信息——例如哪些页面访问量最高、用户是否遇到错误消息等。这些数据帮助我们改进网站的性能和可用性。"
+                },
+                "functional": {
+                    "label": "功能 Cookie",
+                    "text": "这些 Cookie 允许我们的网站记住您所做的选择（如语言偏好或地区），并提供增强的个性化功能。它们也可能用于记住您对文字大小、字体和其他可自定义元素所做的更改。"
+                },
+                "marketing": {
+                    "label": "营销 Cookie",
+                    "text": "这些 Cookie 跟踪您在各网站上的浏览活动，以向您投放与您及您兴趣更相关的广告。它们还会限制您看到某个广告的次数，并帮助衡量广告活动的效果。"
+                }
+            },
+            "thirdParty": {
+                "title": "第三方 Cookie",
+                "desc": "除了我们自己的 Cookie 外，我们还可能在网站上使用由第三方服务设置的 Cookie，包括：",
+                "items": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "用于分析流量模式和用户行为"
+                    },
+                    {
+                        "label": "Stripe",
+                        "text": "用于安全处理支付"
+                    },
+                    {
+                        "label": "社交媒体平台",
+                        "text": "用于启用分享功能和跟踪营销活动效果"
+                    }
+                ],
+                "note": "这些第三方可能会使用 Cookie 来收集您在一段时间内跨不同网站的在线活动信息。"
+            },
+            "managing": {
+                "title": "管理您的 Cookie",
+                "desc": "您有权决定是否接受或拒绝 Cookie。您可以通过以下方式管理您的 Cookie 偏好设置：",
+                "browserTitle": "浏览器设置",
+                "browserDesc": "大多数网络浏览器允许您通过其设置控制 Cookie。您可以将浏览器设置为阻止或提示 Cookie，或删除已设置的 Cookie。请注意，禁用某些 Cookie 可能会影响我们网站的功能。",
+                "optOutTitle": "退出链接",
+                "optOutItems": [
+                    {
+                        "label": "Google Analytics",
+                        "text": "Google Analytics 退出",
+                        "url": "https://tools.google.com/dlpage/gaoptout"
+                    },
+                    {
+                        "label": "网络广告倡议组织",
+                        "text": "NAI 退出",
+                        "url": "https://optout.networkadvertising.org"
+                    }
+                ]
+            },
+            "retention": {
+                "title": "Cookie 保留期限",
+                "desc": "Cookie 在您设备上的保留时间取决于它是「会话」Cookie 还是「持久」Cookie：",
+                "items": [
+                    {
+                        "label": "会话 Cookie",
+                        "text": "临时 Cookie，在您关闭浏览器时自动删除。"
+                    },
+                    {
+                        "label": "持久 Cookie",
+                        "text": "在您设备上保留一定期限或直到您手动删除的 Cookie。我们的持久 Cookie 保留期限不超过 12 个月。"
+                    }
+                ]
+            },
+            "updates": {
+                "title": "本政策的更新",
+                "p1": "我们可能会不时更新本 Cookie 政策，以反映技术、法律或我们数据实践方面的变化。更新时，我们将更新本页面顶部的「最后更新」日期。我们建议您定期查阅本政策。"
+            },
+            "contact": {
+                "title": "联系我们",
+                "desc": "如果您对我们使用 Cookie 有任何疑问，请联系我们："
+            }
+        },
+        "disclaimer": {
+            "title": "免责声明",
+            "subtitle": "重要提示",
+            "date": "2026年3月1日",
+            "general": {
+                "title": "一般免责声明",
+                "p1": "本网站提供的信息仅供一般参考之用。尽管我们努力保持内容的准确性和时效性，但 LUCKDATE 对本网站所含信息、产品或服务的完整性、准确性、可靠性、适用性或可用性不作任何明示或暗示的陈述或保证。",
+                "p2": "您对此类信息的任何依赖均由您自行承担风险。"
+            },
+            "health": {
+                "title": "健康与医疗免责声明",
+                "p1": "我们的产品属于膳食补充剂，不用于诊断、治疗、治愈或预防任何疾病。关于我们产品的声明未经美国食品药品监督管理局 (FDA) 评估。",
+                "noticeTitle": "重要提示",
+                "noticeText": "在开始任何新的补充剂计划之前，请务必咨询您的医生或合格的医疗保健提供者，尤其是在您怀孕、哺乳、正在服药或有既往病史的情况下。个人效果可能因人而异。"
+            },
+            "productInfo": {
+                "title": "产品信息",
+                "desc": "我们尽力准确展示产品的颜色、图片和描述。但是，我们无法保证您设备的显示屏能准确反映我们产品的实际颜色或外观。",
+                "items": [
+                    "产品包装可能与网站上展示的有所不同",
+                    "营养信息和成分表可能会在不另行通知的情况下更新",
+                    "请始终参阅产品标签以获取最新的成分和剂量信息"
+                ]
+            },
+            "testimonials": {
+                "title": "用户评价与评论",
+                "p1": "本网站展示的用户评价和评论反映了个别客户的个人体验和看法。这些效果并不具有普遍代表性，您的体验可能有所不同。用户评价不旨在声称我们的产品可以用于诊断、治疗、治愈或预防任何疾病。"
+            },
+            "externalLinks": {
+                "title": "外部链接",
+                "p1": "本网站可能包含指向非 LUCKDATE 拥有或控制的第三方网站的链接。我们无法控制任何第三方网站的内容、隐私政策或做法，也不对其承担任何责任。",
+                "p2": "包含任何链接并不意味着 LUCKDATE 对其的认可、批准或推荐。您访问第三方网站需自行承担风险。"
+            },
+            "limitation": {
+                "title": "责任限制",
+                "desc": "在任何情况下，LUCKDATE 及其董事、员工、合作伙伴、代理、供应商或关联公司均不对以下原因导致的任何间接、附带、特殊、后果性或惩罚性损害承担责任，包括但不限于利润损失、数据丢失、使用损失、商誉损失或其他无形损失：",
+                "items": [
+                    "您访问或使用（或无法访问或使用）我们的服务",
+                    "我们服务上任何第三方的行为或内容",
+                    "从我们服务获取的任何内容",
+                    "未经授权访问、使用或篡改您的传输或内容"
+                ]
+            },
+            "accuracy": {
+                "title": "信息准确性",
+                "p1": "虽然我们努力保持网站信息的时效性和准确性，但我们不对任何信息的准确性、充分性、有效性、可靠性或完整性作出保证。我们保留随时更正任何错误或遗漏以及更改或更新信息的权利，恕不另行通知。"
+            },
+            "contact": {
+                "title": "联系我们",
+                "desc": "如果您对本免责声明有任何疑问，请联系我们："
+            }
+        }
+    },
+    "common": {
+        "dismiss": "关闭",
+        "tryAgain": "重试"
+    },
+    "auth": {
+        "loginSuccess": "登录成功！",
+        "emailRegistered": "该邮箱已注册，请登录后领取优惠券。"
+    },
+    "orders": {
+        "title": "我的订单",
+        "count": "{{count}} 个订单",
+        "loading": "正在加载订单...",
+        "orderNumber": "订单编号",
+        "date": "日期",
+        "total": "金额",
+        "qty": "数量：{{qty}}",
+        "cancelOrder": "取消订单",
+        "cancelling": "取消中...",
+        "trackOrder": "物流追踪",
+        "tab": {
+            "all": "全部订单",
+            "pendingPayment": "待付款",
+            "pendingDelivery": "待发货",
+            "pendingReceive": "待收货",
+            "confirmReceive": "确认收货",
+            "completed": "已完成",
+            "cancelled": "已取消",
+            "payConfirming": "支付确认中"
+        },
+        "empty": {
+            "title": "暂无订单",
+            "description": "您还没有下过单哦。"
+        },
+        "error": {
+            "loadFailed": "加载订单失败",
+            "network": "网络错误，请稍后重试。",
+            "cancelFailed": "取消订单失败",
+            "cancelRetry": "取消订单失败，请稍后重试。"
+        },
+        "cancel": {
+            "successTitle": "订单已成功取消",
+            "successMessage": "您的订单已取消，使用的优惠券已退回您的账户。",
+            "couponExpired": "注意：退回的优惠券已过期，无法继续使用。"
+        },
+        "confirm": {
+            "title": "确认取消订单？",
+            "message": "您确定要取消此订单吗？",
+            "orderLabel": "订单",
+            "amountLabel": "金额",
+            "couponPolicyTitle": "优惠券返还政策：",
+            "couponPolicy1": "使用的优惠券将退回到您的账户",
+            "couponPolicy2": "如果优惠券仍有效，可再次使用",
+            "couponPolicy3": "如果优惠券已过期，将被标记为已过期",
+            "keepOrder": "保留订单",
+            "yesCancel": "确认取消"
+        },
+        "countdownSuffix": "后取消支付",
+        "viewOrder": "查看订单 {orderSn}",
+        "productAltSuffix": "- LUCKDATE 产品",
+        "processing": "处理中...",
+        "previousPage": "上一页",
+        "nextPage": "下一页",
+        "unpaidFloat": {
+            "ariaLabel": "您有 {{count}} 笔待支付订单",
+            "single": "待支付订单",
+            "multiple": "{{count}} 笔待支付订单",
+            "dismiss": "关闭",
+            "loadFailed": "加载订单详情失败",
+            "networkError": "网络错误"
+        },
+        "unpaidOrderModal": {
+            "title": "您有一笔未支付订单",
+            "subtitle": "是否立即支付？",
+            "viewDetails": "查看详情",
+            "goPay": "去支付",
+            "cancelOrder": "取消订单",
+            "noUnpaid": "未找到未支付订单",
+            "loadFailed": "加载订单详情失败",
+            "networkError": "网络错误"
+        },
+        "expired": "已过期",
+        "pagination": {
+            "showing": "共 {{total}} 个订单，显示 {{showing}} 个 · 第 {{page}} / {{totalPages}} 页"
+        }
+    },
+    "coupon": {
+        "reason": {
+            "expired": "已过期",
+            "notYetValid": "未到生效时间",
+            "minSpend": "满{{min}}元才可使用",
+            "productScope": "仅适用于指定商品",
+            "used": "已使用",
+            "invalid": "无效"
+        }
+    }
+}
