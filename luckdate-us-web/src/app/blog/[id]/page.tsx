@@ -12,13 +12,6 @@ import { inferBlogCategory, blogCategoryToArticleSection } from '@/lib/seo/blog-
 import { fetchArticleServer } from '@/lib/api/server-fetch';
 import ArticleClient from './ArticleClient';
 
-export function generateStaticParams() {
-  return []
-}
-
-export const dynamicParams = false
-
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params;
     const post = await fetchArticleServer(id);

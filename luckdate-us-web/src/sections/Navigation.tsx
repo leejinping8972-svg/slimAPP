@@ -175,10 +175,10 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
               className="group mr-2 shrink-0"
               onClick={(e) => {
                 if (pathname === '/') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }
-            }}
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
             >
               <Image
                 src={logoImg}

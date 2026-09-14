@@ -16,17 +16,16 @@ import type { FaqItem, BannerItem } from '@/lib/api/types';
 import {
   HomeSiteHeader,
   HomeHero,
-  DailyRitualSection,
   FeaturedReviewsSection,
   AsSeenStrip,
   UgcReviewsSection,
   HomeOfferSection,
+  SavingsCompareSection,
   BarrierSection,
+  ProcurementSection,
   DiscoverFavoritesSection,
-  NewArrivalsCarousel,
   ClaimsStrip,
   InnovationSection,
-  FinalHomeCTA,
 } from '@/sections/home';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -179,14 +178,13 @@ export function HomePage({ initialFaqs, initialProducts }: HomePageProps) {
           <AsSeenStrip />
           <UgcReviewsSection />
           <HomeOfferSection products={initialProducts} />
+          <SavingsCompareSection />
           <BarrierSection />
+          <ProcurementSection />
           <DiscoverFavoritesSection />
-          <NewArrivalsCarousel />
           <ClaimsStrip />
-          <DailyRitualSection />
           <InnovationSection />
           <FeaturedReviewsSection />
-          <FinalHomeCTA />
           <FAQ />
           <UnpaidOrderFloat />
         </main>

@@ -29,16 +29,11 @@ export function UgcReviewsSection() {
         className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_at_50%_0%,_rgba(232,220,180,0.55)_0%,_rgba(210,230,210,0.28)_28%,_rgba(230,200,210,0.18)_48%,_transparent_72%)]"
         aria-hidden
       />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-[radial-gradient(ellipse_at_bottom,_rgba(92,64,51,0.12)_0%,_rgba(216,203,184,0.22)_35%,_transparent_70%)]"
-        aria-hidden
-      />
-
       <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
         <h2 className="font-['Montserrat'] text-[1.65rem] font-bold leading-[1.15] tracking-[-0.02em] text-[#1E261C] sm:text-3xl lg:text-[2.35rem]">
-          Five-star rituals from real mornings.
-          <br className="hidden sm:block" />
-          7-Day and 28-Day Slim Vitality, kept.
+          10,000+ five-star reviews.
+          <br />
+          200,000+ customers transformed.
         </h2>
       </div>
 
@@ -64,10 +59,6 @@ export function UgcReviewsSection() {
           </div>
         </div>
       </div>
-
-      <p className="relative z-10 mt-10 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-[#6B7A62] sm:mt-12">
-        Your ritual starts here
-      </p>
     </section>
   );
 }

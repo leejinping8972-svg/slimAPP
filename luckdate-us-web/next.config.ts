@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
         async redirects() {
           return [
             {
+              source: '/slim_1',
+              destination: '/shop/nutrition-28-day',
+              permanent: true,
+            },
+            {
+              source: '/slim_1/:path*',
+              destination: '/shop/nutrition-28-day',
+              permanent: true,
+            },
+            {
               source: '/microneedle_1',
               destination: '/chatviva_patches',
               permanent: true,

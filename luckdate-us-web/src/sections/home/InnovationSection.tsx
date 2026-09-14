@@ -2,56 +2,60 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import innovationImage from '@/assets/home/products/slim-28day-open-kit.png';
+import scoopImage from '@/assets/home/whey-innovation-scoop.jpg';
+import scienceImage from '@/assets/home/whey-innovation-science.jpg';
 
 export function InnovationSection() {
   return (
-    <section className="relative isolate min-h-[min(78vh,720px)] overflow-hidden bg-[#2A3228]">
-      <Image
-        src={innovationImage}
-        alt=""
-        fill
-        className="object-cover object-center opacity-50"
-        sizes="100vw"
-        aria-hidden
-      />
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-[#1E261C] via-[#1E261C]/88 to-[#1E261C]/35"
-        aria-hidden
-      />
-
-      <div className="relative z-10 flex min-h-[min(78vh,720px)] items-center">
-        <div className="w-full px-4 py-16 sm:px-6 lg:px-12 xl:px-20">
-          <div className="mx-auto max-w-7xl">
-            <div className="max-w-xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#D8CBB8]">
-                Slim Vitality · Chocolate
-              </p>
-              <h2 className="mt-3 font-['Montserrat'] text-3xl font-bold leading-[1.08] text-white sm:text-4xl lg:text-5xl break-words">
-                7 days to start.
-                <br />
-                28 days to ritual.
-              </h2>
-              <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80 sm:text-base">
-                Slim Vitality Nutrition Drink Mix delivers 16g protein and essential nutrients in a
-                chocolate daily pour — choose the 7-Day starter or the complete 28-Day Vitality Ritual.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/slim_1#plans"
-                  className="inline-flex items-center justify-center bg-[#D8CBB8] px-7 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[#1E261C] transition-colors hover:bg-[#E5D9C6]"
-                >
-                  Shop 7-Day
-                </Link>
-                <Link
-                  href="/slim_1#plans"
-                  className="inline-flex items-center justify-center border border-white/45 px-7 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-white/10"
-                >
-                  Shop 28-Day
-                </Link>
-              </div>
-            </div>
+    <section id="whey-innovation" className="bg-white">
+      <div className="relative aspect-[16/9] min-h-[280px] w-full overflow-hidden sm:min-h-[380px] lg:min-h-[520px]">
+        <Image
+          src={scoopImage}
+          alt="Concentrated whey protein WPC80 powder in a scoop"
+          fill
+          className="object-cover object-[center_45%]"
+          sizes="100vw"
+        />
+        <div className="absolute right-[4%] top-[10%] w-[38%] max-w-[420px] overflow-hidden shadow-lg sm:right-[5%] sm:top-[12%] sm:w-[34%]">
+          <div className="relative aspect-[16/10]">
+            <Image
+              src={scienceImage}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="34vw"
+              aria-hidden
+            />
           </div>
+        </div>
+      </div>
+
+      <div className="relative overflow-hidden bg-gradient-to-r from-white via-[#F7F4DC] to-[#E8FF6A]/80">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)_auto] lg:items-start lg:gap-10 lg:px-12 lg:py-14 xl:px-20">
+          <h2 className="max-w-[12ch] font-['Montserrat'] text-[2rem] font-bold leading-[1.1] tracking-[-0.03em] text-[#111111] sm:text-4xl lg:text-[2.6rem]">
+            An innovation in whey protein
+          </h2>
+
+          <div className="grid gap-6 sm:grid-cols-2 sm:gap-8">
+            <p className="text-sm font-medium leading-relaxed text-[#1A1A1A] sm:text-[15px]">
+              Whey Protein Concentrate 80% (WPC80) is a complete, nutrition-dense protein with all 9
+              essential amino acids and high bioavailability. It supports immunity, muscle growth,
+              athletic performance, and faster recovery — and is also linked with weight management,
+              heart health, and a stronger gut.
+            </p>
+            <p className="text-sm font-medium leading-relaxed text-[#1A1A1A] sm:text-[15px]">
+              Our WPC80 is spray-dried at mid-to-low temperature to keep native protein form, with no
+              lecithin or fillers. Specs meet USDA and U.S. FDA food standards, with monitoring beyond
+              basic national requirements. Halal, Kosher, GMP, and Non-GMO aligned.
+            </p>
+          </div>
+
+          <Link
+            href="#start-ritual"
+            className="inline-flex h-fit w-fit items-center justify-center bg-[#111111] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition-opacity hover:opacity-90 lg:mt-1"
+          >
+            Shop whey
+          </Link>
         </div>
       </div>
     </section>

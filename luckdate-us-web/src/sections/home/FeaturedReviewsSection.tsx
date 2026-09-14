@@ -1,118 +1,150 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Check, Star } from 'lucide-react';
-import { SectionShell, SectionEyebrow, SectionTitle } from './SectionShell';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
-interface ReviewCard {
-  rating: number;
-  date: string;
-  title: string;
+type Review = {
+  quote: string;
   body: string;
   name: string;
-  verified: boolean;
-  product: string;
-}
+};
 
-const PREVIEW_LENGTH = 140;
-const INITIAL_VISIBLE = 4;
+const REVIEWS: Review[] = [
+  {
+    quote: 'More energy, fewer bottles.',
+    body: 'I dropped the protein tub, bars, and extra vitamins. One chocolate pour in the morning and I stay full through meetings.',
+    name: 'Kathryn R.',
+  },
+  {
+    quote: 'Workouts feel cleaner.',
+    body: '16g protein after training without mixing a chalky shake. Recovery is steadier and I actually look forward to the ritual.',
+    name: 'James T.',
+  },
+  {
+    quote: 'Evenings finally slowed down.',
+    body: 'I swapped late snacks for the chocolate ritual. Sleep feels deeper and I wake up less bloated.',
+    name: 'Michelle K.',
+  },
+  {
+    quote: 'Simple enough to keep.',
+    body: '7-Day got me started. 28-Day made it a habit. No stack, no guesswork — just pour, shake, drink.',
+    name: 'David L.',
+  },
+  {
+    quote: 'Gut feels more settled.',
+    body: 'Whey used to sit heavy. This pour is smooth. Less bloating, more regular mornings.',
+    name: 'Priya S.',
+  },
+  {
+    quote: 'The one I actually finish.',
+    body: 'I have started so many powders. Slim Vitality is the first chocolate mix I finish the box.',
+    name: 'Logan P.',
+  },
+];
 
-function StarRating({ rating }: { rating: number }) {
+function TrustpilotStars({ size = 'md' }: { size?: 'sm' | 'md' }) {
+  const box = size === 'sm' ? 'h-5 w-5' : 'h-6 w-6 sm:h-7 sm:w-7';
+  const icon = size === 'sm' ? 'h-3 w-3' : 'h-3.5 w-3.5 sm:h-4 sm:w-4';
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
+    <div className="flex items-center gap-[3px]" aria-hidden>
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
+        <span
           key={i}
-          className={`w-4 h-4 ${i < rating ? 'text-[#D4AF5A] fill-[#D4AF5A]' : 'text-[#E8D5A3]/50'}`}
-          strokeWidth={1.5}
-        />
+          className={`inline-flex ${box} items-center justify-center bg-[#00B67A]`}
+        >
+          <Star className={`${icon} fill-white text-white`} strokeWidth={0} />
+        </span>
       ))}
     </div>
   );
 }
 
-function ReviewCardItem({ review }: { review: ReviewCard }) {
-  const [expanded, setExpanded] = useState(false);
-  const isLong = review.body.length > PREVIEW_LENGTH;
-  const displayBody =
-    expanded || !isLong ? review.body : `${review.body.slice(0, PREVIEW_LENGTH).trim()}...`;
-
+function ReviewCard({ review }: { review: Review }) {
   return (
-    <article className="border border-[#D8CBB8]/45 bg-white p-5 sm:p-6">
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <StarRating rating={review.rating} />
-        <time className="text-xs text-[#9A9188] shrink-0">{review.date}</time>
-      </div>
-
-      <h3 className="font-bold text-[#1E261C] text-base mb-2 font-['Montserrat'] leading-snug">
-        {review.title}
+    <article className="flex h-full flex-col bg-white/80 px-5 py-6 sm:px-6 sm:py-7">
+      <TrustpilotStars size="sm" />
+      <h3 className="mt-3 font-['Montserrat'] text-lg font-bold italic leading-snug text-[#111111]">
+        “{review.quote}”
       </h3>
-
-      <p className="text-sm text-[#4A4A4A] leading-relaxed mb-3 line-clamp-4">{displayBody}</p>
-      {isLong && !expanded && (
-        <button
-          type="button"
-          onClick={() => setExpanded(true)}
-          className="text-sm text-[#9A9188] hover:text-[#6C6763] transition-colors mb-3"
-        >
-          Read more
-        </button>
-      )}
-
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        {review.verified && (
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#6B7A62]">
-            <Check className="w-4 h-4 shrink-0" strokeWidth={2.5} />
-            {review.name}
-          </span>
-        )}
-        <span className="inline-flex items-center border border-[#6B7A62]/35 bg-[#E8EDE4]/60 px-2.5 py-0.5 text-xs font-medium text-[#5A6852]">
-          {review.product}
-        </span>
-      </div>
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-[#333333]">{review.body}</p>
+      <p className="mt-4 text-sm font-semibold text-[#111111]">— {review.name}</p>
+      <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#777777]">
+        Luckdate customer
+      </p>
     </article>
   );
 }
 
+/** Trustpilot-style review cards on an ARMRA-like pastel carousel. */
 export function FeaturedReviewsSection() {
-  const { t } = useTranslation();
-  const cards = t('homeLayout.reviews.cards', { returnObjects: true }) as ReviewCard[];
-  const reviews = Array.isArray(cards) ? cards : [];
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const [page, setPage] = useState(0);
+  const perPage = 3;
+  const pageCount = Math.ceil(REVIEWS.length / perPage);
+  const start = page * perPage;
+  const visible = REVIEWS.slice(start, start + perPage);
 
-  if (reviews.length === 0) return null;
-
-  const visible = reviews.slice(0, visibleCount);
-  const hasMore = visibleCount < reviews.length;
+  const prev = () => setPage((p) => (p - 1 + pageCount) % pageCount);
+  const next = () => setPage((p) => (p + 1) % pageCount);
 
   return (
-    <SectionShell id="customer-stories" background="ivory" layout="compact">
-      <div className="max-w-6xl mx-auto">
-        <div className="max-w-3xl mx-auto text-center mb-8 lg:mb-10">
-          <SectionEyebrow>{t('homeLayout.reviews.label')}</SectionEyebrow>
-          <SectionTitle className="mb-2">{t('homeLayout.reviews.title')}</SectionTitle>
-          <p className="text-sm text-[#6C6763]/80 leading-relaxed">{t('homeLayout.reviews.subtitle')}</p>
+    <section id="customer-stories" className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_18%_12%,rgba(255,210,230,0.5)_0%,transparent_42%),radial-gradient(ellipse_at_82%_8%,rgba(255,236,150,0.65)_0%,transparent_46%),radial-gradient(ellipse_at_72%_88%,rgba(190,235,170,0.5)_0%,transparent_48%),radial-gradient(ellipse_at_12%_90%,rgba(210,220,255,0.38)_0%,transparent_42%)]"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 xl:px-16">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+            <TrustpilotStars />
+            <p className="text-sm font-semibold text-[#111111] sm:text-base">
+              4.9 out of 5
+              <span className="font-medium text-[#555555]"> (10,000+ reviews)</span>
+            </p>
+          </div>
+          <h2 className="mt-5 font-['Montserrat'] text-[1.85rem] font-bold leading-[1.12] tracking-[-0.03em] text-[#111111] sm:text-4xl lg:text-[2.7rem]">
+            Trusted by members who pour it daily
+          </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 lg:gap-5">
-          {visible.map((review, i) => (
-            <ReviewCardItem key={`${review.name}-${review.date}-${i}`} review={review} />
+        <div className="mt-10 grid gap-4 sm:mt-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {visible.map((review) => (
+            <ReviewCard key={review.name} review={review} />
           ))}
         </div>
 
-        {hasMore && (
-          <div className="text-center mt-8">
-            <button
-              type="button"
-              onClick={() => setVisibleCount((n) => Math.min(n + 4, reviews.length))}
-              className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold border-2 border-[#1E261C] text-[#1E261C] hover:bg-[#1E261C] hover:text-white transition-colors"
-            >
-              {t('homeLayout.reviews.loadMore')}
-            </button>
+        <div className="mt-10 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={prev}
+            aria-label="Previous reviews"
+            className="flex h-10 w-10 items-center justify-center text-[#111111] transition-opacity hover:opacity-60"
+          >
+            <ChevronLeft className="h-7 w-7" strokeWidth={1.25} />
+          </button>
+          <div className="flex items-center gap-2">
+            {Array.from({ length: pageCount }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`Show reviews ${i + 1}`}
+                onClick={() => setPage(i)}
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  i === page ? 'bg-[#111111]' : 'bg-[#111111]/25'
+                }`}
+              />
+            ))}
           </div>
-        )}
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next reviews"
+            className="flex h-10 w-10 items-center justify-center text-[#111111] transition-opacity hover:opacity-60"
+          >
+            <ChevronRight className="h-7 w-7" strokeWidth={1.25} />
+          </button>
+        </div>
       </div>
-    </SectionShell>
+    </section>
   );
 }

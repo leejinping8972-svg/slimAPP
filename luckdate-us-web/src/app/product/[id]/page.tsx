@@ -11,13 +11,6 @@ import { fetchProductServer } from '@/lib/api/server-fetch';
 import ProductDetailClient from './ProductDetailClient';
 import { Loader2 } from 'lucide-react';
 
-export function generateStaticParams() {
-  return []
-}
-
-export const dynamicParams = false
-
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params;
     const product = await fetchProductServer(id);

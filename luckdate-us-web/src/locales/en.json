@@ -969,8 +969,8 @@
                     "accent": "sage",
                     "ctaBuy": "Start Fiber Ritual",
                     "ctaLearn": "See Kits",
-                    "buyHref": "/slim_1",
-                    "learnHref": "/slim_1#plans"
+                    "buyHref": "/shop/nutrition-28-day",
+                    "learnHref": "/shop/nutrition-28-day"
                 },
                 {
                     "title": "Gut Balance",
@@ -984,7 +984,7 @@
                     "accent": "cream",
                     "ctaBuy": "Shop Gut Balance",
                     "ctaLearn": "Read the Formula",
-                    "buyHref": "/products",
+                    "buyHref": "/shop/gut-balance-probiotics",
                     "learnHref": "/blog"
                 }
             ]

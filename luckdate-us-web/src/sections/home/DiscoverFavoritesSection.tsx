@@ -1,50 +1,50 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
-import slim7 from '@/assets/home/products/slim-7day-open-kit.png';
-import slim28 from '@/assets/home/products/slim-28day-open-kit.png';
-import slim7Drink from '@/assets/home/products/slim-7day-hero-drink.png';
-import slim28Pack from '@/assets/home/products/slim-28day-hero-pack.png';
+import nutrition28 from '@/assets/home/products/slim-28day-open-kit.png';
+import nutrition7 from '@/assets/home/products/slim-7day-open-kit.png';
+import fruitVeg from '@/assets/home/products/gut-fruit-veg-flavors.jpg';
+import probiotics from '@/assets/home/products/gut-balance-probiotic-box.jpg';
 
 type ProductCard = {
   title: string;
   meta: string;
   href: string;
-  image: typeof slim7;
+  image: StaticImageData;
   badge?: string;
 };
 
 const FAVORITES: ProductCard[] = [
   {
-    title: 'Slim Vitality™ 7-Day',
-    meta: 'Chocolate · 7-Day Vitality Ritual',
-    href: '/slim_1#plans',
-    image: slim7,
-    badge: 'Starter',
-  },
-  {
-    title: 'Slim Vitality™ 28-Day',
-    meta: 'Chocolate · 28-Day Vitality Ritual',
-    href: '/slim_1#plans',
-    image: slim28,
+    title: '28-Day Nutrition Supplement',
+    meta: 'Chocolate · Full-month vitality ritual',
+    href: '/shop/nutrition-28-day',
+    image: nutrition28,
     badge: 'Bestseller',
   },
   {
-    title: '7-Day Ritual Kit',
-    meta: '16g protein · Ready-to-mix sachets',
-    href: '/slim_1',
-    image: slim7Drink,
+    title: '7-Day Nutrition Supplement',
+    meta: 'Travel size · Start the chocolate ritual',
+    href: '/shop/nutrition-7-day',
+    image: nutrition7,
+    badge: 'Travel',
   },
   {
-    title: '28-Day Ritual Kit',
-    meta: 'Full month · Daily chocolate ritual',
-    href: '/slim_1',
-    image: slim28Pack,
+    title: 'Fruit & Vegetable Powder',
+    meta: 'Gut management · Pink Guava & Oats',
+    href: '/shop/fruit-vegetable-powder',
+    image: fruitVeg,
+  },
+  {
+    title: 'Gut Balance Probiotics',
+    meta: 'Gut management · 30 Billion CFU',
+    href: '/shop/gut-balance-probiotics',
+    image: probiotics,
   },
 ];
 
-/** Featured Slim series — 7-day & 28-day specs. */
+/** Homepage product recommendations — nutrition + gut management. */
 export function DiscoverFavoritesSection() {
   return (
     <section id="discover-favorites" className="bg-white py-14 lg:py-20">
@@ -52,21 +52,21 @@ export function DiscoverFavoritesSection() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6B7A62]">
-              Slim Vitality Series
+              Shop recommendations
             </p>
             <h2 className="mt-2 font-['Montserrat'] text-3xl font-bold text-[#1E261C] sm:text-4xl">
-              7-Day & 28-Day Rituals
+              Nutrition & Gut Management
             </h2>
             <p className="mt-3 max-w-xl text-sm text-[#6C6763]/90">
-              Chocolate nutrition drink mix — start with 7 days, or commit to the full 28-Day Vitality
-              Ritual.
+              28-Day and 7-Day nutrition supplements, plus fruit &amp; vegetable powder and probiotics
+              for daily gut balance.
             </p>
           </div>
           <Link
-            href="/slim_1"
+            href="/products"
             className="shrink-0 text-xs font-bold uppercase tracking-[0.16em] text-[#1E261C] underline underline-offset-4"
           >
-            Shop Slim
+            Shop All
           </Link>
         </div>
 

@@ -1,42 +1,47 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import slide1 from '@/assets/home/carousel/carousel-slim-7day-box.png';
-import slide2 from '@/assets/home/carousel/carousel-slim-28day-box.png';
-import slide3 from '@/assets/home/carousel/carousel-slim-7day-open.png';
-import slide4 from '@/assets/home/carousel/carousel-slim-28day-open.png';
+import nutrition28 from '@/assets/home/products/slim-28day-open-kit.png';
+import nutrition7 from '@/assets/home/products/slim-7day-open-kit.png';
+import fruitVeg from '@/assets/home/products/gut-fruit-veg-flavors.jpg';
+import probiotics from '@/assets/home/products/gut-balance-probiotic-box.jpg';
 
-const SLIDES = [
+const SLIDES: {
+  image: StaticImageData;
+  title: string;
+  meta: string;
+  href: string;
+}[] = [
   {
-    image: slide1,
-    title: '7-Day Vitality Ritual',
-    meta: 'Chocolate · Starter pack',
-    href: '/slim_1#plans',
+    image: nutrition28,
+    title: '28-Day Nutrition Supplement',
+    meta: 'Chocolate · Full-month ritual',
+    href: '/shop/nutrition-28-day',
   },
   {
-    image: slide2,
-    title: '28-Day Vitality Ritual',
-    meta: 'Chocolate · Full month',
-    href: '/slim_1#plans',
+    image: nutrition7,
+    title: '7-Day Nutrition Supplement',
+    meta: 'Travel size · Starter pack',
+    href: '/shop/nutrition-7-day',
   },
   {
-    image: slide3,
-    title: '7-Day Open Kit',
-    meta: 'Sachets ready for daily pour',
-    href: '/slim_1',
+    image: fruitVeg,
+    title: 'Fruit & Vegetable Powder',
+    meta: 'Gut management · Dual flavors',
+    href: '/shop/fruit-vegetable-powder',
   },
   {
-    image: slide4,
-    title: '28-Day Open Kit',
-    meta: 'Your complete chocolate ritual',
-    href: '/slim_1',
+    image: probiotics,
+    title: 'Gut Balance Probiotics',
+    meta: '30 Billion CFU · Daily reset',
+    href: '/shop/gut-balance-probiotics',
   },
 ];
 
-/** New arrivals / product recommendation carousel — 4 Slim tiles. */
+/** Homepage recommendation carousel — nutrition + gut. */
 export function NewArrivalsCarousel() {
   const [index, setIndex] = useState(0);
 
@@ -53,13 +58,13 @@ export function NewArrivalsCarousel() {
   return (
     <section id="new-arrivals" className="bg-[#F7F5F1] py-14 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 xl:px-20">
-        <div className="flex items-end justify-between gap-4 mb-8">
+        <div className="mb-8 flex items-end justify-between gap-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6B7A62]">
               New recommendations
             </p>
             <h2 className="mt-2 font-['Montserrat'] text-2xl font-bold text-[#1E261C] sm:text-3xl">
-              Slim Vitality picks
+              Nutrition &amp; gut picks
             </h2>
           </div>
           <div className="flex gap-2">
@@ -82,18 +87,13 @@ export function NewArrivalsCarousel() {
           </div>
         </div>
 
-        {/* Mobile: single focus + peek */}
         <div className="relative overflow-hidden lg:hidden">
           <div
             className="flex transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
             {SLIDES.map((slide) => (
-              <Link
-                key={slide.title}
-                href={slide.href}
-                className="w-full shrink-0 px-1"
-              >
+              <Link key={slide.title} href={slide.href} className="w-full shrink-0 px-1">
                 <div className="relative aspect-square overflow-hidden bg-white">
                   <Image
                     src={slide.image}
@@ -114,7 +114,6 @@ export function NewArrivalsCarousel() {
           </div>
         </div>
 
-        {/* Desktop: 4 tiles, highlight active */}
         <div className="hidden gap-5 lg:grid lg:grid-cols-4">
           {SLIDES.map((slide, i) => (
             <Link

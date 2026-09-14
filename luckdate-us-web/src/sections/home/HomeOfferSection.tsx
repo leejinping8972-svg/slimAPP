@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Check } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -62,6 +63,7 @@ type HomeOfferSectionProps = {
 
 /** ARMRA-style third-screen purchase block — left product art, right checkout CTA. */
 export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
+  const router = useRouter();
   const { addToCart, setIsCartOpen } = useCart();
   const [selected, setSelected] = useState<OfferKey>('28day');
 
@@ -91,7 +93,7 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
       setIsCartOpen(true);
       return;
     }
-    window.location.href = '/slim_1#plans';
+    router.push(selected === '28day' ? '/shop/nutrition-28-day' : '/shop/nutrition-7-day');
   };
 
   return (

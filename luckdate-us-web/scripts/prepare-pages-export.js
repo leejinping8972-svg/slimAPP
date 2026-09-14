@@ -1,4 +1,4 @@
-﻿const fs = require('node:fs')
+const fs = require('node:fs')
 const path = require('node:path')
 
 const root = path.join(__dirname, '..')
@@ -25,12 +25,20 @@ function walk(dir) {
 }
 walk(path.join(root, 'src', 'app'))
 
-// Preview subset: homepage + Slim landing only
-const keep = new Set(['page.tsx', 'layout.tsx', 'globals.css', 'not-found.tsx', 'slim_1'])
+// Marketing preview: home + about + shop PDPs + slim redirect
+const keep = new Set([
+  'page.tsx',
+  'layout.tsx',
+  'globals.css',
+  'not-found.tsx',
+  'about',
+  'shop',
+  'slim_1',
+])
 
 const appDir = path.join(root, 'src', 'app')
 for (const name of fs.readdirSync(appDir)) {
   if (!keep.has(name)) rmrf(path.join(appDir, name))
 }
 
-console.log('Prepared static export for GitHub Pages')
+console.log('Prepared static export for GitHub Pages (home/about/shop)')

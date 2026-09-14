@@ -1,10 +1,10 @@
-﻿'use client';
+'use client';
 
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import heroIndoor from '@/assets/home/hero/hero-indoor-shaker.png';
-import heroProducts from '@/assets/home/hero/hero-products-wide.png';
+import heroIndoor from '@/assets/home/hero/hero-indoor-hd.jpg';
+import heroProducts from '@/assets/home/hero/hero-products-wide.jpg';
 
 const SLIDES: { src: StaticImageData; alt: string }[] = [
   {
@@ -13,13 +13,13 @@ const SLIDES: { src: StaticImageData; alt: string }[] = [
   },
   {
     src: heroIndoor,
-    alt: 'Slim Vitality ritual with luckdate shaker and product box',
+    alt: 'Slim Vitality chocolate ritual with luckdate shaker and cocoa packaging',
   },
 ];
 
 /**
  * Full-bleed hero under fixed promo + transparent nav.
- * Leads with product still-life; lifestyle slide keeps box + shaker in frame.
+ * Leads with lifestyle chocolate ritual; products as second slide.
  */
 export function HomeHero() {
   const [index, setIndex] = useState(0);
@@ -47,11 +47,8 @@ export function HomeHero() {
               alt={i === index ? slide.alt : ''}
               fill
               priority={i === 0}
-              className={
-                i === 0
-                  ? 'object-cover object-center'
-                  : 'object-cover object-[58%_42%] sm:object-[62%_40%] lg:object-[68%_38%]'
-              }
+              quality={95}
+              className="object-cover object-center"
               sizes="100vw"
             />
           </div>
@@ -63,8 +60,8 @@ export function HomeHero() {
           aria-hidden
         />
 
-        {/* Clear fixed promo + nav (~7.5rem) */}
-        <div className="relative z-10 flex min-h-[100svh] items-center pt-[7.5rem] lg:min-h-[min(100svh,920px)]">
+        {/* Clear fixed nav only — promo is hidden on first viewport */}
+        <div className="relative z-10 flex min-h-[100svh] items-center pt-[4.5rem] lg:min-h-[min(100svh,920px)]">
           <div className="w-full px-4 py-12 sm:px-6 lg:px-12 xl:px-20">
             <div className="mx-auto max-w-7xl">
               <div className="max-w-xl lg:max-w-[36rem]">
@@ -87,7 +84,7 @@ export function HomeHero() {
                     Shop Luckdate
                   </Link>
                   <Link
-                    href="/slim_1#plans"
+                    href="/shop/nutrition-28-day"
                     className="inline-flex items-center justify-center border border-[#1E261C]/40 px-9 py-3.5 text-sm font-bold uppercase tracking-[0.16em] text-[#1E261C] transition-colors hover:bg-white/50"
                   >
                     28-Day Ritual

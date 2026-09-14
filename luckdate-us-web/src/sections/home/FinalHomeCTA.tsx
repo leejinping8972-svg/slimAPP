@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 
@@ -15,13 +15,13 @@ export function FinalHomeCTA() {
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
-            href="/slim_1#plans"
+            href="/shop/nutrition-28-day"
             className="inline-flex items-center justify-center bg-[#1E261C] px-8 py-3.5 text-sm font-bold uppercase tracking-[0.14em] text-white transition-opacity hover:opacity-90"
           >
             Shop 7-Day
           </Link>
           <Link
-            href="/slim_1#plans"
+            href="/shop/nutrition-28-day"
             className="inline-flex items-center justify-center border border-[#1E261C] px-8 py-3.5 text-sm font-bold uppercase tracking-[0.14em] text-[#1E261C] transition-colors hover:bg-white/40"
           >
             Shop 28-Day

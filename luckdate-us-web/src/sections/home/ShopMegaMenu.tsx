@@ -2,11 +2,10 @@
 
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
-import slim7 from '@/assets/home/products/slim-7day-open-kit.png';
-import slim28 from '@/assets/home/products/slim-28day-open-kit.png';
-import slimDrink from '@/assets/home/products/slim-7day-hero-drink.png';
-import slim28Pack from '@/assets/home/products/slim-28day-hero-pack.png';
-import gutPack from '@/assets/home/products/gut-balance-packaging.png';
+import nutrition28 from '@/assets/home/products/slim-28day-open-kit.png';
+import nutrition7 from '@/assets/home/products/slim-7day-open-kit.png';
+import fruitVeg from '@/assets/home/products/gut-fruit-veg-flavors.jpg';
+import probiotics from '@/assets/home/products/gut-balance-probiotic-box.jpg';
 import featuredPromo from '@/assets/home/products/barrier-slim-7-28-display.png';
 
 export type ShopNavProduct = {
@@ -16,45 +15,49 @@ export type ShopNavProduct = {
   href: string;
   thumb: StaticImageData;
   badge?: string;
+  category: 'nutrition' | 'gut';
 };
 
 export const SHOP_NAV_PRODUCTS: ShopNavProduct[] = [
   {
-    id: '7day',
-    title: 'Slim Vitality 7-Day',
-    tagline: 'Start the chocolate ritual.',
-    href: '/slim_1#plans',
-    thumb: slim7,
-  },
-  {
-    id: '28day',
-    title: 'Slim Vitality 28-Day',
-    tagline: 'The daily ritual you keep.',
-    href: '/slim_1#plans',
-    thumb: slim28,
+    id: 'nutrition-28',
+    title: '28-Day Nutrition Supplement',
+    tagline: 'Full-month chocolate vitality ritual.',
+    href: '/shop/nutrition-28-day',
+    thumb: nutrition28,
     badge: 'BESTSELLER',
+    category: 'nutrition',
   },
   {
-    id: 'drink',
-    title: '7-Day Ritual Kit',
-    tagline: '16g protein · ready-to-mix.',
-    href: '/slim_1',
-    thumb: slimDrink,
+    id: 'nutrition-7',
+    title: '7-Day Nutrition Supplement',
+    tagline: 'Travel size · start your ritual.',
+    href: '/shop/nutrition-7-day',
+    thumb: nutrition7,
+    badge: 'TRAVEL',
+    category: 'nutrition',
   },
   {
-    id: '28pack',
-    title: '28-Day Full Kit',
-    tagline: 'A full month of vitality.',
-    href: '/slim_1#plans',
-    thumb: slim28Pack,
+    id: 'fruit-veg',
+    title: 'Fruit & Vegetable Powder',
+    tagline: 'Pink Guava · Oats & Grains fiber ritual.',
+    href: '/shop/fruit-vegetable-powder',
+    thumb: fruitVeg,
+    category: 'gut',
   },
   {
-    id: 'gut',
-    title: 'Gut Balance',
-    tagline: 'Daily inner-reset sachets.',
-    href: '/products',
-    thumb: gutPack,
+    id: 'probiotics',
+    title: 'Gut Balance Probiotics',
+    tagline: '30 Billion CFU · daily inner reset.',
+    href: '/shop/gut-balance-probiotics',
+    thumb: probiotics,
+    category: 'gut',
   },
+];
+
+const GROUPS: { key: ShopNavProduct['category']; label: string }[] = [
+  { key: 'nutrition', label: 'Nutrition' },
+  { key: 'gut', label: 'Gut Management' },
 ];
 
 type ShopMegaMenuProps = {
@@ -64,7 +67,7 @@ type ShopMegaMenuProps = {
   onMouseLeave: () => void;
 };
 
-/** ARMRA-style Shop mega panel — product list + featured promo. */
+/** ARMRA-style Shop mega panel — nutrition + gut products. */
 export function ShopMegaMenu({ open, onNavigate, onMouseEnter, onMouseLeave }: ShopMegaMenuProps) {
   return (
     <div
@@ -79,12 +82,10 @@ export function ShopMegaMenu({ open, onNavigate, onMouseEnter, onMouseLeave }: S
       onMouseLeave={onMouseLeave}
       aria-hidden={!open}
     >
-      {/* Invisible bridge into the nav so the cursor never falls through a gap */}
       <div className="pointer-events-auto absolute inset-x-0 -top-3 h-3" aria-hidden />
 
       <div className="bg-white shadow-[0_18px_40px_rgba(30,38,28,0.12)]">
-        <div className="mx-auto grid max-w-7xl gap-0 lg:grid-cols-[minmax(280px,0.95fr)_1.15fr]">
-          {/* Left: product list */}
+        <div className="mx-auto grid max-w-7xl gap-0 lg:grid-cols-[minmax(300px,1fr)_1.1fr]">
           <div className="border-b border-[#E8E8E8] px-6 py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-7 xl:px-10">
             <div className="mb-5 flex items-center justify-between gap-3">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#1E261C]">
@@ -102,47 +103,57 @@ export function ShopMegaMenu({ open, onNavigate, onMouseEnter, onMouseLeave }: S
               </button>
             </div>
 
-            <ul className="space-y-1">
-              {SHOP_NAV_PRODUCTS.map((item) => (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => onNavigate(item.href)}
-                    className="group flex w-full items-center gap-3 rounded-sm px-2 py-2.5 text-left transition-colors hover:bg-[#F7F5F1]"
-                  >
-                    <span className="relative h-12 w-12 shrink-0 overflow-hidden bg-[#F0EDE7]">
-                      <Image
-                        src={item.thumb}
-                        alt=""
-                        fill
-                        className="object-contain p-1"
-                        sizes="48px"
-                      />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-2">
-                        <span className="truncate text-sm font-bold text-[#1E261C] group-hover:underline group-hover:underline-offset-4">
-                          {item.title}
-                        </span>
-                        {item.badge && (
-                          <span className="shrink-0 bg-[#6B7A62] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.08em] text-white">
-                            {item.badge}
+            <div className="space-y-6">
+              {GROUPS.map((group) => (
+                <div key={group.key}>
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9A9188]">
+                    {group.label}
+                  </p>
+                  <ul className="space-y-1">
+                    {SHOP_NAV_PRODUCTS.filter((p) => p.category === group.key).map((item) => (
+                      <li key={item.id}>
+                        <button
+                          type="button"
+                          onClick={() => onNavigate(item.href)}
+                          className="group flex w-full items-center gap-3 rounded-sm px-2 py-2.5 text-left transition-colors hover:bg-[#F7F5F1]"
+                        >
+                          <span className="relative h-12 w-12 shrink-0 overflow-hidden bg-[#F0EDE7]">
+                            <Image
+                              src={item.thumb}
+                              alt=""
+                              fill
+                              className="object-contain p-1"
+                              sizes="48px"
+                            />
                           </span>
-                        )}
-                      </span>
-                      <span className="mt-0.5 block truncate text-xs text-[#6C6763]">{item.tagline}</span>
-                    </span>
-                  </button>
-                </li>
+                          <span className="min-w-0 flex-1">
+                            <span className="flex items-center gap-2">
+                              <span className="truncate text-sm font-bold text-[#1E261C] group-hover:underline group-hover:underline-offset-4">
+                                {item.title}
+                              </span>
+                              {item.badge && (
+                                <span className="shrink-0 bg-[#6B7A62] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.08em] text-white">
+                                  {item.badge}
+                                </span>
+                              )}
+                            </span>
+                            <span className="mt-0.5 block truncate text-xs text-[#6C6763]">
+                              {item.tagline}
+                            </span>
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
-          {/* Right: featured promo */}
           <div className="relative min-h-[280px] overflow-hidden bg-[#EDE8E0] lg:min-h-[420px]">
             <Image
               src={featuredPromo}
-              alt="Slim Vitality 7-Day and 28-Day ritual kits"
+              alt="Luckdate nutrition and gut ritual kits"
               fill
               className="object-cover object-center"
               sizes="(min-width: 1024px) 55vw, 100vw"
@@ -154,15 +165,15 @@ export function ShopMegaMenu({ open, onNavigate, onMouseEnter, onMouseLeave }: S
             />
             <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 lg:p-10">
               <p className="max-w-md text-xl font-bold leading-tight text-white sm:text-2xl lg:text-[1.75rem]">
-                Your ritual starts here.
+                Nutrition + gut management.
                 <br />
-                <span className="font-semibold text-white/90">7-Day &amp; 28-Day Slim Vitality.</span>
+                <span className="font-semibold text-white/90">Rituals you can keep every day.</span>
               </p>
               <Link
-                href="/slim_1#plans"
+                href="/shop/nutrition-28-day"
                 onClick={(e) => {
                   e.preventDefault();
-                  onNavigate('/slim_1#plans');
+                  onNavigate('/shop/nutrition-28-day');
                 }}
                 className="mt-5 inline-flex items-center gap-2 bg-[#D8CBB8] px-5 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[#1E261C] transition-opacity hover:opacity-90"
               >

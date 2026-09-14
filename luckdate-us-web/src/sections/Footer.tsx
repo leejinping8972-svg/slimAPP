@@ -1,252 +1,220 @@
 'use client';
 
 import { useState } from 'react';
-// import {
-//   Mail,
-//   Phone,
-//   MapPin,
-//   Instagram,
-//   Facebook,
-//   Twitter,
-//   Youtube,
-// } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-import { ArrowRight, Heart } from 'lucide-react';
 import Image from 'next/image';
-import logoImg from '@/assets/logo-white.png';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useTranslation } from 'react-i18next';
+import { Instagram, Facebook, Linkedin } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import logoWordmark from '@/assets/logo-footer-wordmark.png';
 
+const SHOP_LINKS = [
+  { label: '28-Day Nutrition Supplement', href: '/shop/nutrition-28-day' },
+  { label: '7-Day Nutrition Supplement', href: '/shop/nutrition-7-day' },
+  { label: 'Fruit & Vegetable Powder', href: '/shop/fruit-vegetable-powder' },
+  { label: 'Gut Balance Probiotics', href: '/shop/gut-balance-probiotics' },
+];
+
+const LEARN_LINKS = [
+  { label: 'Our Story', href: '/about' },
+  { label: 'Science', href: '/about' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Vitality Check', href: '/shop/nutrition-28-day' },
+];
+
+const RESOURCE_LINKS = [
+  { label: 'Contact', href: '/contact' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Track Order', href: '/track-order' },
+  { label: 'Order Inquiry', href: '/order-inquiry' },
+];
+
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms of Service', href: '/terms-of-service' },
+  { label: 'Cookie Policy', href: '/cookie-policy' },
+  { label: 'Disclaimer', href: '/disclaimer' },
+];
+
+const SOCIAL_LINKS = [
+  { label: 'Instagram', href: '#', icon: Instagram },
+  { label: 'Facebook', href: '#', icon: Facebook },
+  { label: 'LinkedIn', href: '#', icon: Linkedin },
+];
+
+/** ARMRA-style full footer — columns + newsletter + giant wordmark. */
 const Footer = () => {
   const { t } = useTranslation();
+  const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const pathname = usePathname();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 3000);
-    }
+    if (!email.trim()) return;
+    setSubscribed(true);
+    setEmail('');
+    window.setTimeout(() => setSubscribed(false), 3000);
   };
 
   const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!href.startsWith('/#')) return;
 
-    const hash = href.replace(/^\//, ''); // "/#faq" -> "#faq"
+    const hash = href.replace(/^\//, '');
 
     if (pathname !== '/') {
       e.preventDefault();
       try {
         window.sessionStorage.setItem('home_anchor_target', hash.slice(1));
-      } catch { }
-      // 跨页面时使用浏览器原生跳转，避免 SPA 路由时机导致锚点不一致
+      } catch {
+        /* ignore */
+      }
       window.location.href = href;
       return;
     }
 
     e.preventDefault();
-
     if (window.location.hash !== hash) {
       window.location.hash = hash;
     } else {
-      // hash 相同不会触发 hashchange，手动分发用于再次定位
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     }
   };
 
-  const footerLinks = {
-    company: [
-      { label: t('nav.about'), href: '/#about' },
-      { label: t('footer.companyList.ourStory'), href: '/#about' },
-      { label: t('nav.insight'), href: '/blog' },
-    ],
-    support: [
-      { label: t('footer.supportList.contactUs'), href: '/contact' },
-      { label: t('nav.faq'), href: '/#faq' },
-      { label: t('footer.supportList.trackOrder'), href: '/track-order' },
-    ],
-    legal: [
-      { label: t('footer.legalList.privacyPolicy'), href: '/privacy-policy' },
-      { label: t('footer.legalList.termsOfService'), href: '/terms-of-service' },
-      { label: t('footer.legalList.cookiePolicy'), href: '/cookie-policy' },
-      { label: t('footer.legalList.disclaimer'), href: '/disclaimer' },
-    ],
-  };
-
-  const socialLinks: { icon: LucideIcon; href: string; label: string }[] = [
-    // { icon: Instagram, href: '#', label: 'Instagram' },
-    // { icon: Facebook, href: '#', label: 'Facebook' },
-    // { icon: Twitter, href: '#', label: 'Twitter' },
-    // { icon: Youtube, href: '#', label: 'Youtube' },
-  ];
+  const renderLink = (link: { label: string; href: string }) => (
+    <a
+      href={link.href}
+      onClick={
+        link.href.startsWith('/#') ? (e) => handleHashLinkClick(e, link.href) : undefined
+      }
+      className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-[#1E261C] transition-opacity hover:opacity-55"
+    >
+      {link.label}
+    </a>
+  );
 
   return (
-    <footer className="bg-[#4E554B] text-white">
-      <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20 py-16 lg:py-20">
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-8">
-          <div className="lg:col-span-2">
-            <div className="flex items-center mb-6">
-              <Image
-                src={logoImg}
-                alt="luckdate"
-                width={180}
-                height={40}
-                className="h-7 sm:h-8 w-auto object-contain"
-              />
-            </div>
+    <footer className="relative text-[#1E261C]">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_12%_18%,rgba(240,200,210,0.55)_0%,transparent_48%),radial-gradient(ellipse_at_88%_12%,rgba(190,220,235,0.5)_0%,transparent_44%),radial-gradient(ellipse_at_48%_85%,rgba(210,230,200,0.48)_0%,transparent_52%),radial-gradient(ellipse_at_72%_48%,rgba(235,220,160,0.38)_0%,transparent_46%),linear-gradient(180deg,#F7F5F1_0%,#F0EBE3_100%)]"
+        aria-hidden
+      />
 
-            <p className="text-white/60 mb-6 max-w-sm">
-              {t('footer.desc')}
-            </p>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-4 pt-16 sm:px-6 sm:pt-20 lg:px-12 lg:pt-24 xl:px-20">
+        {/* 4 columns: Shop / Learn / Resources / Let's Connect */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 xl:gap-12">
+          <div>
+            <h3 className="mb-4 text-sm font-semibold tracking-tight text-[#1E261C] sm:text-base">
+              Shop
+            </h3>
+            <ul className="space-y-2.5">
+              {SHOP_LINKS.map((link) => (
+                <li key={link.label}>{renderLink(link)}</li>
+              ))}
+            </ul>
+          </div>
 
-            <div className="mb-8">
-              <h4 className="font-semibold mb-4">{t('footer.newsletter.title')}</h4>
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <Input
+          <div>
+            <h3 className="mb-4 text-sm font-semibold tracking-tight text-[#1E261C] sm:text-base">
+              Learn
+            </h3>
+            <ul className="space-y-2.5">
+              {LEARN_LINKS.map((link) => (
+                <li key={link.label}>{renderLink(link)}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-semibold tracking-tight text-[#1E261C] sm:text-base">
+              Resources
+            </h3>
+            <ul className="space-y-2.5">
+              {RESOURCE_LINKS.map((link) => (
+                <li key={link.label}>{renderLink(link)}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-semibold tracking-tight text-[#1E261C] sm:text-base">
+              Let&apos;s Connect
+            </h3>
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <label className="block">
+                <span className="font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-[#1E261C]/70">
+                  Email*
+                </span>
+                <input
                   type="email"
-                  placeholder={t('footer.newsletter.placeholder')}
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40 rounded-full px-4"
+                  className="mt-1 w-full border-0 border-b border-[#1E261C] bg-transparent py-2 text-sm text-[#1E261C] outline-none placeholder:text-[#1E261C]/35 focus:border-[#1E261C]"
+                  placeholder=""
+                  autoComplete="email"
                 />
-                <Button
-                  type="submit"
-                  className="bg-[#D8CBB8] hover:bg-[#C4B5A0] rounded-full px-4"
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </form>
+              </label>
+              <button
+                type="submit"
+                className="bg-[#1E261C] px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-opacity hover:opacity-90"
+              >
+                Subscribe
+              </button>
               {subscribed && (
-                <p className="text-green-400 text-sm mt-2">{t('footer.newsletter.thanks')}</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#6B7A62]">
+                  Thanks for subscribing.
+                </p>
               )}
-            </div>
+            </form>
 
-            <div className="flex gap-4">
-              {socialLinks.map((social, index) => (
+            <div className="mt-6 flex items-center gap-4">
+              {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
                 <a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#D8CBB8] transition-colors duration-300"
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="text-[#1E261C] transition-opacity hover:opacity-55"
                 >
-                  <social.icon className="w-5 h-5" />
+                  <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
                 </a>
               ))}
             </div>
           </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">{t('footer.sections.company')}</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link, index) => (
-                <li key={index}>
-                  <a
-                    href={link.href}
-                    onClick={
-                      link.href.startsWith('/#')
-                        ? (e) => handleHashLinkClick(e, link.href)
-                        : undefined
-                    }
-                    className="text-white/60 hover:text-[#D8CBB8] transition-colors duration-300 text-sm relative group"
-                  >
-                    {link.label}
-                    <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#D8CBB8] transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">{t('footer.sections.support')}</h4>
-            <ul className="space-y-3">
-              {footerLinks.support.map((link, index) => (
-                <li key={index}>
-                  <a
-                    href={link.href}
-                    onClick={
-                      link.href.startsWith('/#')
-                        ? (e) => handleHashLinkClick(e, link.href)
-                        : undefined
-                    }
-                    className="text-white/60 hover:text-[#D8CBB8] transition-colors duration-300 text-sm relative group"
-                  >
-                    {link.label}
-                    <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#D8CBB8] transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">{t('footer.sections.legal')}</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link, index) => (
-                <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-white/60 hover:text-[#D8CBB8] transition-colors duration-300 text-sm relative group"
-                  >
-                    {link.label}
-                    <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#D8CBB8] transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        {/* <div className="flex flex-wrap gap-6 mt-12 pt-8 border-t border-white/10">
-          <div className="flex items-center gap-2 text-white/60 text-sm">
-            <Mail className="w-4 h-4" />
-            <span>support@luckdate.com</span>
-          </div>
-          <div className="flex items-center gap-2 text-white/60 text-sm">
-            <Phone className="w-4 h-4" />
-            <span>1-800-LUCKDATE</span>
-          </div>
-          <div className="flex items-center gap-2 text-white/60 text-sm">
-            <MapPin className="w-4 h-4" />
-            <span>Los Angeles, CA</span>
-          </div>
-        </div> */}
-      </div>
+        {/* Copyright + FDA + legal */}
+        <div className="mt-14 flex flex-col items-center text-center sm:mt-16">
+          <p className="font-mono text-[10px] uppercase leading-relaxed tracking-[0.12em] text-[#1E261C]/75 sm:text-[11px]">
+            © {new Date().getFullYear()} luckdate. All rights reserved.
+          </p>
 
-      <div className="border-t border-white/10">
-        <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex flex-col items-center md:items-start gap-1">
-              <p className="text-white/50 text-sm font-medium tracking-wide">
-                {t('geoSeo.tagline')}
-              </p>
-              <p className="text-white/40 text-sm">
-                © 2026 LUCKDATE. {t('footer.copyright')}
-              </p>
-            </div>
-            <p className="text-white/40 text-sm flex items-center gap-1">
-              {t('footer.madeWith').split('made with')[0]}
-              {t('footer.madeWith').includes('Made with') ? 'Made with ' : ''}
-              <Heart className="w-4 h-4 text-[#D8CBB8] fill-[#D8CBB8]" />
-              {t('footer.madeWith').split('for your wellness')[1]}
-              {t('footer.madeWith').includes('for your wellness') ? ' for your wellness' : ''}
-              
+          <div className="mt-5 max-w-2xl border border-[#1E261C]/85 px-4 py-3 sm:px-5 sm:py-3.5">
+            <p className="font-mono text-[10px] uppercase leading-relaxed tracking-[0.08em] text-[#1E261C]/80 sm:text-[11px]">
+              *{t('footer.fda')}
             </p>
           </div>
+
+          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:gap-x-7">
+            {LEGAL_LINKS.map((link) => (
+              <li key={link.label}>{renderLink(link)}</li>
+            ))}
+          </ul>
         </div>
       </div>
 
-      <div className="bg-white/5 py-4">
-        <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
-          <p className="text-white/40 text-xs text-center">
-            {t('footer.fda')}
-          </p>
-        </div>
+      {/* Giant wordmark — transparent PNG, full width */}
+      <div className="relative z-10 mt-10 w-full px-3 pb-6 sm:mt-12 sm:px-5 sm:pb-8 lg:mt-14 lg:px-8 lg:pb-10" aria-hidden>
+        <Image
+          src={logoWordmark}
+          alt=""
+          width={2044}
+          height={424}
+          className="mx-auto h-auto w-full max-w-[100%] select-none"
+          sizes="100vw"
+          quality={100}
+          unoptimized
+          priority={false}
+        />
       </div>
     </footer>
   );

@@ -3,10 +3,10 @@ import JsonLd from '@/components/JsonLd';
 import { buildPublisherSchema, BASE_URL, WEBSITE_ID } from '@/lib/seo/home-schemas';
 
 const pageDescription =
-  'Discover LUCKDATE\'s mission to help adults stay young longer through science-backed supplements, app tracking, and nutritionist-guided wellness systems.';
+  'Our story: luckdate builds science-backed daily wellness routines, guided by 2004 Nobel Laureate Prof. Aaron Ciechanover as Chief Consulting Scientist.';
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: 'Our Story',
   description: pageDescription,
   alternates: { canonical: '/about' },
 };
@@ -16,7 +16,7 @@ const aboutSchema = {
   '@type': 'AboutPage',
   '@id': `${BASE_URL}/about/#page`,
   url: `${BASE_URL}/about`,
-  name: 'About Us | LUCKDATE',
+  name: 'Our Story | luckdate',
   description: pageDescription,
   publisher: buildPublisherSchema(),
   isPartOf: { '@id': WEBSITE_ID },
@@ -29,7 +29,7 @@ const aboutSchema = {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: 'About Us', item: `${BASE_URL}/about` },
+      { '@type': 'ListItem', position: 2, name: 'Our Story', item: `${BASE_URL}/about` },
     ],
   },
 };

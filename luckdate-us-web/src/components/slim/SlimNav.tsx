@@ -68,7 +68,7 @@ export default function SlimNav({ onShopNow }: SlimNavProps) {
             ))}
           </div>
 
-          <Link href="/slim_1" className="absolute left-1/2 -translate-x-1/2 flex items-center">
+          <Link href="/shop/nutrition-28-day" className="absolute left-1/2 -translate-x-1/2 flex items-center">
             <Image
               src={logoImg}
               alt="luckdate"

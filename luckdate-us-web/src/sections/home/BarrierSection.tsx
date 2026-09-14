@@ -1,72 +1,102 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
-import barrierImage from '@/assets/home/products/barrier-slim-7-28-display.png';
+import certFda from '@/assets/home/certs/fda.png';
+import certGmp from '@/assets/home/certs/gmp.png';
+import certHalal from '@/assets/home/certs/halal.png';
+import certKosher from '@/assets/home/certs/kosher.png';
+import certNonGmo from '@/assets/home/certs/non-gmo.png';
+import certUsda from '@/assets/home/certs/usda.png';
+
+type Cert = {
+  src: StaticImageData;
+  label: string;
+  alt: string;
+};
+
+const CERTS: Cert[] = [
+  { src: certUsda, label: 'USDA', alt: 'USDA mark' },
+  { src: certFda, label: 'FDA', alt: 'FDA mark' },
+  { src: certGmp, label: 'GMP', alt: 'GMP Quality certification' },
+  { src: certHalal, label: 'HALAL', alt: 'Halal certification' },
+  { src: certKosher, label: 'KOSHER', alt: 'Kosher certification' },
+  { src: certNonGmo, label: 'NON-GMO', alt: 'Non-GMO mark' },
+];
 
 /**
- * ARMRA-style foundation / barriers section —
- * right visual shows Slim Vitality 7-Day & 28-Day chocolate kits.
+ * ARMRA-style whey foundation section:
+ * left headline + regulatory marks, right copy + CTA.
  */
 export function BarrierSection() {
-  const barriers = [
-    {
-      title: 'Skipped breakfasts',
-      desc: 'Busy mornings skip protein and rhythm — leaving energy and satiety inconsistent.',
-    },
-    {
-      title: 'Hard-to-keep plans',
-      desc: 'Most wellness fails from complexity. A one-minute chocolate pour is easier to keep.',
-    },
-    {
-      title: 'No clear ritual',
-      desc: 'Without a daily system, results fade. 7-Day starts the habit; 28-Day makes it stick.',
-    },
-  ];
-
   return (
-    <section className="bg-[#F7F5F1]">
-      <div className="grid lg:grid-cols-2">
-        <div className="flex flex-col justify-center px-4 py-14 sm:px-8 lg:px-16 xl:px-20 lg:py-20">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6B7A62]">
-            The foundation
-          </p>
-          <h2 className="mt-3 max-w-[16ch] font-['Montserrat'] text-3xl font-bold leading-[1.1] text-[#1E261C] sm:text-4xl lg:text-[2.75rem] break-words">
-            Modern living breaks down your daily balance
-          </h2>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-[#4E554B]/90 sm:text-base">
-            Luckdate rebuilds the foundation with Slim Vitality — a chocolate nutrition drink mix in
-            7-Day and 28-Day rituals you can actually keep.
-          </p>
+    <section
+      id="whey-protein"
+      className="relative overflow-hidden bg-white"
+    >
+      {/* Soft pastel wash — right side, matching reference layout */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_78%_42%,rgba(245,228,170,0.55)_0%,rgba(210,230,200,0.35)_28%,rgba(232,214,232,0.22)_52%,rgba(255,255,255,0)_72%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(248,232,180,0.45)_0%,transparent_70%)] blur-2xl"
+      />
 
-          <div className="mt-10 space-y-6 border-t border-[#D8CBB8]/50 pt-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#9A9188]">
-              The barriers
-            </p>
-            {barriers.map((item) => (
-              <div key={item.title}>
-                <h3 className="font-['Montserrat'] text-lg font-bold text-[#1E261C]">{item.title}</h3>
-                <p className="mt-1.5 max-w-md text-sm leading-relaxed text-[#6C6763]/90">{item.desc}</p>
-              </div>
+      <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-10 lg:py-24 xl:gap-20">
+        {/* Left: headline + cert marks */}
+        <div>
+          <h2 className="max-w-[14ch] font-['Montserrat'] text-[2.15rem] font-bold leading-[1.08] tracking-[-0.02em] text-[#111111] sm:text-5xl lg:text-[3.35rem]">
+            Concentrated whey protein — WPC80
+          </h2>
+
+          <ul className="mt-10 flex flex-wrap items-end gap-x-5 gap-y-6 sm:gap-x-6 lg:mt-12 lg:gap-x-7">
+            {CERTS.map((cert) => (
+              <li key={cert.label} className="flex w-[4.25rem] flex-col items-center sm:w-[4.75rem]">
+                <div className="relative flex h-12 w-full items-center justify-center sm:h-14">
+                  <Image
+                    src={cert.src}
+                    alt={cert.alt}
+                    fill
+                    className="object-contain"
+                    sizes="76px"
+                  />
+                </div>
+                <span className="mt-2 text-center text-[9px] font-semibold uppercase tracking-[0.14em] text-[#222222]/80 sm:text-[10px]">
+                  {cert.label}
+                </span>
+              </li>
             ))}
+          </ul>
+        </div>
+
+        {/* Right: body + CTA */}
+        <div className="max-w-xl lg:justify-self-end">
+          <div className="space-y-5 text-[15px] font-medium leading-relaxed text-[#1A1A1A] sm:text-base">
+            <p>
+              Whey Protein Concentrate 80% (WPC80) is a high-quality, nutrition-dense protein
+              source with all 9 essential amino acids and high bioavailability — supporting
+              immunity, muscle recovery, athletic performance, and everyday vitality.
+            </p>
+            <p>
+              Our WPC80 is spray-dried at mid-to-low temperature to preserve native protein form,
+              with no lecithin or added fillers. Specs are controlled for protein (dry basis),
+              moisture, microbiology, and contaminants — and manufactured to meet USDA and U.S. FDA
+              food specification standards. Halal, Kosher, GMP, and Non-GMO aligned.
+            </p>
+            <p className="text-sm font-medium leading-relaxed text-[#2A2A2A]">
+              Source highlights: Saputo Dairy Australia — Pasture Fed, rBST Free, BSE Free. Detailed
+              technical specifications available upon request.
+            </p>
           </div>
 
           <Link
-            href="#discover-favorites"
-            className="mt-10 inline-flex w-fit items-center justify-center bg-[#6B7A62] px-7 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#5A6852]"
+            href="#start-ritual"
+            className="mt-9 inline-flex items-center justify-center border border-[#111111] bg-[#F6E9B8]/70 px-8 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-[#111111] transition-colors hover:bg-[#F3E19A] sm:mt-10"
           >
-            Start your ritual
+            Shop whey
           </Link>
-        </div>
-
-        <div className="relative min-h-[380px] bg-[#E8EDE4] lg:min-h-full">
-          <Image
-            src={barrierImage}
-            alt="Slim Vitality 7-Day and 28-Day chocolate ritual kits"
-            fill
-            className="object-contain p-6 sm:p-10"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
         </div>
       </div>
     </section>
