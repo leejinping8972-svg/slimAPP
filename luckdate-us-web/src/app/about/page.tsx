@@ -76,18 +76,26 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#F7F5F1]">
       <h1 className="sr-only">Our Story | luckdate</h1>
-      <Navigation />
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] w-full">
+        <div className="pointer-events-auto">
+          <Navigation embedded overHero />
+        </div>
+      </div>
 
-      <main id="about-content" className="pt-[4.5rem]">
-        {/* Full-bleed hero */}
-        <section className="relative aspect-[16/10] min-h-[280px] w-full overflow-hidden sm:min-h-[380px] lg:aspect-[21/9] lg:min-h-[460px]">
+      <main id="about-content">
+        {/* Full-bleed hero under transparent nav — no top padding gap */}
+        <section className="relative aspect-[16/10] min-h-[320px] w-full overflow-hidden sm:min-h-[420px] lg:aspect-[21/9] lg:min-h-[520px]">
           <Image
             src={heroImage}
-            alt="Calm river landscape — wellness that starts from within"
+            alt="Sunny outdoor wellness — energetic people in nature"
             fill
             priority
-            className="object-cover object-center"
+            className="object-cover object-[center_40%]"
             sizes="100vw"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/25 to-transparent"
           />
         </section>
 

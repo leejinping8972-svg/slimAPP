@@ -35,9 +35,18 @@ export function PromoStrip({ visible = true }: PromoStripProps) {
       }`}
       aria-hidden={!visible}
     >
-      <div className="bg-[#D8CBB8] px-3 py-2 sm:px-4 sm:py-2.5">
-        <div className="mx-auto flex max-w-5xl items-center justify-center gap-3 sm:gap-5">
-          <div className="relative hidden h-9 w-9 shrink-0 overflow-hidden bg-[#C9B8A0]/50 sm:block sm:h-10 sm:w-10">
+      <div className="relative overflow-hidden px-3 py-2 sm:px-4 sm:py-2.5">
+        {/* Pastel wash — matches reviews / claims sections */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#FFD6E8_0%,#FFE9A8_28%,#D8F0C8_58%,#D6E4FF_100%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_50%,rgba(255,255,255,0.35)_0%,transparent_55%),radial-gradient(ellipse_at_80%_50%,rgba(255,255,255,0.25)_0%,transparent_50%)]"
+        />
+        <div className="relative mx-auto flex max-w-5xl items-center justify-center gap-3 sm:gap-5">
+          <div className="relative hidden h-9 w-9 shrink-0 overflow-hidden bg-white/55 sm:block sm:h-10 sm:w-10">
             <Image
               src={thumb7}
               alt="Slim Vitality 7-Day"
@@ -52,7 +61,7 @@ export function PromoStrip({ visible = true }: PromoStripProps) {
           >
             {MESSAGES[index]}
           </p>
-          <div className="relative hidden h-9 w-9 shrink-0 overflow-hidden bg-[#C9B8A0]/50 sm:block sm:h-10 sm:w-10">
+          <div className="relative hidden h-9 w-9 shrink-0 overflow-hidden bg-white/55 sm:block sm:h-10 sm:w-10">
             <Image
               src={thumb28}
               alt="Slim Vitality 28-Day"
@@ -61,7 +70,7 @@ export function PromoStrip({ visible = true }: PromoStripProps) {
               sizes="40px"
             />
           </div>
-          <div className="relative h-8 w-8 shrink-0 overflow-hidden bg-[#C9B8A0]/50 sm:hidden">
+          <div className="relative h-8 w-8 shrink-0 overflow-hidden bg-white/55 sm:hidden">
             <Image
               src={thumb28}
               alt="Slim Vitality"

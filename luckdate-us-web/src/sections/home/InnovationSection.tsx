@@ -2,8 +2,27 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { Check } from 'lucide-react';
 import scoopImage from '@/assets/home/whey-innovation-scoop.jpg';
-import scienceImage from '@/assets/home/whey-innovation-science.jpg';
+
+const ADVANTAGES: { lead: string; rest: string }[] = [
+  {
+    lead: 'No lecithin or other fillers/additives',
+    rest: ' — clean, pure milky flavor.',
+  },
+  {
+    lead: 'Single cheese-whey source, single factory',
+    rest: ' — high batch-to-batch stability.',
+  },
+  {
+    lead: 'Agglomeration process',
+    rest: ' for excellent powder flow and water solubility.',
+  },
+  {
+    lead: 'Strict control',
+    rest: ' of microbes, contaminant limits, and risk indicators.',
+  },
+];
 
 export function InnovationSection() {
   return (
@@ -16,39 +35,27 @@ export function InnovationSection() {
           className="object-cover object-[center_45%]"
           sizes="100vw"
         />
-        <div className="absolute right-[4%] top-[10%] w-[38%] max-w-[420px] overflow-hidden shadow-lg sm:right-[5%] sm:top-[12%] sm:w-[34%]">
-          <div className="relative aspect-[16/10]">
-            <Image
-              src={scienceImage}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="34vw"
-              aria-hidden
-            />
-          </div>
-        </div>
       </div>
 
       <div className="relative overflow-hidden bg-gradient-to-r from-white via-[#F7F4DC] to-[#E8FF6A]/80">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)_auto] lg:items-start lg:gap-10 lg:px-12 lg:py-14 xl:px-20">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.25fr)_auto] lg:items-start lg:gap-10 lg:px-12 lg:py-14 xl:px-20">
           <h2 className="max-w-[12ch] font-['Montserrat'] text-[2rem] font-bold leading-[1.1] tracking-[-0.03em] text-[#111111] sm:text-4xl lg:text-[2.6rem]">
             An innovation in whey protein
           </h2>
 
-          <div className="grid gap-6 sm:grid-cols-2 sm:gap-8">
-            <p className="text-sm font-medium leading-relaxed text-[#1A1A1A] sm:text-[15px]">
-              Whey Protein Concentrate 80% (WPC80) is a complete, nutrition-dense protein with all 9
-              essential amino acids and high bioavailability. It supports immunity, muscle growth,
-              athletic performance, and faster recovery — and is also linked with weight management,
-              heart health, and a stronger gut.
-            </p>
-            <p className="text-sm font-medium leading-relaxed text-[#1A1A1A] sm:text-[15px]">
-              Our WPC80 is spray-dried at mid-to-low temperature to keep native protein form, with no
-              lecithin or fillers. Specs meet USDA and U.S. FDA food standards, with monitoring beyond
-              basic national requirements. Halal, Kosher, GMP, and Non-GMO aligned.
-            </p>
-          </div>
+          <ul className="grid gap-5 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-6">
+            {ADVANTAGES.map((item) => (
+              <li key={item.lead} className="flex gap-3 text-sm leading-relaxed text-[#1A1A1A] sm:text-[15px]">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1E261C] text-white">
+                  <Check className="h-3 w-3" strokeWidth={3} aria-hidden />
+                </span>
+                <p>
+                  <span className="font-bold">{item.lead}</span>
+                  {item.rest}
+                </p>
+              </li>
+            ))}
+          </ul>
 
           <Link
             href="#start-ritual"
