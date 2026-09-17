@@ -11,7 +11,20 @@ import heroImg from '@/assets/home/whey-innovation-science.jpg';
 import scoopImg from '@/assets/home/whey-innovation-scoop.jpg';
 import probioticImg from '@/assets/home/products/gut-balance-probiotic-box.jpg';
 
-const COMPARE_TABS = [
+type CompareSide = {
+  title: string;
+  body: string[];
+  bullets?: string[];
+};
+
+type CompareTab = {
+  id: string;
+  label: string;
+  conventional: CompareSide;
+  luckdate: CompareSide;
+};
+
+const COMPARE_TABS: CompareTab[] = [
   {
     id: 'sourcing',
     label: 'Sourcing',
@@ -90,7 +103,7 @@ const COMPARE_TABS = [
       ],
     },
   },
-] as const;
+];
 
 const COMPOUNDS = [
   {
@@ -128,9 +141,10 @@ const COMPOUNDS = [
 ] as const;
 
 export default function FormulationPageClient() {
-  const [tab, setTab] = useState<(typeof COMPARE_TABS)[number]['id']>('sourcing');
+  const [tab, setTab] = useState(COMPARE_TABS[0].id);
   const [openCompound, setOpenCompound] = useState(0);
   const active = COMPARE_TABS.find((t) => t.id === tab) ?? COMPARE_TABS[0];
+  const luckdateBullets = active.luckdate.bullets;
 
   return (
     <div className="min-h-screen bg-[#F7F5F1]">
@@ -296,10 +310,9 @@ export default function FormulationPageClient() {
                     <p key={p.slice(0, 40)}>{p}</p>
                   ))}
                 </div>
-                {'bullets' in active.luckdate &&
-                  Array.isArray((active.luckdate as { bullets?: string[] }).bullets) && (
+                {luckdateBullets && luckdateBullets.length > 0 && (
                   <ul className="mt-5 space-y-2.5">
-                    {((active.luckdate as { bullets: string[] }).bullets).map((b) => (
+                    {luckdateBullets.map((b) => (
                       <li key={b} className="flex gap-2.5 text-sm text-white/90">
                         <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#C8E07A]" />
                         {b}
