@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
+import { cookies } from 'next/headers'
 import './globals.css'
 import { Providers } from '@/components/providers'
 import { MetaPixel } from '@/components/MetaPixel'
@@ -74,6 +74,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const cookieStore = await cookies()
   const locale = 'en'
 
   return (
@@ -90,10 +91,8 @@ export default async function RootLayout({
         <SilentConsole />
         <Providers initialLocale={locale}>
           <GoogleAnalytics />
-          <Suspense fallback={null}>
-            <MetaPixel />
-            <TikTokPixel />
-          </Suspense>
+          <MetaPixel />
+          <TikTokPixel />
           {children}
         </Providers>
       </body>

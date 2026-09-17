@@ -2,7 +2,7 @@
 
 import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, Suspense } from 'react'
 import {
   FB_PIXEL_ID_BODY_PURIFICATION,
   FB_PIXEL_ID_GUMMIES,
@@ -31,7 +31,7 @@ function shouldTrackMeta(pathname: string, sourceQuery: string | null): boolean 
   return true
 }
 
-export function MetaPixel() {
+function MetaPixelInner() {
   const pathname = usePathname() ?? ''
   const searchParams = useSearchParams()
   const sourceQuery = searchParams.get('source')
@@ -104,5 +104,12 @@ fbq('trackSingle', '${pixelNow}', 'PageView');
         />
       </noscript>
     </>
+  )
+}
+export function MetaPixel() {
+  return (
+    <Suspense fallback={null}>
+      <MetaPixelInner />
+    </Suspense>
   )
 }

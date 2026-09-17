@@ -1,7 +1,7 @@
 'use client';
 
 import { Plus, Minus, ShoppingBag, Trash2, Ticket, ChevronDown } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '@/context/CartContext';
@@ -233,7 +233,7 @@ function CartCouponPicker({
   );
 }
 
-const CartDrawer = () => {
+const CartDrawerInner = () => {
   const { items, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, totalItems, totalPrice, selectedCouponId, setSelectedCouponId, discountAmount, setDiscountAmount, finalTotal, clearCart } = useCart();
   const { user } = useAuth();
   const router = useRouter();
@@ -515,4 +515,10 @@ const CartDrawer = () => {
   );
 };
 
-export default CartDrawer;
+export default function CartDrawer() {
+  return (
+    <Suspense fallback={null}>
+      <CartDrawerInner />
+    </Suspense>
+  );
+}

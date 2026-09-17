@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef, useEffect, Suspense } from 'react';
-// Suspense import added below
+import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Footer from '@/sections/Footer';
@@ -163,9 +162,7 @@ export function HomePage({ initialProducts }: HomePageProps) {
           <UnpaidOrderFloat />
         </main>
         <Footer />
-        <Suspense fallback={null}>
-          <CartDrawer />
-        </Suspense>
+        <CartDrawer />
       </div>
     </>
   );

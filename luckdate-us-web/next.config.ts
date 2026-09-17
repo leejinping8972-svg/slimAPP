@@ -1,4 +1,4 @@
-﻿import path from 'node:path'
+import path from 'node:path'
 import type { NextConfig } from 'next'
 
 const isGithubPages = process.env.GITHUB_PAGES === 'true'
@@ -19,26 +19,10 @@ const nextConfig: NextConfig = {
     ? {
         async redirects() {
           return [
-            {
-              source: '/slim_1',
-              destination: '/shop/nutrition-28-day',
-              permanent: true,
-            },
-            {
-              source: '/slim_1/:path*',
-              destination: '/shop/nutrition-28-day',
-              permanent: true,
-            },
-            {
-              source: '/microneedle_1',
-              destination: '/chatviva_patches',
-              permanent: true,
-            },
-            {
-              source: '/microneedle',
-              destination: '/chatviva_patches',
-              permanent: true,
-            },
+            { source: '/slim_1', destination: '/shop/nutrition-28-day', permanent: true },
+            { source: '/slim_1/:path*', destination: '/shop/nutrition-28-day', permanent: true },
+            { source: '/microneedle_1', destination: '/chatviva_patches', permanent: true },
+            { source: '/microneedle', destination: '/chatviva_patches', permanent: true },
             {
               source: '/:path*',
               has: [{ type: 'host', value: 'luckdate.com' }],
@@ -60,18 +44,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-      },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'placehold.co' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org' },
     ],
   },
 }

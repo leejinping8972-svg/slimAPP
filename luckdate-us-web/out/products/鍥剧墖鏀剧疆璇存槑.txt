@@ -1,0 +1,9 @@
+请将您的产品图片放至此文件夹，并重命名为以下名称（注意后缀名需为 .jpg）：
+
+1. LUCKDATE 7-in-1 NAD+ Supplement  ->  nad-7in1.jpg
+2. Sáng Da • Mờ Nám 24H             ->  24h-skin.jpg
+3. AURA PROBIOTIC GUMMIES           ->  aura-gummies.jpg
+4. OMEGA MAX 3X                     ->  omega-max.jpg
+5. Nia-Max                          ->  nia-max.jpg
+
+完成后刷新网页即可看到图片。

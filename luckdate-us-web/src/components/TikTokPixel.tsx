@@ -2,7 +2,7 @@
 
 import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, Suspense } from 'react'
 import { ORDER_AD_SOURCE, resolveAdSourceByQuerySource } from '@/lib/order-tracking'
 import {
   TIKTOK_PIXEL_ID_HOME,
@@ -51,7 +51,7 @@ export function getTikTokClickId(): string | null {
   return ttclid
 }
 
-export function TikTokPixel() {
+function TikTokPixelInner() {
   const pathname = usePathname() ?? ''
   const searchParams = useSearchParams()
   const sourceQuery = searchParams.get('source')
@@ -117,5 +117,12 @@ if (typeof window !== 'undefined') {
 `,
       }}
     />
+  )
+}
+export function TikTokPixel() {
+  return (
+    <Suspense fallback={null}>
+      <TikTokPixelInner />
+    </Suspense>
   )
 }

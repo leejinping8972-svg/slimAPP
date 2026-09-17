@@ -1,4 +1,4 @@
-﻿const fs = require('node:fs')
+const fs = require('node:fs')
 const path = require('node:path')
 
 const root = path.join(__dirname, '..')
@@ -25,7 +25,6 @@ function walk(dir) {
 }
 walk(path.join(root, 'src', 'app'))
 
-// Marketing preview routes for GitHub Pages
 const keep = new Set([
   'page.tsx',
   'layout.tsx',
@@ -43,4 +42,26 @@ for (const name of fs.readdirSync(appDir)) {
   if (!keep.has(name)) rmrf(path.join(appDir, name))
 }
 
-console.log('Prepared static export for GitHub Pages (home/about/shop/science/faq)')
+const layoutPath = path.join(root, 'src', 'app', 'layout.tsx')
+let layout = fs.readFileSync(layoutPath, 'utf8')
+layout = layout.replace(/import \{ cookies \} from 'next\/headers'\r?\n/, '')
+if (!layout.includes("import { Suspense } from 'react'")) {
+  layout = layout.replace(
+    "import type { Metadata } from 'next'\n",
+    "import type { Metadata } from 'next'\nimport { Suspense } from 'react'\n"
+  )
+}
+layout = layout.replace(/const cookieStore = await cookies\(\)\r?\n\s*/g, '')
+layout = layout.replace(/const locale = [^\n]+\n/, "const locale = 'en'\n")
+if (layout.includes('<MetaPixel />') && !layout.includes('<Suspense fallback={null}>')) {
+  layout = layout.replace(
+    /<MetaPixel \/>\r?\n\s*<TikTokPixel \/>/,
+    `<Suspense fallback={null}>
+            <MetaPixel />
+            <TikTokPixel />
+          </Suspense>`
+  )
+}
+fs.writeFileSync(layoutPath, layout)
+
+console.log('Prepared static export for GitHub Pages')
