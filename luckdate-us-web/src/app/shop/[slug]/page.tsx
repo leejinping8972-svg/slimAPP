@@ -1,10 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import Navigation from '@/sections/Navigation';
 import Footer from '@/sections/Footer';
 import CartDrawer from '@/components/CartDrawer';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
 import { CATALOG_PRODUCTS, getCatalogProduct } from '@/data/catalogProducts';
 import { ShopProductClient } from './ShopProductClient';
 
@@ -37,10 +35,7 @@ export default async function ShopProductPage({ params }: PageProps) {
         <ShopProductClient product={product} />
       </main>
       <Footer />
-      <Suspense fallback={null}>
-        <CartDrawer />
-        <GlobalCoupon />
-      </Suspense>
+      <CartDrawer />
     </div>
   );
 }

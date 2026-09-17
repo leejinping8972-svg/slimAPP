@@ -6,25 +6,27 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
 import logoImg from '@/assets/logo.png';
 import { ShopMegaMenu, SHOP_NAV_PRODUCTS } from '@/sections/home/ShopMegaMenu';
+import { ScienceMegaMenu, SCIENCE_NAV_ITEMS } from '@/sections/home/ScienceMegaMenu';
 
 interface NavigationProps {
   embedded?: boolean;
   overHero?: boolean;
 }
 
+type MegaKind = 'shop' | 'science';
+
 type NavItem = {
   label: string;
   href: string;
-  hasMega?: boolean;
+  mega?: MegaKind;
 };
 
 const PRIMARY_LINKS: NavItem[] = [
-  { label: 'Shop', href: '/products', hasMega: true },
+  { label: 'Shop', href: '/products', mega: 'shop' },
   { label: 'Our Story', href: '/about' },
-  { label: 'Science', href: '/about' },
+  { label: 'Science', href: '/science/formulation', mega: 'science' },
   { label: 'Blog', href: '/blog' },
 ];
 
@@ -33,8 +35,9 @@ const CLOSE_DELAY_MS = 280;
 const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [shopOpen, setShopOpen] = useState(false);
+  const [openMega, setOpenMega] = useState<MegaKind | null>(null);
   const [mobileShopOpen, setMobileShopOpen] = useState(false);
+  const [mobileScienceOpen, setMobileScienceOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
   const { totalItems, setIsCartOpen } = useCart();
@@ -42,7 +45,7 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
   const pathname = usePathname();
   const router = useRouter();
 
-  const megaForcesSolid = shopOpen;
+  const megaForcesSolid = openMega !== null;
   const immersive = overHero && !isScrolled && !isMobileMenuOpen && !megaForcesSolid;
 
   const clearCloseTimer = () => {
@@ -52,19 +55,19 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
     }
   };
 
-  const openShop = useCallback(() => {
+  const openMegaMenu = useCallback((kind: MegaKind) => {
     clearCloseTimer();
-    setShopOpen(true);
+    setOpenMega(kind);
   }, []);
 
-  const scheduleCloseShop = useCallback(() => {
+  const scheduleCloseMega = useCallback(() => {
     clearCloseTimer();
-    closeTimer.current = setTimeout(() => setShopOpen(false), CLOSE_DELAY_MS);
+    closeTimer.current = setTimeout(() => setOpenMega(null), CLOSE_DELAY_MS);
   }, []);
 
-  const closeShopNow = useCallback(() => {
+  const closeMegaNow = useCallback(() => {
     clearCloseTimer();
-    setShopOpen(false);
+    setOpenMega(null);
   }, []);
 
   useEffect(() => {
@@ -74,7 +77,6 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Position mega panel just under the sticky/fixed header stack
   useEffect(() => {
     const updateTop = () => {
       const stack = document.getElementById('site-header-stack');
@@ -90,27 +92,27 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
       window.removeEventListener('resize', updateTop);
       window.removeEventListener('scroll', updateTop);
     };
-  }, [shopOpen, isScrolled, isMobileMenuOpen]);
+  }, [openMega, isScrolled, isMobileMenuOpen]);
 
   useEffect(() => {
-    if (!shopOpen) return;
+    if (!openMega) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeShopNow();
+      if (e.key === 'Escape') closeMegaNow();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [shopOpen, closeShopNow]);
+  }, [openMega, closeMegaNow]);
 
   useEffect(() => {
-    closeShopNow();
+    closeMegaNow();
     setIsMobileMenuOpen(false);
-  }, [pathname, closeShopNow]);
+  }, [pathname, closeMegaNow]);
 
   useEffect(() => () => clearCloseTimer(), []);
 
   const handleNavigation = (href: string) => {
     setIsMobileMenuOpen(false);
-    closeShopNow();
+    closeMegaNow();
 
     if (href.startsWith('/')) {
       const [path, hash] = href.split('#');
@@ -153,6 +155,7 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
 
   const isActive = (href: string) => {
     const path = href.split('#')[0] || '/';
+    if (path.startsWith('/science')) return pathname.startsWith('/science');
     return pathname === path || (path !== '/' && pathname.startsWith(path));
   };
 
@@ -161,7 +164,7 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
       <nav
         ref={navRef}
         id="site-navigation"
-        className={`${embedded ? '' : 'sticky top-0'} left-0 right-0 z-[100] py-3 transition-all duration-300 ${
+        className={`${embedded ? 'relative' : 'sticky top-0'} left-0 right-0 z-[100] py-3 transition-all duration-300 ${
           immersive
             ? 'bg-transparent border-b border-transparent'
             : 'bg-white/95 backdrop-blur-md shadow-sm border-b border-[#E8E8E8]/80'
@@ -170,14 +173,13 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
         <span className="sr-only">luckdate</span>
         <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
           <div className="flex items-center justify-between gap-3">
-            <Link
+            <a
               href="/"
               className="group mr-2 shrink-0"
               onClick={(e) => {
-                if (pathname === '/') {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
+                e.preventDefault();
+                if (pathname !== '/') router.push('/');
+                else window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
               <Image
@@ -188,33 +190,33 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
                 priority
                 className="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105 sm:h-8 lg:h-9"
               />
-            </Link>
+            </a>
 
-            {/* Desktop primary links */}
             <div className="hidden flex-1 items-center justify-center gap-5 lg:flex xl:gap-7">
               {PRIMARY_LINKS.map((link) => {
-                if (link.hasMega) {
+                if (link.mega) {
+                  const isOpen = openMega === link.mega;
                   return (
                     <div
                       key={link.label}
-                      data-shop-trigger
+                      data-mega-trigger={link.mega}
                       className="relative -my-3 flex items-stretch"
-                      onMouseEnter={openShop}
-                      onMouseLeave={scheduleCloseShop}
+                      onMouseEnter={() => openMegaMenu(link.mega!)}
+                      onMouseLeave={scheduleCloseMega}
                     >
                       <button
                         type="button"
-                        aria-expanded={shopOpen}
+                        aria-expanded={isOpen}
                         aria-haspopup="true"
                         onClick={() => handleNavigation(link.href)}
                         className={`inline-flex min-h-[3.25rem] items-center gap-1.5 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:px-5 xl:text-xs ${
-                          shopOpen || isActive(link.href) ? activeLinkColor : linkColor
-                        } ${shopOpen ? 'underline decoration-2 underline-offset-8' : ''}`}
+                          isOpen || isActive(link.href) ? activeLinkColor : linkColor
+                        } ${isOpen ? 'underline decoration-2 underline-offset-8' : ''}`}
                       >
                         {link.label}
                         <ChevronDown
                           className={`h-3.5 w-3.5 shrink-0 transition-transform duration-200 ${
-                            shopOpen ? 'rotate-180' : ''
+                            isOpen ? 'rotate-180' : ''
                           }`}
                           aria-hidden
                         />
@@ -228,7 +230,7 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
                     key={link.label}
                     type="button"
                     onClick={() => handleNavigation(link.href)}
-                    onMouseEnter={closeShopNow}
+                    onMouseEnter={closeMegaNow}
                     className={`px-2 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:text-xs ${
                       isActive(link.href) ? activeLinkColor : linkColor
                     }`}
@@ -239,12 +241,11 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
               })}
             </div>
 
-            {/* Desktop right: Login + Cart (ARMRA-style) */}
             <div className="hidden shrink-0 items-center gap-5 lg:flex xl:gap-6">
               <button
                 type="button"
                 onClick={() => router.push(user ? '/profile' : '/login')}
-                onMouseEnter={closeShopNow}
+                onMouseEnter={closeMegaNow}
                 className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:text-xs ${linkColor}`}
               >
                 {user ? 'Account' : 'Login'}
@@ -252,7 +253,7 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                onMouseEnter={closeShopNow}
+                onMouseEnter={closeMegaNow}
                 className={`relative rounded-full p-2 transition-all ${iconColor} ${
                   immersive ? 'hover:bg-white/10' : 'hover:bg-[#D8CBB8]/15'
                 }`}
@@ -267,7 +268,6 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
               </button>
             </div>
 
-            {/* Mobile */}
             <div className="flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-2 lg:hidden">
               <button
                 type="button"
@@ -295,26 +295,30 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
         </div>
       </nav>
 
-      {/* Backdrop only BELOW header — never cover Shop trigger (avoids hover flicker) */}
       <div
         className={`fixed inset-x-0 bottom-0 z-[104] bg-black/25 transition-opacity duration-200 ${
-          shopOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          openMega ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         }`}
         style={{ top: 'var(--nav-dropdown-top, 0px)' }}
         aria-hidden
-        onClick={closeShopNow}
+        onClick={closeMegaNow}
       />
 
       <div className="hidden lg:block">
         <ShopMegaMenu
-          open={shopOpen}
+          open={openMega === 'shop'}
           onNavigate={handleNavigation}
-          onMouseEnter={openShop}
-          onMouseLeave={scheduleCloseShop}
+          onMouseEnter={() => openMegaMenu('shop')}
+          onMouseLeave={scheduleCloseMega}
+        />
+        <ScienceMegaMenu
+          open={openMega === 'science'}
+          onNavigate={handleNavigation}
+          onMouseEnter={() => openMegaMenu('science')}
+          onMouseLeave={scheduleCloseMega}
         />
       </div>
 
-      {/* Mobile full-screen menu */}
       <div
         className={`fixed inset-0 z-[110] bg-white transition-all duration-500 lg:hidden ${
           isMobileMenuOpen ? 'visible opacity-100' : 'invisible pointer-events-none opacity-0'
@@ -369,16 +373,54 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
               </div>
             )}
 
-            {PRIMARY_LINKS.filter((l) => !l.hasMega).map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => handleNavigation(link.href)}
-                className="border-b border-[#E8E8E8] py-4 text-left text-xl font-semibold text-[#1E261C]"
-              >
-                {link.label}
-              </button>
-            ))}
+            <button
+              type="button"
+              onClick={() => handleNavigation('/about')}
+              className="border-b border-[#E8E8E8] py-4 text-left text-xl font-semibold text-[#1E261C]"
+            >
+              Our Story
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMobileScienceOpen((v) => !v)}
+              className="flex w-full items-center justify-between border-b border-[#E8E8E8] py-4 text-left text-xl font-semibold text-[#1E261C]"
+            >
+              Science
+              <ChevronDown
+                className={`h-5 w-5 transition-transform ${mobileScienceOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {mobileScienceOpen && (
+              <div className="space-y-1 border-b border-[#E8E8E8] pb-4 pt-2">
+                {SCIENCE_NAV_ITEMS.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleNavigation(item.href)}
+                    className="flex w-full items-center gap-3 px-1 py-2.5 text-left"
+                  >
+                    <span className="relative h-14 w-11 shrink-0 overflow-hidden bg-[#F0EDE7]">
+                      <Image src={item.image} alt="" fill className="object-cover" sizes="44px" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-bold text-[#1E261C]">{item.title}</span>
+                      <span className="mt-0.5 block text-xs leading-snug text-[#6C6763] line-clamp-2">
+                        {item.description}
+                      </span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => handleNavigation('/blog')}
+              className="border-b border-[#E8E8E8] py-4 text-left text-xl font-semibold text-[#1E261C]"
+            >
+              Blog
+            </button>
 
             <button
               type="button"

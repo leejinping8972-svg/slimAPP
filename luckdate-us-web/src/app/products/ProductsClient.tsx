@@ -8,7 +8,6 @@ import { useCart } from '@/context/CartContext';
 import { type Product } from '@/sections/Products';
 import type { ProductsPaginationData } from '@/lib/api/server-fetch';
 import CartDrawer from '@/components/CartDrawer';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
 
 interface ProductsClientProps {
     initialData: ProductsPaginationData;
@@ -381,7 +380,6 @@ export default function ProductsClient({ initialData }: ProductsClientProps) {
             )}
 
             <CartDrawer />
-            <GlobalCoupon />
         </>
     );
 }

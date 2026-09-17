@@ -3,8 +3,3 @@ node_modules
 .trae
 .docs
 .cursor
-out/
-
-
-.DS_Store
-

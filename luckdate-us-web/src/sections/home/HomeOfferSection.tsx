@@ -1,14 +1,19 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Check } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import type { Product } from '@/sections/Products';
-import displayImage from '@/assets/home/products/barrier-slim-7-28-display.png';
 import thumb7 from '@/assets/home/products/slim-7day-open-kit.png';
 import thumb28 from '@/assets/home/products/slim-28day-open-kit.png';
+import hero7Drink from '@/assets/home/products/slim-7day-hero-drink.png';
+import hero28Pack from '@/assets/home/products/slim-28day-hero-pack.png';
+import carousel7Box from '@/assets/home/carousel/carousel-slim-7day-box.png';
+import carousel7Open from '@/assets/home/carousel/carousel-slim-7day-open.png';
+import carousel28Box from '@/assets/home/carousel/carousel-slim-28day-box.png';
+import carousel28Open from '@/assets/home/carousel/carousel-slim-28day-open.png';
 
 type OfferKey = '7day' | '28day';
 
@@ -19,7 +24,8 @@ const OFFERS: Record<
     meta: string;
     sale: number;
     compare: number;
-    thumb: typeof thumb7;
+    thumb: StaticImageData;
+    gallery: StaticImageData[];
     match: RegExp;
   }
 > = {
@@ -29,6 +35,7 @@ const OFFERS: Record<
     sale: 19.9,
     compare: 29.9,
     thumb: thumb7,
+    gallery: [thumb7, hero7Drink, carousel7Open, carousel7Box],
     match: /7[\s-]?day/i,
   },
   '28day': {
@@ -37,6 +44,7 @@ const OFFERS: Record<
     sale: 69.9,
     compare: 99.9,
     thumb: thumb28,
+    gallery: [thumb28, hero28Pack, carousel28Open, carousel28Box],
     match: /28[\s-]?day/i,
   },
 };
@@ -61,7 +69,7 @@ type HomeOfferSectionProps = {
   products?: Product[];
 };
 
-/** ARMRA-style third-screen purchase block — left product art, right checkout CTA. */
+/** ARMRA-style third-screen purchase block — left gallery follows selected SKU. */
 export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
   const router = useRouter();
   const { addToCart, setIsCartOpen } = useCart();
@@ -80,7 +88,13 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
     };
   }, [products, selected]);
 
+  const gallery = OFFERS[selected].gallery;
+
   const off = savingsPercent(resolved.sale, resolved.compare);
+
+  const selectSku = (key: OfferKey) => {
+    setSelected(key);
+  };
 
   const handleAdd = () => {
     if (resolved.id != null) {
@@ -101,7 +115,6 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
       id="start-ritual"
       className="relative overflow-hidden py-12 sm:py-16 lg:py-20"
     >
-      {/* Soft multi-tone aura (ARMRA-like) */}
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(240,210,190,0.55)_0%,transparent_50%),radial-gradient(ellipse_at_80%_20%,rgba(200,220,230,0.45)_0%,transparent_45%),radial-gradient(ellipse_at_60%_80%,rgba(210,230,200,0.4)_0%,transparent_50%),radial-gradient(ellipse_at_40%_70%,rgba(235,220,160,0.35)_0%,transparent_45%)]"
         aria-hidden
@@ -109,14 +122,15 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
       <div className="pointer-events-none absolute inset-0 bg-[#F7F5F1]/55" aria-hidden />
 
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10 lg:px-10 xl:gap-14 xl:px-16">
-        {/* Left: product still life — fill the column, less empty padding */}
+        {/* Left: large image + thumbs for selected SKU */}
         <div className="relative mx-auto w-full lg:mx-0">
           <div className="relative aspect-[4/5] overflow-hidden bg-[#EDE8E0]/50 sm:aspect-square lg:aspect-[5/6] xl:min-h-[560px] xl:aspect-auto">
             <Image
-              src={displayImage}
-              alt="Slim Vitality 7-Day and 28-Day chocolate ritual kits"
+              key={selected}
+              src={gallery[0]}
+              alt={resolved.name}
               fill
-              className="scale-[1.12] object-cover object-center sm:scale-[1.08] lg:scale-110"
+              className="object-contain p-4 sm:p-6 lg:p-8 animate-in fade-in duration-300"
               sizes="(min-width: 1024px) 55vw, 100vw"
               priority
             />
@@ -132,7 +146,6 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
             {off > 0 ? `${off}% off your ritual kit` : 'Start your Slim Vitality ritual'}
           </h2>
 
-          {/* Product picker row */}
           <div className="mt-8 space-y-3">
             {(Object.keys(OFFERS) as OfferKey[]).map((key) => {
               const offer = OFFERS[key];
@@ -145,7 +158,7 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
                 <button
                   key={key}
                   type="button"
-                  onClick={() => setSelected(key)}
+                  onClick={() => selectSku(key)}
                   className={`flex w-full items-center gap-3 border bg-white/70 px-3 py-3 text-left transition-colors sm:gap-4 sm:px-4 ${
                     active
                       ? 'border-[#1E261C] ring-1 ring-[#1E261C]'

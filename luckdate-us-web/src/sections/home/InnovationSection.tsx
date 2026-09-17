@@ -1,9 +1,15 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import scoopImage from '@/assets/home/whey-innovation-scoop.jpg';
+import certFda from '@/assets/home/certs/fda.png';
+import certGmp from '@/assets/home/certs/gmp.png';
+import certUsda from '@/assets/home/certs/usda.png';
+import certHalal from '@/assets/home/certs/halal.png';
+import certKosher from '@/assets/home/certs/kosher.png';
+import certNonGmo from '@/assets/home/certs/non-gmo.png';
 
 const ADVANTAGES: { lead: string; rest: string }[] = [
   {
@@ -22,6 +28,20 @@ const ADVANTAGES: { lead: string; rest: string }[] = [
     lead: 'Strict control',
     rest: ' of microbes, contaminant limits, and risk indicators.',
   },
+];
+
+type Cert = {
+  src: StaticImageData;
+  label: string;
+};
+
+const CERTS: Cert[] = [
+  { src: certUsda, label: 'USDA' },
+  { src: certFda, label: 'FDA' },
+  { src: certGmp, label: 'GMP' },
+  { src: certHalal, label: 'Halal' },
+  { src: certKosher, label: 'Kosher' },
+  { src: certNonGmo, label: 'Non-GMO' },
 ];
 
 export function InnovationSection() {
@@ -64,6 +84,25 @@ export function InnovationSection() {
             Shop whey
           </Link>
         </div>
+
+        <ul className="mx-auto flex max-w-7xl flex-wrap items-end justify-center gap-x-6 gap-y-5 px-4 pb-12 sm:gap-x-8 sm:px-6 lg:justify-start lg:px-12 lg:pb-14 xl:px-20">
+          {CERTS.map((cert) => (
+            <li key={cert.label} className="flex w-14 flex-col items-center sm:w-16">
+              <div className="relative flex h-11 w-full items-center justify-center sm:h-12">
+                <Image
+                  src={cert.src}
+                  alt={cert.label}
+                  fill
+                  className="object-contain"
+                  sizes="64px"
+                />
+              </div>
+              <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-[#6B7A62]">
+                {cert.label}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

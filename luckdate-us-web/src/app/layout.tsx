@@ -12,45 +12,56 @@ import { buildWebSiteSchema, buildOrganizationSchema, SITE_NAME } from '@/lib/se
 import icon from '@/assets/icon.png'
 import appleIcon from '@/assets/apple-icon.png'
 
+const SUPPORTED_LOCALES = ['en', 'zh', 'th', 'fr', 'de', 'es', 'pt', 'vi', 'id'] as const
+
 export const metadata: Metadata = {
   applicationName: SITE_NAME,
   title: {
-    default: 'luckdate – Daily Nutrition & Gut Wellness Rituals',
-    template: '%s | luckdate',
+    default: 'LUCKDATE – Premium NAD+, NMN, Collagen & Longevity Supplements | Shop Now',
+    template: '%s | LUCKDATE',
   },
-  description:
-    'Science-backed daily wellness from luckdate — nutrition rituals, gut management, app tracking, and guidance you can keep.',
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://leejinping8972-svg.github.io/slimAPP/us',
-  ),
+  description: 'Discover LUCKDATE\'s science-backed premium supplements: NAD+ boosters, NMN anti-aging formulas, collagen peptides, probiotics, Shilajit gummies & omega-3 fish oil. Trusted by 1M+ customers worldwide. Free shipping on orders $50+. 30-day money-back guarantee.',
+  keywords: ['LUCKDATE', 'NAD+ supplements', 'NMN anti-aging', 'collagen peptides', 'probiotics', 'Shilajit gummies', 'omega-3 fish oil', 'men\'s health supplements', 'women\'s wellness vitamins', 'premium supplements for longevity', 'cellular health', 'energy supplements', 'sleep support', 'immune system booster', 'natural detox'],
+  authors: [{ name: 'LUCKDATE Wellness Team' }],
+  creator: 'LUCKDATE',
+  publisher: 'LUCKDATE',
+  metadataBase: new URL('https://www.luckdate.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'luckdate',
-    title: 'luckdate – Daily Nutrition & Gut Wellness Rituals',
-    description:
-      'Science-backed daily wellness — nutrition rituals, gut management, and routines you can keep.',
+    url: 'https://www.luckdate.com',
+    siteName: 'LUCKDATE',
+    title: 'LUCKDATE – Premium NAD+, NMN, Collagen & Longevity Supplements',
+    description: 'Shop premium, science-backed supplements trusted by 1M+ customers. NAD+, collagen, probiotics, Shilajit & more. Free shipping $50+. 30-day guarantee.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'luckdate',
+        alt: 'LUCKDATE - Premium Supplements for Longevity and Wellness',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'luckdate – Daily Nutrition & Gut Wellness Rituals',
-    description: 'Science-backed daily wellness rituals you can keep.',
+    site: '@luckdate_official',
+    title: 'LUCKDATE – Premium NAD+, NMN & Longevity Supplements',
+    description: 'Science-backed supplements for cellular health, energy & longevity. Shop now with free shipping on $50+.',
     images: ['/og-image.png'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: [{ url: icon.src, sizes: '32x32', type: 'image/png' }],
@@ -58,7 +69,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode

@@ -3,12 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
-import { Suspense } from 'react';
 import Navigation from '@/sections/Navigation';
 import Footer from '@/sections/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import UnpaidOrderFloat from '@/components/UnpaidOrderFloat';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
 import heroImage from '@/assets/about/hero-wellness.jpg';
 import pillarFitoo from '@/assets/about/pillar-fitoo.jpg';
 import pillarVitality from '@/assets/about/pillar-vitality.jpg';
@@ -324,10 +322,7 @@ export default function AboutPage() {
 
       <UnpaidOrderFloat />
       <Footer />
-      <Suspense fallback={null}>
-        <CartDrawer />
-        <GlobalCoupon />
-      </Suspense>
+      <CartDrawer />
     </div>
   );
 }

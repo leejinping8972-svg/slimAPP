@@ -16,14 +16,14 @@ const SHOP_LINKS = [
 
 const LEARN_LINKS = [
   { label: 'Our Story', href: '/about' },
-  { label: 'Science', href: '/about' },
+  { label: 'Science', href: '/science/formulation' },
   { label: 'Blog', href: '/blog' },
   { label: 'Vitality Check', href: '/shop/nutrition-28-day' },
 ];
 
 const RESOURCE_LINKS = [
   { label: 'Contact', href: '/contact' },
-  { label: 'FAQ', href: '/#faq' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Track Order', href: '/track-order' },
   { label: 'Order Inquiry', href: '/order-inquiry' },
 ];

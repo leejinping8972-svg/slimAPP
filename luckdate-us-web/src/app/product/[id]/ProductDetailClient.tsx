@@ -9,7 +9,6 @@ import { useAuth } from '@/context/AuthContext';
 import { useCoupon } from '@/context/CouponContext';
 import { Button } from '@/components/ui/button';
 import CartDrawer from '@/components/CartDrawer';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
 import { type Product } from '@/sections/Products';
 import { addOrder, getUserOrders } from '@/lib/api/order';
 import { ORDER_CREATE_CHANNEL } from '@/lib/order-tracking';
@@ -885,7 +884,6 @@ export default function ProductDetailClient({ initialProduct }: { initialProduct
              </div>
 
             <CartDrawer />
-            <GlobalCoupon />
             <UnpaidOrderModal
               open={showUnpaidModal}
               onClose={() => setShowUnpaidModal(false)}

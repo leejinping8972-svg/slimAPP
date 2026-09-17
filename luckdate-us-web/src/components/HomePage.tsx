@@ -1,15 +1,12 @@
 'use client';
 
-import { useRef, useEffect, useState, Suspense } from 'react';
+import { useRef, useEffect, Suspense } from 'react';
+// Suspense import added below
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTranslation } from 'react-i18next';
-import FAQ from '@/sections/FAQ';
 import Footer from '@/sections/Footer';
 import UnpaidOrderFloat from '@/components/UnpaidOrderFloat';
 import CartDrawer from '@/components/CartDrawer';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
-import { getFaqList } from '@/lib/api';
 import type { Product } from '@/sections/Products';
 import type { ArticleDisplay } from '@/lib/api/mappers';
 import type { FaqItem, BannerItem } from '@/lib/api/types';
@@ -22,6 +19,7 @@ import {
   HomeOfferSection,
   SavingsCompareSection,
   BarrierSection,
+  BarriersExplainerSection,
   ProcurementSection,
   DiscoverFavoritesSection,
   ClaimsStrip,
@@ -37,10 +35,8 @@ export interface HomePageProps {
   initialBanners?: BannerItem[];
 }
 
-export function HomePage({ initialFaqs, initialProducts }: HomePageProps) {
+export function HomePage({ initialProducts }: HomePageProps) {
   const mainRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
-  const [faqs, setFaqs] = useState<FaqItem[]>(initialFaqs);
 
   useEffect(() => {
     let refreshTimer: number | null = null;
@@ -143,36 +139,14 @@ export function HomePage({ initialFaqs, initialProducts }: HomePageProps) {
   }, []);
 
   useEffect(() => {
-    const fallbackFaq = (): FaqItem[] => {
-      const fallback = t('faq.items', { returnObjects: true }) as { question: string; answer: string }[];
-      return Array.isArray(fallback)
-        ? fallback.map((f, i) => ({ id: i, question: f.question, answer: f.answer }))
-        : [];
-    };
-    const load = async () => {
-      try {
-        const faqRes = await getFaqList().catch(() => ({ data: { status: false, list: undefined } }));
-        if (faqRes?.data?.status && faqRes.data?.list?.data) {
-          setFaqs(faqRes.data.list.data);
-        } else {
-          setFaqs(fallbackFaq());
-        }
-      } catch {
-        setFaqs(fallbackFaq());
-      }
-    };
-    load();
-  }, [t]);
-
-  useEffect(() => {
     const ctx = gsap.context(() => ScrollTrigger.refresh(), mainRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <>
-      <HomeSiteHeader />
       <div ref={mainRef} className="min-h-screen bg-[#F7F5F1]">
+        <HomeSiteHeader />
         <main>
           <HomeHero />
           <AsSeenStrip />
@@ -180,18 +154,17 @@ export function HomePage({ initialFaqs, initialProducts }: HomePageProps) {
           <HomeOfferSection products={initialProducts} />
           <SavingsCompareSection />
           <BarrierSection />
-          <ProcurementSection />
+          <BarriersExplainerSection />
+          <FeaturedReviewsSection />
           <DiscoverFavoritesSection />
           <ClaimsStrip />
           <InnovationSection />
-          <FeaturedReviewsSection />
-          <FAQ />
+          <ProcurementSection />
           <UnpaidOrderFloat />
         </main>
         <Footer />
         <Suspense fallback={null}>
           <CartDrawer />
-          <GlobalCoupon />
         </Suspense>
       </div>
     </>

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Share2, Check } from 'lucide-react';
 import { type ArticleDisplay } from '@/lib/api/mappers';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
 import ArticleRelatedModules from '@/components/seo/ArticleRelatedModules';
 
 export default function ArticleClient({ post }: { post: ArticleDisplay }) {
@@ -47,7 +46,6 @@ export default function ArticleClient({ post }: { post: ArticleDisplay }) {
                 </div>
             </div>
             <ArticleRelatedModules />
-            <GlobalCoupon />
         </>
     );
 }

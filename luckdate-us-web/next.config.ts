@@ -1,4 +1,4 @@
-import path from 'node:path'
+﻿import path from 'node:path'
 import type { NextConfig } from 'next'
 
 const isGithubPages = process.env.GITHUB_PAGES === 'true'

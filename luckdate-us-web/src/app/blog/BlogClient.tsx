@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { type ArticleDisplay } from '@/lib/api/mappers';
 import type { BlogPaginationData } from '@/lib/api/server-fetch';
-import { GlobalCoupon } from '@/components/GlobalCoupon';
 import BlogCategoryNav from '@/components/seo/BlogCategoryNav';
 import { inferBlogCategory, type BlogCategoryId } from '@/lib/seo/blog-categories';
 
@@ -201,7 +200,6 @@ export default function BlogClient({ initialData }: BlogClientProps) {
                 </div>
             )}
         </div>
-        <GlobalCoupon />
         </>
     );
 }

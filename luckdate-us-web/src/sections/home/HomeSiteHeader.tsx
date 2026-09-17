@@ -1,32 +1,47 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { PromoStrip } from '@/sections/home/PromoStrip';
 import Navigation from '@/sections/Navigation';
 
 /**
- * Homepage header overlays the hero (ARMRA-style).
- * Promo bar stays hidden on the first viewport, then slides in on scroll.
+ * Homepage header — always visible, sits in document flow above the hero.
+ * ResizeObserver keeps --site-header-height in sync when the viewport stretches.
  */
 export function HomeSiteHeader() {
-  const [showPromo, setShowPromo] = useState(false);
+  useLayoutEffect(() => {
+    const el = document.getElementById('site-header-stack');
+    if (!el) return;
 
-  useEffect(() => {
-    const onScroll = () => {
-      // Reveal after leaving the top of the first screen
-      setShowPromo(window.scrollY > window.innerHeight * 0.35);
+    const updateMetrics = () => {
+      const rect = el.getBoundingClientRect();
+      const height = Math.ceil(rect.height);
+      document.documentElement.style.setProperty('--site-header-height', `${height}px`);
+      document.documentElement.style.setProperty(
+        '--nav-dropdown-top',
+        `${Math.round(rect.bottom)}px`,
+      );
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    updateMetrics();
+    const ro = new ResizeObserver(updateMetrics);
+    ro.observe(el);
+    window.addEventListener('resize', updateMetrics);
+    window.addEventListener('scroll', updateMetrics, { passive: true });
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateMetrics);
+      window.removeEventListener('scroll', updateMetrics);
+    };
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] w-full">
-      <div id="site-header-stack" className="pointer-events-auto">
-        <PromoStrip visible={showPromo} />
-        <Navigation embedded overHero />
-      </div>
+    <div
+      id="site-header-stack"
+      className="sticky top-0 z-[100] w-full shrink-0 bg-white shadow-sm"
+    >
+      <PromoStrip visible />
+      <Navigation embedded />
     </div>
   );
 }
