@@ -7,6 +7,9 @@ const basePath = isGithubPages ? `/${repoName}/us` : ''
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   ...(isGithubPages
     ? {
         output: 'export' as const,

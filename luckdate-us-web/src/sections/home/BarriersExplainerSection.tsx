@@ -1,5 +1,7 @@
 'use client';
 
+import { assetPath } from '@/lib/assetPath';
+
 /**
  * ARMRA-inspired “The barriers” block —
  * left looping mucosa video (full-bleed to viewport left), right explainer copy.
@@ -21,11 +23,11 @@ export function BarriersExplainerSection() {
             muted
             loop
             playsInline
-            poster="/videos/barriers-bright-poster.jpg"
+            poster={assetPath('/videos/barriers-bright-poster.jpg')}
             aria-label="Soft visualization of the body’s protective barrier"
           >
-            <source src="/videos/barriers-bright.webm" type="video/webm" />
-            <source src="/videos/barriers-bright.mp4" type="video/mp4" />
+            <source src={assetPath('/videos/barriers-bright.webm')} type="video/webm" />
+            <source src={assetPath('/videos/barriers-bright.mp4')} type="video/mp4" />
           </video>
         </div>
 
