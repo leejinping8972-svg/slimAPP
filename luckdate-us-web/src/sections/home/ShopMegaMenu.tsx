@@ -5,7 +5,9 @@ import Link from 'next/link';
 import nutrition28 from '@/assets/home/products/slim-28day-open-kit.png';
 import nutrition7 from '@/assets/home/products/slim-7day-open-kit.png';
 import fruitVeg from '@/assets/home/products/gut-fruit-veg-flavors.jpg';
+import fruitGift from '@/assets/home/products/gut-14day-fiber-kit.jpg';
 import probiotics from '@/assets/home/products/gut-balance-probiotic-box.jpg';
+import shakerCup from '@/assets/home/products/luckdate-shaker-cup.png';
 import featuredPromo from '@/assets/home/products/barrier-slim-7-28-display.png';
 
 export type ShopNavProduct = {
@@ -15,7 +17,7 @@ export type ShopNavProduct = {
   href: string;
   thumb: StaticImageData;
   badge?: string;
-  category: 'nutrition' | 'gut';
+  category: 'nutrition' | 'gut' | 'merch';
 };
 
 export const SHOP_NAV_PRODUCTS: ShopNavProduct[] = [
@@ -53,11 +55,29 @@ export const SHOP_NAV_PRODUCTS: ShopNavProduct[] = [
     thumb: probiotics,
     category: 'gut',
   },
+  {
+    id: 'gift-box',
+    title: 'Gift Set',
+    tagline: '14-Day fiber ritual · shaker gift set.',
+    href: '/shop/gift-box',
+    thumb: fruitGift,
+    category: 'gut',
+  },
+  {
+    id: 'shaker-cup',
+    title: 'luckdate Shaker Cup',
+    tagline: 'Mint ritual shaker · scoop + mixer included.',
+    href: '/shop/shaker-cup',
+    thumb: shakerCup,
+    badge: 'NEW',
+    category: 'merch',
+  },
 ];
 
 const GROUPS: { key: ShopNavProduct['category']; label: string }[] = [
   { key: 'nutrition', label: 'Nutrition' },
   { key: 'gut', label: 'Gut Management' },
+  { key: 'merch', label: 'Accessories' },
 ];
 
 type ShopMegaMenuProps = {
@@ -67,7 +87,7 @@ type ShopMegaMenuProps = {
   onMouseLeave: () => void;
 };
 
-/** ARMRA-style Shop mega panel — nutrition + gut products. */
+/** ARMRA-style Shop mega panel — nutrition, gut, and merch. */
 export function ShopMegaMenu({ open, onNavigate, onMouseEnter, onMouseLeave }: ShopMegaMenuProps) {
   return (
     <div

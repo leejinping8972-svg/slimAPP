@@ -1,8 +1,15 @@
 'use client';
 
-import { BadgeCheck, Factory, Smartphone, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import { BadgeCheck, Factory, Smartphone, Sparkles, type LucideIcon } from 'lucide-react';
+import professorImg from '@/assets/home/professor-ciechanover.jpg';
 
-const ITEMS = [
+const ITEMS: {
+  label: string;
+  hint: string;
+  icon?: LucideIcon;
+  image?: typeof professorImg;
+}[] = [
   {
     label: 'GMP Certified',
     hint: 'Manufacturing standards',
@@ -23,7 +30,12 @@ const ITEMS = [
     hint: 'Sunny AI companion',
     icon: Smartphone,
   },
-] as const;
+  {
+    label: 'Nobel Laureate',
+    hint: 'Prof. Aaron Ciechanover',
+    image: professorImg,
+  },
+];
 
 /** Trust strip under hero — larger presence with icons. */
 export function AsSeenStrip() {
@@ -34,16 +46,26 @@ export function AsSeenStrip() {
           Built with
         </p>
 
-        <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4 lg:gap-10">
-          {ITEMS.map(({ label, hint, icon: Icon }) => (
-            <li key={label} className="flex flex-col items-center text-center">
-              <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#1E261C]/12 bg-white shadow-[0_8px_24px_rgba(30,38,28,0.06)] sm:h-16 sm:w-16">
-                <Icon className="h-6 w-6 text-[#1E261C] sm:h-7 sm:w-7" strokeWidth={1.6} aria-hidden />
+        <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-5 lg:gap-6">
+          {ITEMS.map((item) => (
+            <li key={item.label} className="flex flex-col items-center text-center">
+              <span className="relative mb-4 flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-[#1E261C]/12 bg-white shadow-[0_8px_24px_rgba(30,38,28,0.06)] sm:h-16 sm:w-16">
+                {item.image ? (
+                  <Image
+                    src={item.image}
+                    alt="Professor Aaron Ciechanover"
+                    fill
+                    className="object-cover object-[center_15%]"
+                    sizes="64px"
+                  />
+                ) : item.icon ? (
+                  <item.icon className="h-6 w-6 text-[#1E261C] sm:h-7 sm:w-7" strokeWidth={1.6} aria-hidden />
+                ) : null}
               </span>
-              <p className="font-['Montserrat'] text-[0.7rem] font-bold uppercase leading-snug tracking-[0.12em] text-[#1E261C] sm:text-sm lg:text-[0.95rem]">
-                {label}
+              <p className="font-['Montserrat'] text-[0.7rem] font-bold uppercase leading-snug tracking-[0.12em] text-[#1E261C] sm:text-sm lg:text-[0.8rem]">
+                {item.label}
               </p>
-              <p className="mt-1.5 hidden text-xs text-[#6C6763] sm:block">{hint}</p>
+              <p className="mt-1.5 hidden text-xs text-[#6C6763] sm:block">{item.hint}</p>
             </li>
           ))}
         </ul>

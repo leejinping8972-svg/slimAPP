@@ -16,12 +16,12 @@ const REVIEWS: Review[] = [
   },
   {
     quote:
-      'I dropped the protein tub, bars, and extra vitamins. One chocolate pour in the morning and I stay full through meetings.',
+      'I dropped the protein tub, bars, and extra vitamins. One morning cup of LUCKDATE SLIM PROTEIN and I stay full through meetings.',
     name: 'Kathryn R.',
   },
   {
     quote:
-      '16g protein after training without a chalky shake. Recovery feels steadier and I actually look forward to the ritual.',
+      '16g of protein after training — it is a powder, and it mixes clean. Recovery feels steadier, and I actually look forward to it.',
     name: 'James T.',
   },
   {

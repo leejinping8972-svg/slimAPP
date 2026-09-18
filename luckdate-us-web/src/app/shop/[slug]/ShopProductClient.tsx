@@ -61,6 +61,8 @@ export function ShopProductClient({ product }: { product: CatalogProduct }) {
       return;
     }
     setSizeId(nextId);
+    const nextImage = product.sizes.find((s) => s.id === nextId)?.imageIndex;
+    if (nextImage != null) setImageIndex(nextImage);
   };
 
   const handleAdd = () => {
@@ -69,7 +71,7 @@ export function ShopProductClient({ product }: { product: CatalogProduct }) {
         id: product.cartId,
         name: `${product.name}${sizeId ? ` · ${product.sizes.find((s) => s.id === sizeId)?.label ?? ''}` : ''}`,
         price: product.price,
-        image: product.images[0].src,
+                image: (product.images[imageIndex] ?? product.images[0]).src,
       },
       qty,
     );
@@ -158,7 +160,7 @@ export function ShopProductClient({ product }: { product: CatalogProduct }) {
             {product.sizes.length > 0 && (
               <div className="mt-8">
                 <p className="text-sm font-bold text-[#111111]">Choose your size</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <div className={`mt-3 grid gap-2 ${product.sizes.length > 2 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
                   {product.sizes.map((size) => {
                     const active = sizeId === size.id;
                     return (

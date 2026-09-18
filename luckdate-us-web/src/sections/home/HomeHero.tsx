@@ -9,7 +9,7 @@ import heroProducts from '@/assets/home/hero/hero-products-wide.jpg';
 const SLIDES: { src: StaticImageData; alt: string }[] = [
   {
     src: heroProducts,
-    alt: 'Slim Vitality 7-Day and 28-Day chocolate kits with luckdate shaker',
+    alt: 'Slim Vitality 28-Day Vitality Ritual packaging with sachets and chocolate powder',
   },
   {
     src: heroIndoor,

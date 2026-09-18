@@ -83,7 +83,7 @@ export default function ShilajitNavbar({ onShopNow }: ShilajitNavbarProps) {
       {/* Main nav */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 flex items-center justify-between h-10 sm:h-16">
         <div className="flex items-center gap-2 sm:gap-4">
-          <Image src={luckdateLogo} alt="Luckdate" className="h-4 sm:h-8 w-auto brightness-200" width={120} height={32} />
+          <Image src={luckdateLogo} alt="Luckdate" className="h-4 sm:h-8 w-auto" width={120} height={32} />
           <span className="font-body text-sm sm:text-xl font-bold text-gold-gradient tracking-wide whitespace-nowrap">
             🏆 100k+ Sold
           </span>

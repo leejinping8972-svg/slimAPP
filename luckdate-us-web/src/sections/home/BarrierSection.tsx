@@ -101,8 +101,9 @@ export function BarrierSection() {
                 weight management.
               </p>
               <p>
-                Strengthen your daily protein foundation, nourish gut rhythm, and give your body a
-                cleaner blueprint for balance from the inside out — without fillers or shortcuts.
+                Add quality probiotics each day to balance gut flora, nourish gut rhythm, and give
+                your body a cleaner blueprint for balance from the inside out — without fillers or
+                shortcuts.
               </p>
             </div>
 

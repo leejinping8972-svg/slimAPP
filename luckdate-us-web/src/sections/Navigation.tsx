@@ -174,73 +174,75 @@ const Navigation = ({ embedded = false, overHero = false }: NavigationProps) => 
         <span className="sr-only">luckdate</span>
         <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
           <div className="flex items-center justify-between gap-3">
-            <Link
-              href="/"
-              className="group mr-2 shrink-0"
-              onClick={(e) => {
-                if (pathname === '/') {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-              }}
-            >
-              <Image
-                src={logoImg}
-                alt="luckdate"
-                width={180}
-                height={40}
-                priority
-                className="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105 sm:h-8 lg:h-9"
-              />
-            </Link>
+            <div className="flex min-w-0 items-center gap-2 sm:gap-3 lg:gap-5 xl:gap-6">
+              <Link
+                href="/"
+                className="group shrink-0"
+                onClick={(e) => {
+                  if (pathname === '/') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+              >
+                <Image
+                  src={logoImg}
+                  alt="luckdate"
+                  width={180}
+                  height={40}
+                  priority
+                  className="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105 sm:h-8 lg:h-9"
+                />
+              </Link>
 
-            <div className="hidden flex-1 items-center justify-center gap-5 lg:flex xl:gap-7">
-              {PRIMARY_LINKS.map((link) => {
-                if (link.mega) {
-                  const isOpen = openMega === link.mega;
-                  return (
-                    <div
-                      key={link.label}
-                      data-mega-trigger={link.mega}
-                      className="relative -my-3 flex items-stretch"
-                      onMouseEnter={() => openMegaMenu(link.mega!)}
-                      onMouseLeave={scheduleCloseMega}
-                    >
-                      <button
-                        type="button"
-                        aria-expanded={isOpen}
-                        aria-haspopup="true"
-                        onClick={() => handleNavigation(link.href)}
-                        className={`inline-flex min-h-[3.25rem] items-center gap-1.5 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:px-5 xl:text-xs ${
-                          isOpen || isActive(link.href) ? activeLinkColor : linkColor
-                        } ${isOpen ? 'underline decoration-2 underline-offset-8' : ''}`}
+              <div className="hidden items-center gap-1 lg:flex xl:gap-2">
+                {PRIMARY_LINKS.map((link) => {
+                  if (link.mega) {
+                    const isOpen = openMega === link.mega;
+                    return (
+                      <div
+                        key={link.label}
+                        data-mega-trigger={link.mega}
+                        className="relative -my-3 flex items-stretch"
+                        onMouseEnter={() => openMegaMenu(link.mega!)}
+                        onMouseLeave={scheduleCloseMega}
                       >
-                        {link.label}
-                        <ChevronDown
-                          className={`h-3.5 w-3.5 shrink-0 transition-transform duration-200 ${
-                            isOpen ? 'rotate-180' : ''
-                          }`}
-                          aria-hidden
-                        />
-                      </button>
-                    </div>
-                  );
-                }
+                        <button
+                          type="button"
+                          aria-expanded={isOpen}
+                          aria-haspopup="true"
+                          onClick={() => handleNavigation(link.href)}
+                          className={`inline-flex min-h-[3.25rem] items-center gap-1.5 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:px-5 xl:text-xs ${
+                            isOpen || isActive(link.href) ? activeLinkColor : linkColor
+                          } ${isOpen ? 'underline decoration-2 underline-offset-8' : ''}`}
+                        >
+                          {link.label}
+                          <ChevronDown
+                            className={`h-3.5 w-3.5 shrink-0 transition-transform duration-200 ${
+                              isOpen ? 'rotate-180' : ''
+                            }`}
+                            aria-hidden
+                          />
+                        </button>
+                      </div>
+                    );
+                  }
 
-                return (
-                  <button
-                    key={link.label}
-                    type="button"
-                    onClick={() => handleNavigation(link.href)}
-                    onMouseEnter={closeMegaNow}
-                    className={`px-2 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:text-xs ${
-                      isActive(link.href) ? activeLinkColor : linkColor
-                    }`}
-                  >
-                    {link.label}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={link.label}
+                      type="button"
+                      onClick={() => handleNavigation(link.href)}
+                      onMouseEnter={closeMegaNow}
+                      className={`px-2 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors xl:text-xs ${
+                        isActive(link.href) ? activeLinkColor : linkColor
+                      }`}
+                    >
+                      {link.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="hidden shrink-0 items-center gap-5 lg:flex xl:gap-6">

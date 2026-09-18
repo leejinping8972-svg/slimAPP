@@ -13,20 +13,24 @@ import certNonGmo from '@/assets/home/certs/non-gmo.png';
 
 const ADVANTAGES: { lead: string; rest: string }[] = [
   {
-    lead: 'No lecithin or other fillers/additives',
-    rest: ' — clean, pure milky flavor.',
+    lead: 'Established in 1888',
+    rest: ' — Australia’s oldest dairy company.',
   },
   {
-    lead: 'Single cheese-whey source, single factory',
-    rest: ' — high batch-to-batch stability.',
+    lead: 'One factory',
+    rest: ' at the end of the Great Ocean Road in Victoria, Australia.',
   },
   {
-    lead: 'Agglomeration process',
-    rest: ' for excellent powder flow and water solubility.',
+    lead: 'A mild climate',
+    rest: ' — one of the most stable milk regions in Australia.',
   },
   {
-    lead: 'Strict control',
-    rest: ' of microbes, contaminant limits, and risk indicators.',
+    lead: 'More than 900 million liters',
+    rest: ' of milk processed at the factory each year.',
+  },
+  {
+    lead: 'Cheddar and WPC80 since 1993',
+    rest: ' — skim milk powder from 1998, lactoferrin from 2014.',
   },
 ];
 

@@ -31,7 +31,7 @@ const OFFERS: Record<
 > = {
   '7day': {
     name: 'Slim Vitality™ 7-Day',
-    meta: '7-Day Supply · Chocolate Ritual',
+    meta: '7-Day Supply · Activate Vitality',
     sale: 19.9,
     compare: 29.9,
     thumb: thumb7,
@@ -40,11 +40,11 @@ const OFFERS: Record<
   },
   '28day': {
     name: 'Slim Vitality™ 28-Day',
-    meta: '28-Day Supply · Vitality Ritual',
+    meta: '28-Day Supply · Vitality Transformation',
     sale: 69.9,
     compare: 99.9,
-    thumb: thumb28,
-    gallery: [thumb28, hero28Pack, carousel28Open, carousel28Box],
+    thumb: hero28Pack,
+    gallery: [hero28Pack, thumb28, carousel28Open, carousel28Box],
     match: /28[\s-]?day/i,
   },
 };
@@ -52,7 +52,7 @@ const OFFERS: Record<
 const BENEFITS = [
   'Free U.S. shipping over $50',
   '30-day money-back guarantee',
-  '16g protein · daily chocolate pour',
+  '16g protein · daily cocoa flavor',
   'Easy reorder anytime',
 ];
 
@@ -143,7 +143,7 @@ export function HomeOfferSection({ products = [] }: HomeOfferSectionProps) {
             Your ritual starts here
           </p>
           <h2 className="mt-3 font-['Montserrat'] text-3xl font-bold leading-[1.1] tracking-[-0.02em] text-[#1E261C] sm:text-4xl lg:text-[2.5rem]">
-            {off > 0 ? `${off}% off your ritual kit` : 'Start your Slim Vitality ritual'}
+            {off > 0 ? `${off}% off the Nutrition set` : 'Start your Slim Vitality nutrition set'}
           </h2>
 
           <div className="mt-8 space-y-3">

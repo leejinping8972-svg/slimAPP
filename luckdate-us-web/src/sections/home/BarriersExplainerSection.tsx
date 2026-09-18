@@ -53,7 +53,8 @@ export function BarriersExplainerSection() {
             <p>
               Transform your health starting at its foundation. luckdate nutrition rituals help
               reinforce daily protein and nutrient intake so your body has what it needs to guard
-              against everyday wear and restore balance from the inside out.
+              against everyday wear and restore balance from the inside out. Finish with a lighter
+              feel — youthful vitality that comes easily.
             </p>
           </div>
         </div>

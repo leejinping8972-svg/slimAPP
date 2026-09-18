@@ -12,6 +12,8 @@ const SHOP_LINKS = [
   { label: '7-Day Nutrition Supplement', href: '/shop/nutrition-7-day' },
   { label: 'Fruit & Vegetable Powder', href: '/shop/fruit-vegetable-powder' },
   { label: 'Gut Balance Probiotics', href: '/shop/gut-balance-probiotics' },
+  { label: 'Gift Set', href: '/shop/gift-box' },
+  { label: 'luckdate Shaker Cup', href: '/shop/shaker-cup' },
 ];
 
 const LEARN_LINKS = [

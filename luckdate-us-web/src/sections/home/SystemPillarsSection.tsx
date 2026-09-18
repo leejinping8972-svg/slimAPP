@@ -72,7 +72,7 @@ export function SystemPillarsSection() {
               className="mt-8 border-t border-[var(--brand-moon-beige)]/40 pt-6 animate-in fade-in duration-500"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold-accent)]">
-                {current.num} 路 {current.role}
+                {current.num} / {current.role}
               </p>
               <h3 className="mt-2 font-['Montserrat'] text-2xl font-bold text-[var(--brand-deep-olive)]">
                 {current.name}

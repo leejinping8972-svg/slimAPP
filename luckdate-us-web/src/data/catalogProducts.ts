@@ -7,11 +7,13 @@ import fruitVeg from '@/assets/home/products/gut-fruit-veg-flavors.jpg';
 import fruitKit from '@/assets/home/products/gut-14day-fiber-kit.jpg';
 import probiotics from '@/assets/home/products/gut-balance-probiotic-box.jpg';
 import probioticsKit from '@/assets/home/products/gut-balance-probiotic-kit.jpg';
+import shakerCup from '@/assets/home/products/luckdate-shaker-cup.png';
+import shakerCupAlt from '@/assets/home/products/luckdate-shaker-cup-alt.png';
 
 export type CatalogProduct = {
   slug: string;
   cartId: number;
-  category: 'nutrition' | 'gut';
+  category: 'nutrition' | 'gut' | 'merch';
   name: string;
   eyebrow: string;
   tagline: string;
@@ -24,7 +26,7 @@ export type CatalogProduct = {
   reviewCount: number;
   images: StaticImageData[];
   bullets: string[];
-  sizes: { id: string; label: string; note: string }[];
+  sizes: { id: string; label: string; note: string; imageIndex?: number }[];
   howToUse: { title: string; body: string }[];
   features: string[];
   benefits: { title: string; body: string }[];
@@ -202,8 +204,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       'Sachets for a simple daily pour',
     ],
     sizes: [
-      { id: '30', label: '30-Day Dual Flavor', note: 'Guava + Oats & Grains' },
-      { id: '14', label: '14-Day Starter Kit', note: 'Includes shaker option' },
+      { id: '30', label: '30-Day Dual Flavor', note: 'Guava + Oats & Grains', imageIndex: 0 },
+      { id: '14', label: '14-Day Starter Kit', note: 'Includes shaker option', imageIndex: 0 },
+      { id: 'gift', label: 'Gift Set', note: 'Open gift box · shaker + sachets', imageIndex: 1 },
     ],
     howToUse: [
       {
@@ -246,6 +249,72 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     ingredients:
       'Plant fiber blend, fruit and vegetable powders, natural flavors. See label for full ingredient list.',
     noList: ['No artificial colors', 'No complicated prep', 'No daily pill organizer'],
+    certifications: ['GMP Quality', 'Non-GMO aligned', 'Third-party tested ingredients'],
+  },
+  {
+    slug: 'gift-box',
+    cartId: 90043,
+    category: 'gut',
+    name: 'Gift Set',
+    eyebrow: 'Gut Management · Gift Set',
+    tagline: '14-Day fiber ritual in an open gift box.',
+    description:
+      'A gift-ready 14-Day Daily Fiber Ritual: open box with the luckdate shaker and Pink Guava plus Oats & Grains sachets. The same pour, packed to give.',
+    price: 59.9,
+    compareAt: 79.9,
+    perServing: 'Gift set · shaker included',
+    badge: 'Gift',
+    rating: 4.8,
+    reviewCount: 3100,
+    images: [fruitKit, fruitVeg],
+    bullets: [
+      'Open gift box with shaker',
+      'Pink Guava and Oats & Grains sachets',
+      '14-Day Daily Fiber Ritual',
+      'Ready to give or start at home',
+    ],
+    sizes: [{ id: 'gift', label: 'Gift Set', note: 'Shaker + sachets' }],
+    howToUse: [
+      {
+        title: 'Open',
+        body: 'Lift the gift box and take one sachet plus the shaker.',
+      },
+      {
+        title: 'Shake',
+        body: 'Empty the sachet into the shaker with cool water.',
+      },
+      {
+        title: 'Enjoy',
+        body: 'Drink as a daily fiber ritual for 14 days.',
+      },
+    ],
+    features: [
+      'Gift box presentation',
+      'Shaker included',
+      'Dual flavor sachets',
+      '14-Day fiber ritual',
+    ],
+    benefits: [
+      {
+        title: 'Ready to gift',
+        body: 'The open-box set is packed as a ritual, not a loose pouch.',
+      },
+      {
+        title: 'Same daily pour',
+        body: 'Pink Guava and Oats & Grains — the fruit & vegetable ritual.',
+      },
+      {
+        title: 'Shaker included',
+        body: 'No extra cup to buy before the first pour.',
+      },
+      {
+        title: 'Easy start',
+        body: 'Fourteen days is enough to see if the habit sticks.',
+      },
+    ],
+    ingredients:
+      'Plant fiber blend, fruit and vegetable powders, natural flavors. See label for full ingredient list.',
+    noList: ['No artificial colors', 'No complicated prep', 'No extra shaker to buy'],
     certifications: ['GMP Quality', 'Non-GMO aligned', 'Third-party tested ingredients'],
   },
   {
@@ -313,6 +382,70 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       'Probiotic blend (30 Billion CFU), prebiotic fiber, natural flavors. See Supplement Facts on pack.',
     noList: ['No artificial flavors', 'No gluten', 'No GMO ingredients', 'No bulky bottles'],
     certifications: ['GMP Quality', 'Non-GMO', 'Gluten Free'],
+  },
+  {
+    slug: 'shaker-cup',
+    cartId: 90080,
+    category: 'merch',
+    name: 'luckdate Shaker Cup',
+    eyebrow: 'Merch · Ritual Gear',
+    tagline: 'Your daily pour, ready to shake.',
+    description:
+      'The official luckdate ritual shaker — clear bottle with mint lid, peach flip-cap, and matching scoop + star mixer inside. Built for Slim Vitality sachets and everyday chocolate pours.',
+    price: 19.9,
+    compareAt: 29.9,
+    badge: 'New',
+    rating: 4.9,
+    reviewCount: 860,
+    images: [shakerCup, shakerCupAlt],
+    bullets: [
+      'Clear bottle with mint lid + peach flip-cap',
+      'Includes scoop and star mixing agitator',
+      'Sized for Slim Vitality sachets',
+      'Easy clean · travel-ready ritual gear',
+    ],
+    sizes: [{ id: 'standard', label: 'Standard', note: 'Cup + scoop + mixer' }],
+    howToUse: [
+      {
+        title: 'Add',
+        body: 'Drop in one Slim Vitality sachet (or your daily pour).',
+      },
+      {
+        title: 'Shake',
+        body: 'Add cool water or milk, close the lid, and shake with the mixer.',
+      },
+      {
+        title: 'Sip',
+        body: 'Open the flip-cap and enjoy. Rinse after each ritual.',
+      },
+    ],
+    features: [
+      'Official luckdate branding',
+      'Mint + peach colorway',
+      'Scoop + star mixer included',
+      'Pairs with every nutrition ritual',
+    ],
+    benefits: [
+      {
+        title: 'Ritual-ready',
+        body: 'One cup designed for the same daily pour you keep on the site.',
+      },
+      {
+        title: 'No leftover tub mess',
+        body: 'Sachet in, shake, sip — cleaner than scooping from a tub.',
+      },
+      {
+        title: 'On-brand gear',
+        body: 'Carry the luckdate wordmark and sunflower mark with you.',
+      },
+      {
+        title: 'Travel friendly',
+        body: 'Lid locks down for bags, gym, and desk rituals.',
+      },
+    ],
+    ingredients: 'BPA-free plastic bottle and mixer components. Hand wash recommended.',
+    noList: ['No batteries', 'No filters to replace', 'No complicated parts'],
+    certifications: ['Food-contact materials', 'Everyday dishwasher top-rack friendly*'],
   },
 ];
 

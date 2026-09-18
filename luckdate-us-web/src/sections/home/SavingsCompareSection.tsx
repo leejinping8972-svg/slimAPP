@@ -3,12 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
-import compareImage from '@/assets/home/products/slim-28day-open-kit.png';
+import compareImage from '@/assets/home/products/slim-28day-hero-pack.png';
 
 /** Typical U.S. retail for a split supplement stack Slim Vitality is meant to replace. */
 const STACK = [
   { label: 'Daily protein powder', price: 49.99 },
-  { label: 'Meal-replacement shakes', price: 59.99 },
+  { label: 'Single-formula shake', price: 59.99 },
   { label: 'Multivitamin complex', price: 24.99 },
   { label: 'Weight-management supplements', price: 49.99 },
   { label: 'Fitness recovery', price: 44.99 },
@@ -34,18 +34,18 @@ export function SavingsCompareSection() {
 
   return (
     <section id="savings" className="bg-[#F7F5F1] py-14 sm:py-16 lg:py-20">
-      <div className="mx-auto grid max-w-7xl items-stretch gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-10 xl:px-16">
-        <div className="relative min-h-[280px] overflow-hidden bg-[#EDE8E0] sm:min-h-[380px] lg:min-h-full">
+      <div className="mx-auto grid max-w-7xl items-start gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-10 xl:px-16">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#EDE8E0] sm:aspect-square lg:aspect-[4/5] lg:sticky lg:top-28">
           <Image
             src={compareImage}
             alt="Slim Vitality 28-Day ritual kit — one daily pour instead of a supplement stack"
             fill
-            className="object-cover object-center"
+            className="object-contain object-center p-4 sm:p-6"
             sizes="(min-width: 1024px) 50vw, 100vw"
           />
         </div>
 
-        <div>
+        <div className="min-w-0">
           <h2 className="max-w-[16ch] font-['Montserrat'] text-[1.85rem] font-bold leading-[1.12] tracking-[-0.02em] text-[#111111] sm:text-4xl lg:text-[2.65rem]">
             Slim Vitality replaces your supplement stack
           </h2>
@@ -84,14 +84,14 @@ export function SavingsCompareSection() {
                 <span className="tabular-nums">${money(traditionalMonthly)}</span>
               </div>
               <div className="flex items-center justify-between bg-[#E8FF6A] px-4 py-3 text-sm font-bold text-[#111111]">
-                <span>Whole-body ritual with Slim Vitality</span>
+                <span>28-Day Transformation from the Inside Out</span>
                 <span className="tabular-nums">${money(LUCKDATE_MONTHLY)}</span>
               </div>
             </div>
           </div>
 
           <p className="mt-8 text-center text-sm font-medium text-[#111111] sm:text-base">
-            One daily chocolate pour. Protein, vitamins, and vitality — not eight bottles.
+            One cup a day — slim and nourishing. Low calorie, low GI, no guilt.
           </p>
 
           <div className="mt-6 flex justify-center">
