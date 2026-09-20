@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
+import '../../core/widgets/check_in_chat_cards.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
@@ -118,9 +119,39 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               itemBuilder: (context, index) {
                 final msg = messages[index];
                 if (msg.isUser) return UserBubble(text: msg.text);
+                final strings = ref.watch(appStringsProvider);
                 return SunnyBubble(
                   text: msg.text,
                   isStreaming: msg.isStreaming,
+                  actionLabels: msg.actionLabels,
+                  card: msg.card,
+                  cardBuilder: msg.card == null
+                      ? null
+                      : (card) => CheckInChatCard(
+                            payload: card,
+                            strings: strings,
+                            onConfirm: (draft) {
+                              ref
+                                  .read(appStateProvider.notifier)
+                                  .confirmCheckInCard(
+                                    messageId: msg.id,
+                                    draft: draft,
+                                  );
+                            },
+                            onCancel: () {
+                              ref
+                                  .read(appStateProvider.notifier)
+                                  .cancelCheckInCard(msg.id);
+                            },
+                            onPick: (candidate) {
+                              ref
+                                  .read(appStateProvider.notifier)
+                                  .pickCheckInCandidate(
+                                    messageId: msg.id,
+                                    candidate: candidate,
+                                  );
+                            },
+                          ),
                 );
               },
             ),

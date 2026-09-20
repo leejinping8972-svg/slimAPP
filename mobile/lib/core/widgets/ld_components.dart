@@ -410,6 +410,8 @@ class SunnyBubble extends StatelessWidget {
     this.actionLabels,
     this.onActionTap,
     this.mood,
+    this.card,
+    this.cardBuilder,
   });
 
   final String text;
@@ -419,6 +421,8 @@ class SunnyBubble extends StatelessWidget {
   final List<String>? actionLabels;
   final ValueChanged<String>? onActionTap;
   final SunnyMood? mood;
+  final ChatCardPayload? card;
+  final Widget Function(ChatCardPayload card)? cardBuilder;
 
   String _formatTime(DateTime? t) {
     final d = t ?? DateTime.now();
@@ -528,6 +532,10 @@ class SunnyBubble extends StatelessWidget {
                                 ],
                               ],
                             ),
+                          ],
+                          if (card != null && cardBuilder != null) ...[
+                            const SizedBox(height: LuckdateSpacing.md),
+                            cardBuilder!(card!),
                           ],
                         ],
                       ),

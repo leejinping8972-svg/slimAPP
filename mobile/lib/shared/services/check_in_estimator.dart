@@ -13,6 +13,7 @@ class CheckInEstimator {
       return today.copyWith(productTaken: ProductTakenStatus.taken);
     }
     final meal = MealLogEntry(
+      id: 'meal_${DateTime.now().microsecondsSinceEpoch}',
       meal: 'Meal Replacement',
       name: 'Solar Protein Shake',
       time: _nowTime(),
@@ -67,8 +68,10 @@ class CheckInEstimator {
 
   static MealLogEntry _guessMeal(String lower) {
     final time = _nowTime();
+    final id = 'meal_${DateTime.now().microsecondsSinceEpoch}';
     if (lower.contains('breakfast') || lower.contains('yogurt') || lower.contains('oatmeal')) {
       return MealLogEntry(
+        id: id,
         meal: 'Breakfast',
         name: _titleFrom(lower, fallback: 'Breakfast bowl'),
         time: time,
@@ -80,6 +83,7 @@ class CheckInEstimator {
     }
     if (lower.contains('lunch') || lower.contains('salad') || lower.contains('chicken')) {
       return MealLogEntry(
+        id: id,
         meal: 'Lunch',
         name: _titleFrom(lower, fallback: 'Balanced lunch plate'),
         time: time,
@@ -91,6 +95,7 @@ class CheckInEstimator {
     }
     if (lower.contains('dinner') || lower.contains('salmon') || lower.contains('rice')) {
       return MealLogEntry(
+        id: id,
         meal: 'Dinner',
         name: _titleFrom(lower, fallback: 'Evening dinner'),
         time: time,
@@ -102,6 +107,7 @@ class CheckInEstimator {
     }
     if (lower.contains('snack') || lower.contains('fruit') || lower.contains('nuts')) {
       return MealLogEntry(
+        id: id,
         meal: 'Snack',
         name: _titleFrom(lower, fallback: 'Light snack'),
         time: time,
@@ -112,6 +118,7 @@ class CheckInEstimator {
       );
     }
     return MealLogEntry(
+      id: id,
       meal: 'Meal',
       name: _titleFrom(lower, fallback: 'Comida registrada'),
       time: time,

@@ -3,6 +3,8 @@ import '../l10n/app_locale.dart';
 import '../l10n/app_strings.dart';
 import '../models/models.dart';
 import '../repositories/mock_data_repository.dart';
+import '../services/check_in_apply.dart';
+import '../services/check_in_chat_flow.dart';
 import '../services/mock_order_service.dart';
 import '../services/onboarding_chat_guide.dart';
 import '../services/sunny_intent_router.dart';
@@ -89,6 +91,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
   final MockDataRepository _repo;
   final SunnyIntentRouter _router;
   final MockOrderService _orderService;
+  final CheckInChatFlow _checkInFlow = CheckInChatFlow();
 
   void markLaunchGuideSeen() {
     if (state.launchGuideSeen) return;
@@ -539,14 +542,25 @@ class AppStateNotifier extends StateNotifier<AppState> {
         ],
       );
     } else {
-      result = _router.route(
+      final checkIn = _checkInFlow.handle(
         input: text,
         today: state.journey.todayRecord,
-        journeyDay: state.journey.day,
-        hydrationTargetMl: state.profile.hydrationTargetMl,
-        nickname: state.profile.nickname,
+        language: state.profile.language,
       );
+      if (checkIn != null) {
+        result = checkIn;
+      } else {
+        result = _router.route(
+          input: text,
+          today: state.journey.todayRecord,
+          journeyDay: state.journey.day,
+          hydrationTargetMl: state.profile.hydrationTargetMl,
+          nickname: state.profile.nickname,
+        );
+      }
 
+      // Create confirm cards must NOT write until user confirms.
+      // High-confidence modify may include todayUpdates.
       if (result.todayUpdates != null) {
         updateTodayRecord(result.todayUpdates!);
       }
@@ -557,6 +571,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
       result.reply,
       suggestions: result.suggestions,
       actionLabels: result.actionLabels,
+      card: result.card,
     );
     if (result.intents.contains('onboarding_complete')) {
       if (state.profile.hasActiveSlimPlan) {
@@ -634,11 +649,80 @@ class AppStateNotifier extends StateNotifier<AppState> {
     }
   }
 
+  Future<void> confirmCheckInCard({
+    required String messageId,
+    required CheckInDraft draft,
+  }) async {
+    final zh =
+        state.profile.language == 'zh' || state.profile.language.startsWith('zh');
+    final updated = CheckInApply.apply(state.journey.todayRecord, draft);
+    updateTodayRecord(updated);
+    _setCardStatus(messageId, CheckInCardStatus.applied);
+
+    final followId = '${messageId}_applied';
+    final follow = ChatMessage(
+      id: followId,
+      isUser: false,
+      text: '',
+      isStreaming: true,
+      timestamp: DateTime.now(),
+    );
+    state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
+    await _streamReply(
+      followId,
+      zh
+          ? '已记录：${draft.label.isNotEmpty ? draft.label : draft.value}。'
+          : 'Listo: registré ${draft.label.isNotEmpty ? draft.label : draft.value}.',
+    );
+  }
+
+  void cancelCheckInCard(String messageId) {
+    _setCardStatus(messageId, CheckInCardStatus.cancelled);
+  }
+
+  Future<void> pickCheckInCandidate({
+    required String messageId,
+    required CheckInDraft candidate,
+  }) async {
+    _setCardStatus(messageId, CheckInCardStatus.confirmed);
+    final result = _checkInFlow.handle(
+      input: '',
+      today: state.journey.todayRecord,
+      language: state.profile.language,
+      pickedCandidate: candidate,
+    );
+    if (result == null) return;
+    final followId = '${messageId}_edit';
+    final follow = ChatMessage(
+      id: followId,
+      isUser: false,
+      text: '',
+      isStreaming: true,
+      timestamp: DateTime.now(),
+    );
+    state = state.copyWith(chatMessages: [...state.chatMessages, follow]);
+    await _streamReply(
+      followId,
+      result.reply,
+      actionLabels: result.actionLabels,
+      card: result.card,
+    );
+  }
+
+  void _setCardStatus(String messageId, CheckInCardStatus status) {
+    final updated = state.chatMessages.map((m) {
+      if (m.id != messageId || m.card == null) return m;
+      return m.copyWith(card: m.card!.copyWith(status: status));
+    }).toList();
+    state = state.copyWith(chatMessages: updated);
+  }
+
   Future<void> _streamReply(
     String id,
     String fullText, {
     List<ChatSuggestionItem>? suggestions,
     List<String>? actionLabels,
+    ChatCardPayload? card,
   }) async {
     var current = '';
     for (var i = 0; i < fullText.length; i++) {
@@ -655,12 +739,13 @@ class AppStateNotifier extends StateNotifier<AppState> {
       }).toList();
       state = state.copyWith(chatMessages: updated);
     }
-    if (suggestions != null || actionLabels != null) {
+    if (suggestions != null || actionLabels != null || card != null) {
       final updated = state.chatMessages.map((m) {
         if (m.id == id) {
           return m.copyWith(
             suggestions: suggestions,
             actionLabels: actionLabels,
+            card: card,
           );
         }
         return m;

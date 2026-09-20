@@ -153,4 +153,25 @@ class AppStrings {
   String get vitalityScore => _t('Mi puntuación de vitalidad', '我的生命力评分');
   String get somethingWrong =>
       _t('Algo salió mal. Recarga la página.', '出了点问题，请刷新页面。');
+
+  // —— Check-in chat cards ——
+  String get checkInCardCreateTitle => _t('Confirmar registro', '确认打卡');
+  String get checkInCardEditTitle => _t('Confirmar cambio', '确认修改');
+  String get checkInPickTitle => _t('Elige un registro', '选择一条记录');
+  String get checkInConfirm => _t('Confirmar', '确认');
+  String get checkInCancel => _t('Cancelar', '取消');
+  String get checkInCardApplied => _t('Guardado', '已保存');
+  String get checkInCardCancelled => _t('Cancelado', '已取消');
+  String get checkInFieldType => _t('Tipo', '类型');
+  String get checkInFieldValue => _t('Valor', '数值');
+  String get checkInFieldTime => _t('Hora', '时间');
+  String get checkInFieldQuality => _t('Calidad del sueño', '睡眠质量');
+  String get checkInFieldExtra => _t('kcal / detalle', '千卡 / 备注');
+  String get checkInTypeWater => _t('Agua', '喝水');
+  String get checkInTypeSleep => _t('Sueño', '睡眠');
+  String get checkInTypeMeal => _t('Comida', '饮食');
+  String get checkInTypeProduct => _t('Batido', '代餐');
+  String get checkInTypeWeight => _t('Peso', '体重');
+  String get checkInTypeExercise => _t('Ejercicio', '运动');
+  String get checkInTypeMood => _t('Ánimo', '心情');
 }

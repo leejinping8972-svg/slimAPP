@@ -9,6 +9,7 @@ import '../../shared/providers/app_providers.dart';
 import '../../shared/services/onboarding_chat_guide.dart';
 import '../../shared/ui/contact_support.dart';
 import '../../shared/l10n/app_strings.dart';
+import '../../core/widgets/check_in_chat_cards.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -102,7 +103,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       final msg = messages[i];
       if (msg.isUser) continue;
       final labels = msg.actionLabels;
-      return labels != null && labels.isNotEmpty;
+      if (labels != null && labels.isNotEmpty) return true;
+      if (msg.card != null && msg.card!.isInteractive) return true;
+      return false;
     }
     return false;
   }
@@ -175,6 +178,21 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.read(appStateProvider.notifier).sendQuickAction('sleep');
       return;
     }
+    if (label == '新建打卡' ||
+        label == 'Crear registro' ||
+        label == '取消' ||
+        label == 'Cancelar') {
+      if (label == '取消' || label == 'Cancelar') {
+        // Drop pending slot-fill by sending a no-op cancel via empty modify clear.
+        return;
+      }
+      // Continue pending create for the type already inferred.
+      final zh = ref.read(appStateProvider).profile.language.startsWith('zh');
+      ref.read(appStateProvider.notifier).sendChatMessage(
+            zh ? '确认新建' : 'confirmar crear',
+          );
+      return;
+    }
     // Fallback: treat unknown action chips as chat text so buttons never no-op.
     ref.read(appStateProvider.notifier).sendChatMessage(label);
   }
@@ -244,6 +262,34 @@ class _HomePageState extends ConsumerState<HomePage> {
                               suggestions: msg.suggestions,
                               actionLabels: msg.actionLabels,
                               onActionTap: _onActionTap,
+                              card: msg.card,
+                              cardBuilder: msg.card == null
+                                  ? null
+                                  : (card) => CheckInChatCard(
+                                        payload: card,
+                                        strings: strings,
+                                        onConfirm: (draft) {
+                                          ref
+                                              .read(appStateProvider.notifier)
+                                              .confirmCheckInCard(
+                                                messageId: msg.id,
+                                                draft: draft,
+                                              );
+                                        },
+                                        onCancel: () {
+                                          ref
+                                              .read(appStateProvider.notifier)
+                                              .cancelCheckInCard(msg.id);
+                                        },
+                                        onPick: (candidate) {
+                                          ref
+                                              .read(appStateProvider.notifier)
+                                              .pickCheckInCandidate(
+                                                messageId: msg.id,
+                                                candidate: candidate,
+                                              );
+                                        },
+                                      ),
                             ),
                     );
                   }),

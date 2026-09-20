@@ -1,3 +1,7 @@
+import 'check_in_chat.dart';
+
+export 'check_in_chat.dart';
+
 enum RiskLevel { p0, p1, p2 }
 
 enum ProductTakenStatus { notRecorded, taken, partial, skippedWithReason }
@@ -259,6 +263,7 @@ class LinkedProductRef {
 
 class MealLogEntry {
   const MealLogEntry({
+    this.id = '',
     required this.meal,
     required this.name,
     required this.time,
@@ -269,6 +274,7 @@ class MealLogEntry {
     this.source = 'chat',
   });
 
+  final String id;
   final String meal;
   final String name;
   final String time;
@@ -277,6 +283,30 @@ class MealLogEntry {
   final int carbs;
   final int fat;
   final String source;
+
+  MealLogEntry copyWith({
+    String? id,
+    String? meal,
+    String? name,
+    String? time,
+    int? kcal,
+    int? protein,
+    int? carbs,
+    int? fat,
+    String? source,
+  }) {
+    return MealLogEntry(
+      id: id ?? this.id,
+      meal: meal ?? this.meal,
+      name: name ?? this.name,
+      time: time ?? this.time,
+      kcal: kcal ?? this.kcal,
+      protein: protein ?? this.protein,
+      carbs: carbs ?? this.carbs,
+      fat: fat ?? this.fat,
+      source: source ?? this.source,
+    );
+  }
 }
 
 class TodayRecord {
@@ -467,6 +497,7 @@ class ChatMessage {
     this.isStreaming = false,
     this.suggestions,
     this.actionLabels,
+    this.card,
   });
 
   final String id;
@@ -476,12 +507,15 @@ class ChatMessage {
   final bool isStreaming;
   final List<ChatSuggestionItem>? suggestions;
   final List<String>? actionLabels;
+  final ChatCardPayload? card;
 
   ChatMessage copyWith({
     String? text,
     bool? isStreaming,
     List<ChatSuggestionItem>? suggestions,
     List<String>? actionLabels,
+    ChatCardPayload? card,
+    bool clearCard = false,
   }) {
     return ChatMessage(
       id: id,
@@ -491,6 +525,7 @@ class ChatMessage {
       isStreaming: isStreaming ?? this.isStreaming,
       suggestions: suggestions ?? this.suggestions,
       actionLabels: actionLabels ?? this.actionLabels,
+      card: clearCard ? null : (card ?? this.card),
     );
   }
 }
@@ -574,6 +609,7 @@ class SunnyIntentResult {
     this.todayUpdates,
     this.suggestions,
     this.actionLabels,
+    this.card,
   });
 
   final String reply;
@@ -583,4 +619,5 @@ class SunnyIntentResult {
   final TodayRecord? todayUpdates;
   final List<ChatSuggestionItem>? suggestions;
   final List<String>? actionLabels;
+  final ChatCardPayload? card;
 }

@@ -1,6 +1,6 @@
 # Design — 聊天打卡确认 / 修改气泡卡片
 
-> 日期：2026-09-20 · 产品：luckdate · 状态：待用户审阅  
+> 日期：2026-09-20 · 产品：luckdate · 状态：实现中
 > 分支：`cursor/checkin-chat-cards-a775`
 
 ## 目标
