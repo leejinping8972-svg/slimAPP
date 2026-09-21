@@ -19,7 +19,6 @@ class _Ck {
   static const protein = Color(0xFF6EB6FF);
   static const fat = Color(0xFFFF8A9B);
   static const veg = Color(0xFF7DCF9A);
-  static const carb = Color(0xFFFFC857);
 }
 
 /// Diet / exercise (and other) confirm + pick cards inside Sunny chat bubbles.
