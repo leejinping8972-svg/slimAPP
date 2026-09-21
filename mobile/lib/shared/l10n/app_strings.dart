@@ -155,10 +155,10 @@ class AppStrings {
       _t('Algo salió mal. Recarga la página.', '出了点问题，请刷新页面。');
 
   // —— Check-in chat cards ——
-  String get checkInCardCreateTitle => _t('Confirmar registro', '确认打卡');
-  String get checkInCardEditTitle => _t('Confirmar cambio', '确认修改');
+  String get checkInCardCreateTitle => _t('Confirmar registro', '请确认打卡');
+  String get checkInCardEditTitle => _t('Confirmar cambio', '请确认修改');
   String get checkInPickTitle => _t('Elige un registro', '选择一条记录');
-  String get checkInConfirm => _t('Confirmar', '确认');
+  String get checkInConfirm => _t('Confirmar', '确认打卡');
   String get checkInCancel => _t('Cancelar', '取消');
   String get checkInCardApplied => _t('Guardado', '已保存');
   String get checkInCardCancelled => _t('Cancelado', '已取消');

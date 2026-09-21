@@ -435,6 +435,13 @@ class SunnyBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final avatarMood =
         mood ?? SunnyMoodX.fromMessage(text, streaming: isStreaming);
+    final hasRichCard = card != null && cardBuilder != null;
+    final hideBodyText = hasRichCard &&
+        card!.kind == CheckInCardKind.checkInConfirm &&
+        (card!.draft?.type == CheckInType.meal ||
+            card!.draft?.type == CheckInType.product ||
+            card!.draft?.type == CheckInType.exercise);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -443,44 +450,68 @@ class SunnyBubble extends StatelessWidget {
           mood: avatarMood,
           cycleIdle: false,
         ),
-        const SizedBox(width: LuckdateSpacing.sm),
+        const SizedBox(width: 8),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 4, bottom: 4),
+                padding: const EdgeInsets.only(left: 4, bottom: 6),
                 child: Text(
                   'Sunny ${_formatTime(timestamp)}',
-                  style: LuckdateTextStyles.caption.copyWith(fontSize: 11),
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 11,
+                    color: Color(0xFF999999),
+                  ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(LuckdateSpacing.base),
+                width: double.infinity,
+                padding: EdgeInsets.all(hasRichCard ? 16 : LuckdateSpacing.base),
                 decoration: BoxDecoration(
-                  color: LuckdateColors.ivoryWhite,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(LuckdateRadius.lg),
-                    bottomLeft: Radius.circular(LuckdateRadius.lg),
-                    bottomRight: Radius.circular(LuckdateRadius.lg),
-                  ),
-                  border: Border.all(
-                    color: LuckdateColors.lineSoft,
-                    width: 0.5,
-                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(hasRichCard ? 20 : 16),
+                  boxShadow: hasRichCard
+                      ? const [
+                          BoxShadow(
+                            color: Color(0x14000000),
+                            blurRadius: 16,
+                            offset: Offset(0, 4),
+                          ),
+                        ]
+                      : null,
+                  border: hasRichCard
+                      ? null
+                      : Border.all(
+                          color: LuckdateColors.lineSoft,
+                          width: 0.5,
+                        ),
                 ),
                 child: isStreaming && text.isEmpty
-                    ? Text(
+                    ? const Text(
                         '●  ●  ●',
-                        style: LuckdateTextStyles.body.copyWith(
-                          color: LuckdateColors.textSecondary,
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: Color(0xFF999999),
                           letterSpacing: 2,
                         ),
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(text, style: LuckdateTextStyles.body),
+                          if (!hideBodyText && text.isNotEmpty)
+                            Text(
+                              text,
+                              style: hasRichCard
+                                  ? const TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14,
+                                      height: 1.45,
+                                      color: Color(0xFF333333),
+                                    )
+                                  : LuckdateTextStyles.body,
+                            ),
                           if (suggestions != null &&
                               suggestions!.isNotEmpty) ...[
                             const SizedBox(height: LuckdateSpacing.md),
@@ -492,7 +523,9 @@ class SunnyBubble extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                for (var i = 0; i < actionLabels!.length; i++) ...[
+                                for (var i = 0;
+                                    i < actionLabels!.length;
+                                    i++) ...[
                                   if (i > 0)
                                     const SizedBox(height: LuckdateSpacing.sm),
                                   SizedBox(
@@ -501,7 +534,8 @@ class SunnyBubble extends StatelessWidget {
                                     child: OutlinedButton(
                                       onPressed: onActionTap == null
                                           ? null
-                                          : () => onActionTap!(actionLabels![i]),
+                                          : () =>
+                                              onActionTap!(actionLabels![i]),
                                       style: OutlinedButton.styleFrom(
                                         foregroundColor:
                                             LuckdateColors.chocolateBrown,
@@ -533,8 +567,9 @@ class SunnyBubble extends StatelessWidget {
                               ],
                             ),
                           ],
-                          if (card != null && cardBuilder != null) ...[
-                            const SizedBox(height: LuckdateSpacing.md),
+                          if (hasRichCard) ...[
+                            if (!hideBodyText && text.isNotEmpty)
+                              const SizedBox(height: 12),
                             cardBuilder!(card!),
                           ],
                         ],

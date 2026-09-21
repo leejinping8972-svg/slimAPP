@@ -106,6 +106,7 @@ class CheckInIntentParser {
           confidence = 0.65;
           fields['kcal'] = '213';
         }
+        fields['activity'] = _activityName(lower, zh: zh);
       case CheckInType.mood:
         value = _moodTag(lower);
         confidence = value == 'tired' && !_hasMoodWord(lower) ? 0.55 : 0.85;
@@ -116,7 +117,11 @@ class CheckInIntentParser {
         time = time.isEmpty ? CheckInApply.nowTime() : time;
       case CheckInType.meal:
         value = _mealName(lower, zh: zh);
-        fields['kcal'] = '320';
+        final macros = _mealMacros(lower);
+        fields['kcal'] = '${macros.$1}';
+        fields['protein'] = '${macros.$2}';
+        fields['carbs'] = '${macros.$3}';
+        fields['fat'] = '${macros.$4}';
         fields['meal'] = _mealSlot(lower);
         time = time.isEmpty ? CheckInApply.nowTime() : time;
         confidence = _hasMealFoodWord(lower) ? 0.85 : 0.7;
@@ -401,6 +406,29 @@ class CheckInIntentParser {
       return zh ? '鸡肉餐' : 'Pollo';
     }
     return '';
+  }
+
+  static String _activityName(String lower, {required bool zh}) {
+    if (_any(lower, ['yoga', '瑜伽'])) return zh ? '瑜伽' : 'Yoga';
+    if (_any(lower, ['corr', 'run', '跑步'])) return zh ? '跑步' : 'Correr';
+    if (_any(lower, ['camin', 'walk', '散步', '步行'])) {
+      return zh ? '步行' : 'Caminar';
+    }
+    if (_any(lower, ['gimnasio', 'gym', '健身'])) return zh ? '健身' : 'Gimnasio';
+    return zh ? '运动' : 'Ejercicio';
+  }
+
+  static (int, int, int, int) _mealMacros(String lower) {
+    if (_any(lower, ['ensalada', 'salad', '沙拉', 'pollo', 'chicken', '鸡'])) {
+      return (320, 28, 22, 12);
+    }
+    if (_any(lower, ['avena', 'oatmeal', 'yogurt', 'yogur', '燕麦', '酸奶'])) {
+      return (280, 18, 35, 8);
+    }
+    if (_any(lower, ['salmón', 'salmon', '三文鱼'])) {
+      return (440, 36, 18, 24);
+    }
+    return (340, 26, 32, 14);
   }
 
   static String _label(

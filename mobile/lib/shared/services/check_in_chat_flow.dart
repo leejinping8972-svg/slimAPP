@@ -68,10 +68,15 @@ class CheckInChatFlow {
   }
 
   SunnyIntentResult _handleCreate(CheckInDraft draft, {required bool zh}) {
+    final rich = draft.type == CheckInType.meal ||
+        draft.type == CheckInType.product ||
+        draft.type == CheckInType.exercise;
     return SunnyIntentResult(
-      reply: zh
-          ? '我识别到一次打卡，请确认卡片中的信息（可直接修改字段）。'
-          : 'Detecté un registro. Confirma la tarjeta (puedes editar los campos).',
+      reply: rich
+          ? ''
+          : (zh
+              ? '我识别到一次打卡，请确认卡片中的信息。'
+              : 'Detecté un registro. Confirma la tarjeta.'),
       intents: const ['check_in_create_confirm'],
       card: ChatCardPayload(
         kind: CheckInCardKind.checkInConfirm,
