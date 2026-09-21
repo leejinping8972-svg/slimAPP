@@ -142,6 +142,8 @@
       font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
     #loading.boot-error-active .spinner { display: none; }
+    #loading.boot-error-active img { display: none; }
+    #loading.boot-error-active .fallback { display: none; }
     #loading.boot-error-active .boot-error { display: flex; }
     #loading .boot-error button {
       margin-top: 8px;
@@ -153,6 +155,30 @@
       font-size: 15px;
       cursor: pointer;
     }
+    /* Always keep brand copy visible while waiting — avoids cream+spinner blank. */
+    #loading .boot-brand {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 96px;
+      z-index: 1;
+      text-align: center;
+      pointer-events: none;
+      color: #5E6B45;
+      font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-shadow: 0 1px 8px rgba(237, 228, 216, 0.9);
+    }
+    #loading .boot-brand strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    #loading .boot-brand span {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    #loading.boot-error-active .boot-brand { display: none; }
     @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
   </style>
 </head>
@@ -166,22 +192,41 @@
         <p>Meet luckdate.</p>
         <div class="brand">luckdate</div>
       </div>
+      <div class="boot-brand" aria-hidden="true">
+        <strong>luckdate</strong>
+        <span>Cargando… / 加载中…</span>
+      </div>
       <div class="spinner" aria-hidden="true"></div>
       <div class="boot-error" role="alert">
         <strong>No se pudo mostrar la app</strong>
-        <span>Prueba recargar, o ábrela en Chrome / Safari.</span>
-        <button type="button" id="reload-btn">Recargar</button>
+        <span>出了点问题。请强刷，或用 Chrome / Safari 打开。</span>
+        <span>Prueba recargar (Ctrl/Cmd+Shift+R), o ábrela en Chrome / Safari.</span>
+        <button type="button" id="reload-btn">Recargar / 刷新</button>
       </div>
     </div>
   </div>
   <script>
     (function () {
-      // Drop stale PWA workers from older deploys (can serve blank canvases).
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function (regs) {
-          regs.forEach(function (r) { r.unregister(); });
-        }).catch(function () {});
+      function clearStaleCaches() {
+        var tasks = [];
+        if ('serviceWorker' in navigator) {
+          tasks.push(
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              return Promise.all(regs.map(function (r) { return r.unregister(); }));
+            }).catch(function () {})
+          );
+        }
+        if (window.caches && caches.keys) {
+          tasks.push(
+            caches.keys().then(function (keys) {
+              return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+            }).catch(function () {})
+          );
+        }
+        return Promise.all(tasks);
       }
+      // Drop stale PWA workers / Cache Storage from older deploys (blank canvas).
+      clearStaleCaches();
 
       var base = document.querySelector('base');
       var href = base ? base.getAttribute('href') : '/';
@@ -204,15 +249,24 @@
         ready = true;
         if (loading) loading.remove();
       }
-      window.addEventListener('flutter-first-frame', hideLoading);
-      document.getElementById('reload-btn').addEventListener('click', function () {
-        location.reload();
-      });
-      // If first frame never arrives, keep a visible recovery UI (not a blank cream pane).
-      setTimeout(function () {
-        if (ready) return;
+      function showBootError() {
+        if (ready || !loading) return;
         loading.classList.add('boot-error-active');
-      }, 15000);
+      }
+      window.addEventListener('flutter-first-frame', hideLoading);
+      window.addEventListener('error', function () {
+        // Script / wasm load failures should not leave a blank cream pane.
+        setTimeout(showBootError, 500);
+      });
+      document.getElementById('reload-btn').addEventListener('click', function () {
+        clearStaleCaches().finally(function () {
+          var u = new URL(location.href);
+          u.searchParams.set('_r', String(Date.now()));
+          location.replace(u.toString());
+        });
+      });
+      // If first frame never arrives, show recovery UI (not a blank cream pane).
+      setTimeout(showBootError, 8000);
 
       // Expose host for bootstrap below.
       window.__luckdateFlutterHost = document.getElementById('flutter_target');
@@ -226,10 +280,16 @@
         hostElement: window.__luckdateFlutterHost,
       },
       onEntrypointLoaded: async function (engineInitializer) {
-        var appRunner = await engineInitializer.initializeEngine({
-          hostElement: window.__luckdateFlutterHost,
-        });
-        await appRunner.runApp();
+        try {
+          var appRunner = await engineInitializer.initializeEngine({
+            hostElement: window.__luckdateFlutterHost,
+          });
+          await appRunner.runApp();
+        } catch (e) {
+          console.error(e);
+          var loading = document.getElementById('loading');
+          if (loading) loading.classList.add('boot-error-active');
+        }
       },
     });
   </script>
