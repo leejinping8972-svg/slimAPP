@@ -750,7 +750,31 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                 ),
                 const SizedBox(height: LuckdateSpacing.md),
                 if (!isModification)
-                  Text(data.name, style: LuckdateTextStyles.title),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(data.name, style: LuckdateTextStyles.title),
+                      ),
+                      SizedBox(
+                        width: 126,
+                        child: TextField(
+                          controller: _valueController,
+                          keyboardType: TextInputType.number,
+                          enabled: widget.onConfirm != null,
+                          decoration: InputDecoration(
+                            suffixText: data.type.unit,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: LuckdateSpacing.sm,
+                              vertical: LuckdateSpacing.xs,
+                            ),
+                          ),
+                          style: LuckdateTextStyles.body.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: LuckdateSpacing.xs),
                 Row(
                   children: [
@@ -831,45 +855,42 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                     ),
                   ),
                 ],
-                const SizedBox(height: LuckdateSpacing.md),
-                _CheckInAnalysis(
-                  type: data.type,
-                  value: _editedValue,
-                  kcal: _estimatedKcal,
-                  originalValue: selected?.value,
-                ),
-                if (data.type == CheckInType.meal) ...[
+                if (!isModification) ...[
                   const SizedBox(height: LuckdateSpacing.md),
-                  _NutritionEstimate(value: _editedValue),
-                  const SizedBox(height: LuckdateSpacing.md),
-                  const _AiSuggestionPanel(),
-                ],
-                const SizedBox(height: LuckdateSpacing.md),
-                Text(
-                  !isModification
-                      ? '确认前可以调整${data.type == CheckInType.meal ? '份量' : '时长'}'
-                      : selected == null
-                      ? '修改后的数值'
-                      : '原记录 ${selected.value} ${data.type.unit} → 修改为',
-                  style: LuckdateTextStyles.caption,
-                ),
-                const SizedBox(height: LuckdateSpacing.xs),
-                TextField(
-                  controller: _valueController,
-                  keyboardType: TextInputType.number,
-                  enabled: widget.onConfirm != null,
-                  decoration: InputDecoration(
-                    suffixText: data.type.unit,
-                    suffixStyle: LuckdateTextStyles.body.copyWith(
-                      color: LuckdateColors.textSecondary,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: LuckdateSpacing.md,
-                      vertical: LuckdateSpacing.sm,
-                    ),
+                  _CheckInAnalysis(
+                    type: data.type,
+                    value: _editedValue,
+                    kcal: _estimatedKcal,
+                    originalValue: selected?.value,
                   ),
-                  style: LuckdateTextStyles.h2,
-                ),
+                  if (data.type == CheckInType.meal) ...[
+                    const SizedBox(height: LuckdateSpacing.md),
+                    _NutritionEstimate(value: _editedValue),
+                    const SizedBox(height: LuckdateSpacing.md),
+                    const _AiSuggestionPanel(),
+                  ],
+                ],
+                if (isModification && selected != null) ...[
+                  const SizedBox(height: LuckdateSpacing.md),
+                  Text(
+                    '已选择 ${selected.name}，修改为',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                  const SizedBox(height: LuckdateSpacing.xs),
+                  TextField(
+                    controller: _valueController,
+                    keyboardType: TextInputType.number,
+                    enabled: widget.onConfirm != null,
+                    decoration: InputDecoration(
+                      suffixText: data.type.unit,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: LuckdateSpacing.md,
+                        vertical: LuckdateSpacing.sm,
+                      ),
+                    ),
+                    style: LuckdateTextStyles.h2,
+                  ),
+                ],
                 const SizedBox(height: LuckdateSpacing.md),
                 SizedBox(
                   width: double.infinity,
