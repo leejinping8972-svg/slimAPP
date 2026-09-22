@@ -838,6 +838,12 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                   kcal: _estimatedKcal,
                   originalValue: selected?.value,
                 ),
+                if (data.type == CheckInType.meal) ...[
+                  const SizedBox(height: LuckdateSpacing.md),
+                  _NutritionEstimate(value: _editedValue),
+                  const SizedBox(height: LuckdateSpacing.md),
+                  const _AiSuggestionPanel(),
+                ],
                 const SizedBox(height: LuckdateSpacing.md),
                 Text(
                   !isModification
@@ -951,6 +957,174 @@ class _CheckInAnalysis extends StatelessWidget {
       ),
     );
   }
+}
+
+class _NutritionEstimate extends StatelessWidget {
+  const _NutritionEstimate({required this.value});
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    // Demo coefficients keep the estimate proportional as the portion changes.
+    final protein = value.toDouble() * .06;
+    final carbs = value.toDouble() * .28;
+    final fat = value.toDouble() * .10;
+    final total = protein * 4 + carbs * 4 + fat * 9;
+    final proteinPct = total == 0 ? 0.0 : protein * 4 / total;
+    final carbsPct = total == 0 ? 0.0 : carbs * 4 / total;
+    final fatPct = total == 0 ? 0.0 : fat * 9 / total;
+    Widget metric(String label, double grams, double pct, Color color) {
+      return Expanded(
+        child: Row(
+          children: [
+            Container(
+              width: 7,
+              height: 7,
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              child: Text(
+                '$label ${grams.toStringAsFixed(1)}g',
+                style: LuckdateTextStyles.caption,
+              ),
+            ),
+            Text('${(pct * 100).round()}%', style: LuckdateTextStyles.caption),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.md),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FC),
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                '营养素估算',
+                style: LuckdateTextStyles.title.copyWith(fontSize: 15),
+              ),
+              const SizedBox(width: LuckdateSpacing.sm),
+              Text(
+                '(本餐)',
+                style: LuckdateTextStyles.bodySmall.copyWith(
+                  color: LuckdateColors.textSecondary,
+                ),
+              ),
+              const Spacer(),
+              Text('营养占比为估算值', style: LuckdateTextStyles.caption),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.md),
+          Row(
+            children: [
+              metric('蛋白质', protein, proteinPct, const Color(0xFF8ADDBA)),
+              const SizedBox(width: LuckdateSpacing.md),
+              metric('脂肪', fat, fatPct, const Color(0xFFF3B4B8)),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          Row(
+            children: [
+              metric('碳水', carbs, carbsPct, const Color(0xFF9EDDEA)),
+              const SizedBox(width: LuckdateSpacing.md),
+              metric(
+                '膳食纤维',
+                value.toDouble() * .025,
+                .08,
+                const Color(0xFFC9B2ED),
+              ),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.md),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: (proteinPct * 100).round().clamp(1, 100),
+                  child: const SizedBox(
+                    height: 8,
+                    child: ColoredBox(color: Color(0xFF8ADDBA)),
+                  ),
+                ),
+                Expanded(
+                  flex: (fatPct * 100).round().clamp(1, 100),
+                  child: const SizedBox(
+                    height: 8,
+                    child: ColoredBox(color: Color(0xFFF3B4B8)),
+                  ),
+                ),
+                Expanded(
+                  flex: (carbsPct * 100).round().clamp(1, 100),
+                  child: const SizedBox(
+                    height: 8,
+                    child: ColoredBox(color: Color(0xFF9EDDEA)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AiSuggestionPanel extends StatelessWidget {
+  const _AiSuggestionPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.md),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FC),
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'AI 减脂建议',
+            style: LuckdateTextStyles.title.copyWith(fontSize: 15),
+          ),
+          const SizedBox(height: LuckdateSpacing.sm),
+          _tip('建议搭配一份新鲜水果或蔬菜，增加膳食纤维和维生素摄入。'),
+          const SizedBox(height: LuckdateSpacing.sm),
+          _tip('建议增加绿叶蔬菜，帮助提升膳食纤维摄入。'),
+          const SizedBox(height: LuckdateSpacing.md),
+          Text(
+            '以上热量为 AI 识别估算值，仅供参考，请以实际为准。',
+            style: LuckdateTextStyles.caption.copyWith(
+              color: LuckdateColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _tip(String text) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 6),
+        child: Icon(Icons.circle, size: 7, color: Color(0xFF71D5AB)),
+      ),
+      const SizedBox(width: LuckdateSpacing.sm),
+      Expanded(child: Text(text, style: LuckdateTextStyles.bodySmall)),
+    ],
+  );
 }
 
 class _SuggestionPanel extends StatelessWidget {
