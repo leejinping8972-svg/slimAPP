@@ -1,14 +1,12 @@
 'use client';
 
-import Image from 'next/image';
-import { BadgeCheck, Factory, Smartphone, Sparkles, type LucideIcon } from 'lucide-react';
-import professorImg from '@/assets/home/professor-ciechanover.jpg';
+import { BadgeCheck, Factory, Medal, Smartphone, Sparkles, type LucideIcon } from 'lucide-react';
 
 const ITEMS: {
   label: string;
   hint: string;
-  icon?: LucideIcon;
-  image?: typeof professorImg;
+  icon: LucideIcon;
+  iconClassName?: string;
 }[] = [
   {
     label: 'GMP Certified',
@@ -33,7 +31,8 @@ const ITEMS: {
   {
     label: 'Nobel Laureate',
     hint: 'Prof. Aaron Ciechanover',
-    image: professorImg,
+    icon: Medal,
+    iconClassName: 'text-[#A5792A]',
   },
 ];
 
@@ -50,17 +49,11 @@ export function AsSeenStrip() {
           {ITEMS.map((item) => (
             <li key={item.label} className="flex flex-col items-center text-center">
               <span className="relative mb-4 flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-[#1E261C]/12 bg-white shadow-[0_8px_24px_rgba(30,38,28,0.06)] sm:h-16 sm:w-16">
-                {item.image ? (
-                  <Image
-                    src={item.image}
-                    alt="Professor Aaron Ciechanover"
-                    fill
-                    className="object-cover object-[center_15%]"
-                    sizes="64px"
-                  />
-                ) : item.icon ? (
-                  <item.icon className="h-6 w-6 text-[#1E261C] sm:h-7 sm:w-7" strokeWidth={1.6} aria-hidden />
-                ) : null}
+                <item.icon
+                  className={`h-6 w-6 sm:h-7 sm:w-7 ${item.iconClassName ?? 'text-[#1E261C]'}`}
+                  strokeWidth={1.6}
+                  aria-hidden
+                />
               </span>
               <p className="font-['Montserrat'] text-[0.7rem] font-bold uppercase leading-snug tracking-[0.12em] text-[#1E261C] sm:text-sm lg:text-[0.8rem]">
                 {item.label}
