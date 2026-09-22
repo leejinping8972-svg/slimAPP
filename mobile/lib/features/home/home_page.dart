@@ -7,6 +7,7 @@ import '../../core/widgets/ld_shell.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/services/onboarding_chat_guide.dart';
+import '../chat/check_in_cards_demo.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -35,7 +36,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       final canSend = _controller.text.trim().isNotEmpty;
       if (canSend != _canSend) setState(() => _canSend = canSend);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowJourneyComplete());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _maybeShowJourneyComplete(),
+    );
   }
 
   void _maybeShowJourneyComplete() {
@@ -177,7 +180,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ],
                   ...messages.map((msg) {
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: LuckdateSpacing.md),
+                      padding: const EdgeInsets.only(
+                        bottom: LuckdateSpacing.md,
+                      ),
                       child: msg.isUser
                           ? UserBubble(
                               text: msg.text,
@@ -191,6 +196,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                               suggestions: msg.suggestions,
                               actionLabels: msg.actionLabels,
                               onActionTap: _onActionTap,
+                              card: msg.card,
+                              cardStatus: msg.cardStatus,
+                              onCardConfirm: (card) => ref
+                                  .read(appStateProvider.notifier)
+                                  .confirmCheckInCard(
+                                    messageId: msg.id,
+                                    card: card,
+                                  ),
                             ),
                     );
                   }),
@@ -281,7 +294,12 @@ class _HomeHeader extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            tooltip: '卡片交互演示',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const CheckInCardsDemoPage(),
+              ),
+            ),
             icon: const Icon(Icons.more_horiz, size: 22),
             color: LuckdateColors.textPrimary,
           ),
@@ -292,10 +310,7 @@ class _HomeHeader extends StatelessWidget {
 }
 
 class _SunnyIntroCard extends StatelessWidget {
-  const _SunnyIntroCard({
-    required this.nickname,
-    required this.onLearnMore,
-  });
+  const _SunnyIntroCard({required this.nickname, required this.onLearnMore});
 
   final String nickname;
   final VoidCallback onLearnMore;
@@ -307,7 +322,9 @@ class _SunnyIntroCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFF9F6F1),
         borderRadius: BorderRadius.circular(LuckdateRadius.xl),
-        border: Border.all(color: LuckdateColors.lineSoft.withValues(alpha: 0.7)),
+        border: Border.all(
+          color: LuckdateColors.lineSoft.withValues(alpha: 0.7),
+        ),
         boxShadow: LuckdateShadows.soft,
       ),
       child: Row(
@@ -334,7 +351,9 @@ class _SunnyIntroCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: LuckdateColors.ivoryWhite,
-                        borderRadius: BorderRadius.circular(LuckdateRadius.pill),
+                        borderRadius: BorderRadius.circular(
+                          LuckdateRadius.pill,
+                        ),
                         border: Border.all(color: LuckdateColors.lineSoft),
                       ),
                       child: Text(
@@ -367,8 +386,9 @@ class _SunnyIntroCard extends StatelessWidget {
                       minimumSize: Size.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(LuckdateRadius.pill),
+                        borderRadius: BorderRadius.circular(
+                          LuckdateRadius.pill,
+                        ),
                       ),
                     ),
                     child: Text(
@@ -419,8 +439,7 @@ class _QuickAskRow extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () => onTap(item.$2),
-                      borderRadius:
-                          BorderRadius.circular(LuckdateRadius.pill),
+                      borderRadius: BorderRadius.circular(LuckdateRadius.pill),
                       child: Ink(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -428,8 +447,9 @@ class _QuickAskRow extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: LuckdateColors.ivoryWhite,
-                          borderRadius:
-                              BorderRadius.circular(LuckdateRadius.pill),
+                          borderRadius: BorderRadius.circular(
+                            LuckdateRadius.pill,
+                          ),
                           border: Border.all(color: LuckdateColors.lineSoft),
                         ),
                         child: Text(

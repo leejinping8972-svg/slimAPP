@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/models.dart';
 import '../repositories/mock_data_repository.dart';
+import '../services/check_in_estimator.dart';
 import '../services/mock_order_service.dart';
 import '../services/onboarding_chat_guide.dart';
 import '../services/sunny_intent_router.dart';
@@ -372,6 +373,11 @@ class AppStateNotifier extends StateNotifier<AppState> {
     );
   }
 
+  // Kept as a compatibility alias for the Today page's Spanish flow name.
+  void markViajeCompleteSeen() {
+    markJourneyCompleteSeen();
+  }
+
   void updateReminders({required String reminderTime, String? reminderTime2}) {
     state = state.copyWith(
       profile: state.profile.copyWith(
@@ -561,7 +567,9 @@ class AppStateNotifier extends StateNotifier<AppState> {
         nickname: state.profile.nickname,
       );
 
-      if (result.todayUpdates != null) {
+      // A card represents a pending write. Only direct, high-confidence
+      // responses update the record before the reply is rendered.
+      if (result.todayUpdates != null && result.cardData == null) {
         updateTodayRecord(result.todayUpdates!);
       }
     }
@@ -571,6 +579,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
       result.reply,
       suggestions: result.suggestions,
       actionLabels: result.actionLabels,
+      card: result.cardData,
     );
     if (result.intents.contains('onboarding_complete')) {
       if (state.profile.hasActiveSlimPlan) {
@@ -629,6 +638,62 @@ class AppStateNotifier extends StateNotifier<AppState> {
     }
   }
 
+  void confirmCheckInCard({
+    required String messageId,
+    required CheckInCardData card,
+  }) {
+    final today = state.journey.todayRecord;
+    late final TodayRecord updated;
+    late final String reply;
+
+    if (card.kind == ChatCardKind.confirmCheckIn) {
+      updated = CheckInEstimator.applyStructuredCheckIn(
+        today,
+        type: card.type,
+        name: card.name,
+        time: card.time,
+        value: card.value,
+      );
+      reply =
+          '已确认${card.type.label}打卡：${card.name}，${card.value} ${card.type.unit}（${card.time}）。今日记录已同步。';
+    } else {
+      final recordId =
+          card.selectedRecordId ??
+          (card.candidates.isEmpty ? null : card.candidates.first.id);
+      final record = recordId == null
+          ? null
+          : card.candidates.cast<CheckInRecord?>().firstWhere(
+              (candidate) => candidate!.id == recordId,
+              orElse: () => null,
+            );
+      if (record == null) return;
+      updated = CheckInEstimator.replaceCheckIn(
+        today,
+        record: record,
+        newValue: card.value,
+      );
+      reply =
+          '已确认修改：${record.name}（${record.time}）现在是 ${card.value} ${card.type.unit}，今日记录已同步。';
+    }
+
+    updateTodayRecord(updated);
+    final messages = state.chatMessages.map((message) {
+      if (message.id != messageId) return message;
+      return message.copyWith(card: card, cardStatus: ChatCardStatus.confirmed);
+    }).toList();
+    state = state.copyWith(
+      chatMessages: [
+        ...messages,
+        ChatMessage(
+          id: '${messageId}_confirmed',
+          isUser: false,
+          text: reply,
+          timestamp: DateTime.now(),
+        ),
+      ],
+    );
+  }
+
   Future<void> sendQuickAction(String action) async {
     switch (action) {
       case 'water':
@@ -653,6 +718,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
     String fullText, {
     List<ChatSuggestionItem>? suggestions,
     List<String>? actionLabels,
+    CheckInCardData? card,
   }) async {
     var current = '';
     for (var i = 0; i < fullText.length; i++) {
@@ -677,6 +743,13 @@ class AppStateNotifier extends StateNotifier<AppState> {
             actionLabels: actionLabels,
           );
         }
+        return m;
+      }).toList();
+      state = state.copyWith(chatMessages: updated);
+    }
+    if (card != null) {
+      final updated = state.chatMessages.map((m) {
+        if (m.id == id) return m.copyWith(card: card);
         return m;
       }).toList();
       state = state.copyWith(chatMessages: updated);

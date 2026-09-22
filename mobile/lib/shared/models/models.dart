@@ -248,6 +248,81 @@ class LinkedProductRef {
   final String blurb;
 }
 
+enum CheckInType { meal, exercise }
+
+extension CheckInTypeX on CheckInType {
+  String get label => this == CheckInType.meal ? '饮食' : '运动';
+
+  String get unit => this == CheckInType.meal ? '克' : '分钟';
+}
+
+enum ChatCardKind { confirmCheckIn, modifyCheckIn }
+
+enum ChatCardStatus { pending, confirmed }
+
+/// A normalized record passed between Sunny's intent layer and the chat UI.
+/// Values are grams for meals and minutes for exercise.
+class CheckInRecord {
+  const CheckInRecord({
+    required this.id,
+    required this.type,
+    required this.name,
+    required this.time,
+    required this.value,
+    this.estimatedKcal,
+  });
+
+  final String id;
+  final CheckInType type;
+  final String name;
+  final String time;
+  final int value;
+  final int? estimatedKcal;
+}
+
+/// Structured data rendered as an interactive Sunny chat card.
+class CheckInCardData {
+  const CheckInCardData({
+    required this.kind,
+    required this.type,
+    required this.name,
+    required this.time,
+    required this.value,
+    this.candidates = const [],
+    this.selectedRecordId,
+    this.confidence = 1,
+  });
+
+  final ChatCardKind kind;
+  final CheckInType type;
+  final String name;
+  final String time;
+  final int value;
+  final List<CheckInRecord> candidates;
+  final String? selectedRecordId;
+  final double confidence;
+
+  CheckInCardData copyWith({
+    String? name,
+    String? time,
+    int? value,
+    List<CheckInRecord>? candidates,
+    String? selectedRecordId,
+    double? confidence,
+  }) {
+    return CheckInCardData(
+      kind: kind,
+      type: type,
+      name: name ?? this.name,
+      time: time ?? this.time,
+      value: value ?? this.value,
+      candidates: candidates ?? this.candidates,
+      selectedRecordId: selectedRecordId ?? this.selectedRecordId,
+      confidence: confidence ?? this.confidence,
+    );
+  }
+}
+
 class MealLogEntry {
   const MealLogEntry({
     required this.meal,
@@ -257,6 +332,7 @@ class MealLogEntry {
     this.protein = 0,
     this.carbs = 0,
     this.fat = 0,
+    this.quantityG = 0,
     this.source = 'chat',
   });
 
@@ -267,7 +343,64 @@ class MealLogEntry {
   final int protein;
   final int carbs;
   final int fat;
+  final int quantityG;
   final String source;
+
+  MealLogEntry copyWith({
+    String? meal,
+    String? name,
+    String? time,
+    int? kcal,
+    int? protein,
+    int? carbs,
+    int? fat,
+    int? quantityG,
+    String? source,
+  }) {
+    return MealLogEntry(
+      meal: meal ?? this.meal,
+      name: name ?? this.name,
+      time: time ?? this.time,
+      kcal: kcal ?? this.kcal,
+      protein: protein ?? this.protein,
+      carbs: carbs ?? this.carbs,
+      fat: fat ?? this.fat,
+      quantityG: quantityG ?? this.quantityG,
+      source: source ?? this.source,
+    );
+  }
+}
+
+class ExerciseLogEntry {
+  const ExerciseLogEntry({
+    required this.name,
+    required this.time,
+    required this.minutes,
+    required this.kcal,
+    this.source = 'chat',
+  });
+
+  final String name;
+  final String time;
+  final int minutes;
+  final int kcal;
+  final String source;
+
+  ExerciseLogEntry copyWith({
+    String? name,
+    String? time,
+    int? minutes,
+    int? kcal,
+    String? source,
+  }) {
+    return ExerciseLogEntry(
+      name: name ?? this.name,
+      time: time ?? this.time,
+      minutes: minutes ?? this.minutes,
+      kcal: kcal ?? this.kcal,
+      source: source ?? this.source,
+    );
+  }
 }
 
 class TodayRecord {
@@ -293,6 +426,7 @@ class TodayRecord {
     this.exerciseMinutes = 0,
     this.exerciseSessions = 0,
     this.meals = const [],
+    this.exerciseLogs = const [],
   });
 
   final ProductTakenStatus productTaken;
@@ -302,10 +436,13 @@ class TodayRecord {
   final String moodTag;
   final String energyTag;
   final double sleepHours;
+
   /// good | okay | poor | logged (legacy)
   final String sleepQuality;
+
   /// HH:mm — hora de dormir
   final String sleepBedtime;
+
   /// HH:mm — hora de despertar
   final String sleepWakeTime;
   final double ritualCompletionRate;
@@ -319,6 +456,7 @@ class TodayRecord {
   final int exerciseMinutes;
   final int exerciseSessions;
   final List<MealLogEntry> meals;
+  final List<ExerciseLogEntry> exerciseLogs;
 
   TodayRecord copyWith({
     ProductTakenStatus? productTaken,
@@ -342,6 +480,7 @@ class TodayRecord {
     int? exerciseMinutes,
     int? exerciseSessions,
     List<MealLogEntry>? meals,
+    List<ExerciseLogEntry>? exerciseLogs,
   }) {
     return TodayRecord(
       productTaken: productTaken ?? this.productTaken,
@@ -365,6 +504,7 @@ class TodayRecord {
       exerciseMinutes: exerciseMinutes ?? this.exerciseMinutes,
       exerciseSessions: exerciseSessions ?? this.exerciseSessions,
       meals: meals ?? this.meals,
+      exerciseLogs: exerciseLogs ?? this.exerciseLogs,
     );
   }
 
@@ -458,6 +598,8 @@ class ChatMessage {
     this.isStreaming = false,
     this.suggestions,
     this.actionLabels,
+    this.card,
+    this.cardStatus = ChatCardStatus.pending,
   });
 
   final String id;
@@ -467,12 +609,16 @@ class ChatMessage {
   final bool isStreaming;
   final List<ChatSuggestionItem>? suggestions;
   final List<String>? actionLabels;
+  final CheckInCardData? card;
+  final ChatCardStatus cardStatus;
 
   ChatMessage copyWith({
     String? text,
     bool? isStreaming,
     List<ChatSuggestionItem>? suggestions,
     List<String>? actionLabels,
+    CheckInCardData? card,
+    ChatCardStatus? cardStatus,
   }) {
     return ChatMessage(
       id: id,
@@ -482,6 +628,8 @@ class ChatMessage {
       isStreaming: isStreaming ?? this.isStreaming,
       suggestions: suggestions ?? this.suggestions,
       actionLabels: actionLabels ?? this.actionLabels,
+      card: card ?? this.card,
+      cardStatus: cardStatus ?? this.cardStatus,
     );
   }
 }
@@ -565,6 +713,7 @@ class SunnyIntentResult {
     this.todayUpdates,
     this.suggestions,
     this.actionLabels,
+    this.cardData,
   });
 
   final String reply;
@@ -574,4 +723,5 @@ class SunnyIntentResult {
   final TodayRecord? todayUpdates;
   final List<ChatSuggestionItem>? suggestions;
   final List<String>? actionLabels;
+  final CheckInCardData? cardData;
 }

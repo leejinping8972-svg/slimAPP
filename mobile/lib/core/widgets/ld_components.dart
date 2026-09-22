@@ -145,10 +145,10 @@ class LdPrimaryButton extends StatelessWidget {
         backgroundColor: LuckdateColors.deepSage,
         foregroundColor: LuckdateColors.ivoryWhite,
         minimumSize: const Size(0, 52),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(LuckdateRadius.control),
-      ),
-      elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(LuckdateRadius.control),
+        ),
+        elevation: 0,
       ),
       child: loading
           ? const SizedBox(
@@ -195,9 +195,7 @@ class LdSecondaryButton extends StatelessWidget {
               : LuckdateColors.ivoryWhite,
           foregroundColor: LuckdateColors.chocolateBrown,
           side: BorderSide(
-            color: selected
-                ? LuckdateColors.deepSage
-                : LuckdateColors.lineSoft,
+            color: selected ? LuckdateColors.deepSage : LuckdateColors.lineSoft,
             width: selected ? 1.25 : 0.75,
           ),
           minimumSize: const Size(0, 52),
@@ -409,6 +407,9 @@ class SunnyBubble extends StatelessWidget {
     this.suggestions,
     this.actionLabels,
     this.onActionTap,
+    this.card,
+    this.cardStatus = ChatCardStatus.pending,
+    this.onCardConfirm,
     this.mood,
   });
 
@@ -418,6 +419,9 @@ class SunnyBubble extends StatelessWidget {
   final List<ChatSuggestionItem>? suggestions;
   final List<String>? actionLabels;
   final ValueChanged<String>? onActionTap;
+  final CheckInCardData? card;
+  final ChatCardStatus cardStatus;
+  final ValueChanged<CheckInCardData>? onCardConfirm;
   final SunnyMood? mood;
 
   String _formatTime(DateTime? t) {
@@ -431,14 +435,32 @@ class SunnyBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final avatarMood =
         mood ?? SunnyMoodX.fromMessage(text, streaming: isStreaming);
+    if (card != null) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 360),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CheckInCardBubble(
+                key: ValueKey(card),
+                data: card!,
+                status: cardStatus,
+                onConfirm: onCardConfirm,
+                intro: text,
+              ),
+              const SizedBox(height: 6),
+              Text(_formatTime(timestamp), style: LuckdateTextStyles.caption),
+            ],
+          ),
+        ),
+      );
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LdSunnyAvatar(
-          size: 32,
-          mood: avatarMood,
-          cycleIdle: false,
-        ),
+        LdSunnyAvatar(size: 32, mood: avatarMood, cycleIdle: false),
         const SizedBox(width: LuckdateSpacing.sm),
         Flexible(
           child: Column(
@@ -488,7 +510,11 @@ class SunnyBubble extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                for (var i = 0; i < actionLabels!.length; i++) ...[
+                                for (
+                                  var i = 0;
+                                  i < actionLabels!.length;
+                                  i++
+                                ) ...[
                                   if (i > 0)
                                     const SizedBox(height: LuckdateSpacing.sm),
                                   SizedBox(
@@ -497,7 +523,8 @@ class SunnyBubble extends StatelessWidget {
                                     child: OutlinedButton(
                                       onPressed: onActionTap == null
                                           ? null
-                                          : () => onActionTap!(actionLabels![i]),
+                                          : () =>
+                                                onActionTap!(actionLabels![i]),
                                       style: OutlinedButton.styleFrom(
                                         foregroundColor:
                                             LuckdateColors.chocolateBrown,
@@ -529,6 +556,14 @@ class SunnyBubble extends StatelessWidget {
                               ],
                             ),
                           ],
+                          if (card != null) ...[
+                            const SizedBox(height: LuckdateSpacing.md),
+                            CheckInCardBubble(
+                              data: card!,
+                              status: cardStatus,
+                              onConfirm: onCardConfirm,
+                            ),
+                          ],
                         ],
                       ),
               ),
@@ -536,6 +571,384 @@ class SunnyBubble extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CheckInCardBubble extends StatefulWidget {
+  const CheckInCardBubble({
+    super.key,
+    required this.data,
+    required this.status,
+    this.onConfirm,
+    this.intro,
+  });
+
+  final CheckInCardData data;
+  final ChatCardStatus status;
+  final ValueChanged<CheckInCardData>? onConfirm;
+  final String? intro;
+
+  @override
+  State<CheckInCardBubble> createState() => _CheckInCardBubbleState();
+}
+
+class _CheckInCardBubbleState extends State<CheckInCardBubble> {
+  late final TextEditingController _valueController;
+  String? _selectedRecordId;
+
+  int get _editedValue => int.tryParse(_valueController.text.trim()) ?? 0;
+
+  int get _estimatedKcal {
+    final selected = widget.data.candidates
+        .where((r) => r.id == _selectedRecordId)
+        .firstOrNull;
+    if (selected?.estimatedKcal != null && selected!.value > 0) {
+      return (selected.estimatedKcal! * _editedValue / selected.value).round();
+    }
+    return (_editedValue * (widget.data.type == CheckInType.meal ? 1.8 : 7.1))
+        .round();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _valueController = TextEditingController(
+      text: widget.data.value.toString(),
+    );
+    _valueController.addListener(_onValueChanged);
+    _selectedRecordId = widget.status == ChatCardStatus.confirmed
+        ? widget.data.selectedRecordId
+        : null;
+  }
+
+  @override
+  void dispose() {
+    _valueController.removeListener(_onValueChanged);
+    _valueController.dispose();
+    super.dispose();
+  }
+
+  void _onValueChanged() => setState(() {});
+
+  String get _title =>
+      widget.data.kind == ChatCardKind.confirmCheckIn ? '确认打卡' : '修改打卡记录';
+
+  String get _actionLabel =>
+      widget.data.kind == ChatCardKind.confirmCheckIn ? '确认打卡' : '确认修改';
+
+  void _confirm() {
+    final value = int.tryParse(_valueController.text.trim());
+    final maxValue = widget.data.type == CheckInType.meal ? 3000 : 600;
+    if (value == null || value <= 0 || value > maxValue) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('请输入 1–$maxValue ${widget.data.type.unit}')),
+      );
+      return;
+    }
+    widget.onConfirm?.call(
+      widget.data.copyWith(value: value, selectedRecordId: _selectedRecordId),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final data = widget.data;
+    final isConfirmed = widget.status == ChatCardStatus.confirmed;
+    final isModification = data.kind == ChatCardKind.modifyCheckIn;
+    final selected = data.candidates
+        .where((r) => r.id == _selectedRecordId)
+        .firstOrNull;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.base),
+      decoration: BoxDecoration(
+        color: LuckdateColors.ivoryWhite,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: LuckdateColors.lineSoft),
+      ),
+      child: isConfirmed
+          ? Row(
+              children: [
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: LuckdateColors.success,
+                  size: 22,
+                ),
+                const SizedBox(width: LuckdateSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isModification ? '记录已修改' : '打卡已确认',
+                        style: LuckdateTextStyles.body.copyWith(
+                          color: LuckdateColors.deepSage,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${selected?.name ?? data.name} · ${data.value} ${data.type.unit}',
+                        style: LuckdateTextStyles.bodySmall,
+                      ),
+                      Text(
+                        '今天 ${selected?.time ?? data.time}',
+                        style: LuckdateTextStyles.caption,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.intro?.isNotEmpty ?? false) ...[
+                  Text(widget.intro!, style: LuckdateTextStyles.body),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    child: Divider(height: 1),
+                  ),
+                ],
+                Row(
+                  children: [
+                    Icon(
+                      data.kind == ChatCardKind.confirmCheckIn
+                          ? Icons.fact_check_outlined
+                          : Icons.edit_note_rounded,
+                      color: LuckdateColors.deepSage,
+                      size: 20,
+                    ),
+                    const SizedBox(width: LuckdateSpacing.sm),
+                    Expanded(
+                      child: Text(
+                        _title,
+                        style: LuckdateTextStyles.title.copyWith(fontSize: 15),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 9,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: LuckdateColors.sageSoft,
+                        borderRadius: BorderRadius.circular(
+                          LuckdateRadius.pill,
+                        ),
+                      ),
+                      child: Text(
+                        data.type.label,
+                        style: LuckdateTextStyles.caption.copyWith(
+                          color: LuckdateColors.deepSage,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: LuckdateSpacing.md),
+                if (!isModification)
+                  Text(data.name, style: LuckdateTextStyles.title),
+                const SizedBox(height: LuckdateSpacing.xs),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.schedule_rounded,
+                      size: 15,
+                      color: LuckdateColors.textSecondary,
+                    ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        '今天 ${data.time}',
+                        style: LuckdateTextStyles.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+                if (isModification && data.candidates.isNotEmpty) ...[
+                  const SizedBox(height: LuckdateSpacing.md),
+                  Text(
+                    '找到 ${data.candidates.length} 条可能记录，请选择要修改的记录',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                  const SizedBox(height: LuckdateSpacing.xs),
+                  ...data.candidates.map(
+                    (candidate) => Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: InkWell(
+                        onTap: () =>
+                            setState(() => _selectedRecordId = candidate.id),
+                        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+                        child: Ink(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: LuckdateSpacing.sm,
+                            vertical: LuckdateSpacing.md,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _selectedRecordId == candidate.id
+                                ? LuckdateColors.sageSoft
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(
+                              LuckdateRadius.md,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                _selectedRecordId == candidate.id
+                                    ? Icons.radio_button_checked_rounded
+                                    : Icons.radio_button_unchecked_rounded,
+                                color: LuckdateColors.deepSage,
+                                size: 18,
+                              ),
+                              const SizedBox(width: LuckdateSpacing.sm),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      candidate.name,
+                                      style: LuckdateTextStyles.bodySmall,
+                                    ),
+                                    Text(
+                                      candidate.time,
+                                      style: LuckdateTextStyles.caption,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                '${candidate.value} ${data.type.unit}',
+                                style: LuckdateTextStyles.caption,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: LuckdateSpacing.md),
+                _CheckInAnalysis(
+                  type: data.type,
+                  value: _editedValue,
+                  kcal: _estimatedKcal,
+                  originalValue: selected?.value,
+                ),
+                const SizedBox(height: LuckdateSpacing.md),
+                Text(
+                  !isModification
+                      ? '确认前可以调整${data.type == CheckInType.meal ? '份量' : '时长'}'
+                      : selected == null
+                      ? '修改后的数值'
+                      : '原记录 ${selected.value} ${data.type.unit} → 修改为',
+                  style: LuckdateTextStyles.caption,
+                ),
+                const SizedBox(height: LuckdateSpacing.xs),
+                TextField(
+                  controller: _valueController,
+                  keyboardType: TextInputType.number,
+                  enabled: widget.onConfirm != null,
+                  decoration: InputDecoration(
+                    suffixText: data.type.unit,
+                    suffixStyle: LuckdateTextStyles.body.copyWith(
+                      color: LuckdateColors.textSecondary,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: LuckdateSpacing.md,
+                      vertical: LuckdateSpacing.sm,
+                    ),
+                  ),
+                  style: LuckdateTextStyles.h2,
+                ),
+                const SizedBox(height: LuckdateSpacing.md),
+                SizedBox(
+                  width: double.infinity,
+                  height: 44,
+                  child: ElevatedButton(
+                    onPressed:
+                        widget.onConfirm == null ||
+                            (isModification && selected == null)
+                        ? null
+                        : _confirm,
+                    child: Text(_actionLabel),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+}
+
+class _CheckInAnalysis extends StatelessWidget {
+  const _CheckInAnalysis({
+    required this.type,
+    required this.value,
+    required this.kcal,
+    this.originalValue,
+  });
+
+  final CheckInType type;
+  final int value;
+  final int kcal;
+  final int? originalValue;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMeal = type == CheckInType.meal;
+    final ratio = originalValue == null || originalValue == 0
+        ? null
+        : ((value - originalValue!) / originalValue! * 100).round();
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.md),
+      decoration: BoxDecoration(
+        color: isMeal ? const Color(0xFFF0FAF2) : const Color(0xFFF1F6FB),
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            isMeal ? '食物热量分析' : '运动消耗分析',
+            style: LuckdateTextStyles.bodySmall.copyWith(
+              fontWeight: FontWeight.w700,
+              color: LuckdateColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: LuckdateSpacing.xs),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '$kcal',
+                style: LuckdateTextStyles.h1.copyWith(
+                  color: isMeal
+                      ? LuckdateColors.success
+                      : LuckdateColors.mossDark,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  isMeal ? 'kcal 估算摄入' : 'kcal 预计消耗',
+                  style: LuckdateTextStyles.caption,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            ratio == null
+                ? '根据${isMeal ? '份量' : '运动时长'}实时估算，确认前可修改数值。'
+                : '相较原记录 ${ratio >= 0 ? '+' : ''}$ratio%，热量按比例同步计算。',
+            style: LuckdateTextStyles.caption,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -553,7 +966,9 @@ class _SuggestionPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: LuckdateColors.cloudIvory,
         borderRadius: BorderRadius.circular(LuckdateRadius.md),
-        border: Border.all(color: LuckdateColors.lineSoft.withValues(alpha: 0.7)),
+        border: Border.all(
+          color: LuckdateColors.lineSoft.withValues(alpha: 0.7),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

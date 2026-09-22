@@ -117,10 +117,24 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                   const SizedBox(height: LuckdateSpacing.md),
               itemBuilder: (context, index) {
                 final msg = messages[index];
-                if (msg.isUser) return UserBubble(text: msg.text);
+                if (msg.isUser) {
+                  return UserBubble(
+                    text: msg.text,
+                    timestamp: msg.timestamp,
+                    nickname: state.profile.nickname,
+                  );
+                }
                 return SunnyBubble(
                   text: msg.text,
                   isStreaming: msg.isStreaming,
+                  timestamp: msg.timestamp,
+                  suggestions: msg.suggestions,
+                  actionLabels: msg.actionLabels,
+                  card: msg.card,
+                  cardStatus: msg.cardStatus,
+                  onCardConfirm: (card) => ref
+                      .read(appStateProvider.notifier)
+                      .confirmCheckInCard(messageId: msg.id, card: card),
                 );
               },
             ),
@@ -145,8 +159,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 LuckdateSpacing.lg,
                 LuckdateSpacing.sm,
                 LuckdateSpacing.lg,
-                LuckdateSpacing.lg +
-                    MediaQuery.viewInsetsOf(context).bottom,
+                LuckdateSpacing.lg + MediaQuery.viewInsetsOf(context).bottom,
               ),
               child: TextField(
                 controller: _controller,
