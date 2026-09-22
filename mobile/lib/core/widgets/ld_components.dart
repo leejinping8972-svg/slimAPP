@@ -622,6 +622,9 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
       for (final candidate in widget.data.candidates)
         candidate.id: TextEditingController(text: candidate.value.toString()),
     };
+    for (final controller in _candidateControllers.values) {
+      controller.addListener(_onValueChanged);
+    }
     _selectedRecordId = widget.status == ChatCardStatus.confirmed
         ? widget.data.selectedRecordId
         : null;
@@ -632,6 +635,7 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
     _valueController.removeListener(_onValueChanged);
     _valueController.dispose();
     for (final controller in _candidateControllers.values) {
+      controller.removeListener(_onValueChanged);
       controller.dispose();
     }
     super.dispose();
@@ -762,7 +766,22 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                   ],
                 ),
                 const SizedBox(height: LuckdateSpacing.md),
-                if (!isModification)
+                if (data.type == CheckInType.meal)
+                  _FoodDetailList(
+                    type: data.type,
+                    name: data.name,
+                    time: data.time,
+                    valueController: isModification
+                        ? null
+                        : _valueController,
+                    estimatedKcal: isModification ? null : _estimatedKcal,
+                    candidates: isModification ? data.candidates : const [],
+                    candidateControllers: _candidateControllers,
+                    selectedRecordId: _selectedRecordId,
+                    enabled: widget.onConfirm != null,
+                    onSelect: (id) => setState(() => _selectedRecordId = id),
+                  )
+                else ...[
                   Row(
                     children: [
                       Expanded(
@@ -788,24 +807,27 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                       ),
                     ],
                   ),
-                const SizedBox(height: LuckdateSpacing.xs),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.schedule_rounded,
-                      size: 15,
-                      color: LuckdateColors.textSecondary,
-                    ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        '今天 ${data.time}',
-                        style: LuckdateTextStyles.bodySmall,
+                  const SizedBox(height: LuckdateSpacing.xs),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.schedule_rounded,
+                        size: 15,
+                        color: LuckdateColors.textSecondary,
                       ),
-                    ),
-                  ],
-                ),
-                if (isModification && data.candidates.isNotEmpty) ...[
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          '今天 ${data.time}',
+                          style: LuckdateTextStyles.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (isModification &&
+                    data.type == CheckInType.exercise &&
+                    data.candidates.isNotEmpty) ...[
                   const SizedBox(height: LuckdateSpacing.md),
                   Text(
                     '找到 ${data.candidates.length} 条可能记录，请选择要修改的记录',
@@ -917,6 +939,253 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                 ),
               ],
             ),
+    );
+  }
+}
+
+class _FoodDetailList extends StatelessWidget {
+  const _FoodDetailList({
+    required this.type,
+    required this.name,
+    required this.time,
+    required this.valueController,
+    required this.estimatedKcal,
+    required this.candidates,
+    required this.candidateControllers,
+    required this.selectedRecordId,
+    required this.enabled,
+    required this.onSelect,
+  });
+
+  final CheckInType type;
+  final String name;
+  final String time;
+  final TextEditingController? valueController;
+  final int? estimatedKcal;
+  final List<CheckInRecord> candidates;
+  final Map<String, TextEditingController> candidateControllers;
+  final String? selectedRecordId;
+  final bool enabled;
+  final ValueChanged<String> onSelect;
+
+  int _valueFor(CheckInRecord record) =>
+      int.tryParse(candidateControllers[record.id]?.text.trim() ?? '') ??
+      record.value;
+
+  int _kcalFor(CheckInRecord record) {
+    final value = _valueFor(record);
+    if (record.estimatedKcal != null && record.value > 0) {
+      return (record.estimatedKcal! * value / record.value).round();
+    }
+    return (value * 1.8).round();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isMultiple = candidates.isNotEmpty;
+    final totalKcal = isMultiple
+        ? candidates.fold<int>(0, (total, record) => total + _kcalFor(record))
+        : estimatedKcal ?? 0;
+    final count = isMultiple ? candidates.length : 1;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.md),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+        border: Border.all(color: LuckdateColors.lineSoft),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                '食材热量明细',
+                style: LuckdateTextStyles.body.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                '共识别 $count 种食材',
+                style: LuckdateTextStyles.caption,
+              ),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.md),
+          Row(
+            children: [
+              const Expanded(child: Text('食材')),
+              SizedBox(
+                width: isMultiple ? 116 : 126,
+                child: const Text('估算重量'),
+              ),
+              const SizedBox(
+                width: 76,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text('热量'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.xs),
+          if (isMultiple)
+            ...candidates.map(
+              (record) => _buildCandidateRow(record),
+            )
+          else
+            _buildSingleRow(),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: LuckdateSpacing.sm),
+            child: Divider(height: 1),
+          ),
+          Row(
+            children: [
+              Text('合计', style: LuckdateTextStyles.bodySmall),
+              const Spacer(),
+              Text(
+                '约 $totalKcal kcal',
+                style: LuckdateTextStyles.bodySmall.copyWith(
+                  color: LuckdateColors.deepSage,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSingleRow() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(name, style: LuckdateTextStyles.body),
+              const SizedBox(height: 3),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.schedule_rounded,
+                    size: 13,
+                    color: LuckdateColors.textSecondary,
+                  ),
+                  const SizedBox(width: 3),
+                  Text('今天 $time', style: LuckdateTextStyles.caption),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 126,
+          child: TextField(
+            controller: valueController,
+            keyboardType: TextInputType.number,
+            enabled: enabled,
+            decoration: InputDecoration(
+              suffixText: type.unit,
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: LuckdateSpacing.sm,
+                vertical: LuckdateSpacing.xs,
+              ),
+            ),
+            style: LuckdateTextStyles.bodySmall.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(width: LuckdateSpacing.xs),
+        SizedBox(
+          width: 72,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              '${estimatedKcal ?? 0} kcal',
+              style: LuckdateTextStyles.caption,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCandidateRow(CheckInRecord record) {
+    final selected = selectedRecordId == record.id;
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: InkWell(
+        onTap: () => onSelect(record.id),
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+        child: Ink(
+          padding: const EdgeInsets.symmetric(
+            horizontal: LuckdateSpacing.xs,
+            vertical: LuckdateSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: selected ? LuckdateColors.sageSoft : Colors.transparent,
+            borderRadius: BorderRadius.circular(LuckdateRadius.md),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                selected
+                    ? Icons.radio_button_checked_rounded
+                    : Icons.radio_button_unchecked_rounded,
+                color: LuckdateColors.deepSage,
+                size: 18,
+              ),
+              const SizedBox(width: LuckdateSpacing.xs),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(record.name, style: LuckdateTextStyles.bodySmall),
+                    Text(record.time, style: LuckdateTextStyles.caption),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 112,
+                child: TextField(
+                  controller: candidateControllers[record.id],
+                  keyboardType: TextInputType.number,
+                  enabled: enabled,
+                  onTap: () => onSelect(record.id),
+                  decoration: InputDecoration(
+                    suffixText: type.unit,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: LuckdateSpacing.sm,
+                      vertical: LuckdateSpacing.xs,
+                    ),
+                  ),
+                  style: LuckdateTextStyles.bodySmall.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: LuckdateSpacing.xs),
+              SizedBox(
+                width: 72,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '${_kcalFor(record)} kcal',
+                    style: LuckdateTextStyles.caption,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
