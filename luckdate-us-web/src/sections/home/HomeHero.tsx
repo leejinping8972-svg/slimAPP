@@ -2,16 +2,43 @@
 
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import heroIndoor from '@/assets/home/hero/hero-indoor-hd.jpg';
 import heroProducts from '@/assets/home/hero/hero-products-wide.jpg';
+import { assetPath } from '@/lib/assetPath';
 
-const SLIDES: { src: StaticImageData; alt: string }[] = [
+type HeroSlide =
+  | {
+      id: string;
+      type: 'video';
+      src: string;
+      poster: string;
+      alt: string;
+    }
+  | {
+      id: string;
+      type: 'image';
+      src: StaticImageData;
+      alt: string;
+    };
+
+const SLIDES: HeroSlide[] = [
   {
+    id: 'daily-vitality-film',
+    type: 'video',
+    src: '/videos/home-hero.mp4',
+    poster: '/videos/home-hero-poster.jpg',
+    alt: 'A woman begins her day with the Slim Vitality nutrition ritual',
+  },
+  {
+    id: 'slim-vitality-products',
+    type: 'image',
     src: heroProducts,
     alt: 'Slim Vitality 28-Day Vitality Ritual packaging with sachets and chocolate powder',
   },
   {
+    id: 'chocolate-ritual',
+    type: 'image',
     src: heroIndoor,
     alt: 'Slim Vitality chocolate ritual with luckdate shaker and cocoa packaging',
   },
@@ -23,13 +50,31 @@ const SLIDES: { src: StaticImageData; alt: string }[] = [
  */
 export function HomeHero() {
   const [index, setIndex] = useState(0);
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
 
   useEffect(() => {
-    const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length);
+    videoRefs.current.forEach((video, videoIndex) => {
+      if (!video) return;
+
+      if (videoIndex === index) {
+        video.currentTime = 0;
+        void video.play().catch(() => {
+          // The poster remains visible if a browser blocks autoplay.
+        });
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+
+    if (SLIDES[index].type === 'video') return;
+
+    const timeoutId = window.setTimeout(() => {
+      setIndex((currentIndex) => (currentIndex + 1) % SLIDES.length);
     }, 6000);
-    return () => window.clearInterval(id);
-  }, []);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [index]);
 
   return (
     <section
@@ -42,21 +87,40 @@ export function HomeHero() {
     >
       {SLIDES.map((slide, i) => (
         <div
-          key={slide.alt}
+          key={slide.id}
           className={`absolute inset-0 transition-opacity duration-700 ${
             i === index ? 'opacity-100' : 'opacity-0'
           }`}
           aria-hidden={i !== index}
         >
-          <Image
-            src={slide.src}
-            alt={i === index ? slide.alt : ''}
-            fill
-            priority={i === 0}
-            quality={95}
-            className="object-cover object-center"
-            sizes="100vw"
-          />
+          {slide.type === 'video' ? (
+            <video
+              ref={(video) => {
+                videoRefs.current[i] = video;
+              }}
+              className="h-full w-full object-cover object-center"
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              poster={assetPath(slide.poster)}
+              aria-label={i === index ? slide.alt : undefined}
+              onEnded={() => setIndex((i + 1) % SLIDES.length)}
+              onError={() => setIndex((i + 1) % SLIDES.length)}
+            >
+              <source src={assetPath(slide.src)} type="video/mp4" />
+            </video>
+          ) : (
+            <Image
+              src={slide.src}
+              alt={i === index ? slide.alt : ''}
+              fill
+              priority={i === 1}
+              quality={95}
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          )}
         </div>
       ))}
 
@@ -102,7 +166,7 @@ export function HomeHero() {
       <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2 sm:bottom-6">
         {SLIDES.map((slide, i) => (
           <button
-            key={slide.alt}
+            key={slide.id}
             type="button"
             aria-label={`Show slide ${i + 1}`}
             onClick={() => setIndex(i)}
