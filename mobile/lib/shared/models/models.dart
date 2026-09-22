@@ -289,6 +289,7 @@ class CheckInCardData {
     required this.time,
     required this.value,
     this.candidates = const [],
+    this.items = const [],
     this.selectedRecordId,
     this.confidence = 1,
   });
@@ -299,6 +300,9 @@ class CheckInCardData {
   final String time;
   final int value;
   final List<CheckInRecord> candidates;
+  /// Food items recognized in one confirmation card. Unlike candidates,
+  /// these are all part of the same meal and are shown together.
+  final List<CheckInRecord> items;
   final String? selectedRecordId;
   final double confidence;
 
@@ -307,6 +311,7 @@ class CheckInCardData {
     String? time,
     int? value,
     List<CheckInRecord>? candidates,
+    List<CheckInRecord>? items,
     String? selectedRecordId,
     double? confidence,
   }) {
@@ -317,6 +322,7 @@ class CheckInCardData {
       time: time ?? this.time,
       value: value ?? this.value,
       candidates: candidates ?? this.candidates,
+      items: items ?? this.items,
       selectedRecordId: selectedRecordId ?? this.selectedRecordId,
       confidence: confidence ?? this.confidence,
     );

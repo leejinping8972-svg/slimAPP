@@ -600,6 +600,28 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
 
   int get _editedValue => int.tryParse(_valueController.text.trim()) ?? 0;
 
+  List<CheckInRecord> get _mealItems => widget.data.items;
+
+  int _itemValue(CheckInRecord item) =>
+      int.tryParse(_candidateControllers[item.id]?.text.trim() ?? '') ??
+      item.value;
+
+  int _itemKcal(CheckInRecord item) {
+    final value = _itemValue(item);
+    if (item.estimatedKcal != null && item.value > 0) {
+      return (item.estimatedKcal! * value / item.value).round();
+    }
+    return (value * 1.8).round();
+  }
+
+  int get _analysisValue => _mealItems.isEmpty
+      ? _editedValue
+      : _mealItems.fold<int>(0, (total, item) => total + _itemValue(item));
+
+  int get _analysisKcal => _mealItems.isEmpty
+      ? _estimatedKcal
+      : _mealItems.fold<int>(0, (total, item) => total + _itemKcal(item));
+
   int get _estimatedKcal {
     final selected = widget.data.candidates
         .where((r) => r.id == _selectedRecordId)
@@ -618,9 +640,10 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
       text: widget.data.value.toString(),
     );
     _valueController.addListener(_onValueChanged);
+    final editableRecords = [...widget.data.candidates, ...widget.data.items];
     _candidateControllers = {
-      for (final candidate in widget.data.candidates)
-        candidate.id: TextEditingController(text: candidate.value.toString()),
+      for (final record in editableRecords)
+        record.id: TextEditingController(text: record.value.toString()),
     };
     for (final controller in _candidateControllers.values) {
       controller.addListener(_onValueChanged);
@@ -650,6 +673,38 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
       widget.data.kind == ChatCardKind.confirmCheckIn ? '确认打卡' : '确认修改';
 
   void _confirm() {
+    if (widget.data.items.isNotEmpty) {
+      final maxValue = widget.data.type == CheckInType.meal ? 3000 : 600;
+      final updatedItems = <CheckInRecord>[];
+      for (final item in widget.data.items) {
+        final value = _itemValue(item);
+        if (value <= 0 || value > maxValue) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('请输入 1–$maxValue ${widget.data.type.unit}')),
+          );
+          return;
+        }
+        updatedItems.add(
+          CheckInRecord(
+            id: item.id,
+            type: item.type,
+            name: item.name,
+            time: item.time,
+            value: value,
+            estimatedKcal: item.estimatedKcal,
+          ),
+        );
+      }
+      final totalValue = updatedItems.fold<int>(
+        0,
+        (total, item) => total + item.value,
+      );
+      widget.onConfirm?.call(
+        widget.data.copyWith(value: totalValue, items: updatedItems),
+      );
+      return;
+    }
+
     final selected = widget.data.candidates
         .where((r) => r.id == _selectedRecordId)
         .firstOrNull;
@@ -706,7 +761,9 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${selected?.name ?? data.name} · ${data.value} ${data.type.unit}',
+                        data.items.isNotEmpty
+                            ? '${data.items.length} 项饮食 · ${data.value} ${data.type.unit}'
+                            : '${selected?.name ?? data.name} · ${data.value} ${data.type.unit}',
                         style: LuckdateTextStyles.bodySmall,
                       ),
                       Text(
@@ -771,13 +828,17 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                     type: data.type,
                     name: data.name,
                     time: data.time,
-                    valueController: isModification
+                    valueController: isModification || _mealItems.isNotEmpty
                         ? null
                         : _valueController,
-                    estimatedKcal: isModification ? null : _estimatedKcal,
-                    candidates: isModification ? data.candidates : const [],
+                    estimatedKcal:
+                        isModification || _mealItems.isNotEmpty
+                        ? null
+                        : _estimatedKcal,
+                    candidates: isModification ? data.candidates : _mealItems,
                     candidateControllers: _candidateControllers,
                     selectedRecordId: _selectedRecordId,
+                    selectable: isModification,
                     enabled: widget.onConfirm != null,
                     onSelect: (id) => setState(() => _selectedRecordId = id),
                   )
@@ -913,13 +974,13 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                   const SizedBox(height: LuckdateSpacing.md),
                   _CheckInAnalysis(
                     type: data.type,
-                    value: _editedValue,
-                    kcal: _estimatedKcal,
+                    value: _analysisValue,
+                    kcal: _analysisKcal,
                     originalValue: selected?.value,
                   ),
                   if (data.type == CheckInType.meal) ...[
                     const SizedBox(height: LuckdateSpacing.md),
-                    _NutritionEstimate(value: _editedValue),
+                    _NutritionEstimate(value: _analysisValue),
                     const SizedBox(height: LuckdateSpacing.md),
                     const _AiSuggestionPanel(),
                   ],
@@ -953,6 +1014,7 @@ class _FoodDetailList extends StatelessWidget {
     required this.candidates,
     required this.candidateControllers,
     required this.selectedRecordId,
+    required this.selectable,
     required this.enabled,
     required this.onSelect,
   });
@@ -965,6 +1027,7 @@ class _FoodDetailList extends StatelessWidget {
   final List<CheckInRecord> candidates;
   final Map<String, TextEditingController> candidateControllers;
   final String? selectedRecordId;
+  final bool selectable;
   final bool enabled;
   final ValueChanged<String> onSelect;
 
@@ -982,6 +1045,33 @@ class _FoodDetailList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!selectable) {
+      final rows = candidates.isEmpty
+          ? [
+              _buildConfirmationRecord(
+                name: name,
+                time: time,
+                controller: valueController,
+              ),
+            ]
+          : [
+              for (final record in candidates)
+                _buildConfirmationRecord(
+                  name: record.name,
+                  time: record.time,
+                  controller: candidateControllers[record.id],
+                ),
+            ];
+      return Column(
+        children: [
+          for (var index = 0; index < rows.length; index++) ...[
+            if (index > 0) const SizedBox(height: LuckdateSpacing.sm),
+            rows[index],
+          ],
+        ],
+      );
+    }
+
     final isMultiple = candidates.isNotEmpty;
     final totalKcal = isMultiple
         ? candidates.fold<int>(0, (total, record) => total + _kcalFor(record))
@@ -1059,6 +1149,65 @@ class _FoodDetailList extends StatelessWidget {
     );
   }
 
+  Widget _buildConfirmationRecord({
+    required String name,
+    required String time,
+    required TextEditingController? controller,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(LuckdateSpacing.md),
+      decoration: BoxDecoration(
+        color: LuckdateColors.ivoryWhite,
+        borderRadius: BorderRadius.circular(LuckdateRadius.md),
+        border: Border.all(color: LuckdateColors.lineSoft),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(name, style: LuckdateTextStyles.title),
+              ),
+              SizedBox(
+                width: 126,
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  enabled: enabled,
+                  decoration: InputDecoration(
+                    suffixText: type.unit,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: LuckdateSpacing.sm,
+                      vertical: LuckdateSpacing.xs,
+                    ),
+                  ),
+                  style: LuckdateTextStyles.body.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: LuckdateSpacing.xs),
+          Row(
+            children: [
+              const Icon(
+                Icons.schedule_rounded,
+                size: 15,
+                color: LuckdateColors.textSecondary,
+              ),
+              const SizedBox(width: 4),
+              Text('今天 $time', style: LuckdateTextStyles.bodySmall),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSingleRow() {
     return Row(
       children: [
@@ -1117,11 +1266,11 @@ class _FoodDetailList extends StatelessWidget {
   }
 
   Widget _buildCandidateRow(CheckInRecord record) {
-    final selected = selectedRecordId == record.id;
+    final selected = selectable && selectedRecordId == record.id;
     return Padding(
       padding: const EdgeInsets.only(top: 4),
       child: InkWell(
-        onTap: () => onSelect(record.id),
+        onTap: selectable ? () => onSelect(record.id) : null,
         borderRadius: BorderRadius.circular(LuckdateRadius.md),
         child: Ink(
           padding: const EdgeInsets.symmetric(
@@ -1134,14 +1283,15 @@ class _FoodDetailList extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(
-                selected
-                    ? Icons.radio_button_checked_rounded
-                    : Icons.radio_button_unchecked_rounded,
-                color: LuckdateColors.deepSage,
-                size: 18,
-              ),
-              const SizedBox(width: LuckdateSpacing.xs),
+              if (selectable)
+                Icon(
+                  selected
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.radio_button_unchecked_rounded,
+                  color: LuckdateColors.deepSage,
+                  size: 18,
+                ),
+              if (selectable) const SizedBox(width: LuckdateSpacing.xs),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1157,7 +1307,7 @@ class _FoodDetailList extends StatelessWidget {
                   controller: candidateControllers[record.id],
                   keyboardType: TextInputType.number,
                   enabled: enabled,
-                  onTap: () => onSelect(record.id),
+                  onTap: selectable ? () => onSelect(record.id) : null,
                   decoration: InputDecoration(
                     suffixText: type.unit,
                     isDense: true,

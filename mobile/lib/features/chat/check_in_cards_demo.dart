@@ -26,7 +26,15 @@ class _CheckInCardsDemoPageState extends State<CheckInCardsDemoPage> {
   CheckInCardData? _confirmed;
   final _scrollController = ScrollController();
 
-  static const _labels = ['饮食打卡', '运动打卡', '修改饮食', '修改运动', '多条饮食', '多条运动'];
+  static const _labels = [
+    '饮食打卡',
+    '运动打卡',
+    '修改饮食',
+    '修改运动',
+    '多条饮食',
+    '多条运动',
+    '多食物打卡',
+  ];
   static const _requests = [
     '今天 12:30 吃了鸡胸肉，150 克。',
     '今天 18:00 快走了 30 分钟。',
@@ -34,18 +42,40 @@ class _CheckInCardsDemoPageState extends State<CheckInCardsDemoPage> {
     '把今天晚上的运动改成 40 分钟。',
     '我今天有多条饮食记录，帮我选择要修改的那一条。',
     '我今天有多条运动记录，帮我选择要修改的那一条。',
+    '今天吃了鸡胸肉和酸奶，帮我一起记录。',
   ];
 
   CheckInCardData get _card {
     final meal = _scenario.isEven;
     final type = meal ? CheckInType.meal : CheckInType.exercise;
-    final modify = _scenario >= 2;
+    final combinedMeal = _scenario == 6;
+    final modify = _scenario >= 2 && !combinedMeal;
     return CheckInCardData(
       kind: modify ? ChatCardKind.modifyCheckIn : ChatCardKind.confirmCheckIn,
       type: type,
       name: meal ? '鸡胸肉' : '快走',
       time: modify ? (meal ? '早餐' : '晚上') : (meal ? '12:30' : '18:00'),
       value: modify ? (meal ? 250 : 40) : (meal ? 150 : 30),
+      items: combinedMeal
+          ? const [
+              CheckInRecord(
+                id: 'meal-chicken',
+                type: CheckInType.meal,
+                name: '鸡胸肉',
+                time: '12:30',
+                value: 150,
+                estimatedKcal: 270,
+              ),
+              CheckInRecord(
+                id: 'meal-yogurt',
+                type: CheckInType.meal,
+                name: '酸奶',
+                time: '12:30',
+                value: 200,
+                estimatedKcal: 140,
+              ),
+            ]
+          : const [],
       candidates: !modify
           ? const []
           : [
