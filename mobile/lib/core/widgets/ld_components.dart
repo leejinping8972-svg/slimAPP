@@ -595,6 +595,7 @@ class CheckInCardBubble extends StatefulWidget {
 
 class _CheckInCardBubbleState extends State<CheckInCardBubble> {
   late final TextEditingController _valueController;
+  late final Map<String, TextEditingController> _candidateControllers;
   String? _selectedRecordId;
 
   int get _editedValue => int.tryParse(_valueController.text.trim()) ?? 0;
@@ -617,6 +618,10 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
       text: widget.data.value.toString(),
     );
     _valueController.addListener(_onValueChanged);
+    _candidateControllers = {
+      for (final candidate in widget.data.candidates)
+        candidate.id: TextEditingController(text: candidate.value.toString()),
+    };
     _selectedRecordId = widget.status == ChatCardStatus.confirmed
         ? widget.data.selectedRecordId
         : null;
@@ -626,6 +631,9 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
   void dispose() {
     _valueController.removeListener(_onValueChanged);
     _valueController.dispose();
+    for (final controller in _candidateControllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -638,7 +646,12 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
       widget.data.kind == ChatCardKind.confirmCheckIn ? '确认打卡' : '确认修改';
 
   void _confirm() {
-    final value = int.tryParse(_valueController.text.trim());
+    final selected = widget.data.candidates
+        .where((r) => r.id == _selectedRecordId)
+        .firstOrNull;
+    final value = selected == null
+        ? int.tryParse(_valueController.text.trim())
+        : int.tryParse(_candidateControllers[selected.id]!.text.trim());
     final maxValue = widget.data.type == CheckInType.meal ? 3000 : 600;
     if (value == null || value <= 0 || value > maxValue) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -844,9 +857,28 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                                   ],
                                 ),
                               ),
-                              Text(
-                                '${candidate.value} ${data.type.unit}',
-                                style: LuckdateTextStyles.caption,
+                              SizedBox(
+                                width: 112,
+                                child: TextField(
+                                  controller:
+                                      _candidateControllers[candidate.id],
+                                  keyboardType: TextInputType.number,
+                                  enabled: widget.onConfirm != null,
+                                  onTap: () => setState(
+                                    () => _selectedRecordId = candidate.id,
+                                  ),
+                                  decoration: InputDecoration(
+                                    suffixText: data.type.unit,
+                                    isDense: true,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: LuckdateSpacing.sm,
+                                      vertical: LuckdateSpacing.xs,
+                                    ),
+                                  ),
+                                  style: LuckdateTextStyles.bodySmall.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -869,27 +901,6 @@ class _CheckInCardBubbleState extends State<CheckInCardBubble> {
                     const SizedBox(height: LuckdateSpacing.md),
                     const _AiSuggestionPanel(),
                   ],
-                ],
-                if (isModification && selected != null) ...[
-                  const SizedBox(height: LuckdateSpacing.md),
-                  Text(
-                    '已选择 ${selected.name}，修改为',
-                    style: LuckdateTextStyles.caption,
-                  ),
-                  const SizedBox(height: LuckdateSpacing.xs),
-                  TextField(
-                    controller: _valueController,
-                    keyboardType: TextInputType.number,
-                    enabled: widget.onConfirm != null,
-                    decoration: InputDecoration(
-                      suffixText: data.type.unit,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: LuckdateSpacing.md,
-                        vertical: LuckdateSpacing.sm,
-                      ),
-                    ),
-                    style: LuckdateTextStyles.h2,
-                  ),
                 ],
                 const SizedBox(height: LuckdateSpacing.md),
                 SizedBox(
