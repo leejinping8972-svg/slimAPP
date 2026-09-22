@@ -26,12 +26,14 @@ class _CheckInCardsDemoPageState extends State<CheckInCardsDemoPage> {
   CheckInCardData? _confirmed;
   final _scrollController = ScrollController();
 
-  static const _labels = ['饮食打卡', '运动打卡', '修改饮食', '修改运动'];
+  static const _labels = ['饮食打卡', '运动打卡', '修改饮食', '修改运动', '多条饮食', '多条运动'];
   static const _requests = [
     '今天 12:30 吃了鸡胸肉，150 克。',
     '今天 18:00 快走了 30 分钟。',
     '把今天早餐的记录改成 250 克。',
     '把今天晚上的运动改成 40 分钟。',
+    '我今天有多条饮食记录，帮我选择要修改的那一条。',
+    '我今天有多条运动记录，帮我选择要修改的那一条。',
   ];
 
   CheckInCardData get _card {
@@ -63,6 +65,15 @@ class _CheckInCardsDemoPageState extends State<CheckInCardsDemoPage> {
                 value: meal ? 200 : 20,
                 estimatedKcal: meal ? 300 : 142,
               ),
+              if (_scenario >= 4)
+                CheckInRecord(
+                  id: 'third',
+                  type: type,
+                  name: meal ? '水果沙拉' : '力量训练',
+                  time: meal ? '13:20' : '21:00',
+                  value: meal ? 120 : 45,
+                  estimatedKcal: meal ? 160 : 320,
+                ),
             ],
     );
   }
@@ -171,7 +182,9 @@ class _CheckInCardsDemoPageState extends State<CheckInCardsDemoPage> {
                   const SizedBox(height: 24),
                   SunnyBubble(
                     key: ValueKey('$_scenario-$_revision'),
-                    text: modify ? '找到了两条记录，请选择要修改的那一条。' : '帮你整理好了，确认一下就可以记录。',
+                    text: modify
+                        ? '找到了 ${card.candidates.length} 条记录，请选择要修改的那一条。'
+                        : '帮你整理好了，确认一下就可以记录。',
                     card: card,
                     cardStatus: _confirmed == null
                         ? ChatCardStatus.pending
