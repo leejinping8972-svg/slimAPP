@@ -120,34 +120,32 @@ class _CheckInCardsDemoPageState extends State<CheckInCardsDemoPage> {
                 child: Text('卡片交互演示 · 示例数据', style: LuckdateTextStyles.caption),
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
                 children: List.generate(
                   _labels.length,
-                  (i) => Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: ChoiceChip(
-                      label: SizedBox(
-                        width: 62,
-                        child: Text(
-                          _labels[i],
-                          textAlign: TextAlign.center,
-                          style: LuckdateTextStyles.bodySmall,
-                        ),
+                  (i) => ChoiceChip(
+                    label: SizedBox(
+                      width: 62,
+                      child: Text(
+                        _labels[i],
+                        textAlign: TextAlign.center,
+                        style: LuckdateTextStyles.bodySmall,
                       ),
-                      showCheckmark: false,
-                      selectedColor: LuckdateColors.sageSoft,
-                      backgroundColor: LuckdateColors.ivoryWhite,
-                      side: BorderSide(
-                        color: _scenario == i
-                            ? LuckdateColors.deepSage
-                            : LuckdateColors.lineSoft,
-                      ),
-                      selected: _scenario == i,
-                      onSelected: (_) => _reset(i),
                     ),
+                    showCheckmark: false,
+                    selectedColor: LuckdateColors.sageSoft,
+                    backgroundColor: LuckdateColors.ivoryWhite,
+                    side: BorderSide(
+                      color: _scenario == i
+                          ? LuckdateColors.deepSage
+                          : LuckdateColors.lineSoft,
+                    ),
+                    selected: _scenario == i,
+                    onSelected: (_) => _reset(i),
                   ),
                 ),
               ),
