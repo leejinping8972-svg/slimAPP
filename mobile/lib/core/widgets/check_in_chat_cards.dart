@@ -477,7 +477,8 @@ class _SimpleConfirmCard extends StatelessWidget {
   }
 }
 
-class _ConfirmBlock extends StatelessWidget {
+
+class _ConfirmBlock extends StatefulWidget {
   const _ConfirmBlock({
     required this.title,
     required this.subtitle,
@@ -503,12 +504,59 @@ class _ConfirmBlock extends StatelessWidget {
   final VoidCallback? onCancel;
 
   @override
+  State<_ConfirmBlock> createState() => _ConfirmBlockState();
+}
+
+class _ConfirmBlockState extends State<_ConfirmBlock>
+    with SingleTickerProviderStateMixin {
+  bool _busy = false;
+  bool _playIntro = false;
+  late final AnimationController _intro;
+
+  @override
+  void initState() {
+    super.initState();
+    _intro = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 640),
+    );
+  }
+
+  @override
+  void didUpdateWidget(_ConfirmBlock oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final applied = widget.status == CheckInCardStatus.applied;
+    final wasApplied = oldWidget.status == CheckInCardStatus.applied;
+    if (applied && !wasApplied) {
+      _busy = false;
+      final reduce = MediaQuery.disableAnimationsOf(context);
+      _playIntro = !reduce;
+      if (_playIntro) _intro.forward(from: 0);
+    } else if (widget.status == CheckInCardStatus.pending) {
+      _busy = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _intro.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    if (_busy || widget.onConfirm == null) return;
+    setState(() => _busy = true);
+    widget.onConfirm!();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final applied = widget.status == CheckInCardStatus.applied;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          widget.title,
           style: const TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 16,
@@ -518,7 +566,7 @@ class _ConfirmBlock extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          subtitle,
+          widget.subtitle,
           style: const TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 13,
@@ -528,7 +576,7 @@ class _ConfirmBlock extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          summary,
+          widget.summary,
           style: const TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 13,
@@ -536,35 +584,52 @@ class _ConfirmBlock extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-        if (!interactive)
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            decoration: BoxDecoration(
-              color: _Ck.panel,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Text(
-              status == CheckInCardStatus.cancelled
-                  ? strings.checkInCardCancelled
-                  : strings.checkInCardApplied,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w600,
-                color: _Ck.muted,
-              ),
-            ),
-          )
+        if (!widget.interactive)
+          applied
+              ? Row(
+                  children: [
+                    _SuccessMark(animate: _playIntro, animation: _intro),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        widget.strings.checkInCardApplied,
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w700,
+                          color: _Ck.green,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  decoration: BoxDecoration(
+                    color: _Ck.panel,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    widget.strings.checkInCardCancelled,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      color: _Ck.muted,
+                    ),
+                  ),
+                )
         else ...[
           SizedBox(
             width: double.infinity,
             height: 48,
             child: FilledButton(
-              onPressed: onConfirm,
+              onPressed: _busy ? null : _submit,
               style: FilledButton.styleFrom(
                 backgroundColor: _Ck.green,
                 foregroundColor: _Ck.white,
+                disabledBackgroundColor: _Ck.green,
+                disabledForegroundColor: _Ck.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(999),
@@ -575,20 +640,29 @@ class _ConfirmBlock extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              child: Text(buttonLabel),
+              child: _busy
+                  ? const SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: _Ck.white,
+                      ),
+                    )
+                  : Text(widget.buttonLabel),
             ),
           ),
           const SizedBox(height: 8),
           Center(
             child: TextButton(
-              onPressed: onCancel,
+              onPressed: _busy ? null : widget.onCancel,
               style: TextButton.styleFrom(
                 foregroundColor: _Ck.muted,
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
-                strings.isZh ? '取消' : 'Cancelar',
+                widget.strings.isZh ? '取消' : 'Cancelar',
                 style: const TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 13,
@@ -599,7 +673,7 @@ class _ConfirmBlock extends StatelessWidget {
         ],
         const SizedBox(height: 10),
         Text(
-          disclaimer,
+          widget.disclaimer,
           style: const TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 11,
@@ -609,6 +683,76 @@ class _ConfirmBlock extends StatelessWidget {
       ],
     );
   }
+}
+
+class _SuccessMark extends StatelessWidget {
+  const _SuccessMark({required this.animate, required this.animation});
+
+  final bool animate;
+  final Animation<double> animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 28,
+      height: 28,
+      child: AnimatedBuilder(
+        animation: animation,
+        builder: (context, _) {
+          final t = animate ? animation.value : 1.0;
+          final scale = animate
+              ? (0.72 + 0.28 * Curves.easeOutBack.transform(t.clamp(0, 1)))
+              : 1.0;
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              if (animate && t < 1)
+                CustomPaint(
+                  size: const Size(28, 28),
+                  painter: _BurstPainter(t),
+                ),
+              Transform.scale(
+                scale: scale,
+                child: const Icon(
+                  Icons.check_circle_rounded,
+                  color: _Ck.green,
+                  size: 26,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _BurstPainter extends CustomPainter {
+  _BurstPainter(this.progress);
+
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final fade = (1 - ((progress - 0.2) / 0.8).clamp(0, 1)).toDouble();
+    if (fade <= 0) return;
+    final center = Offset(size.width / 2, size.height / 2);
+    final paint = Paint()..style = PaintingStyle.fill;
+    for (var i = 0; i < 6; i++) {
+      final angle = (i / 6) * 6.28318 - 1.2;
+      final radius = 6 + 10 * Curves.easeOut.transform(progress);
+      paint.color = _Ck.green.withValues(alpha: 0.8 * fade);
+      canvas.drawCircle(
+        center + Offset.fromDirection(angle, radius),
+        2,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BurstPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
 
 class _PickCard extends StatelessWidget {

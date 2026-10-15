@@ -653,6 +653,12 @@ class AppStateNotifier extends StateNotifier<AppState> {
     required String messageId,
     required CheckInDraft draft,
   }) async {
+    final current = state.chatMessages
+        .where((message) => message.id == messageId)
+        .firstOrNull;
+    if (current == null || current.card?.status == CheckInCardStatus.applied) {
+      return;
+    }
     final zh =
         state.profile.language == 'zh' || state.profile.language.startsWith('zh');
     final updated = CheckInApply.apply(state.journey.todayRecord, draft);
