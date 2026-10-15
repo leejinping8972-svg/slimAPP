@@ -1,4 +1,4 @@
-﻿import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +10,9 @@ import '../../core/widgets/ritual_sheets.dart';
 import '../../core/widgets/today_widgets.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
+import '../../core/widgets/ld_feedback.dart';
 import '../../shared/services/daily_advice_helper.dart';
+import '../../shared/services/today_tasks.dart';
 import '../../shared/services/vitality_scorer.dart';
 
 enum _VitalityRange { today, days28, days56, days84 }
@@ -81,6 +83,17 @@ class _RitualPageState extends ConsumerState<RitualPage> {
                       ),
                       const SizedBox(height: LuckdateSpacing.lg),
                     ],
+                    LdTodayProgress(
+                      tasks: todayTasksOf(journey.todayRecord),
+                      onTaskTap: (kind) => _openTodayTask(
+                        context,
+                        ref,
+                        kind,
+                        journey.todayRecord,
+                        profile,
+                      ),
+                    ),
+                    const SizedBox(height: LuckdateSpacing.lg),
                     LdSegmentedControl<_VitalityRange>(
                       options: const [
                         _VitalityRange.today,
@@ -202,6 +215,25 @@ class _RitualPageState extends ConsumerState<RitualPage> {
     );
   }
 
+  void _openTodayTask(
+    BuildContext context,
+    WidgetRef ref,
+    TodayTaskKind kind,
+    TodayRecord record,
+    UserProfile profile,
+  ) {
+    switch (kind) {
+      case TodayTaskKind.meal:
+        showMealCheckInSheet(context, ref, record);
+      case TodayTaskKind.water:
+        showHydrationSheet(context, ref, record, profile.hydrationTargetMl);
+      case TodayTaskKind.weight:
+        showPesoSheet(context, ref, record, profile);
+      case TodayTaskKind.sleep:
+        showSleepSheet(context, ref, record);
+    }
+  }
+
   void _cycleTrendRange() {
     const order = [
       _VitalityRange.days28,
@@ -292,7 +324,9 @@ class _DailyAdviceCard extends StatelessWidget {
           Text(label, style: LuckdateTextStyles.caption),
           Text(
             value,
-            style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w700),
+            style: LuckdateTextStyles.body.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ],
       ),
@@ -348,7 +382,9 @@ class _ViajePlanCard extends StatelessWidget {
             const SizedBox(height: LuckdateSpacing.sm),
             Text(
               'Viaje Slim de 28 días · Día ${journey.day}/${journey.totalDays}',
-              style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              style: LuckdateTextStyles.body.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: LuckdateSpacing.sm),
             ClipRRect(
@@ -394,7 +430,9 @@ class _ViajePlanCard extends StatelessWidget {
               profile.linkedProductName.isEmpty
                   ? 'Tu producto vinculado'
                   : profile.linkedProductName,
-              style: LuckdateTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              style: LuckdateTextStyles.body.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
@@ -1005,4 +1043,3 @@ class _FocusCarousel extends StatelessWidget {
     );
   }
 }
-

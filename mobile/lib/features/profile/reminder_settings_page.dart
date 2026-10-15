@@ -59,7 +59,9 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage> {
   }
 
   void _save() {
-    ref.read(appStateProvider.notifier).updateReminders(
+    ref
+        .read(appStateProvider.notifier)
+        .updateReminders(
           reminderTime: _reminderTime,
           reminderTime2: _reminderTime2,
         );
@@ -81,34 +83,61 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage> {
           children: [
             Text(_copyFor(planType), style: LuckdateTextStyles.bodySmall),
             const SizedBox(height: LuckdateSpacing.xl),
-            LdCard(
+            _ReminderTimeCard(
+              label: dualReminder
+                  ? 'Recordatorio de la mañana'
+                  : 'Recordatorio diario',
+              time: _reminderTime,
               onTap: () => _pickTime(second: false),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    dualReminder ? 'Recordatorio de la mañana' : 'Recordatorio diario',
-                    style: LuckdateTextStyles.body,
-                  ),
-                  Text(_reminderTime, style: LuckdateTextStyles.title),
-                ],
-              ),
             ),
             if (dualReminder) ...[
               const SizedBox(height: LuckdateSpacing.sm),
-              LdCard(
+              _ReminderTimeCard(
+                label: 'Recordatorio de la noche',
+                time: _reminderTime2,
                 onTap: () => _pickTime(second: true),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Recordatorio de la noche', style: LuckdateTextStyles.body),
-                    Text(_reminderTime2, style: LuckdateTextStyles.title),
-                  ],
-                ),
               ),
             ],
             const SizedBox(height: LuckdateSpacing.xl),
             LdPrimaryButton(label: 'Guardar recordatorios', onPressed: _save),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ReminderTimeCard extends StatelessWidget {
+  const _ReminderTimeCard({
+    required this.label,
+    required this.time,
+    required this.onTap,
+  });
+
+  final String label;
+  final String time;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: '$label, $time. Toca para elegir otra hora.',
+      child: LdCard(
+        onTap: onTap,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label, style: LuckdateTextStyles.bodySmall),
+                  const SizedBox(height: LuckdateSpacing.xs),
+                  Text(time, style: LuckdateTextStyles.h1),
+                ],
+              ),
+            ),
+            const Icon(Icons.schedule_rounded, color: LuckdateColors.deepSage),
           ],
         ),
       ),

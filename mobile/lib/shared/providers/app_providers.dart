@@ -642,6 +642,13 @@ class AppStateNotifier extends StateNotifier<AppState> {
     required String messageId,
     required CheckInCardData card,
   }) {
+    final current = state.chatMessages
+        .where((message) => message.id == messageId)
+        .firstOrNull;
+    if (current == null || current.cardStatus == ChatCardStatus.confirmed) {
+      return;
+    }
+
     final today = state.journey.todayRecord;
     late final TodayRecord updated;
     late final String reply;

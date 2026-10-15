@@ -1,13 +1,14 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/theme/luckdate_theme.dart';
 import '../../core/widgets/ld_components.dart';
 import '../../core/widgets/ld_shell.dart';
 import '../../core/widgets/ritual_sheets.dart';
+import '../../core/widgets/ld_feedback.dart';
 import '../../shared/models/models.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/services/sleep_record_helper.dart';
+import '../../shared/services/today_tasks.dart';
 
 enum _PlanTab { inProgreso, myPlans }
 
@@ -171,8 +172,7 @@ class _MealPlanInProgreso extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = journey.todayRecord;
-    final tasks = _todayTasks(record);
-    final doneCount = tasks.where((t) => t.done).length;
+    final tasks = todayTasksOf(record);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -189,28 +189,9 @@ class _MealPlanInProgreso extends ConsumerWidget {
           onDetails: onPlanDetails,
         ),
         const SizedBox(height: LuckdateSpacing.xl),
-        Row(
-          children: [
-            Text('Tareas de hoy', style: LuckdateTextStyles.h2),
-            const Spacer(),
-            Text(
-              '$doneCount/${tasks.length} Completado',
-              style: LuckdateTextStyles.caption.copyWith(
-                color: LuckdateColors.deepSage,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: LuckdateSpacing.md),
-        ...tasks.map(
-          (task) => Padding(
-            padding: const EdgeInsets.only(bottom: LuckdateSpacing.sm),
-            child: _TaskRow(
-              task: task,
-              onTap: () => _openQuickSheet(context, ref, task.action, record),
-            ),
-          ),
+        LdTodayProgress(
+          tasks: tasks,
+          onTaskTap: (kind) => _openQuickSheet(context, ref, kind, record),
         ),
         const SizedBox(height: LuckdateSpacing.md),
         Text('Fases del plan', style: LuckdateTextStyles.h2),
@@ -236,117 +217,20 @@ class _MealPlanInProgreso extends ConsumerWidget {
   void _openQuickSheet(
     BuildContext context,
     WidgetRef ref,
-    _PlanTaskAction action,
+    TodayTaskKind kind,
     TodayRecord record,
   ) {
-    switch (action) {
-      case _PlanTaskAction.meal:
+    switch (kind) {
+      case TodayTaskKind.meal:
         showMealCheckInSheet(context, ref, record);
-      case _PlanTaskAction.water:
+      case TodayTaskKind.water:
         showHydrationSheet(context, ref, record, profile.hydrationTargetMl);
-      case _PlanTaskAction.weight:
+      case TodayTaskKind.weight:
         showPesoSheet(context, ref, record, profile);
-      case _PlanTaskAction.sleep:
+      case TodayTaskKind.sleep:
         showSleepSheet(context, ref, record);
     }
   }
-
-  List<_PlanTask> _todayTasks(TodayRecord record) {
-    final mealListo =
-        record.productTaken == ProductTakenStatus.taken ||
-        record.productTaken == ProductTakenStatus.partial ||
-        record.meals.isNotEmpty;
-    final sleepDone = record.hasSleepRecord;
-
-    return [
-      _PlanTask(
-        icon: Icons.monitor_weight_outlined,
-        color: const Color(0xFF8FA86E),
-        title: 'Registro de peso',
-        subtitle: 'Ritual matutino',
-        time: '07:30',
-        done: record.weightRecorded,
-        valueText: record.weightRecorded && record.weightValueKg > 0
-            ? '${record.weightValueKg.toStringAsFixed(1)} kg'
-            : (record.weightRecorded ? 'Registrado' : null),
-        action: _PlanTaskAction.weight,
-      ),
-      _PlanTask(
-        icon: Icons.local_cafe_outlined,
-        color: const Color(0xFFC4A484),
-        title: 'Comida nutritiva',
-        subtitle: 'Proteína matutina',
-        time: '08:00',
-        done: mealListo,
-        valueText: _mealValueText(record),
-        action: _PlanTaskAction.meal,
-      ),
-      _PlanTask(
-        icon: Icons.water_drop_outlined,
-        color: const Color(0xFF7BA3C4),
-        title: 'Bebe 2 vasos',
-        subtitle: 'Bebe agua',
-        time: '10:00',
-        done: record.hydrationMl >= 500,
-        valueText: record.hydrationMl > 0 ? '${record.hydrationMl} ml' : null,
-        action: _PlanTaskAction.water,
-      ),
-      _PlanTask(
-        icon: Icons.bedtime_outlined,
-        color: const Color(0xFF6B7A9E),
-        title: 'Preparación para dormir',
-        subtitle: 'Protege tu ritmo',
-        time: '22:30',
-        done: sleepDone,
-        valueText: sleepDone ? SleepRecordHelper.summary(record) : null,
-        action: _PlanTaskAction.sleep,
-      ),
-    ];
-  }
-
-  String? _mealValueText(TodayRecord record) {
-    MealLogEntry? meal;
-    for (final entry in record.meals) {
-      final name = entry.name.toLowerCase();
-      final type = entry.meal.toLowerCase();
-      if (name.contains('protein') || type.contains('replacement')) {
-        meal = entry;
-        break;
-      }
-    }
-    meal ??= record.meals.isNotEmpty ? record.meals.first : null;
-    if (meal != null) return '${meal.kcal} kcal';
-    if (record.intakeKcal > 0) return '${record.intakeKcal} kcal';
-    if (record.productTaken == ProductTakenStatus.taken ||
-        record.productTaken == ProductTakenStatus.partial) {
-      return 'Registrado';
-    }
-    return null;
-  }
-}
-
-enum _PlanTaskAction { meal, water, weight, sleep }
-
-class _PlanTask {
-  const _PlanTask({
-    required this.icon,
-    required this.color,
-    required this.title,
-    required this.subtitle,
-    required this.time,
-    required this.done,
-    required this.action,
-    this.valueText,
-  });
-
-  final IconData icon;
-  final Color color;
-  final String title;
-  final String subtitle;
-  final String time;
-  final bool done;
-  final String? valueText;
-  final _PlanTaskAction action;
 }
 
 class _ActualPlanHero extends StatelessWidget {
@@ -530,80 +414,6 @@ class _ActualPlanHero extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _TaskRow extends StatelessWidget {
-  const _TaskRow({required this.task, required this.onTap});
-
-  final _PlanTask task;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return LdCard(
-      onTap: onTap,
-      padding: const EdgeInsets.symmetric(
-        horizontal: LuckdateSpacing.md,
-        vertical: LuckdateSpacing.md,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: task.color.withValues(alpha: 0.18),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(task.icon, color: task.color, size: 20),
-          ),
-          const SizedBox(width: LuckdateSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  task.title,
-                  style: LuckdateTextStyles.body.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  task.done && (task.valueText?.isNotEmpty ?? false)
-                      ? task.valueText!
-                      : task.subtitle,
-                  style: LuckdateTextStyles.caption.copyWith(
-                    color: task.done && (task.valueText?.isNotEmpty ?? false)
-                        ? LuckdateColors.deepSage
-                        : LuckdateColors.textSecondary,
-                    fontWeight: task.done && (task.valueText?.isNotEmpty ?? false)
-                        ? FontWeight.w600
-                        : FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(
-            task.done
-                ? Icons.check_circle_rounded
-                : Icons.radio_button_unchecked,
-            size: 20,
-            color: task.done
-                ? LuckdateColors.deepSage
-                : LuckdateColors.lineSoft,
-          ),
-          const SizedBox(width: LuckdateSpacing.sm),
-          Text(task.time, style: LuckdateTextStyles.caption),
-          const Icon(
-            Icons.chevron_right_rounded,
-            color: LuckdateColors.textSecondary,
-            size: 20,
-          ),
-        ],
       ),
     );
   }
@@ -1168,4 +978,3 @@ class _ProductoCarePlanView extends StatelessWidget {
     );
   }
 }
-
